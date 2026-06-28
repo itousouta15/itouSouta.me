@@ -329,10 +329,10 @@ export interface ExperienceItem {
 }
 
 export const EXPERIENCE: ExperienceItem[] = [
-  { period: "2024 — 現在", title: "臺中市立大里高級中學", org: "資訊校隊隊長", desc: "加入資訊校隊，開始製作各式專案，參與各式比賽與活動，領導資訊社群，持續精進自我並朝理想邁進。", color: "blue", category: "學歷" },
-  { period: "2021 — 2024", title: "臺中市立大雅國民中學", org: "學生", desc: "開始接觸Scratch，對程式設計開始感興趣", color: "blue", category: "學歷" },
-  { period: "2015 — 2021", title: "臺中市立大明國民小學", org: "學生", desc: "", color: "blue", category: "學歷" },
-  { period: "2022 — 2024", title: "經歷標題佔位", org: "單位 / 組織", desc: "經歷說明佔位文字，之後可換成你的實際內容。", color: "purple", category: "比賽" },
+  { period: "2024-現在", title: "臺中市立大里高級中學", org: "資訊校隊隊長", desc: "加入資訊校隊，開始製作各式專案，參與各式比賽與活動，領導資訊社群，持續精進自我並朝理想邁進。", color: "blue", category: "學歷" },
+  { period: "2021-2024", title: "臺中市立大雅國民中學", org: "學生", desc: "開始接觸Scratch，對程式設計開始感興趣", color: "blue", category: "學歷" },
+  { period: "2015-2021", title: "臺中市立大明國民小學", org: "學生", desc: "", color: "blue", category: "學歷" },
+  { period: "2022-2024", title: "經歷標題佔位", org: "單位 / 組織", desc: "經歷說明佔位文字，之後可換成你的實際內容。", color: "purple", category: "比賽" },
   { period: "2025", title: "大里高中資訊校隊", org: "隊長、教學", color: "blue", category: "社群" },
   { period: "2025", title: "北台灣學生資訊社群", org: "美宣", color: "blue", category: "社群" },
   { period: "2025-2026", title: "第五屆 SCAICT 中電會", org: "會長、資訊組組長", color: "purple", category: "社群" },
