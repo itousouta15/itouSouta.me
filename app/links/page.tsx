@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 import { LINKS } from "../data";
 
-export const metadata: Metadata = { title: "友鏈 | itouSouta.tw" };
+export const metadata: Metadata = { title: "友鏈 | itousouta15.tw" };
 
 export default function LinksPage() {
   return (
-    <section className="fade-in" style={{ paddingBottom: 8 }}>
+    <section style={{ paddingBottom: 8 }}>
       <PageHead kicker="LINKS" title="友鏈" />
       <div className="links-grid">
         {LINKS.map((l, i) => (

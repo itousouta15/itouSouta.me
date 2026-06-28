@@ -38,7 +38,7 @@ export default function Header() {
       <header className="header">
         <div className="header-inner">
           <Link className="logo" href="/" style={{ textDecoration: "none" }}>
-            itouSouta.tw
+            itouSouta15.tw
           </Link>
           <div className="header-right">
             <nav className="nav">

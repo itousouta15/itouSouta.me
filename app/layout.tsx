@@ -3,9 +3,10 @@ import "./globals.css";
 import ThemeProvider from "./components/ThemeProvider";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import PageTransition from "./components/PageTransition";
 
 export const metadata: Metadata = {
-  title: "itouSouta.tw",
+  title: "itouSouta15.tw",
   description: "itouSouta / 郭家睿 / 伊藤蒼太 的官方網站",
 };
 
@@ -31,7 +32,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider>
           <Header />
-          <main className="main">{children}</main>
+          <main className="main">
+            <PageTransition>{children}</PageTransition>
+          </main>
           <Footer />
         </ThemeProvider>
       </body>
