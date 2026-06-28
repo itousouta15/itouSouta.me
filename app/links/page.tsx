@@ -12,11 +12,15 @@ export default function LinksPage() {
         {LINKS.map((l, i) => (
           <a className="link-card" key={`${l.href}-${i}`} href={l.href} target="_blank" rel="noopener noreferrer">
             <div className="link-top">
-              <span className={`link-dot ${l.color ?? "blue"}`} />
               <span className="link-arrow">↗</span>
             </div>
-            <div className="link-name">{l.name}</div>
-            <div className="link-handle">{l.handle}</div>
+            <div className="link-main">
+              {l.avatar && <img className="link-avatar" src={l.avatar} alt="" />}
+              <div className="link-meta">
+                <div className="link-name">{l.name}</div>
+                <div className="link-handle">{l.handle}</div>
+              </div>
+            </div>
             {l.desc && <div className="link-desc">{l.desc}</div>}
           </a>
         ))}

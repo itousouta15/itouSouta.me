@@ -21,7 +21,10 @@ a {
 }
 
 /* ---- Theme tokens ---- */
-.root {
+/* Tokens live on :root (the <html> element) so the blocking head script can set
+   [data-theme] before first paint — no dark→light flash. The .root wrapper only
+   consumes the inherited tokens for its background/sizing. */
+:root {
   --bg: #1b1e23;
   --panel: #24262b;
   --panel2: #27292e;
@@ -33,11 +36,15 @@ a {
   --dim: #9aa1ad;
   --mute: #6a7280;
   --blue: #afb6d6;
-  --purple: #7a6dc0;
+  --purple: #84a0d4;
   --btn: #94a6cc;
   --btntx: #21252b;
   --shadow: rgba(0, 0, 0, 0.45);
 
+  background: var(--bg);
+}
+
+.root {
   min-height: 100vh;
   color: var(--tx);
   font-family: "Noto Sans TC", system-ui, sans-serif;
@@ -45,19 +52,19 @@ a {
   transition: background 0.35s ease, color 0.35s ease;
 }
 
-.root[data-theme="light"] {
+:root[data-theme="light"] {
   --bg: #afb2bb;
-  --panel: #e8eaf1;
-  --panel2: #e8eaf1;
-  --panel2-a: rgba(232, 234, 241, 0.82);
-  --inset: #eceef4;
+  --panel: #dddee4;
+  --panel2: #dddee4;
+  --panel2-a: rgba(219, 221, 228, 0.82);
+  --inset: #d8dae0;
   --bd: rgba(20, 24, 40, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
   --tx: #22262d;
   --dim: #5b626d;
   --mute: #8a909b;
   --blue: #364a7c;
-  --purple: #7b8be6;
+  --purple: #95a1e4;
   --btn: #2b2f36;
   --btntx: #f2f4f9;
   --shadow: rgba(60, 70, 90, 0.16);
@@ -865,10 +872,19 @@ a {
   height: 100%;
   object-fit: cover;
   opacity: 0.24;
-  transition: opacity 0.25s ease;
+  transform: scale(1.5);
+  transform-origin: 62% 42%;
+  transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1), transform 1.1s cubic-bezier(0.33, 1, 0.68, 1);
 }
 .card-likes:hover .card-likes-img {
-  opacity: 0.32;
+  opacity: 0.34;
+  transform: scale(1.62);
+}
+.card-title-lg {
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.card-likes:hover .card-title-lg {
+  transform: translateX(3px);
 }
 .card-body {
   position: relative;
@@ -902,6 +918,13 @@ a {
   font-size: 22px;
   color: var(--tx);
   background: rgba(0, 0, 0, 0.22);
+  transform: rotate(90deg);
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), border-color 0.45s ease, background 0.45s ease;
+}
+.card-likes:hover .card-arrow-lg {
+  border-color: var(--blue);
+  background: rgba(0, 0, 0, 0.34);
+  transform: rotate(45deg);
 }
 
 /* ---- Projects (full-width bottom) ---- */
@@ -927,6 +950,18 @@ a {
   width: 120px;
   height: 120px;
   opacity: 0.07;
+  transform-origin: top right;
+  transition: transform 0.8s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.6s ease;
+}
+.card-projects:hover .card-projects-glyph {
+  transform: scale(1.08) rotate(-4deg);
+  opacity: 0.11;
+}
+.card-title-md {
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.card-projects:hover .card-title-md {
+  transform: translateX(3px);
 }
 .card-body-sm {
   position: relative;
@@ -946,6 +981,12 @@ a {
   bottom: 16px;
   font-size: 20px;
   color: var(--dim);
+  transform: rotate(90deg);
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), color 0.45s ease;
+}
+.card-projects:hover .card-arrow-sm {
+  color: var(--blue);
+  transform: rotate(45deg);
 }
 
 /* ---- Nav cards (友鏈 / 經歷) ---- */
@@ -967,11 +1008,38 @@ a {
   background: var(--panel2);
 }
 .nav-card-title {
+  position: relative;
+  display: inline-block;
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
   font-size: 26px;
   font-weight: 700;
   color: var(--tx);
   margin-top: 8px;
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.nav-card-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: 100%;
+  height: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.nav-card:hover .nav-card-title {
+  transform: translateX(3px);
+}
+.nav-card:hover .nav-card-title::after {
+  transform: scaleX(1);
+}
+.nav-card .card-kicker {
+  transition: color 0.45s ease;
+}
+.nav-card:hover .card-kicker {
+  color: var(--blue);
 }
 .nav-card-arrow {
   position: absolute;
@@ -979,6 +1047,32 @@ a {
   bottom: 16px;
   font-size: 18px;
   color: var(--dim);
+  transform: rotate(90deg);
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), color 0.45s ease;
+}
+.nav-card:hover .nav-card-arrow {
+  color: var(--blue);
+  transform: rotate(45deg);
+}
+
+/* Light mode: a hovered card gets a subtle dark overlay (dark mode brightens
+   instead, so this is scoped to the light theme only). */
+:root[data-theme="light"] .card-likes::after,
+:root[data-theme="light"] .card-projects::after,
+:root[data-theme="light"] .nav-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 3;
+}
+:root[data-theme="light"] .card-likes:hover::after,
+:root[data-theme="light"] .card-projects:hover::after,
+:root[data-theme="light"] .nav-card:hover::after {
+  opacity: 0.08;
 }
 
 /* ---- Discord-style activity card (embedded in the profile sidebar) ---- */
@@ -1213,6 +1307,33 @@ a {
 }
 
 /* Likes */
+.like-category {
+  margin-top: 34px;
+}
+.like-category:first-of-type {
+  margin-top: 0;
+}
+.like-cat-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--bd);
+}
+.like-cat-en {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--mute);
+}
+.like-cat-title {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--tx);
+  margin: 0;
+}
 .likes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -1431,35 +1552,46 @@ a {
 .link-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-.link-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-.link-dot.blue {
-  background: var(--blue);
-}
-.link-dot.purple {
-  background: var(--purple);
+  justify-content: flex-end;
 }
 .link-arrow {
   color: var(--dim);
   font-size: 16px;
+}
+.link-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.link-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--inset);
+}
+.link-meta {
+  min-width: 0;
 }
 .link-name {
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
   font-size: 20px;
   font-weight: 700;
   color: var(--tx);
-  margin-top: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .link-handle {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;
   color: var(--mute);
   margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .link-desc {
   color: var(--dim);
@@ -1793,5 +1925,17 @@ a {
   .tiles-row-track,
   .fade-in {
     animation: none !important;
+  }
+  .card-likes-img,
+  .card-title-lg,
+  .card-arrow-lg,
+  .card-projects-glyph,
+  .card-title-md,
+  .card-arrow-sm,
+  .nav-card-title,
+  .nav-card-title::after,
+  .nav-card-arrow {
+    transition: none !important;
+    transform: none !important;
   }
 }
