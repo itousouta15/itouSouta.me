@@ -15,7 +15,12 @@
       "Bash(node shot.js before.png)",
       "Bash(cat next.config.*)",
       "Bash(cat .github/workflows/nextjs.yml)",
-      "Bash(ls app/components/)"
+      "Bash(ls app/components/)",
+      "WebFetch(domain:home.gamer.com.tw)",
+      "Bash(curl -sL -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/124.0.0.0 Safari/537.36\" \"https://home.gamer.com.tw/profile/index_acg_showcase.php?owner=kuoray333&kind=all\" -o /tmp/baha.html -w \"HTTP_STATUS:%{http_code}\\\\nSIZE:%{size_download}\\\\n\")",
+      "Read(//tmp/**)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/124.0.0.0 Safari/537.36' -H 'X-Requested-With: XMLHttpRequest' -H 'Referer: https://home.gamer.com.tw/profile/index_acg_showcase.php?owner=kuoray333&kind=all' 'https://home.gamer.com.tw/ajax/acg_showcase.php?owner=kuoray333&kind=all&page=1' -o /tmp/baha_ajax1.html -w 'STATUS:%{http_code} SIZE:%{size_download}\\\\n')",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/124.0.0.0 Safari/537.36' -H 'X-Requested-With: XMLHttpRequest' 'https://home.gamer.com.tw/ajax/profile/acg_showcase_list.php?owner=kuoray333&kind=all&page=1' -o /tmp/baha_ajax2.html -w 'STATUS:%{http_code} SIZE:%{size_download}\\\\n')"
     ]
   }
 }
