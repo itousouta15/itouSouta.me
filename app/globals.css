@@ -1,5 +1,5 @@
 /* ===========================================================================
-   itouSouta.tw — global styles
+   itousouta15.tw — global styles
    Theme via [data-theme] on .root. All colors are CSS variables.
    =========================================================================== */
 
@@ -7,6 +7,10 @@
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+html {
+  zoom: 1.15;
 }
 
 html,
@@ -35,8 +39,8 @@ a {
   --tx: #e8ebf2;
   --dim: #9aa1ad;
   --mute: #6a7280;
-  --blue: #afb6d6;
-  --purple: #84a0d4;
+  --blue: #b0bdf7;
+  --purple: #5b63d6;
   --btn: #94a6cc;
   --btntx: #21252b;
   --shadow: rgba(0, 0, 0, 0.45);
@@ -64,7 +68,7 @@ a {
   --dim: #5b626d;
   --mute: #8a909b;
   --blue: #364a7c;
-  --purple: #95a1e4;
+  --purple: #5c7cbf;
   --btn: #2b2f36;
   --btntx: #f2f4f9;
   --shadow: rgba(60, 70, 90, 0.16);
@@ -158,8 +162,8 @@ a {
   }
 }
 
-.fade-in {
-  animation: itFade 0.5s ease both;
+.page-transition {
+  animation: itFade 0.45s ease both;
 }
 
 /* ===========================================================================
@@ -192,7 +196,7 @@ a {
   font-weight: 700;
   padding: 0;
   line-height: 1;
-  transform: translate(0px, 4px);
+  transform: translate(0px, 2px);
 }
 .header-right {
   display: flex;
@@ -259,6 +263,10 @@ a {
   border: 1px solid var(--bd2);
   background: var(--inset);
   cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.nav-toggle:active {
+  transform: scale(0.88);
 }
 .nav-toggle-bar {
   display: block;
@@ -345,6 +353,9 @@ a {
 }
 .theme-btn:hover {
   transform: rotate(35deg);
+}
+.theme-btn:active {
+  transform: rotate(35deg) scale(0.85);
 }
 
 /* ===========================================================================
@@ -619,7 +630,11 @@ a {
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  transition: box-shadow 0.2s ease, background 0.2s ease;
+  transition: box-shadow 0.2s ease, background 0.2s ease, transform 0.15s ease;
+}
+.btn-primary:active,
+.btn-ghost:active {
+  transform: scale(0.96);
 }
 .btn-primary {
   background: var(--btn);
@@ -846,6 +861,16 @@ a {
 }
 .bento-projects {
   grid-area: projects;
+}
+
+.card-github {
+  padding: 28px 30px;
+}
+.card-github-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: -16px;
 }
 
 /* ---- Likes (overlay removed) ---- */
@@ -1192,6 +1217,9 @@ a {
 .back-btn:hover {
   transform: translateX(-3px);
 }
+.back-btn:active {
+  transform: translateX(-3px) scale(0.85);
+}
 .page-kicker {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
@@ -1204,6 +1232,14 @@ a {
   font-weight: 700;
   color: var(--tx);
   margin: 2px 0 0;
+}
+.page-head-desc {
+  margin: 0 0 0 auto;
+  max-width: 400px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--dim);
+  text-align: right;
 }
 
 /* About */
@@ -1316,10 +1352,35 @@ a {
 .like-cat-head {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: 12px;
   margin-bottom: 16px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--bd);
+}
+.like-cat-head-text {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.like-expand-btn {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--dim);
+  background: var(--inset);
+  border: 1px solid var(--bd);
+  padding: 6px 12px;
+  cursor: pointer;
+  flex: none;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+.like-expand-btn:hover {
+  border-color: var(--bd2);
+  color: var(--tx);
+}
+.like-expand-btn:active {
+  transform: scale(0.94);
 }
 .like-cat-en {
   font-family: "JetBrains Mono", monospace;
@@ -1336,8 +1397,20 @@ a {
 }
 .likes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: 18px;
+}
+.likes-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.likes-track::-webkit-scrollbar {
+  display: none;
 }
 .like-card {
   background: var(--panel);
@@ -1345,13 +1418,22 @@ a {
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
-  transition: transform 0.25s ease;
+  display: block;
+  transition: border-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 .like-card:hover {
-  transform: none;
+  border-color: var(--bd2);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
+}
+.like-card--carousel {
+  width: 170px;
+  flex: none;
+  scroll-snap-align: start;
 }
 .like-thumb {
-  height: 140px;
+  position: relative;
+  aspect-ratio: 2 / 3;
   background-image: repeating-linear-gradient(
     45deg,
     var(--inset),
@@ -1369,19 +1451,188 @@ a {
   color: var(--mute);
   letter-spacing: 0.15em;
 }
+.like-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.like-status {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 3px 7px;
+}
 .like-body {
   padding: 16px 18px;
+}
+.like-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
 }
 .like-title {
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
   font-size: 19px;
   color: var(--tx);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+.like-rating {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--blue);
+  white-space: nowrap;
+  flex: none;
 }
 .like-sub {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   color: var(--mute);
   margin-top: 4px;
+}
+/* Music: horizontally scrolling artist cards, each with a vertically scrolling song list */
+.music-artist-row {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.music-artist-row::-webkit-scrollbar {
+  display: none;
+}
+.music-artist-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.music-artist-col .artist-card-big {
+  width: 100%;
+}
+.artist-card-big {
+  flex: none;
+  width: 380px;
+  scroll-snap-align: start;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  padding: 20px;
+  transition: border-color 0.2s ease;
+}
+.artist-card-big:hover {
+  border-color: var(--bd2);
+}
+.artist-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.artist-avatar-sm {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--inset);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.artist-avatar-sm img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.artist-avatar-sm span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8px;
+  color: var(--mute);
+}
+.artist-card-name {
+  flex: 1;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--tx);
+}
+.artist-card-rank {
+  flex: none;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--bd2);
+  line-height: 1;
+}
+.song-list-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.song-list-scroll::-webkit-scrollbar {
+  display: none;
+}
+.song-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--inset);
+  padding: 10px 14px;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+.song-row:hover {
+  background: var(--panel2);
+}
+.song-rank {
+  flex: none;
+  width: 20px;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--tx);
+}
+.song-thumb-sm {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--panel),
+    var(--panel) 8px,
+    rgba(255, 255, 255, 0.04) 8px,
+    rgba(255, 255, 255, 0.04) 16px
+  );
+  overflow: hidden;
+}
+.song-thumb-sm img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.song-row-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--tx);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Projects */
@@ -1396,18 +1647,52 @@ a {
   border-radius: 0;
   padding: 22px 24px;
   box-shadow: none;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 .proj-card:hover {
-  transform: none;
+  transform: translateY(-4px);
+  border-color: var(--bd2);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
+}
+.proj-card:hover .proj-cover {
+  filter: brightness(1.05);
+}
+.proj-card:hover .proj-arrow {
+  transform: translate(3px, -3px);
+}
+.proj-cover {
+  display: block;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border: 1px solid var(--bd);
+  background: var(--inset);
 }
 .proj-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+}
+.proj-top-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.proj-icon {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  overflow: hidden;
+  flex: none;
+}
+.proj-icon img {
+  width: 18px !important;
+  height: 18px !important;
 }
 .proj-kicker {
   font-family: "JetBrains Mono", monospace;
@@ -1447,27 +1732,8 @@ a {
 .proj-arrow {
   color: var(--dim);
   font-size: 18px;
-}
-.proj-empty {
-  background: var(--inset);
-  border: 1px dashed var(--bd2);
-  border-radius: 0;
-  padding: 22px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 170px;
-  gap: 8px;
-}
-.proj-empty-plus {
-  font-size: 26px;
-  color: var(--mute);
-}
-.proj-empty-text {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: var(--mute);
+  display: inline-block;
+  transition: transform 0.25s ease;
 }
 
 /* Blog */
@@ -1544,10 +1810,16 @@ a {
   padding: 20px 22px;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 .link-card:hover {
   border-color: var(--bd2);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
+}
+.link-card:hover .link-arrow {
+  transform: translate(3px, -3px);
+  color: var(--blue);
 }
 .link-top {
   display: flex;
@@ -1555,8 +1827,10 @@ a {
   justify-content: flex-end;
 }
 .link-arrow {
+  display: inline-block;
   color: var(--dim);
   font-size: 16px;
+  transition: transform 0.25s ease, color 0.25s ease;
 }
 .link-main {
   display: flex;
@@ -1601,71 +1875,90 @@ a {
 }
 
 /* Experience (經歷) timeline */
-.timeline {
+.timeline-group {
+  margin-top: 48px;
+}
+.timeline-group:first-of-type {
+  margin-top: 0;
+}
+.timeline-group-head {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: var(--mute);
+  margin-bottom: 34px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--bd);
+}
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 36px 24px;
+}
+.tl-card-wrap {
   position: relative;
-  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
 }
-.timeline::before {
-  content: "";
+.tl-year-ghost {
   position: absolute;
-  left: 5px;
-  top: 6px;
-  bottom: 6px;
-  width: 2px;
-  background: var(--bd2);
+  top: -30px;
+  left: 2px;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--bd2);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
 }
-.tl-item {
+.tl-card {
   position: relative;
-  padding-bottom: 22px;
+  z-index: 1;
+  flex: 1 1 auto;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  border-top: 2px solid var(--blue);
+  border-radius: 0;
+  padding: 22px 26px;
+  margin-top: 32px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
-.tl-item:last-child {
-  padding-bottom: 0;
+.tl-card.purple {
+  border-top-color: var(--purple);
 }
-.tl-node {
-  position: absolute;
-  left: -24px;
-  top: 4px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid var(--bg);
-}
-.tl-node.blue {
-  background: var(--blue);
-}
-.tl-node.purple {
-  background: var(--purple);
+.tl-card:hover {
+  transform: translateY(-4px);
+  border-left-color: var(--bd2);
+  border-right-color: var(--bd2);
+  border-bottom-color: var(--bd2);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
 }
 .tl-period {
   font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.08em;
   color: var(--mute);
 }
-.tl-card {
-  background: var(--panel);
-  border: 1px solid var(--bd);
-  border-radius: 0;
-  padding: 16px 20px;
-  margin-top: 8px;
-}
 .tl-title {
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
-  font-size: 19px;
+  font-size: 25px;
   font-weight: 700;
   color: var(--tx);
+  margin-top: 8px;
 }
 .tl-org {
   font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--dim);
-  margin-top: 4px;
+  margin-top: 6px;
 }
 .tl-desc {
   color: var(--dim);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.9;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 /* ===========================================================================
@@ -1860,6 +2153,9 @@ a {
 }
 
 @media (max-width: 760px) {
+  .page-head-desc {
+    display: none;
+  }
   .bento {
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -1923,7 +2219,7 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .tiles-row-track,
-  .fade-in {
+  .page-transition {
     animation: none !important;
   }
   .card-likes-img,

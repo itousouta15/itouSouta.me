@@ -94,6 +94,32 @@ export const TILE_ICON_META: Record<string, IconMeta> = {
     src: `${DEVICON_BASE}/flutter/flutter-original.svg`,
     bg: "#172b3e",
   },
+  nextjs: {
+    label: "Next.js",
+    src: `${DEVICON_BASE}/nextjs/nextjs-original.svg`,
+    bg: "#1c1c1f",
+    filter: "invert(1)",
+  },
+  astro: {
+    label: "Astro",
+    src: `${DEVICON_BASE}/astro/astro-original.svg`,
+    bg: "#17152b",
+  },
+  hexo: {
+    label: "Hexo",
+    src: "https://cdn.simpleicons.org/hexo",
+    bg: "#0c2236",
+  },
+  scaict: {
+    label: "SCAICT",
+    src: "/icon/SCAICT.svg",
+    bg: "#0f1b2e",
+  },
+  dlhit: {
+    label: "DLHIT",
+    src: "/icon/DLHIT.svg",
+    bg: "#0f1b2e",
+  },
 };
 
 export default function TileIcon({ kind }: { kind: string }) {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ROLES, TILE_COLS } from "./data";
 import TileIcon, { TILE_ICON_META } from "./components/TileIcon";
 import GithubGlyph from "./components/GithubGlyph";
+import GithubContributionCard from "./components/GithubContributionCard";
 import { LanyardProvider, ProfileStatus, ProfileStatusDot } from "./components/LanyardCards";
 
 export default function HomePage() {
@@ -12,7 +13,7 @@ export default function HomePage() {
   };
 
   return (
-    <section className="home-grid fade-in">
+    <section className="home-grid">
       {/* Profile card */}
       <aside className="profile">
         <div className="profile-card">
@@ -176,6 +177,9 @@ export default function HomePage() {
             <span className="card-arrow-sm">↗</span>
           </Link>
         </div>
+
+        {/* GitHub contribution graph */}
+        <GithubContributionCard />
       </div>
     </section>
   );
