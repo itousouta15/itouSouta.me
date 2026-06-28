@@ -35,7 +35,7 @@ export default function AboutPage() {
           </div>
         </div>
         <div className="about-side">
-          <img src="/assets/banner.png" alt="" />
+          <img src="/assets/banner.webp" alt="" />
           <div className="about-side-body">
             <div className="label">狀態</div>
             <div className="about-side-v">人間になりたい</div>
