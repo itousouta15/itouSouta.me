@@ -1,5 +1,28 @@
 import { Fragment } from "react";
+import Link from "next/link";
 import { MARQUEE } from "../data";
+
+const NAV_LINKS = [
+  { label: "首頁", href: "/" },
+  { label: "關於", href: "/about" },
+  { label: "收藏", href: "/likes" },
+  { label: "專案", href: "/projects" }
+];
+
+const PROJECT_LINKS = [
+  { label: "itouLinks", href: "https://links.itousouta15.tw" },
+  { label: "itouSlides", href: "https://slides.itousouta15.tw/" },
+  { label: "itouCards", href: "https://cards.itousouta15.tw/" },
+  { label: "itouBLoGa", href: "https://blog.itousouta15.tw/" },
+];
+
+const SOCIAL_LINKS = [
+  { icon: "instagram", label: "Instagram", href: "https://www.instagram.com/itou.souta15" },
+  { icon: "github", label: "GitHub", href: "https://github.com/itousouta15" },
+  { icon: "x", label: "X", href: "https://x.com/itou_souta15" },
+  { icon: "discord", label: "Discord", href: "https://DC.itousouta15.tw" },
+  { icon: "telegram", label: "Telegram", href: "https://t.me/itousouta15" },
+];
 
 export default function Footer() {
   return (
@@ -18,36 +41,57 @@ export default function Footer() {
       </div>
 
       <div className="footer-inner">
-        <nav className="footer-projects" aria-label="My Projects">
-          <div className="footer-section-label">My Projects</div>
-          <div className="footer-project-links">
-            <a href="https://itousouta15.tw" target="_blank" rel="noopener nofollow noreferrer">itouSouta</a>
-            <a href="https://links.itousouta15.tw" target="_blank" rel="noopener nofollow noreferrer">itouLinks</a>
-            <a href="https://slides.itousouta15.tw/" target="_blank" rel="noopener nofollow noreferrer">itouSlides</a>
-            <a href="https://cards.itousouta15.tw/" target="_blank" rel="noopener nofollow noreferrer">itouCards</a>
-            <a href="https://blog.itousouta15.tw/" target="_blank" rel="noopener nofollow noreferrer">itouBLoGa</a>
+        <div className="footer-grid">
+          <div className="footer-brand">
+            <Link href="/" className="footer-logo">
+              itouSouta.tw
+            </Link>
+            <p className="footer-tagline">
+              情熱を失っては、
+              <br />
+              何もできない。
+            </p>
           </div>
-        </nav>
 
-        <div className="footer-divider" />
+          <nav className="footer-col" aria-label="站內導覽">
+            <div className="footer-section-label">Site Map</div>
+            <div className="footer-link-list">
+              {NAV_LINKS.map(l => (
+                <Link key={l.href} href={l.href}>
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
 
-        <div className="footer-section-label">Social Media</div>
-        <div className="footer-socials" aria-label="Social links">
-          <a className="footer-si si-instagram" href="https://www.instagram.com/itou.souta15" target="_blank" rel="noopener nofollow noreferrer" aria-label="Instagram">
-            <span className="footer-si-icon" />
-          </a>
-          <a className="footer-si si-github" href="https://github.com/itousouta15" target="_blank" rel="noopener nofollow noreferrer" aria-label="GitHub">
-            <span className="footer-si-icon" />
-          </a>
-          <a className="footer-si si-x" href="https://x.com/itou_souta15" target="_blank" rel="noopener nofollow noreferrer" aria-label="X">
-            <span className="footer-si-icon" />
-          </a>
-          <a className="footer-si si-discord" href="https://DC.itousouta15.tw" target="_blank" rel="noopener nofollow noreferrer" aria-label="Discord">
-            <span className="footer-si-icon" />
-          </a>
-          <a className="footer-si si-telegram" href="https://t.me/itousouta15" target="_blank" rel="noopener nofollow noreferrer" aria-label="Telegram">
-            <span className="footer-si-icon" />
-          </a>
+          <nav className="footer-col" aria-label="My Projects">
+            <div className="footer-section-label">My Projects</div>
+            <div className="footer-link-list">
+              {PROJECT_LINKS.map(l => (
+                <a key={l.href} href={l.href} target="_blank" rel="noopener nofollow noreferrer">
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          </nav>
+
+          <div className="footer-col">
+            <div className="footer-section-label">Social Media</div>
+            <div className="footer-socials" aria-label="Social links">
+              {SOCIAL_LINKS.map(s => (
+                <a
+                  key={s.href}
+                  className={`footer-si si-${s.icon}`}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener nofollow noreferrer"
+                  aria-label={s.label}
+                >
+                  <span className="footer-si-icon" />
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="footer-divider" />
