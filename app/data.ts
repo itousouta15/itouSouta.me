@@ -46,6 +46,7 @@ export const MARQUEE: string[] = [
   "ciallo (∠·ω )⌒★",
   "I'm itouSouta",
   "人間になりたい",
+  "DEVELOPER",
   "VOCALO-P",
   "ILLUSTRATOR",
   "情熱を失っては、何もできない。",

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 30 bash -c 'until curl -sf http://localhost:3000 >/dev/null 2>&1; do sleep 1; done')",
+      "Bash(timeout 40 bash -c 'until curl -sf http://localhost:3000 >/dev/null 2>&1; do sleep 1; done')",
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s https://twcat0503.org/_astro/about.DdJmqeVl.css -o \"C:\\\\Users\\\\kuora\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-kuora-repo---\\\\3ed387ac-edea-41e3-9b3d-615318fdf1fd\\\\scratchpad\\\\twcat-about.css\" -w \"%{http_code} %{size_download} bytes\\\\n\")",
+      "PowerShell(Start-Process \"http://localhost:3000/?intro=1\")"
+    ]
+  }
+}
