@@ -46,7 +46,7 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link href="/" className="footer-logo">
-              itouSouta.tw
+              itouSouta15.tw
             </Link>
             <p className="footer-tagline">
               情熱を失っては、

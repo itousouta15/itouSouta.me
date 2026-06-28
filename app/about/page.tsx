@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 
-export const metadata: Metadata = { title: "關於我 | itouSouta.tw" };
+export const metadata: Metadata = { title: "關於我 | itousouta15.tw" };
 
 export default function AboutPage() {
   return (
-    <section className="fade-in" style={{ paddingBottom: 8 }}>
+    <section style={{ paddingBottom: 8 }}>
       <PageHead kicker="ABOUT" title="關於我" />
       <div className="about-grid">
         <div className="about-main">

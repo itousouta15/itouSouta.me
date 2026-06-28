@@ -1,0 +1,32 @@
+import { Like } from "../data";
+
+export default function LikeCard({ l, carousel }: { l: Like; carousel?: boolean }) {
+  const className = carousel ? "like-card like-card--carousel" : "like-card";
+  const body = (
+    <>
+      <div className="like-thumb">
+        {l.cover ? (
+          <img className="like-thumb-img" src={l.cover} alt="" loading="lazy" />
+        ) : (
+          <span>IMAGE</span>
+        )}
+        {l.status && <span className="like-status">{l.status}</span>}
+      </div>
+      <div className="like-body">
+        <div className="like-title-row">
+          <div className="like-title">{l.title}</div>
+          {l.rating != null && <span className="like-rating">★ {l.rating.toFixed(1)}</span>}
+        </div>
+        {l.sub && <div className="like-sub">{l.sub}</div>}
+      </div>
+    </>
+  );
+
+  return l.href ? (
+    <a className={className} href={l.href} target="_blank" rel="noopener noreferrer">
+      {body}
+    </a>
+  ) : (
+    <div className={className}>{body}</div>
+  );
+}
