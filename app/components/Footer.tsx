@@ -6,7 +6,9 @@ const NAV_LINKS = [
   { label: "首頁", href: "/" },
   { label: "關於", href: "/about" },
   { label: "收藏", href: "/likes" },
-  { label: "專案", href: "/projects" }
+  { label: "專案", href: "/projects" },
+  { label: "友鏈", href: "/links" },
+  { label: "經歷", href: "/experience" }
 ];
 
 const PROJECT_LINKS = [
