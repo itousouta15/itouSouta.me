@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ROLES, TILE_COLS } from "./data";
 import TileIcon, { TILE_ICON_META } from "./components/TileIcon";
 import GithubGlyph from "./components/GithubGlyph";
+import { LanyardProvider, ProfileStatus, ProfileStatusDot } from "./components/LanyardCards";
 
 export default function HomePage() {
   const tileIcons = TILE_COLS.flat();
@@ -16,13 +17,14 @@ export default function HomePage() {
       <aside className="profile">
         <div className="profile-card">
           <div className="profile-banner">
-            <img src="/assets/banner.png" alt="banner" />
+            <img src="/assets/banner.webp" alt="banner" />
           </div>
+          <LanyardProvider>
           <div className="profile-body">
             <div className="avatar-row">
               <div className="avatar-wrap">
-                <img className="avatar" src="/assets/avatar.png" alt="avatar" />
-                <span className="status-dot" />
+                <img className="avatar" src="/assets/avatar.webp" alt="avatar" />
+                <ProfileStatusDot />
               </div>
               <div className="badges">
                 <span style={{ width: 12, height: 12, borderRadius: "50%", background: "var(--blue)" }} />
@@ -36,6 +38,7 @@ export default function HomePage() {
               <span className="alias">伊藤蒼太</span>
             </div>
             <div className="handle">itou.souta15 · 人間になりたい</div>
+            <ProfileStatus />
             <div className="divider" />
             <div className="label">關於我</div>
             <div className="field">好想睡覺 Zzzz</div>
@@ -61,6 +64,7 @@ export default function HomePage() {
             <div className="label mt16">成為成員時間</div>
             <div className="field">2009/01/15</div>
           </div>
+          </LanyardProvider>
         </div>
       </aside>
 
@@ -132,11 +136,10 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Bottom nav cards */}
-        <div className="bottom-row">
-          <Link className="card-likes" href="/likes" style={{ textDecoration: "none", color: "inherit" }}>
-            <img className="card-likes-img" src="/assets/art-miku.png" alt="" />
-            <div className="card-likes-overlay" />
+        {/* Bento: nav cards */}
+        <div className="bento">
+          <Link className="bento-likes card-likes" href="/likes" style={{ textDecoration: "none", color: "inherit" }}>
+            <img className="card-likes-img" src="/assets/art-miku.webp" alt="" />
             <div className="card-body">
               <div className="card-kicker">LIKES</div>
               <div className="card-title-lg">
@@ -148,27 +151,30 @@ export default function HomePage() {
             <span className="card-arrow-lg">↗</span>
           </Link>
 
-          <div className="right-stack">
-            <Link className="card-projects" href="/projects" style={{ textDecoration: "none", color: "inherit" }}>
-              <GithubGlyph className="card-projects-glyph" fill="var(--tx)" />
-              <div className="card-body-sm">
-                <div className="card-kicker">PROJECTS</div>
-                <div className="card-title-md">
-                  一些
-                  <br />
-                  專案們
-                </div>
-              </div>
-              <span className="card-arrow-sm">↗</span>
-            </Link>
-            <Link className="card-blog" href="/blog" style={{ textDecoration: "none", color: "inherit" }}>
-              <div>
-                <div className="card-kicker">BLOG</div>
-                <div className="card-blog-title">碎碎念</div>
-              </div>
-              <span style={{ fontSize: 18, color: "var(--dim)" }}>↗</span>
-            </Link>
-          </div>
+          <Link className="bento-friends nav-card" href="/links" style={{ textDecoration: "none", color: "inherit" }}>
+            <div className="nav-card-body">
+              <div className="card-kicker">LINKS</div>
+              <div className="nav-card-title">友鏈</div>
+            </div>
+            <span className="nav-card-arrow">↗</span>
+          </Link>
+
+          <Link className="bento-experience nav-card" href="/experience" style={{ textDecoration: "none", color: "inherit" }}>
+            <div className="nav-card-body">
+              <div className="card-kicker">JOURNEY</div>
+              <div className="nav-card-title">經歷</div>
+            </div>
+            <span className="nav-card-arrow">↗</span>
+          </Link>
+
+          <Link className="bento-projects card-projects" href="/projects" style={{ textDecoration: "none", color: "inherit" }}>
+            <GithubGlyph className="card-projects-glyph" fill="var(--tx)" />
+            <div className="card-body-sm">
+              <div className="card-kicker">PROJECTS</div>
+              <div className="card-title-md">一些專案們</div>
+            </div>
+            <span className="card-arrow-sm">↗</span>
+          </Link>
         </div>
       </div>
     </section>
