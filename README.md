@@ -1,10 +1,10 @@
 # itousouta15.tw
 
-[![Deploy to GitHub Pages](https://github.com/itousouta15/itousouta15.tw/actions/workflows/nextjs.yml/badge.svg)](https://github.com/itousouta15/itousouta15.tw/actions/workflows/nextjs.yml)
+[![Deploy](https://github.com/itousouta15/itousouta15.tw/actions/workflows/nextjs.yml/badge.svg)](https://github.com/itousouta15/itousouta15.tw/actions/workflows/nextjs.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.5-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-伊藤蒼太 / itouSouta 的個人網站 — 用 Next.js App Router 打造的個人首頁，串接 Discord 即時狀態，收錄興趣收藏、專案作品與經歷時間軸。
+伊藤蒼太 / itouSouta 的個人網站
 
 **線上預覽：[itousouta15.tw](https://itousouta15.tw)**
 
@@ -79,7 +79,3 @@ npm run lint
 ## 部署
 
 `main` 分支推送後會由 [`.github/workflows/nextjs.yml`](./.github/workflows/nextjs.yml) 自動建置並部署到 GitHub Pages，自訂網域設定於 [`CNAME`](./CNAME)。
-
-## 授權
-
-僅供個人網站使用，原始碼開放參考，請勿直接複製站內個人資料 / 圖片素材作為己用。
