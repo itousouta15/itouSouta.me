@@ -6,11 +6,11 @@
 
 伊藤蒼太 / itouSouta 的個人網站 — 用 Next.js App Router 打造的個人首頁，串接 Discord 即時狀態，收錄興趣收藏、專案作品與經歷時間軸。
 
-**🔗 線上預覽：[itousouta15.tw](https://itousouta15.tw)**
+**線上預覽：[itousouta15.tw](https://itousouta15.tw)**
 
 ---
 
-## ✨ 功能特色
+## 功能特色
 
 - **個人主頁** — Bento Grid 排版的導覽卡片，搭配輪播式角色名稱與技術棒棒糖列表
 - **Discord 即時狀態** — 透過 [Lanyard API](https://github.com/Phineas/lanyard) 輪詢顯示在線狀態、目前在聽的 Spotify 歌曲或活動
@@ -20,7 +20,7 @@
 - **回到頂端按鈕** — 捲動超過一定距離後浮現，點擊平滑捲回頂部
 - **頁面轉場動畫**、響應式排版、無障礙細節（`aria-label`、`prefers-reduced-motion` 偵測等）
 
-## 🛠 技術棧
+## 技術棧
 
 | | |
 |---|---|
@@ -30,7 +30,7 @@
 | 即時狀態 | [Lanyard REST API](https://lanyard.rest/) |
 | 部署 | GitHub Actions → GitHub Pages（靜態匯出），自訂網域見 [`CNAME`](./CNAME) |
 
-## 📁 專案結構
+## 專案結構
 
 ```
 app/
@@ -51,7 +51,7 @@ app/
 public/assets/                 # 圖片、SVG 等靜態資源
 ```
 
-## 🚀 本機開發
+## 本機開發
 
 需求：Node.js 18+
 
@@ -72,14 +72,14 @@ npm run start
 npm run lint
 ```
 
-## ⚙️ 設定 Discord 狀態
+## 設定 Discord 狀態
 
 [`app/data.ts`](./app/data.ts) 中的 `DISCORD_USER_ID` 設定要顯示狀態的 Discord 使用者 ID（需先加入 [Lanyard 的 Discord 伺服器](https://discord.gg/lanyard)讓 API 能抓到狀態）。留空則顯示「尚未連結 Lanyard」的預留樣式。
 
-## 📦 部署
+## 部署
 
 `main` 分支推送後會由 [`.github/workflows/nextjs.yml`](./.github/workflows/nextjs.yml) 自動建置並部署到 GitHub Pages，自訂網域設定於 [`CNAME`](./CNAME)。
 
-## 📄 授權
+## 授權
 
 僅供個人網站使用，原始碼開放參考，請勿直接複製站內個人資料 / 圖片素材作為己用。
