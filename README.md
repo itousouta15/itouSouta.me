@@ -1,14 +1,6 @@
 # itousouta15.tw
 
-[![Deploy](https://github.com/itousouta15/itousouta15.tw/actions/workflows/nextjs.yml/badge.svg)](https://github.com/itousouta15/itousouta15.tw/actions/workflows/nextjs.yml)
-[![Next.js](https://img.shields.io/badge/Next.js-14.2.5-black?logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-
-伊藤蒼太 / itouSouta 的個人網站
-
-**線上預覽：[itousouta15.tw](https://itousouta15.tw)**
-
----
+**[itousouta15.tw](https://itousouta15.tw)**
 
 ## 功能特色
 
