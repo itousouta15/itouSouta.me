@@ -11,6 +11,7 @@
 
 html {
   zoom: 1.15;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -22,6 +23,17 @@ body {
 a {
   text-decoration: none;
   color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+svg {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 /* ---- Theme tokens ---- */
@@ -40,7 +52,7 @@ a {
   --dim: #9aa1ad;
   --mute: #6a7280;
   --blue: #b0bdf7;
-  --purple: #5b63d6;
+  --purple: #a1ade0;
   --btn: #94a6cc;
   --btntx: #21252b;
   --shadow: rgba(0, 0, 0, 0.45);
@@ -356,6 +368,51 @@ a {
 }
 .theme-btn:active {
   transform: rotate(35deg) scale(0.85);
+}
+
+/* ===========================================================================
+   Back to top button
+   =========================================================================== */
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 55;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--bd2);
+  background: var(--inset);
+  color: var(--tx);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 14px 26px var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.2s ease;
+}
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.back-to-top:hover {
+  border-color: var(--bd2);
+  transform: translateY(-3px);
+}
+.back-to-top:active {
+  transform: translateY(0) scale(0.92);
+}
+@media (max-width: 760px) {
+  .back-to-top {
+    right: 16px;
+    bottom: 16px;
+    width: 42px;
+    height: 42px;
+  }
 }
 
 /* ===========================================================================
@@ -1395,6 +1452,62 @@ a {
   color: var(--tx);
   margin: 0;
 }
+.likes-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.likes-search {
+  background: var(--inset);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 14px;
+  color: var(--tx);
+  width: 100%;
+  max-width: 320px;
+}
+.likes-search::placeholder {
+  color: var(--mute);
+}
+.likes-search:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+.likes-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.likes-tag-chip {
+  background: var(--panel2);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  color: var(--dim);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.likes-tag-chip:hover {
+  border-color: var(--bd2);
+  color: var(--tx);
+}
+.likes-tag-chip.active {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: #fff;
+}
+.likes-empty {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: var(--mute);
+  text-align: center;
+  padding: 60px 0;
+}
 .likes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -2156,6 +2269,22 @@ a {
 @media (max-width: 760px) {
   .page-head-desc {
     display: none;
+  }
+  .likes-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .likes-search {
+    max-width: none;
+  }
+  .like-body {
+    padding: 10px 12px;
+  }
+  .like-title {
+    font-size: 15px;
+  }
+  .like-sub {
+    font-size: 10px;
   }
   .bento {
     grid-template-columns: 1fr;
