@@ -9,11 +9,14 @@ export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
 
     // CSS scroll-snap fights small per-tick nudges: each wheel tick only
     // moves a few dozen pixels, well under the snap "proximity" threshold,
-    // so the browser snaps straight back before the next tick lands and the
-    // carousel never visibly moves. Suspend snapping while wheel-driven
-    // scrolling is active and let it re-engage once the gesture settles.
+    // so the browser snaps straight back to the nearest point (usually the
+    // start) right after the tick lands. A regular mouse fires wheel events
+    // as discrete, spaced-out notches rather than one continuous stream, so
+    // re-enabling snap on a short per-tick idle timer just snaps back after
+    // almost every notch. Once wheel-driven scrolling touches this element,
+    // disable snapping for good — touch swipes (which don't fire wheel
+    // events) keep their native snap behavior untouched.
     const originalSnap = el.style.scrollSnapType;
-    let idleTimer: ReturnType<typeof setTimeout> | undefined;
 
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
@@ -39,10 +42,6 @@ export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
 
       e.preventDefault();
       el.style.scrollSnapType = "none";
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        el.style.scrollSnapType = originalSnap;
-      }, 150);
 
       const delta = Math.max(-80, Math.min(80, e.deltaY)) * 0.6;
       el.scrollLeft += delta;
@@ -50,7 +49,6 @@ export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
 
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => {
-      clearTimeout(idleTimer);
       el.style.scrollSnapType = originalSnap;
       el.removeEventListener("wheel", onWheel);
     };
