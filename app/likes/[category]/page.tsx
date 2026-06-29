@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PageHead from "../../components/PageHead";
-import LikeCard from "../../components/LikeCard";
+import LikeFilterGrid from "../../components/LikeFilterGrid";
 import { LIKE_CATEGORIES } from "../../data";
 
 export function generateStaticParams() {
@@ -20,11 +20,7 @@ export default function LikeCategoryPage({ params }: { params: { category: strin
   return (
     <section style={{ paddingBottom: 8 }}>
       <PageHead kicker={cat.en} title={cat.label} back="/likes" />
-      <div className="likes-grid">
-        {cat.items.map((l, i) => (
-          <LikeCard l={l} key={`${cat.key}-${i}`} />
-        ))}
-      </div>
+      <LikeFilterGrid items={cat.items} />
     </section>
   );
 }

@@ -4,6 +4,7 @@ import ThemeProvider from "./components/ThemeProvider";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
+import BackToTopButton from "./components/BackToTopButton";
 
 export const metadata: Metadata = {
   title: "itouSouta15.tw",
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PageTransition>{children}</PageTransition>
           </main>
           <Footer />
+          <BackToTopButton />
         </ThemeProvider>
       </body>
     </html>
