@@ -2166,7 +2166,9 @@ a {
   }
   .profile {
     position: static;
+    min-width: 0;
     max-width: none;
+    width: 100%;
   }
   .hero-title {
     font-size: 44px;
