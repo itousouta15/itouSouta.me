@@ -32,9 +32,9 @@ export function useScrollLinkedHorizontalReveal(ref: RefObject<HTMLElement | nul
       const progress = (viewportH - rect.top) / (viewportH + rect.height);
       const clamped = Math.min(1, Math.max(0, progress));
 
-      // Inverted: starts fully scrolled and winds back towards the start as
-      // the page scrolls down, so the content visibly pans to the right.
-      el.scrollLeft = (1 - clamped) * maxScrollLeft;
+      // 卡片進入視窗時 clamped=0 (scrollLeft=0，顯示最左)，
+      // 離開視窗時 clamped=1 (scrollLeft=max，顯示最右)，左→右跑完全程。
+      el.scrollLeft = clamped * maxScrollLeft;
     };
 
     const onScroll = () => {

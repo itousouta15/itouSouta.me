@@ -13,6 +13,10 @@ html {
   zoom: 1.15;
   -webkit-tap-highlight-color: transparent;
 }
+/* 手機上移除 zoom，避免內距/字體比版型預設大 15%，造成小螢幕擁擠與 breakpoint 失效 */
+@media (max-width: 760px) {
+  html { zoom: 1; }
+}
 
 html,
 body {
@@ -69,7 +73,7 @@ svg {
 }
 
 :root[data-theme="light"] {
-  --bg: #afb2bb;
+  --bg: #c0c2cc;
   --panel: #dddee4;
   --panel2: #dddee4;
   --panel2-a: rgba(219, 221, 228, 0.82);
@@ -77,8 +81,8 @@ svg {
   --bd: rgba(20, 24, 40, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
   --tx: #22262d;
-  --dim: #5b626d;
-  --mute: #8a909b;
+  --dim: #494f59;   /* was #5b626d — darkened for WCAG AA contrast on panel bg */
+  --mute: #6b7280;  /* was #8a909b — darkened to improve readability */
   --blue: #364a7c;
   --purple: #5c7cbf;
   --btn: #2b2f36;
@@ -209,6 +213,13 @@ svg {
   padding: 0;
   line-height: 1;
   transform: translate(0px, 2px);
+  /* ChenYuLuoYan 字面特別小，載入前用 fallback 會先放大再縮小（FOUT）。
+     字體就緒前先隱藏，避免出現「先變大再縮小」的跳動。 */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.fonts-ready .logo {
+  opacity: 1;
 }
 .header-right {
   display: flex;
@@ -1463,6 +1474,7 @@ svg {
   border: 1px solid var(--bd);
   border-radius: 10px;
   padding: 12px 16px;
+  min-height: 44px;
   font-family: "Noto Sans TC", sans-serif;
   font-size: 14px;
   color: var(--tx);
@@ -1485,7 +1497,10 @@ svg {
   background: var(--panel2);
   border: 1px solid var(--bd);
   border-radius: 8px;
-  padding: 6px 14px;
+  padding: 9px 14px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
   font-family: "JetBrains Mono", monospace;
   font-size: 12.5px;
   color: var(--dim);
@@ -1521,6 +1536,10 @@ svg {
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
+  padding-right: 32px;
+  /* 右側漸層提示有更多內容可滾動 */
+  mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
 }
 .likes-track::-webkit-scrollbar {
   display: none;
@@ -1623,6 +1642,9 @@ svg {
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   padding-bottom: 4px;
+  padding-right: 32px;
+  mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
 }
 .music-artist-row::-webkit-scrollbar {
   display: none;
@@ -2147,7 +2169,12 @@ svg {
 .footer-link-list {
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 8px;
+}
+.footer-link-list--two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
 }
 .footer-link-list a {
   width: fit-content;
@@ -2243,6 +2270,46 @@ svg {
 }
 .icon-copyright::before {
   content: "©";
+}
+
+/* ===========================================================================
+   Touch devices — prevent hover states from sticking after tap
+   =========================================================================== */
+@media (hover: none) {
+  /* Reset card transform/shadow/opacity hovers that get stuck on touch */
+  .like-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--bd);
+  }
+  .tl-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-left-color: var(--bd);
+    border-right-color: var(--bd);
+    border-bottom-color: var(--bd);
+  }
+  .card-likes:hover .card-likes-img {
+    opacity: 0.24;
+    transform: scale(1.5);
+  }
+  .card-likes:hover .card-title-lg { transform: none; }
+  .card-likes:hover .card-arrow-lg {
+    transform: rotate(45deg);
+    border-color: var(--bd2);
+    background: rgba(0, 0, 0, 0.22);
+  }
+  .card-projects:hover .card-projects-glyph { transform: none; opacity: 0.07; }
+  .card-projects:hover .card-title-md { transform: none; }
+  .card-projects:hover .card-arrow-sm { transform: rotate(45deg); color: var(--dim); }
+  .nav-card:hover .nav-card-title { transform: none; }
+  .nav-card:hover .nav-card-title::after { transform: scaleX(0); }
+  .nav-card:hover .nav-card-arrow { transform: rotate(45deg); color: var(--dim); }
+  /* Touch feedback via :active */
+  .like-card:active { border-color: var(--bd2); }
+  .card-likes:active { border-color: var(--bd2); }
+  .nav-card:active { background: var(--panel2); border-color: var(--bd2); }
+  .card-projects:active { border-color: var(--bd2); }
 }
 
 /* ===========================================================================
@@ -2363,6 +2430,26 @@ svg {
   }
   .artist-card-big {
     width: min(300px, 78vw);
+  }
+  /* Experience timeline: ghost year overlaps card on narrow screens */
+  .tl-year-ghost {
+    display: none;
+  }
+  .tl-title {
+    font-size: 20px;
+  }
+  .tl-card {
+    margin-top: 16px;
+  }
+}
+
+/* Very small screens: hero side panel crowds the main content */
+@media (max-width: 540px) {
+  .hero-side {
+    display: none;
+  }
+  .hero-title {
+    font-size: clamp(36px, 11vw, 44px);
   }
 }
 
