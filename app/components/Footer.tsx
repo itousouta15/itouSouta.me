@@ -57,7 +57,7 @@ export default function Footer() {
 
           <nav className="footer-col" aria-label="站內導覽">
             <div className="footer-section-label">Site Map</div>
-            <div className="footer-link-list">
+            <div className="footer-link-list footer-link-list--two-col">
               {NAV_LINKS.map(l => (
                 <Link key={l.href} href={l.href}>
                   {l.label}
