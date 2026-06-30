@@ -1,73 +1,139 @@
 # itousouta15.tw
+![示意圖](public\assets\itousouta15.webp)
+Personal website of itouSouta (郭家睿 / 伊藤蒼太), live at [itousouta15.tw](https://itousouta15.tw).
 
-**[itousouta15.tw](https://itousouta15.tw)**
+---
 
-## 功能特色
+## Stack
 
-- **個人主頁** — Bento Grid 排版的導覽卡片，搭配輪播式角色名稱與技術棒棒糖列表
-- **Discord 即時狀態** — 透過 [Lanyard API](https://github.com/Phineas/lanyard) 輪詢顯示在線狀態、目前在聽的 Spotify 歌曲或活動
-- **收藏 LIKES** — 動畫 / 漫畫 / 小說 / 音樂分類收藏，支援關鍵字搜尋、標籤篩選與滑鼠滾輪橫向捲動
-- **GitHub 貢獻圖** — 自動依目前主題（深色 / 淺色）切換圖檔，行動裝置上隨頁面捲動自動橫向展示
-- **深色 / 淺色主題** — 透過 `localStorage` 記住偏好，並在首次繪製前由 inline script 套用，避免閃爍
-- **回到頂端按鈕** — 捲動超過一定距離後浮現，點擊平滑捲回頂部
-- **頁面轉場動畫**、響應式排版、無障礙細節（`aria-label`、`prefers-reduced-motion` 偵測等）
-
-## 技術棧
-
-| | |
+| Layer | Technology |
 |---|---|
-| 框架 | [Next.js 14](https://nextjs.org/)（App Router） |
-| 語言 | TypeScript（strict mode） |
-| UI | React 18 + 純 CSS（無 UI 框架，全站變數化主題色） |
-| 即時狀態 | [Lanyard REST API](https://lanyard.rest/) |
-| 部署 | GitHub Actions → GitHub Pages（靜態匯出），自訂網域見 [`CNAME`](./CNAME) |
+| Framework | Next.js 14 (App Router, static export) |
+| Language | TypeScript |
+| Styling | Plain CSS (single global stylesheet, CSS custom properties) |
+| Real-time | [Lanyard API](https://github.com/Phineas/lanyard) — Discord presence |
+| Deployment | GitHub Pages via GitHub Actions |
 
-## 專案結構
+No UI library, no CSS-in-JS, no component framework.
+
+---
+
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Home — profile card, hero, tech tiles, bento nav grid, GitHub contribution graph |
+| `/about` | About — bio, stats, social links |
+| `/likes` | Likes — searchable, tag-filtered grid of novels, manga, and anime; music section |
+| `/likes/[category]` | Category detail — full list with carousel and filter |
+| `/likes/music` | Music — horizontally scrollable artist cards with song lists |
+| `/projects` | Projects — card grid of personal projects |
+| `/links` | Friends — link cards for friends and communities |
+| `/experience` | Journey — timeline of experience and activities |
+
+---
+
+## Features
+
+**Theme**
+Dark and light modes. The selected theme is persisted to `localStorage` and applied via a blocking inline script before first paint, preventing a flash of unstyled content.
+
+**Typography**
+Multiple typefaces are loaded from Google Fonts and external CDNs:
+
+- `ChenYuLuoYan` — header logo
+- `LXGWHeartSerif` — quote display text
+- `Shippori Mincho` / `Noto Serif TC` — headings and serif content
+- `JetBrains Mono` — monospace labels, kickers, code-like elements
+- `Noto Sans TC` — body text
+
+The logo is hidden until `ChenYuLuoYan` is active (detected via `document.fonts.load`) to prevent a FOUT caused by the fallback font rendering at a significantly larger apparent size.
+
+**Likes and music**
+All content is statically defined in `app/data.ts`. The likes pages support client-side full-text search and multi-tag filtering without any server dependency. Horizontal carousels use custom hooks for mouse-wheel and scroll-linked panning.
+
+**Lanyard integration**
+Discord presence (online status, activity, Spotify playback) is fetched live from the Lanyard WebSocket API and displayed in the profile card. The component gracefully handles disconnection.
+
+**GitHub contribution graph**
+The graph SVG is pre-generated and committed as a static asset in both dark and light variants. On mobile, the card scrolls horizontally; the scroll position is linked to the card's progress through the viewport via `useScrollLinkedHorizontalReveal`, so the graph pans left to right as the user scrolls down the page.
+
+**Animations**
+- CSS keyframe marquee for the footer strip and tech tile rows
+- Name rotator cycling through display names in the hero
+- Page transitions via `PageTransition`
+- Card hover effects (disabled on touch devices via `@media (hover: none)`)
+- All animations respect `prefers-reduced-motion`
+
+**Accessibility and UX**
+- Touch devices: hover transforms are reset; `:active` states provide tap feedback instead
+- Back-to-top button with smooth scroll, visible after 400 px scrolled
+- Mobile nav: Escape key closes the overlay; `tabIndex` is managed on hidden controls
+- Horizontal scroll containers show a right-edge fade to indicate additional content
+
+---
+
+## Project structure
 
 ```
 app/
-├── page.tsx                 # 首頁（個人卡片 + Bento 導覽 + GitHub 貢獻圖）
-├── about/                   # 關於我
-├── experience/               # 經歷時間軸
-├── likes/                    # 收藏（分類列表 + 篩選頁 + 音樂）
-│   ├── page.tsx
-│   ├── music/
-│   └── [category]/
-├── links/                    # 友鏈
-├── projects/                  # 專案作品集
-├── components/                # 共用元件（Header / Footer / 主題切換 / 卡片等）
-├── hooks/                     # 自訂 hooks（滾輪橫向捲動、捲動連動橫向展示）
-├── data.ts                    # 站內靜態資料（收藏清單、經歷、友鏈、Discord ID 等）
-└── globals.css                # 全站樣式與主題變數
-
-public/assets/                 # 圖片、SVG 等靜態資源
+  components/
+    Header.tsx                       Sticky nav with mobile overlay
+    Footer.tsx                       Footer with sitemap, projects, social links
+    TileIcon.tsx                     Theme-aware technology icon tile (client component)
+    tileIconMeta.ts                  Icon metadata (src, dark bg, light bg) — server-safe
+    LanyardCards.tsx                 Discord presence components
+    GithubContributionCard.tsx
+    LikeCard.tsx
+    LikeCategorySection.tsx
+    LikeFilterGrid.tsx
+    MusicArtistCard.tsx
+    MusicSection.tsx
+    PageTransition.tsx
+    BackToTopButton.tsx
+    ThemeProvider.tsx
+  hooks/
+    useHorizontalWheelScroll.ts          Mouse-wheel horizontal pan
+    useScrollLinkedHorizontalReveal.ts   Scroll-position-linked horizontal pan
+  about/page.tsx
+  experience/page.tsx
+  likes/page.tsx
+  likes/[category]/page.tsx
+  likes/music/page.tsx
+  links/page.tsx
+  projects/page.tsx
+  page.tsx            Home
+  layout.tsx          Root layout — fonts, theme script, header, footer
+  globals.css         All styles (~2 400 lines)
+  data.ts             All content — roles, likes, projects, music, links
+public/
+  assets/             Images and GitHub contribution SVGs
+  icon/               Custom SVG icons
 ```
 
-## 本機開發
+---
 
-需求：Node.js 18+
+## Development
+
+Node 20 or later is required.
 
 ```bash
-# 安裝依賴
 npm install
-
-# 啟動開發伺服器（http://localhost:3000）
-npm run dev
-
-# 型別檢查 + 正式建置
-npm run build
-
-# 啟動正式伺服器
-npm run start
-
-# Lint
+npm run dev      # http://localhost:3000
+npm run build    # Static export to /out
 npm run lint
 ```
 
-## 設定 Discord 狀態
+---
 
-[`app/data.ts`](./app/data.ts) 中的 `DISCORD_USER_ID` 設定要顯示狀態的 Discord 使用者 ID（需先加入 [Lanyard 的 Discord 伺服器](https://discord.gg/lanyard)讓 API 能抓到狀態）。留空則顯示「尚未連結 Lanyard」的預留樣式。
+## Deployment
 
-## 部署
+Pushes to `main` trigger the GitHub Actions workflow at `.github/workflows/nextjs.yml`, which runs `next build` and deploys the `out/` directory to GitHub Pages. The custom domain is set via the `CNAME` file.
 
-`main` 分支推送後會由 [`.github/workflows/nextjs.yml`](./.github/workflows/nextjs.yml) 自動建置並部署到 GitHub Pages，自訂網域設定於 [`CNAME`](./CNAME)。
+---
+
+## Content
+
+All page content lives in `app/data.ts`. To add or update a like, project, music artist, or friend link, edit the relevant exported array and push. No configuration changes are needed.
+
+Technology icons are defined in `app/components/tileIconMeta.ts`. Each entry has a label, a Devicons CDN URL, a dark-mode background colour, and a light-mode background colour.

@@ -23,6 +23,26 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
+  // Logo 用的 ChenYuLuoYan 字面特別小，載入前 fallback 會先放大、載入完成才縮小（FOUT）。
+  // 等該字體就緒後才加上 .fonts-ready 讓 logo 淡入，避免「先變大再縮小」的跳動。
+  useEffect(() => {
+    const reveal = () => document.documentElement.classList.add("fonts-ready");
+    if (!("fonts" in document)) {
+      reveal();
+      return;
+    }
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      reveal();
+    };
+    document.fonts.load('40px "ChenYuLuoYan"').then(finish).catch(finish);
+    // 保險：字體請求失敗或過慢時，最多等 3 秒仍顯示 logo。
+    const timer = window.setTimeout(finish, 3000);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     if (!open) return;

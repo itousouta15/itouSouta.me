@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ROLES, TILE_COLS } from "./data";
-import TileIcon, { TILE_ICON_META } from "./components/TileIcon";
+import TileIcon from "./components/TileIcon";
+import { TILE_ICON_META } from "./components/tileIconMeta";
 import GithubGlyph from "./components/GithubGlyph";
 import GithubContributionCard from "./components/GithubContributionCard";
 import { LanyardProvider, ProfileStatus, ProfileStatusDot } from "./components/LanyardCards";
