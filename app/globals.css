@@ -267,7 +267,6 @@ svg {
   outline-offset: 2px;
 }
 .nav-link:hover {
-  background: var(--inset);
   color: var(--tx);
 }
 .nav-link:hover::after {
@@ -410,6 +409,13 @@ svg {
 .nav-overlay-link:hover,
 .nav-overlay-link.active {
   color: var(--purple);
+}
+.nav-overlay-link:focus {
+  outline: none;
+}
+.nav-overlay-link:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 4px;
 }
 @media (min-width: 961px) {
   .nav-overlay {
