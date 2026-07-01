@@ -3,7 +3,7 @@ import PageHead from "../components/PageHead";
 import { THOUGHTS } from "../data";
 import { fetchThreadsPosts } from "../lib/threads";
 
-export const metadata: Metadata = { title: "碎碎念 | itousouta15.tw" };
+export const metadata: Metadata = { title: "雜談 | itousouta15.tw" };
 
 export const revalidate = 3600;
 
@@ -14,7 +14,7 @@ export default async function ThoughtsPage() {
 
   return (
     <section>
-      <PageHead kicker="THOUGHTS" title="碎碎念" desc="腦中跑出來的廢話，同步Threads" />
+      <PageHead kicker="THOUGHTS" title="雜談" desc="腦中跑出來的廢話，同步Threads" />
       <div className="thoughts-list">
         {useThreads
           ? threadsPosts.map((p) => {
