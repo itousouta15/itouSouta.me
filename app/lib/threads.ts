@@ -4,25 +4,24 @@ export interface ThreadsPost {
   timestamp: string;
   media_type: string;
   permalink?: string;
+  media_url?: string;
 }
+
+const DISPLAY_TYPES = new Set(["TEXT_POST", "IMAGE", "CAROUSEL_ALBUM", "VIDEO"]);
 
 export async function fetchThreadsPosts(): Promise<ThreadsPost[]> {
   const token = process.env.THREADS_ACCESS_TOKEN;
-  if (!token) { console.log("[Threads] no token"); return []; }
+  if (!token) return [];
 
   const res = await fetch(
-    `https://graph.threads.net/v1.0/me/threads?fields=id,text,timestamp,media_type,permalink&limit=30&access_token=${token}`,
+    `https://graph.threads.net/v1.0/me/threads?fields=id,text,timestamp,media_type,permalink,media_url&limit=30&access_token=${token}`,
     { next: { revalidate: 3600 } }
   );
 
-  if (!res.ok) {
-    const err = await res.text();
-    console.log("[Threads] fetch failed", res.status, err);
-    return [];
-  }
+  if (!res.ok) return [];
 
   const json = await res.json();
   return (json.data ?? []).filter(
-    (p: ThreadsPost) => p.media_type === "TEXT_POST" && p.text
+    (p: ThreadsPost) => DISPLAY_TYPES.has(p.media_type) && (p.text || p.media_url)
   );
 }
