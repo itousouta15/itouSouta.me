@@ -11,7 +11,7 @@ export default function AboutPage() {
         <div className="about-main">
           <div className="about-lead">ciallo～ 我是 itouSouta</div>
           <p className="about-p">
-            一個喜歡 VOCALOID 和畫插畫的怪人。平常在做 Vocalo-P 與插畫，偶爾寫點程式/ᐠ｡ꞈ｡ᐟ\
+            一個喜歡 VOCALOID 和畫插畫的怪人。 會做點術曲和畫點插畫插畫，偶爾寫點程式/ᐠ｡ꞈ｡ᐟ\
           </p>
           <p className="about-p">
             嗯....我也想把自己說的好像很厲害，但感覺這樣蠻家豪的。反正我就是一個無聊的高中生
