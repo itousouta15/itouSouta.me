@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import nacl from "tweetnacl";
 import { saveThought } from "../../lib/kv";
 
@@ -40,6 +41,7 @@ export async function POST(req: NextRequest) {
     const text = interaction.data.options?.[0]?.value as string | undefined;
     if (text) {
       await saveThought(text);
+      revalidatePath("/thoughts");
       return NextResponse.json({
         type: 4,
         data: { content: `已記錄：${text}`, flags: 64 },
