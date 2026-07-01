@@ -2134,6 +2134,14 @@ svg {
   line-height: 1.9;
   margin: 0;
 }
+.thought-img {
+  display: block;
+  max-width: 100%;
+  width: 480px;
+  border-radius: 8px;
+  margin-top: 12px;
+  border: 1px solid var(--bd);
+}
 
 /* Experience (經歷) timeline */
 .timeline-group {

@@ -14,7 +14,7 @@ export default async function ThoughtsPage() {
 
   return (
     <section>
-      <PageHead kicker="THOUGHTS" title="碎碎念" desc="腦中跑出來的廢話。" />
+      <PageHead kicker="THOUGHTS" title="碎碎念" desc="腦中跑出來的廢話，同步Threads" />
       <div className="thoughts-list">
         {useThreads
           ? threadsPosts.map((p) => {
@@ -38,7 +38,15 @@ export default async function ThoughtsPage() {
                       </a>
                     )}
                   </div>
-                  <p className="thought-text">{p.text}</p>
+                  {p.text && <p className="thought-text">{p.text}</p>}
+                  {p.media_url && (
+                    <img
+                      className="thought-img"
+                      src={p.media_url}
+                      alt=""
+                      loading="lazy"
+                    />
+                  )}
                 </div>
               );
             })
