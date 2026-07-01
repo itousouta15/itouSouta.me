@@ -7,3 +7,4 @@
 *.pem
 .env*.local
 npm-debug.log*
+tsconfig.tsbuildinfo
