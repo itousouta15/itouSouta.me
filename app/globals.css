@@ -2481,10 +2481,6 @@ svg {
 
 @media (max-width: 900px) {
 
-  .profile-card .label:last-of-type,
-  .profile-card .field:last-of-type {
-    display: none;
-  }
   .roles {
     flex-direction: row;
     flex-wrap: wrap;
