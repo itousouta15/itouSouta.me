@@ -2,8 +2,6 @@
 ![示意圖](public/assets/itousouta15.webp)
 Personal website of itouSouta (郭家睿 / 伊藤蒼太), live at [itousouta15.tw](https://itousouta15.tw).
 
----
-
 ## Stack
 
 | Layer | Technology |
@@ -16,8 +14,6 @@ Personal website of itouSouta (郭家睿 / 伊藤蒼太), live at [itousouta15.t
 | Deployment | Vercel |
 
 No UI library, no CSS-in-JS, no component framework.
-
----
 
 ## Pages
 
@@ -32,8 +28,6 @@ No UI library, no CSS-in-JS, no component framework.
 | `/projects` | Projects — card grid of personal projects |
 | `/links` | Friends — link cards for friends and communities |
 | `/experience` | Journey — timeline of experience and activities |
-
----
 
 ## Features
 
@@ -75,8 +69,6 @@ The graph SVG is pre-generated and committed as a static asset in both dark and 
 - Back-to-top button with smooth scroll, visible after 400 px scrolled
 - Mobile nav: Escape key closes the overlay; `tabIndex` is managed on hidden controls
 - Horizontal scroll containers show a right-edge fade to indicate additional content
-
----
 
 ## Project structure
 
@@ -126,8 +118,6 @@ scripts/
   cleanup-thoughts.mjs     Remove KV thought entries matching a given text
 ```
 
----
-
 ## Development
 
 Node 20 or later is required.
@@ -151,13 +141,10 @@ Required for the `/thoughts` page and Discord integration (see `.env.local`):
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection |
 | `THREADS_ACCESS_TOKEN` | Fetching synced posts from the Threads API |
 
----
 
 ## Deployment
 
 Deployed on Vercel; pushes to `main` trigger a new production deployment. The custom domain is configured in the Vercel project (the `CNAME` file is a legacy artifact from a prior GitHub Pages setup). Discord webhook events are received via the `/api/discord` route, which requires the app's Vercel deployment URL to be registered as the interactions endpoint in the Discord Developer Portal.
-
----
 
 ## Content
 
