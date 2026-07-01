@@ -259,6 +259,13 @@ svg {
   transform-origin: left;
   transition: transform 0.25s ease;
 }
+.nav-link:focus {
+  outline: none;
+}
+.nav-link:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
 .nav-link:hover {
   background: var(--inset);
   color: var(--tx);

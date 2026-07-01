@@ -41,13 +41,14 @@ No UI library, no CSS-in-JS, no component framework.
 Dark and light modes. The selected theme is persisted to `localStorage` and applied via a blocking inline script before first paint, preventing a flash of unstyled content.
 
 **Typography**
-Multiple typefaces are loaded from Google Fonts and external CDNs:
+Multiple typefaces are loaded from Google Fonts and the [emfont](https://font.emtech.cc) CDN:
 
-- `ChenYuLuoYan` — header logo
-- `LXGWHeartSerif` — quote display text
-- `Shippori Mincho` / `Noto Serif TC` — headings and serif content
-- `JetBrains Mono` — monospace labels, kickers, code-like elements
-- `Noto Sans TC` — body text
+- `ChenYuLuoYan` (emfont) — header logo
+- `LXGWHeartSerif` (emfont) — quote display text
+- `Shippori Mincho` / `Noto Serif TC` (Google Fonts) — headings and serif content
+- `Dancing Script` (Google Fonts) — decorative script accents
+- `JetBrains Mono` (Google Fonts) — monospace labels, kickers, code-like elements
+- `Noto Sans TC` (Google Fonts) — body text
 
 The logo is hidden until `ChenYuLuoYan` is active (detected via `document.fonts.load`) to prevent a FOUT caused by the fallback font rendering at a significantly larger apparent size.
 
