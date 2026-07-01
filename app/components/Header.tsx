@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { label: "專案", href: "/projects" },
   { label: "友鏈", href: "/links" },
   { label: "經歷", href: "/experience" },
+  { label: "碎碎念", href: "/thoughts" },
 ];
 
 export default function Header() {
@@ -103,6 +104,11 @@ export default function Header() {
           which creates a containing block for position:fixed and would trap this
           overlay inside the header's box instead of covering the viewport. */}
       <div id="nav-overlay" className={`nav-overlay${open ? " is-open" : ""}`} role="dialog" aria-modal="true" aria-label="主選單">
+        <div className="nav-overlay-faces" aria-hidden="true">
+          {["= ᗜ ω ᗜ.=", "(◕ᗜ◕✿)", "( ˘ω˘ )zzz", "ฅ^•ﻌ•^ฅ", "(´,,•ω•,,)"].map((f, i) => (
+            <span key={i} className={`nav-overlay-face nav-overlay-face--${i}`}>{f}</span>
+          ))}
+        </div>
         <nav className="nav-overlay-links" aria-label="主要導覽">
           {NAV_LINKS.map((l, i) => (
             <Link

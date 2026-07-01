@@ -140,6 +140,15 @@ export default function HomePage() {
 
         {/* Bento: nav cards */}
         <div className="bento">
+          <Link className="bento-thoughts nav-card" href="/thoughts" style={{ textDecoration: "none", color: "inherit" }}>
+            <div>
+              <div className="card-kicker">THOUGHTS</div>
+              <div className="nav-card-title">碎碎念</div>
+            </div>
+            <span className="nav-card-ghost" aria-hidden>念</span>
+            <span className="nav-card-arrow">↗</span>
+          </Link>
+
           <Link className="bento-likes card-likes" href="/likes" style={{ textDecoration: "none", color: "inherit" }}>
             <img className="card-likes-img" src="/assets/art-miku.webp" alt="" />
             <div className="card-body">
@@ -154,18 +163,20 @@ export default function HomePage() {
           </Link>
 
           <Link className="bento-friends nav-card" href="/links" style={{ textDecoration: "none", color: "inherit" }}>
-            <div className="nav-card-body">
+            <div>
               <div className="card-kicker">LINKS</div>
               <div className="nav-card-title">友鏈</div>
             </div>
+            <span className="nav-card-ghost" aria-hidden>友</span>
             <span className="nav-card-arrow">↗</span>
           </Link>
 
           <Link className="bento-experience nav-card" href="/experience" style={{ textDecoration: "none", color: "inherit" }}>
-            <div className="nav-card-body">
+            <div>
               <div className="card-kicker">JOURNEY</div>
               <div className="nav-card-title">經歷</div>
             </div>
+            <span className="nav-card-ghost" aria-hidden>歷</span>
             <span className="nav-card-arrow">↗</span>
           </Link>
 

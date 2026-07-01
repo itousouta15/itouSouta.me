@@ -11,15 +11,18 @@ export default function LinksPage() {
       <div className="links-grid">
         {LINKS.map((l, i) => (
           <a className="link-card" key={`${l.href}-${i}`} href={l.href} target="_blank" rel="noopener noreferrer">
-            <div className="link-top">
-              <span className="link-arrow">↗</span>
-            </div>
-            <div className="link-main">
-              {l.avatar && <img className="link-avatar" src={l.avatar} alt="" />}
+            <div className="link-card-head">
+              {l.avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="link-avatar" src={l.avatar} alt="" />
+              ) : (
+                <div className="link-avatar link-avatar--placeholder">{l.name[0]}</div>
+              )}
               <div className="link-meta">
                 <div className="link-name">{l.name}</div>
                 <div className="link-handle">{l.handle}</div>
               </div>
+              <span className="link-arrow">↗</span>
             </div>
             {l.desc && <div className="link-desc">{l.desc}</div>}
           </a>

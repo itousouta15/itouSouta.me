@@ -323,6 +323,55 @@ svg {
   visibility: visible;
   transition: opacity 0.3s ease, visibility 0s linear 0s;
 }
+.nav-overlay-faces {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.nav-overlay-face {
+  position: absolute;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 26px;
+  color: var(--tx);
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.6s ease;
+  user-select: none;
+}
+.nav-overlay.is-open .nav-overlay-face {
+  opacity: 0.09;
+}
+/* Each face wanders off-screen, pauses invisible, then re-enters from a different side.
+   opacity steps create the "one at a time" feel without JS. */
+@keyframes wander-a {
+  0%   { transform: translate(-120%, 20px)   rotate(0deg);    opacity: 0;    }
+  8%   { opacity: 0.05; }
+  30%  { transform: translate(30px,  -20px)  rotate(130deg);  opacity: 0.05; }
+  42%  { transform: translate(110%,  40px)   rotate(260deg);  opacity: 0;    }
+  100% { transform: translate(110%,  40px)   rotate(360deg);  opacity: 0;    }
+}
+@keyframes wander-b {
+  0%   { transform: translate(20px,  -120%)  rotate(0deg);    opacity: 0;    }
+  8%   { opacity: 0.05; }
+  32%  { transform: translate(-24px,  30px)  rotate(-150deg); opacity: 0.05; }
+  44%  { transform: translate(30px,   120%)  rotate(-300deg); opacity: 0;    }
+  100% { transform: translate(30px,   120%)  rotate(-360deg); opacity: 0;    }
+}
+@keyframes wander-c {
+  0%   { transform: translate(110%,  -10px)  rotate(0deg);    opacity: 0;    }
+  8%   { opacity: 0.05; }
+  28%  { transform: translate(-10px,  20px)  rotate(140deg);  opacity: 0.05; }
+  40%  { transform: translate(-120%,  50px)  rotate(280deg);  opacity: 0;    }
+  100% { transform: translate(-120%,  50px)  rotate(360deg);  opacity: 0;    }
+}
+.nav-overlay.is-open .nav-overlay-face { opacity: 0; } /* individual keyframes control visible opacity */
+.nav-overlay-face--0 { top: 30%; left: 50%;  animation: wander-a 18s linear infinite; animation-delay: 0s;    }
+.nav-overlay-face--1 { top: 60%; left: 20%;  animation: wander-b 22s linear infinite; animation-delay: -7s;   }
+.nav-overlay-face--2 { top: 18%; left: 30%;  animation: wander-c 20s linear infinite; animation-delay: -13s;  }
+.nav-overlay-face--3 { top: 50%; left: 70%;  animation: wander-a 25s linear infinite; animation-delay: -4s;   }
+.nav-overlay-face--4 { top: 75%; left: 55%;  animation: wander-b 17s linear infinite; animation-delay: -10s;  }
+
 .nav-overlay-links {
   display: flex;
   flex-direction: column;
@@ -355,7 +404,7 @@ svg {
 .nav-overlay-link.active {
   color: var(--purple);
 }
-@media (min-width: 761px) {
+@media (min-width: 961px) {
   .nav-overlay {
     display: none;
   }
@@ -386,11 +435,11 @@ svg {
    =========================================================================== */
 .back-to-top {
   position: fixed;
-  right: 24px;
-  bottom: 24px;
+  right: 36px;
+  bottom: 36px;
   z-index: 55;
-  width: 46px;
-  height: 46px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   border: 1px solid var(--bd2);
   background: var(--inset);
@@ -419,10 +468,10 @@ svg {
 }
 @media (max-width: 760px) {
   .back-to-top {
-    right: 16px;
-    bottom: 16px;
-    width: 42px;
-    height: 42px;
+    right: 20px;
+    bottom: 20px;
+    width: 48px;
+    height: 48px;
   }
 }
 
@@ -435,10 +484,10 @@ svg {
   padding: 26px 20px 0;
 }
 .home-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 360px 1fr;
   gap: 20px;
-  align-items: flex-start;
+  align-items: start;
 }
 .card {
   background: var(--panel);
@@ -465,13 +514,14 @@ svg {
   box-shadow: none;
 }
 .profile-banner {
-  height: 136px;
+  height: clamp(80px, 14vw, 136px);
   background: linear-gradient(135deg, rgba(141, 181, 200, 0.18) 0%, #20232a 100%);
 }
 .profile-banner img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 33%;
   display: block;
 }
 .profile-body {
@@ -910,13 +960,21 @@ svg {
    =========================================================================== */
 .bento {
   display: grid;
-  grid-template-columns: 1.15fr 1fr 0.95fr;
-  grid-auto-rows: minmax(92px, auto);
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  grid-auto-rows: minmax(158px, auto);
   grid-template-areas:
-    "likes    likes    friends"
-    "likes    likes    experience"
-    "projects projects experience";
+    "likes     likes     thoughts   thoughts"
+    "likes     likes     experience friends"
+    "projects  projects  experience friends";
   gap: 18px;
+}
+.bento-thoughts {
+  grid-area: thoughts;
+}
+/* Just a colored kicker marks the smallest card apart from the other two
+   text-cards — no fill, no rail. */
+.bento-thoughts.nav-card .card-kicker {
+  color: var(--blue);
 }
 .bento-likes {
   grid-area: likes;
@@ -930,7 +988,6 @@ svg {
 .bento-projects {
   grid-area: projects;
 }
-
 .card-github {
   padding: 28px 30px;
 }
@@ -1099,6 +1156,23 @@ svg {
 .nav-card:hover {
   border-color: var(--bd2);
   background: var(--panel2);
+}
+.nav-card-ghost {
+  position: absolute;
+  bottom: -22px;
+  right: -6px;
+  font-family: "ChenYuLuoYan", "Dancing Script", cursive;
+  font-size: 130px;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--tx) 5%, transparent);
+  pointer-events: none;
+  line-height: 1;
+  user-select: none;
+  transition: transform 0.65s cubic-bezier(0.33, 1, 0.68, 1), color 0.45s ease;
+}
+.nav-card:hover .nav-card-ghost {
+  transform: translate(4px, -8px) rotate(-4deg);
+  color: color-mix(in srgb, var(--blue) 13%, transparent);
 }
 .nav-card-title {
   position: relative;
@@ -1942,52 +2016,50 @@ svg {
   background: var(--panel);
   border: 1px solid var(--bd);
   border-radius: 0;
-  padding: 20px 22px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
+  gap: 12px;
   transition: border-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 .link-card:hover {
   border-color: var(--bd2);
   transform: translateY(-4px);
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 14px 26px var(--shadow);
 }
 .link-card:hover .link-arrow {
   transform: translate(3px, -3px);
   color: var(--blue);
 }
-.link-top {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-.link-arrow {
-  display: inline-block;
-  color: var(--dim);
-  font-size: 16px;
-  transition: transform 0.25s ease, color 0.25s ease;
-  transform: translateY(-10);
-}
-.link-main {
+.link-card-head {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 12px;
 }
 .link-avatar {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
   background: var(--inset);
 }
+.link-avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--dim);
+}
 .link-meta {
+  flex: 1;
   min-width: 0;
 }
 .link-name {
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--tx);
   white-space: nowrap;
@@ -1996,18 +2068,71 @@ svg {
 }
 .link-handle {
   font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--mute);
-  margin-top: 3px;
+  margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.link-arrow {
+  flex: none;
+  display: inline-block;
+  color: var(--dim);
+  font-size: 16px;
+  align-self: flex-start;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
 .link-desc {
   color: var(--dim);
   font-size: 13px;
-  line-height: 1.8;
-  margin-top: 10px;
+  line-height: 1.7;
+}
+
+/* Thoughts (碎碎念) */
+.thoughts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.thought-item {
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  padding: 22px 26px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.thought-item:hover {
+  border-color: var(--bd2);
+  transform: translateY(-2px);
+}
+.thought-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.thought-date {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.05em;
+}
+.thought-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: var(--inset);
+  border: 1px solid var(--bd);
+  padding: 2px 8px;
+}
+.thought-text {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 17px;
+  color: var(--tx);
+  line-height: 1.9;
+  margin: 0;
 }
 
 /* Experience (經歷) timeline */
@@ -2173,8 +2298,8 @@ svg {
 }
 .footer-link-list--two-col {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
+  grid-template-columns: max-content max-content;
+  gap: 8px 35px;
 }
 .footer-link-list a {
   width: fit-content;
@@ -2305,23 +2430,56 @@ svg {
   .nav-card:hover .nav-card-title { transform: none; }
   .nav-card:hover .nav-card-title::after { transform: scaleX(0); }
   .nav-card:hover .nav-card-arrow { transform: rotate(45deg); color: var(--dim); }
+  .nav-card:hover .nav-card-ghost { transform: none; opacity: 1; }
+  .link-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--bd);
+  }
+  .link-card:hover .link-arrow { transform: none; color: var(--dim); }
   /* Touch feedback via :active */
   .like-card:active { border-color: var(--bd2); }
   .card-likes:active { border-color: var(--bd2); }
   .nav-card:active { background: var(--panel2); border-color: var(--bd2); }
   .card-projects:active { border-color: var(--bd2); }
+  .link-card:active { border-color: var(--bd2); }
 }
 
 /* ===========================================================================
    Responsive
    =========================================================================== */
+@media (max-width: 1080px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile {
+    position: static;
+    max-width: none;
+  }
+}
+
 @media (max-width: 900px) {
+
+  .profile-card .label:last-of-type,
+  .profile-card .field:last-of-type {
+    display: none;
+  }
+  .roles {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .role-row {
+    gap: 6px;
+  }
   .bento {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      "likes    likes"
-      "friends  experience"
-      "projects projects";
+      "likes      likes"
+      "likes      likes"
+      "thoughts   experience"
+      "friends    experience"
+      "projects   projects";
   }
   .footer-grid {
     grid-template-columns: 1fr 1fr;
@@ -2330,6 +2488,15 @@ svg {
   .footer-brand {
     grid-column: 1 / -1;
     padding-right: 0;
+  }
+}
+
+@media (max-width: 960px) {
+  .nav-toggle {
+    display: flex;
+  }
+  .nav {
+    display: none;
   }
 }
 
@@ -2354,18 +2521,20 @@ svg {
     font-size: 10px;
   }
   .bento {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(100px, auto);
     grid-template-areas:
-      "likes"
-      "friends"
-      "experience"
-      "projects";
+      "likes        likes"
+      "experience   thoughts"
+      "experience   friends"
+      "projects     projects";
+  }
+  .bento-friends .nav-card-ghost,
+  .bento-thoughts .nav-card-ghost {
+    display: none;
   }
   .profile {
-    position: static;
-    min-width: 0;
     max-width: none;
-    width: 100%;
   }
   .hero-title {
     font-size: 44px;
@@ -2407,12 +2576,6 @@ svg {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 26px;
-  }
-  .nav-toggle {
-    display: flex;
-  }
-  .nav {
-    display: none;
   }
   .card-github {
     padding: 20px 16px;

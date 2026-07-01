@@ -8,7 +8,8 @@ const NAV_LINKS = [
   { label: "收藏", href: "/likes" },
   { label: "專案", href: "/projects" },
   { label: "友鏈", href: "/links" },
-  { label: "經歷", href: "/experience" }
+  { label: "經歷", href: "/experience" },
+  { label: "碎碎念", href: "/thoughts" },
 ];
 
 const PROJECT_LINKS = [
