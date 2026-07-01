@@ -167,14 +167,14 @@ svg {
   }
   30%,
   52% {
-    transform: translateY(-25%);
+    transform: translateY(-1.18em);
   }
   60%,
   88% {
-    transform: translateY(-50%);
+    transform: translateY(-2.36em);
   }
   100% {
-    transform: translateY(-75%);
+    transform: translateY(-3.54em);
   }
 }
 
@@ -338,7 +338,7 @@ svg {
 .nav-overlay-face {
   position: absolute;
   font-family: "JetBrains Mono", monospace;
-  font-size: 26px;
+  font-size: 50px;
   color: var(--tx);
   opacity: 0;
   white-space: nowrap;
@@ -725,6 +725,9 @@ svg {
   overflow: hidden;
   min-width: 4.8em;
   transform: translateY(0.125em);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 .name-rotator-track {
   display: flex;
@@ -824,6 +827,9 @@ svg {
   opacity: 0.55;
   letter-spacing: 0.04em;
   white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 .hero-face:hover {
   animation: itWiggle 0.75s ease-in-out;
@@ -2620,6 +2626,12 @@ svg {
   }
   .tl-card {
     margin-top: 16px;
+  }
+  .about-side img {
+    height: 150px;
+  }
+  .profile-banner {
+    height: clamp(120px, 32vw, 180px);
   }
 }
 
