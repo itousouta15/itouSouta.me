@@ -9,8 +9,8 @@ export const metadata: Metadata = { title: "雜談 | itousouta15.tw" };
 export const revalidate = 3600;
 
 type DisplayItem =
-  | { kind: "threads"; id: string; date: string; text?: string; media_url?: string; permalink?: string }
-  | { kind: "discord"; id: string; date: string; text: string }
+  | { kind: "threads"; id: string; date: string; timestamp: number; text?: string; media_url?: string; permalink?: string }
+  | { kind: "discord"; id: string; date: string; timestamp: number; text: string }
   | { kind: "static"; id: string; date: string; text: string; tag?: string };
 
 export default async function ThoughtsPage() {
@@ -19,13 +19,14 @@ export default async function ThoughtsPage() {
     getThoughts().catch(() => []),
   ]);
 
-  const items: DisplayItem[] = [];
+  const items: Extract<DisplayItem, { kind: "threads" | "discord" }>[] = [];
 
   for (const p of threadsPosts) {
     items.push({
       kind: "threads",
       id: p.id,
       date: new Date(p.timestamp).toLocaleDateString("zh-TW", { year: "numeric", month: "2-digit", day: "2-digit" }),
+      timestamp: new Date(p.timestamp).getTime(),
       text: p.text,
       media_url: p.media_url,
       permalink: p.permalink,
@@ -37,12 +38,13 @@ export default async function ThoughtsPage() {
       kind: "discord",
       id: t.id,
       date: new Date(t.timestamp).toLocaleDateString("zh-TW", { year: "numeric", month: "2-digit", day: "2-digit" }),
+      timestamp: new Date(t.timestamp).getTime(),
       text: t.text,
     });
   }
 
   // Sort newest first
-  items.sort((a, b) => b.date.localeCompare(a.date));
+  items.sort((a, b) => b.timestamp - a.timestamp);
 
   const useRemote = items.length > 0;
 
