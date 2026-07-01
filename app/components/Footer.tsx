@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: "專案", href: "/projects" },
   { label: "友鏈", href: "/links" },
   { label: "經歷", href: "/experience" },
-  { label: "碎碎念", href: "/thoughts" },
+  { label: "雜談", href: "/thoughts" },
 ];
 
 const PROJECT_LINKS = [
