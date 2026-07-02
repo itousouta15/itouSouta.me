@@ -208,9 +208,17 @@ svg {
   align-items: center;
   justify-content: center;
   background: var(--panel2-a);
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: backdrop-filter, transform;
+}
+/* backdrop-filter 要等第一個畫面真的畫完後才加上去：瀏覽器算模糊用的是
+   「上一個合成幀」的畫面，網站剛載入的第一幀根本沒有上一幀可以取樣，
+   Chromium 這時候會直接當黑色處理——淺色模式下背景是亮的，就會看到
+   loading 遮罩先閃一下深色才變回正常顏色。用 rAF 延一拍再套用
+   backdrop-filter，確保套用時畫面已經有東西可以模糊。 */
+.site-loader--blurred {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
 }
 .site-loader--hide {
   transform: translateY(-100%);
@@ -1702,15 +1710,17 @@ body.site-revealed .header {
   mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
   -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
 }
-/* 手機上乾脆不做橫向捲動：只要這個元素還是 overflow-x:auto，瀏覽器就會把
-   它當成一個可能想搶橫向手勢的捲動容器，跟頁面的垂直捲動搶手勢的判定，
-   touch-action 也修不好（見 useHorizontalWheelScroll.ts 的說明）。手機版
-   關掉橫向 overflow，這個元素就不再是捲動容器，垂直滑動保證正常交給頁面；
-   要看更多改用旁邊的「查看更多」連結。 */
-@media (max-width: 760px) {
-  .likes-track {
-    overflow-x: hidden;
-  }
+/* 真正的根因在這裡：lenis/dist/lenis.css 只要看到 data-lenis-prevent-wheel
+   就自動幫該元素套用 overscroll-behavior: contain（見
+   `.lenis [data-lenis-prevent-wheel] { overscroll-behavior: contain; }`）。
+   這個元素本身沒有垂直方向的可捲內容，遇到垂直手勢時本該把捲動「鏈」給
+   外層頁面，但 contain 恰恰是用來擋掉這個鏈接的——結果垂直滑動整個被吞掉、
+   什麼反應都沒有，跟這裡任何 JS／touch-action 寫法都無關，之前怎麼調都
+   沒用就是因為問題根本不在 JS 或 touch-action 裡。用相同的特異度
+   （class + 屬性選擇器）在 lenis.css 之後覆蓋回 auto，讓垂直手勢照樣能
+   鏈給頁面；橫向仍然完全交給 useHorizontalWheelScroll 自己處理，不受影響。 */
+.likes-track[data-lenis-prevent-wheel] {
+  overscroll-behavior: auto;
 }
 .likes-track::-webkit-scrollbar {
   display: none;
@@ -1860,11 +1870,10 @@ body.site-revealed .header {
   mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
   -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
 }
-/* 同 .likes-track：手機版關掉橫向捲動，垂直滑動一律交給頁面 */
-@media (max-width: 760px) {
-  .music-artist-row {
-    overflow-x: hidden;
-  }
+/* 同 .likes-track：蓋掉 lenis.css 自動加的 overscroll-behavior: contain，
+   否則垂直滑動手勢沒地方去、又被 contain 擋住鏈到頁面，整個被吞掉 */
+.music-artist-row[data-lenis-prevent-wheel] {
+  overscroll-behavior: auto;
 }
 .music-artist-row::-webkit-scrollbar {
   display: none;
