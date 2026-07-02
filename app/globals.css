@@ -30,6 +30,16 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+::selection {
+  background: transparent;
+  color: inherit;
+}
+
+::-moz-selection {
+  background: transparent;
+  color: inherit;
+}
+
 button {
   -webkit-tap-highlight-color: transparent;
 }
@@ -1636,6 +1646,11 @@ svg {
 }
 .likes-track::-webkit-scrollbar {
   display: none;
+}
+.likes-track-sentinel {
+  flex: none;
+  width: 1px;
+  align-self: stretch;
 }
 .like-card {
   background: var(--panel);
