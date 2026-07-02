@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 
-export const metadata: Metadata = { title: "關於我 | itousouta15.tw" };
+const description = "郭家睿 / 伊藤蒼太的自我介紹：臺中市立大里高中學生，校內資訊校隊隊長，第五屆 SCAICT 中電會會長，喜歡 VOCALOID 創作、插畫與寫程式。";
+
+export const metadata: Metadata = {
+  title: "關於我",
+  description,
+  alternates: { canonical: "/about" },
+  openGraph: { title: "關於我 | itouSouta15.tw", description, url: "/about" },
+  twitter: { title: "關於我 | itouSouta15.tw", description },
+};
 
 export default function AboutPage() {
   return (
@@ -41,8 +49,6 @@ export default function AboutPage() {
         <div className="about-side">
           <img src="/assets/banner.webp" alt="" />
           <div className="about-side-body">
-            <div className="label">狀態</div>
-            <div className="about-side-v">人間になりたい</div>
             <div className="label mt16">座右銘</div>
             <div className="about-side-quote">情熱を失っては、何もできない。</div>
           </div>

@@ -3,7 +3,15 @@ import PageHead from "../components/PageHead";
 import TileIcon from "../components/TileIcon";
 import { PROJECTS } from "../data";
 
-export const metadata: Metadata = { title: "一些專案們 | itousouta15.tw" };
+const description = "郭家睿 / 伊藤蒼太製作的一些程式專案、網站與作品集展示。";
+
+export const metadata: Metadata = {
+  title: "一些專案們",
+  description,
+  alternates: { canonical: "/projects" },
+  openGraph: { title: "一些專案們 | itouSouta15.tw", description, url: "/projects" },
+  twitter: { title: "一些專案們 | itouSouta15.tw", description },
+};
 
 export default function ProjectsPage() {
   return (

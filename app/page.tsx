@@ -19,13 +19,13 @@ export default function HomePage() {
       <aside className="profile">
         <div className="profile-card">
           <div className="profile-banner">
-            <img src="/assets/banner.webp" alt="banner" />
+            <img src="/assets/banner.webp" alt="" />
           </div>
           <LanyardProvider>
           <div className="profile-body">
             <div className="avatar-row">
               <div className="avatar-wrap">
-                <img className="avatar" src="/assets/avatar.webp" alt="avatar" />
+                <img className="avatar" src="/assets/avatar.webp" alt="郭家睿 / 伊藤蒼太" />
                 <ProfileStatusDot />
               </div>
               <div className="badges">
@@ -76,7 +76,7 @@ export default function HomePage() {
         <div className="card hero">
           <div className="hero-main">
             <div className="hero-greet">ciallo (∠·ω )⌒★</div>
-                        <div className="hero-title">
+                        <h1 className="hero-title">
               I&apos;m{" "}
               <span className="name-rotator" aria-label="itouSouta, 伊藤蒼太, 郭家睿">
                 <span className="name-rotator-track">
@@ -86,7 +86,7 @@ export default function HomePage() {
                   <b>itouSouta</b>
                 </span>
               </span>
-            </div>
+            </h1>
             <div className="hero-sub">一個喜歡 VOCALOID 和畫插畫的怪人</div>
             <div className="hero-actions">
               <Link className="btn-primary" href="/about" style={{ textDecoration: "none" }}>
@@ -150,7 +150,7 @@ export default function HomePage() {
           </Link>
 
           <Link className="bento-likes card-likes" href="/likes" style={{ textDecoration: "none", color: "inherit" }}>
-            <img className="card-likes-img" src="/assets/art-miku.webp" alt="" />
+            <img className="card-likes-img" src="/assets/art-miku.webp" alt="" fetchPriority="high" />
             <div className="card-body">
               <div className="card-kicker">LIKES</div>
               <div className="card-title-lg">

@@ -4,7 +4,15 @@ import { THOUGHTS } from "../data";
 import { fetchThreadsPosts } from "../lib/threads";
 import { getThoughts } from "../lib/kv";
 
-export const metadata: Metadata = { title: "雜談 | itousouta15.tw" };
+const description = "itouSouta 的雜談與生活紀錄，隨手記下的想法與日常。";
+
+export const metadata: Metadata = {
+  title: "雜談",
+  description,
+  alternates: { canonical: "/thoughts" },
+  openGraph: { title: "雜談 | itouSouta15.tw", description, url: "/thoughts" },
+  twitter: { title: "雜談 | itouSouta15.tw", description },
+};
 
 export const revalidate = 3600;
 
