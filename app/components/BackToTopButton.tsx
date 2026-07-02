@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLenis } from "lenis/react";
 
 export default function BackToTopButton() {
   const [visible, setVisible] = useState(false);
+  const lenis = useLenis();
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 400);
@@ -13,13 +15,19 @@ export default function BackToTopButton() {
   }, []);
 
   const scrollToTop = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // Scrolling past the visibility threshold flips `tabIndex` to -1 below,
-    // which un-focuses this button mid-animation and aborts the in-flight
-    // smooth scroll. Blur it first so the focus change happens before the
-    // scroll starts instead of interrupting it.
+    // Once scrolled to top this button hides itself (tabIndex -1); blur it
+    // first so focus doesn't get stranded on a now-invisible element.
     e.currentTarget.blur();
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    if (reduceMotion || !lenis) {
+      window.scrollTo(0, 0);
+    } else {
+      // `lock` keeps residual wheel velocity from the scroll that revealed
+      // this button from overriding/cancelling the fly-to-top animation
+      // right as it starts (which otherwise made the first click look like
+      // a no-op, requiring a second click once things settled).
+      lenis.scrollTo(0, { lock: true });
+    }
   };
 
   return (
