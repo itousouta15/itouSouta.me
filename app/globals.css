@@ -177,14 +177,14 @@ svg {
   }
   30%,
   52% {
-    transform: translateY(-1.18em);
+    transform: translateY(-25%);
   }
   60%,
   88% {
-    transform: translateY(-2.36em);
+    transform: translateY(-50%);
   }
   100% {
-    transform: translateY(-3.54em);
+    transform: translateY(-75%);
   }
 }
 
@@ -798,10 +798,13 @@ body.site-revealed .header {
 .name-rotator {
   display: inline-block;
   vertical-align: baseline;
-  height: 1.18em;
+  height: 1.4em;
   overflow: hidden;
+  contain: paint;
+  clip-path: inset(0);
   min-width: 4.8em;
-  transform: translateY(0.125em);
+  will-change: transform;
+  transform: translate3d(0, 0.125em, 0);
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -809,12 +812,13 @@ body.site-revealed .header {
 .name-rotator-track {
   display: flex;
   flex-direction: column;
+  will-change: transform;
   animation: itNameRoll 8s ease-in-out infinite;
 }
 .name-rotator-track b {
   display: block;
-  height: 1.18em;
-  line-height: 1.18em;
+  height: 1.4em;
+  line-height: 1.4em;
   color: var(--blue);
   font-weight: 800;
 }
@@ -2735,6 +2739,47 @@ body.site-revealed .header {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 26px;
+  }
+  .footer-inner {
+    padding: 44px 20px 36px;
+  }
+  .footer-logo {
+    font-size: 38px;
+  }
+  .footer-tagline {
+    font-size: 17px;
+  }
+  .footer-section-label {
+    font-size: 12.5px;
+  }
+  .footer-link-list {
+    gap: 12px;
+  }
+  .footer-link-list a {
+    font-size: 15.5px;
+  }
+  .footer-link-list--two-col {
+    gap: 12px 40px;
+  }
+  .footer-socials {
+    gap: 14px;
+  }
+  .footer-si {
+    width: 48px;
+    height: 48px;
+  }
+  .footer-si-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .footer-divider {
+    margin: 36px 0 26px;
+  }
+  .footer-bottom {
+    font-size: 13.5px;
+  }
+  .marquee-group {
+    font-size: 22px;
   }
   .card-github {
     padding: 20px 16px;
