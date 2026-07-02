@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { ReactLenis } from "lenis/react";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 import ThemeProvider from "./components/ThemeProvider";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import BackToTopButton from "./components/BackToTopButton";
-import SmoothScroll from "./components/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "itouSouta15.tw",
@@ -39,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
           <BackToTopButton />
-          <SmoothScroll />
+          <ReactLenis root options={{ wheelMultiplier: 0.8, lerp: 0.1 }} />
         </ThemeProvider>
       </body>
     </html>
