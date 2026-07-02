@@ -1706,12 +1706,14 @@ svg {
 .like-title {
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
   font-size: 19px;
+  line-height: 1.35;
   color: var(--tx);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
+  min-height: calc(1.35em * 2);
 }
 .like-rating {
   font-family: "JetBrains Mono", monospace;
@@ -1723,8 +1725,44 @@ svg {
 .like-sub {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
+  line-height: 1.4;
+  min-height: 1.4em;
   color: var(--mute);
   margin-top: 4px;
+}
+.like-card--circle {
+  background: transparent;
+  border: none;
+}
+.like-card--circle:hover {
+  transform: none;
+  box-shadow: none;
+}
+.like-card--circle.like-card--carousel {
+  width: 220px;
+}
+.like-card--circle .like-thumb {
+  aspect-ratio: 1 / 1;
+  width: 180px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.like-card--circle .like-body {
+  padding: 16px 4px 4px;
+  text-align: center;
+}
+.like-card--circle .like-title-row {
+  justify-content: center;
+}
+.like-card--circle .like-title {
+  font-size: 19px;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  min-height: calc(1.35em * 2);
+}
+.likes-grid--circle {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 /* Music: horizontally scrolling artist cards, each with a vertically scrolling song list */
 .music-artist-row {

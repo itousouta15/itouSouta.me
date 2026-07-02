@@ -23,7 +23,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
       </div>
       <div className="likes-track" ref={trackRef}>
         {cat.items.map((l, i) => (
-          <LikeCard l={l} carousel key={`${cat.key}-${i}`} />
+          <LikeCard l={l} carousel layout={cat.layout} key={`${cat.key}-${i}`} />
         ))}
       </div>
     </div>

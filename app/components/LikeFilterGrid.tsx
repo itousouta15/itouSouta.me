@@ -4,7 +4,13 @@ import { useMemo, useState } from "react";
 import type { Like } from "../data";
 import LikeCard from "./LikeCard";
 
-export default function LikeFilterGrid({ items }: { items: Like[] }) {
+export default function LikeFilterGrid({
+  items,
+  layout,
+}: {
+  items: Like[];
+  layout?: "circle";
+}) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
@@ -57,9 +63,9 @@ export default function LikeFilterGrid({ items }: { items: Like[] }) {
         )}
       </div>
       {filtered.length > 0 ? (
-        <div className="likes-grid">
+        <div className={`likes-grid ${layout === "circle" ? "likes-grid--circle" : ""}`}>
           {filtered.map((l, i) => (
-            <LikeCard l={l} key={`${l.title}-${i}`} />
+            <LikeCard l={l} layout={layout} key={`${l.title}-${i}`} />
           ))}
         </div>
       ) : (
