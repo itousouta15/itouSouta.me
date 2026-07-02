@@ -20,7 +20,7 @@ export default function LikeCard({
     <>
       <div className="like-thumb">
         {l.cover ? (
-          <img className="like-thumb-img" src={l.cover} alt="" loading="lazy" />
+          <img className="like-thumb-img" src={l.cover} alt={l.title} loading="lazy" decoding="async" />
         ) : (
           <span>IMAGE</span>
         )}

@@ -15,6 +15,8 @@ export default function GithubContributionCard() {
         className="card-github-img"
         src={`/assets/github-user-contribution-${theme}.svg`}
         alt="GitHub contribution graph"
+        width={880}
+        height={192}
       />
     </div>
   );
