@@ -11,8 +11,6 @@ export default function SiteLoader() {
   const [blurred, setBlurred] = useState(false);
 
   useEffect(() => {
-    // backdrop-filter 要等瀏覽器真的畫完第一幀才能套用，不然沒有「上一幀」
-    // 可以取樣模糊，Chromium 會先閃一格黑畫面（淺色模式下很明顯）。
     let raf1 = 0;
     let raf2 = 0;
     raf1 = requestAnimationFrame(() => {
