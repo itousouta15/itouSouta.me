@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import BackToTopButton from "./components/BackToTopButton";
+import SiteLoader from "./components/SiteLoader";
 
 const SITE_URL = "https://itousouta15.tw";
 const SITE_TITLE = "itouSouta15.tw";
@@ -102,6 +103,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <ThemeProvider>
+          <SiteLoader />
           <Header />
           <main className="main">
             <PageTransition>{children}</PageTransition>

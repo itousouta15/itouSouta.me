@@ -193,8 +193,60 @@ svg {
 }
 
 /* ===========================================================================
+   Site loader — full-page splash shown until the window "load" event fires
+   =========================================================================== */
+@keyframes itSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.site-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel2-a);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.site-loader--hide {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+.site-loader-ring {
+  width: 80px;
+  height: 80px;
+  animation: itSpin 0.9s linear infinite;
+}
+.site-loader-ring-track,
+.site-loader-ring-arc {
+  fill: none;
+  stroke-width: 8;
+}
+.site-loader-ring-track {
+  stroke: var(--bd2);
+}
+.site-loader-ring-arc {
+  stroke: var(--blue);
+  stroke-linecap: round;
+  stroke-dasharray: 33 92;
+}
+/* ===========================================================================
    Header
    =========================================================================== */
+@keyframes itHeaderDrop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 .header {
   position: sticky;
   top: 0;
@@ -203,6 +255,13 @@ svg {
   border-bottom: 1px solid var(--bd2);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  /* Held at the itHeaderDrop 0% frame (via "both") until the loader clears
+     the screen, then slides down into place — see body.site-revealed below. */
+  animation: itHeaderDrop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-play-state: paused;
+}
+body.site-revealed .header {
+  animation-play-state: running;
 }
 .header-inner {
   max-width: 1180px;
@@ -1002,9 +1061,6 @@ svg {
 }
 /* Just a colored kicker marks the smallest card apart from the other two
    text-cards — no fill, no rail. */
-.bento-thoughts.nav-card .card-kicker {
-  color: var(--blue);
-}
 .bento-likes {
   grid-area: likes;
 }
@@ -1636,13 +1692,25 @@ svg {
   align-items: flex-start;
   gap: 18px;
   overflow-x: auto;
-  scroll-behavior: smooth;
+  /* 不能設 scroll-behavior: smooth：useHorizontalWheelScroll 每影格賦值一次
+     scrollLeft，smooth 會把每次賦值都變成瀏覽器自己的緩動動畫，疊在 hook 的
+     緩動上，結果是嚴重的延遲和「滾完才動」。 */
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   padding-right: 32px;
   /* 右側漸層提示有更多內容可滾動 */
   mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
   -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+}
+/* 手機上乾脆不做橫向捲動：只要這個元素還是 overflow-x:auto，瀏覽器就會把
+   它當成一個可能想搶橫向手勢的捲動容器，跟頁面的垂直捲動搶手勢的判定，
+   touch-action 也修不好（見 useHorizontalWheelScroll.ts 的說明）。手機版
+   關掉橫向 overflow，這個元素就不再是捲動容器，垂直滑動保證正常交給頁面；
+   要看更多改用旁邊的「查看更多」連結。 */
+@media (max-width: 760px) {
+  .likes-track {
+    overflow-x: hidden;
+  }
 }
 .likes-track::-webkit-scrollbar {
   display: none;
@@ -1784,13 +1852,19 @@ svg {
   display: flex;
   gap: 20px;
   overflow-x: auto;
-  scroll-behavior: smooth;
+  /* 同 .likes-track：scroll-behavior: smooth 會跟 useHorizontalWheelScroll 打架 */
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   padding-bottom: 4px;
   padding-right: 32px;
   mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
   -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+}
+/* 同 .likes-track：手機版關掉橫向捲動，垂直滑動一律交給頁面 */
+@media (max-width: 760px) {
+  .music-artist-row {
+    overflow-x: hidden;
+  }
 }
 .music-artist-row::-webkit-scrollbar {
   display: none;
@@ -2701,6 +2775,15 @@ svg {
 @media (prefers-reduced-motion: reduce) {
   .tiles-row-track,
   .page-transition {
+    animation: none !important;
+  }
+  .site-loader-ring {
+    animation: none !important;
+  }
+  .site-loader {
+    transition: none !important;
+  }
+  .header {
     animation: none !important;
   }
   .card-likes-img,

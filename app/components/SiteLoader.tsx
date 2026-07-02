@@ -1,0 +1,77 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+const MAX_WAIT_MS = 4000;
+const SLIDE_MS = 600;
+
+export default function SiteLoader() {
+  const [hiding, setHiding] = useState(false);
+  const [gone, setGone] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    let hideTimer: ReturnType<typeof setTimeout>;
+    let removeTimer: ReturnType<typeof setTimeout>;
+    let done = false;
+
+    const startHide = () => {
+      if (done) return;
+      done = true;
+      setHiding(true);
+      // 畫面往上滑出結束後才讓 header／主畫面開始進場，見 globals.css 的
+      // body.site-revealed 規則。
+      removeTimer = setTimeout(() => {
+        document.body.classList.add("site-revealed");
+        setGone(true);
+      }, SLIDE_MS);
+    };
+
+    if (document.readyState === "complete") {
+      hideTimer = setTimeout(startHide, 150);
+    } else {
+      window.addEventListener("load", startHide);
+      // 保險：資源載入異常緩慢時，最多等 4 秒仍讓網站顯示。
+      hideTimer = setTimeout(startHide, MAX_WAIT_MS);
+    }
+
+    return () => {
+      window.removeEventListener("load", startHide);
+      clearTimeout(hideTimer);
+      clearTimeout(removeTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (gone) document.body.style.overflow = "";
+  }, [gone]);
+
+  if (gone) return null;
+
+  return (
+    <>
+      {/* 沒有 JS 就不會觸發滑出與 site-revealed，避免遮罩擋住整個網站、
+          header 也卡在進場動畫的起始幀 */}
+      <noscript>
+        <style>{`
+          .site-loader { display: none !important; }
+          .header {
+            animation: none !important;
+          }
+        `}</style>
+      </noscript>
+      <div
+        className={`site-loader${hiding ? " site-loader--hide" : ""}`}
+        role="status"
+        aria-live="polite"
+        aria-label="頁面載入中"
+      >
+        <svg className="site-loader-ring" viewBox="0 0 50 50" aria-hidden="true">
+          <circle className="site-loader-ring-track" cx="25" cy="25" r="20" fill="none" />
+          <circle className="site-loader-ring-arc" cx="25" cy="25" r="20" fill="none" />
+        </svg>
+      </div>
+    </>
+  );
+}
