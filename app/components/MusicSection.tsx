@@ -21,7 +21,7 @@ export default function MusicSection() {
           查看更多 →
         </Link>
       </div>
-      <div className="music-artist-row" ref={rowRef}>
+      <div className="music-artist-row" ref={rowRef} data-lenis-prevent-wheel>
         {MUSIC_ARTISTS.map((artist, index) => (
           <MusicArtistCard artist={artist} index={index} key={artist.name} />
         ))}

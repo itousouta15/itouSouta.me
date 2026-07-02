@@ -21,7 +21,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
           查看更多 →
         </Link>
       </div>
-      <div className="likes-track" ref={trackRef}>
+      <div className="likes-track" ref={trackRef} data-lenis-prevent-wheel>
         {cat.items.map((l, i) => (
           <LikeCard l={l} carousel layout={cat.layout} key={`${cat.key}-${i}`} />
         ))}
