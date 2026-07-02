@@ -22,6 +22,7 @@ export interface LikeCategory {
   key: string;
   label: string;
   en: string;
+  layout?: "circle";
   items: Like[];
 }
 
@@ -279,6 +280,23 @@ export const LIKE_CATEGORIES: LikeCategory[] = [
       { title: "超超超超超喜歡你的 100 個女朋友", tags: ["戀愛", "校園", "後宮", "喜劇"], cover: "https://wall.bahamut.com.tw/B/16/5tfp8e1vdhuvuxy5syah1wduef6gonojqjlpapea.JPG", href: "https://wall.gamer.com.tw/fanpage.php?sn=21319&tab=7&userid=kuoray333" },
       { title: "加油吧同期醬", tags: ["喜劇", "日常"], cover: "https://wall.bahamut.com.tw/B/91/2z9pcuf22kxf4n0kcueq2meks7z99ygrdxnzc4q2.JPG", href: "https://wall.gamer.com.tw/fanpage.php?sn=23059&tab=7&userid=kuoray333" },
       { title: "女朋友 and 女朋友 第二季", tags: ["戀愛", "校園", "後宮", "喜劇"], cover: "https://wall.bahamut.com.tw/B/33/fppchh3wzdpjv6ejpowplbb6cqvyhlqtimzku1lf.JPG", href: "https://wall.gamer.com.tw/fanpage.php?sn=55956&tab=7&userid=kuoray333" },
+    ],
+  },
+  {
+    key: "vtuber",
+    label: "VTuber",
+    en: "VTUBER",
+    layout: "circle",
+    items: [
+      { title: "花芽すみれ", sub: "VSPO", href: "https://www.youtube.com/@kagasumire", cover: "https://yt3.googleusercontent.com/62gVOJZDVb-9pPCbljnoRlwqEuvcGk0pNl32GNi_GA_KQS3N7X6-B660Pk3crHh3zi1XSzHMNQ=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "花芽なずな", sub: "VSPO", href: "https://www.youtube.com/@nazunakaga", cover: "https://pbs.twimg.com/profile_images/2039328932944891904/ldQhBKdI_400x400.jpg" },
+      { title: "胡桃のあ", sub: "VSPO", href: "https://www.youtube.com/@963Noah", cover: "https://pbs.twimg.com/profile_images/1907727455085015045/PBwEYx6D_400x400.jpg" },
+      { title: "猫汰つな", sub: "VSPO", href: "https://www.youtube.com/@tsuna_nekota", cover: "https://pbs.twimg.com/profile_images/2023324794620624896/c93bsg_M_400x400.jpg" },
+      { title: "Nachoneko", sub: "個人勢", href: "https://www.youtube.com/@Nachoneko_dayo", cover: "https://yt3.googleusercontent.com/N5l6FkLje3jSEAvxcSuqFFlE734_Ld0iI0QoTU5q-tbdfPQd2_dPHfFUWK3XIIoM6T4ep1itsw=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "我部りえる", sub: "あおぎり高校", href: "https://www.youtube.com/channel/UCFvEuP2EDkvrgJpHI6-pyNw", cover: "https://yt3.googleusercontent.com/PQTsSjQKuLXwv22OmnrQC0PwID65eb-0ltBcI29VNcFGvNB-zepdiuPQo-PGBn7kpyHYNS_nxQ=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "音霊魂子", sub: "あおぎり高校", href: "https://www.youtube.com/@tamako0212", cover: "https://yt3.googleusercontent.com/mZMKfTknmgnZ7SCyJ58hsJklu5H0BXZvxfnMoVy9dEOnO9KmAFLqX4LIgKewn2x_NxB1oJTPjg=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "栗駒こまる", sub: "あおぎり高校", href: "https://www.youtube.com/@komaru0814", cover: "https://yt3.googleusercontent.com/Oelzda0aP6xQ6nym6PabNrn11nMTY2InAR8P3Neq7b0FunhS-EnflrX-2BUkyMb0f_ai8fqMiQ=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "仲町あられ", sub: "夢限大みゅーたいぷ", href: "https://www.youtube.com/@arale_yumemita", cover: "https://yt3.googleusercontent.com/I0mwftAJiprbJyaBo_1UwcLlO1iWJvinlMdEQ3RlLQutvqZ0PRFH4Oyw1p1zHxRTp5QyAvLNkg8=s900-c-k-c0x00ffffff-no-rj" },
     ],
   },
 ];

@@ -20,7 +20,7 @@ export default function LikeCategoryPage({ params }: { params: { category: strin
   return (
     <section style={{ paddingBottom: 8 }}>
       <PageHead kicker={cat.en} title={cat.label} back="/likes" />
-      <LikeFilterGrid items={cat.items} />
+      <LikeFilterGrid items={cat.items} layout={cat.layout} />
     </section>
   );
 }

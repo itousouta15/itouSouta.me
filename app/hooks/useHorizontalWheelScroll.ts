@@ -17,6 +17,22 @@ export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
     // disable snapping for good — touch swipes (which don't fire wheel
     // events) keep their native snap behavior untouched.
     const originalSnap = el.style.scrollSnapType;
+    let target = el.scrollLeft;
+    let raf: number | null = null;
+
+    const maxScroll = () => el.scrollWidth - el.clientWidth;
+
+    const step = () => {
+      const current = el.scrollLeft;
+      const next = current + (target - current) * 0.18;
+      if (Math.abs(target - next) < 0.5) {
+        el.scrollLeft = target;
+        raf = null;
+        return;
+      }
+      el.scrollLeft = next;
+      raf = requestAnimationFrame(step);
+    };
 
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
@@ -43,14 +59,17 @@ export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
       e.preventDefault();
       el.style.scrollSnapType = "none";
 
-      const delta = Math.max(-80, Math.min(80, e.deltaY)) * 0.6;
-      el.scrollLeft += delta;
+      const delta = Math.max(-160, Math.min(160, e.deltaY)) * 1.15;
+      if (raf == null) target = el.scrollLeft;
+      target = Math.max(0, Math.min(maxScroll(), target + delta));
+      if (raf == null) raf = requestAnimationFrame(step);
     };
 
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => {
       el.style.scrollSnapType = originalSnap;
       el.removeEventListener("wheel", onWheel);
+      if (raf != null) cancelAnimationFrame(raf);
     };
   }, [ref]);
 }
