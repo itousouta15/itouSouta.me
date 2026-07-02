@@ -6,9 +6,12 @@ import { LikeCategory } from "../data";
 import { useHorizontalWheelScroll } from "../hooks/useHorizontalWheelScroll";
 import LikeCard from "./LikeCard";
 
+const PREVIEW_COUNT = 14;
+
 export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
   const trackRef = useRef<HTMLDivElement>(null);
   useHorizontalWheelScroll(trackRef);
+  const preview = cat.items.slice(0, PREVIEW_COUNT);
 
   return (
     <div className="like-category">
@@ -22,7 +25,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
         </Link>
       </div>
       <div className="likes-track" ref={trackRef} data-lenis-prevent-wheel>
-        {cat.items.map((l, i) => (
+        {preview.map((l, i) => (
           <LikeCard l={l} carousel layout={cat.layout} key={`${cat.key}-${i}`} />
         ))}
       </div>
