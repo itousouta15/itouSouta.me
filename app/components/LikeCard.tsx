@@ -1,7 +1,21 @@
 import { Like } from "../data";
 
-export default function LikeCard({ l, carousel }: { l: Like; carousel?: boolean }) {
-  const className = carousel ? "like-card like-card--carousel" : "like-card";
+export default function LikeCard({
+  l,
+  carousel,
+  layout,
+}: {
+  l: Like;
+  carousel?: boolean;
+  layout?: "circle";
+}) {
+  const className = [
+    "like-card",
+    carousel && "like-card--carousel",
+    layout === "circle" && "like-card--circle",
+  ]
+    .filter(Boolean)
+    .join(" ");
   const body = (
     <>
       <div className="like-thumb">
@@ -17,7 +31,7 @@ export default function LikeCard({ l, carousel }: { l: Like; carousel?: boolean 
           <div className="like-title">{l.title}</div>
           {l.rating != null && <span className="like-rating">★ {l.rating.toFixed(1)}</span>}
         </div>
-        {l.sub && <div className="like-sub">{l.sub}</div>}
+        {layout !== "circle" && <div className="like-sub">{l.sub || " "}</div>}
       </div>
     </>
   );
