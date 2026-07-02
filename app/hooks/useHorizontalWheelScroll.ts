@@ -93,70 +93,18 @@ export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
       if (raf == null) raf = requestAnimationFrame(step);
     };
 
+    // 只處理 wheel。真正的觸控螢幕滑動手勢不會發出 wheel 事件（那是滑鼠／
+    // 觸控板專屬），所以這個 hook 對觸控完全不插手，交給瀏覽器原生處理——
+    // 水平拖曳這排卡片、垂直手勢照樣鏈給頁面捲動，兩者都不需要自訂 JS。
+    // 手機版之前滑不動是 lenis.css 幫 data-lenis-prevent-wheel 元素自動加了
+    // overscroll-behavior: contain 擋住了垂直鏈接，跟這裡的邏輯無關，修法見
+    // globals.css 的 .likes-track[data-lenis-prevent-wheel] 規則。
     el.addEventListener("wheel", onWheel, { passive: false });
-
-    // 觸控：純 CSS 的 touch-action:pan-y 試過了，行不通 —— 在有
-    // overflow-x:auto 的元素上限制成只認垂直手勢，部分行動版 WebKit 反而
-    // 兩個方向都吃死，不會把手勢交還給頁面（已知的巢狀捲動容器地雷）。
-    // 改成自己判斷：手勢一開始先不擋，等移動超過門檻、看得出角度後才決定
-    // ——比較水平就自己接手橫向拖曳，比較垂直就完全放手、讓頁面原生捲動。
-    const DIRECTION_THRESHOLD = 6;
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchLastX = 0;
-    let touchMode: "pending" | "horizontal" | "vertical" | null = null;
-
-    const onTouchStart = (e: TouchEvent) => {
-      const t = e.touches[0];
-      if (!t) return;
-      touchStartX = touchLastX = t.clientX;
-      touchStartY = t.clientY;
-      touchMode = "pending";
-    };
-
-    const onTouchMove = (e: TouchEvent) => {
-      const t = e.touches[0];
-      if (!t || touchMode == null) return;
-
-      if (touchMode === "pending") {
-        const dx = t.clientX - touchStartX;
-        const dy = t.clientY - touchStartY;
-        if (Math.abs(dx) < DIRECTION_THRESHOLD && Math.abs(dy) < DIRECTION_THRESHOLD) return;
-        // 沒有可捲的橫向距離（例如手機版乾脆關掉橫向捲動）就永遠當垂直，
-        // 不要為了零距離的「横向」硬搶手勢。
-        touchMode = maxScroll() > 0 && Math.abs(dx) > Math.abs(dy) ? "horizontal" : "vertical";
-        if (touchMode === "horizontal") el.style.scrollSnapType = "none";
-      }
-
-      if (touchMode === "vertical") return; // 完全不碰，交給瀏覽器原生捲頁
-
-      e.preventDefault();
-      const dx = t.clientX - touchLastX;
-      touchLastX = t.clientX;
-      current = target = Math.max(0, Math.min(maxScroll(), el.scrollLeft - dx));
-      el.scrollLeft = current;
-    };
-
-    const onTouchEnd = () => {
-      touchMode = null;
-    };
-
-    // touchmove 必須是 passive:false 才能在判定為橫向手勢時呼叫
-    // preventDefault；判定為垂直時單純不呼叫，效果等同 passive，
-    // 不影響瀏覽器原生捲動的效能。
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
-    el.addEventListener("touchmove", onTouchMove, { passive: false });
-    el.addEventListener("touchend", onTouchEnd, { passive: true });
-    el.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
     return () => {
       el.style.scrollSnapType = originalSnap;
       el.style.scrollBehavior = "";
       el.removeEventListener("wheel", onWheel);
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchmove", onTouchMove);
-      el.removeEventListener("touchend", onTouchEnd);
-      el.removeEventListener("touchcancel", onTouchEnd);
       if (raf != null) cancelAnimationFrame(raf);
     };
   }, [ref]);

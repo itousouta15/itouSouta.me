@@ -8,6 +8,21 @@ const SLIDE_MS = 600;
 export default function SiteLoader() {
   const [hiding, setHiding] = useState(false);
   const [gone, setGone] = useState(false);
+  const [blurred, setBlurred] = useState(false);
+
+  useEffect(() => {
+    // backdrop-filter 要等瀏覽器真的畫完第一幀才能套用，不然沒有「上一幀」
+    // 可以取樣模糊，Chromium 會先閃一格黑畫面（淺色模式下很明顯）。
+    let raf1 = 0;
+    let raf2 = 0;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setBlurred(true));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -62,7 +77,7 @@ export default function SiteLoader() {
         `}</style>
       </noscript>
       <div
-        className={`site-loader${hiding ? " site-loader--hide" : ""}`}
+        className={`site-loader${hiding ? " site-loader--hide" : ""}${blurred ? " site-loader--blurred" : ""}`}
         role="status"
         aria-live="polite"
         aria-label="頁面載入中"
