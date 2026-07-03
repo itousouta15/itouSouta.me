@@ -1,5 +1,5 @@
 import { Like } from "../data";
-import { likeThumb } from "../lib/imageThumb";
+import { likeThumb, likeCircleThumb } from "../lib/imageThumb";
 
 export default function LikeCard({
   l,
@@ -21,7 +21,13 @@ export default function LikeCard({
     <>
       <div className="like-thumb">
         {l.cover ? (
-          <img className="like-thumb-img" src={likeThumb(l.cover)} alt={l.title} loading="lazy" decoding="async" />
+          <img
+            className="like-thumb-img"
+            src={layout === "circle" ? likeCircleThumb(l.cover) : likeThumb(l.cover)}
+            alt={l.title}
+            loading="lazy"
+            decoding="async"
+          />
         ) : (
           <span>IMAGE</span>
         )}
