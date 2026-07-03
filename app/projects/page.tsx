@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 import TileIcon from "../components/TileIcon";
 import { PROJECTS } from "../data";
+import { projectCoverThumb } from "../lib/imageThumb";
 
 const description = "郭家睿 / 伊藤蒼太製作的一些程式專案、網站與作品集展示。";
 
@@ -29,7 +30,13 @@ export default function ProjectsPage() {
               </div>
               <span className="proj-arrow">↗</span>
             </div>
-            <img className="proj-cover" src={p.cover} alt={`${p.title} 預覽圖`} loading="lazy" />
+            <img
+              className="proj-cover"
+              src={projectCoverThumb(p.cover)}
+              alt={`${p.title} 預覽圖`}
+              loading="lazy"
+              decoding="async"
+            />
             <div className="proj-title">{p.title}</div>
             <div className="proj-desc">{p.desc}</div>
             <div className="proj-tags">

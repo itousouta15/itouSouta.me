@@ -29,8 +29,12 @@ export function useScrollLinkedHorizontalReveal(ref: RefObject<HTMLElement | nul
 
       // 0 when the card's top edge first appears at the bottom of the
       // viewport, 1 once its bottom edge has scrolled past the top.
-      const progress = (viewportH - rect.top) / (viewportH + rect.height);
-      const clamped = Math.min(1, Math.max(0, progress));
+      const rawProgress = (viewportH - rect.top) / (viewportH + rect.height);
+      // 縮小觸發範圍：只取中段一小段捲動距離就跑完 0→1，
+      // 而不是整張卡片從進場到出場的全程。
+      const TRIGGER_RANGE = 0.5;
+      const centered = (rawProgress - 0.5) / TRIGGER_RANGE + 0.5;
+      const clamped = Math.min(1, Math.max(0, centered));
 
       // 卡片進入視窗時 clamped=0 (scrollLeft=0，顯示最左)，
       // 離開視窗時 clamped=1 (scrollLeft=max，顯示最右)，左→右跑完全程。

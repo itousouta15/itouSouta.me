@@ -83,12 +83,12 @@ svg {
 }
 
 :root[data-theme="light"] {
-  --bg: #c0c2cc;
-  --panel: #dddee4;
-  --panel2: #dddee4;
-  --panel2-a: rgba(219, 221, 228, 0.82);
-  --inset: #d8dae0;
-  --bd: rgba(20, 24, 40, 0.08);
+  --bg: #bfc0c7f1;
+  --panel: #d5d6dd;
+  --panel2: #d5d6dd;
+  --panel2-a: rgba(227, 228, 233, 0.82);
+  --inset: #d2d5db;
+  --bd: rgba(6, 6, 7, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
   --tx: #22262d;
   --dim: #494f59;   /* was #5b626d — darkened for WCAG AA contrast on panel bg */
@@ -789,7 +789,7 @@ body.site-revealed .header {
   font-weight: 300;
   color: var(--tx);
   margin-top: 8px;
-  line-height: 1.18;
+  line-height: 0;
 }
 .hero-title b {
   font-weight: 800;
@@ -798,7 +798,7 @@ body.site-revealed .header {
 .name-rotator {
   display: inline-block;
   vertical-align: baseline;
-  height: 1.25em;
+  height: 1.18em;
   overflow: hidden;
   contain: paint;
   clip-path: inset(0);
@@ -817,21 +817,21 @@ body.site-revealed .header {
 }
 .name-rotator-track b {
   display: block;
-  height: 1.4em;
-  line-height: 1.4em;
+  height: 1.18em;
+  line-height: 1.18em;
   color: var(--blue);
   font-weight: 800;
 }
 .hero-sub {
   font-size: 18px;
   color: var(--dim);
-  margin-top: 12px;
-  line-height: 1.7;
+  margin-top: 2px;
+  line-height: 0.5;
 }
 .hero-actions {
   display: flex;
   gap: 12px;
-  margin-top: 22px;
+  margin-top: 33px;
   flex-wrap: wrap;
 }
 .btn-primary,
@@ -1524,7 +1524,6 @@ body.site-revealed .header {
 .stat {
   background: var(--inset);
   border: 1px solid var(--bd);
-  border-radius: 12px;
   padding: 14px;
 }
 .stat-k {
