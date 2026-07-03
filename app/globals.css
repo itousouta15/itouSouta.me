@@ -707,7 +707,7 @@ body.site-revealed .header {
   align-items: center;
   justify-content: center;
   padding: clamp(16px, 4vh, 48px) 16px;
-  animation: modal-overlay-fade 0.4s ease forwards;
+  animation: modal-overlay-fade 0.18s ease forwards;
 }
 .proj-modal {
   width: 100%;
@@ -719,7 +719,7 @@ body.site-revealed .header {
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   padding: 28px 32px 36px;
   scrollbar-width: none;
-  animation: modal-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: modal-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .proj-modal::-webkit-scrollbar {
   display: none;
@@ -782,7 +782,7 @@ body.site-revealed .header {
   align-items: center;
   justify-content: center;
   padding: clamp(16px, 4vh, 48px) 16px;
-  animation: modal-overlay-fade 0.4s ease forwards;
+  animation: modal-overlay-fade 0.18s ease forwards;
 }
 .like-modal {
   position: relative;
@@ -796,7 +796,7 @@ body.site-revealed .header {
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   padding-bottom: 44px;
   scrollbar-width: none;
-  animation: modal-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: modal-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .like-modal::-webkit-scrollbar {
   display: none;
@@ -943,10 +943,23 @@ body.site-revealed .header {
 .like-modal-stat--mine .star-rating {
   color: #ff6b6b;
 }
-.star-half {
+.star-rating-glyphs {
+  position: relative;
   display: inline-block;
-  font-size: 15px;
-  opacity: 0.8;
+  line-height: 1;
+}
+.star-rating-track {
+  display: block;
+  white-space: nowrap;
+  color: currentColor;
+  opacity: 0.28;
+}
+.star-rating-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: currentColor;
 }
 .star-score {
   font-family: "JetBrains Mono", monospace;
@@ -2317,6 +2330,8 @@ body.site-revealed .header {
   line-clamp: 2;
   overflow: hidden;
   min-height: calc(1.35em * 2);
+  min-width: 0;
+  flex: 1 1 auto;
 }
 .like-rating {
   white-space: nowrap;
