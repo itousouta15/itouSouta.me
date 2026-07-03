@@ -687,6 +687,16 @@ body.site-revealed .header {
     backdrop-filter: blur(6px);
   }
 }
+@keyframes modal-overlay-fade-light {
+  from {
+    background-color: rgba(20, 24, 34, 0);
+    backdrop-filter: blur(0);
+  }
+  to {
+    background-color: rgba(20, 24, 34, 0.22);
+    backdrop-filter: blur(6px);
+  }
+}
 @keyframes modal-pop {
   from {
     opacity: 0;
@@ -784,6 +794,9 @@ body.site-revealed .header {
   padding: clamp(16px, 4vh, 48px) 16px;
   animation: modal-overlay-fade 0.18s ease forwards;
 }
+:root[data-theme="light"] .like-modal-overlay {
+  animation: modal-overlay-fade-light 0.18s ease forwards;
+}
 .like-modal {
   position: relative;
   width: 100%;
@@ -843,7 +856,7 @@ body.site-revealed .header {
 .like-modal-hero-fade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.05) 45%, var(--panel) 96%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.025) 45%, var(--panel) 96%);
 }
 .like-modal-head {
   position: relative;
@@ -2936,6 +2949,103 @@ body.site-revealed .header {
   margin-top: 10px;
 }
 
+/* Experience page: vertical timeline with a connecting line + dots.
+   (Distinct from .timeline-grid/.tl-card-wrap/.tl-year-ghost, which the
+   project-detail modal's version history still uses.) */
+.exp-timeline {
+  position: relative;
+}
+.exp-row {
+  display: flex;
+  gap: 22px;
+  padding-bottom: 32px;
+}
+.exp-row:last-child {
+  padding-bottom: 0;
+}
+.exp-row .tl-card {
+  flex: 1 1 auto;
+  max-width: 560px;
+  margin-top: 0;
+}
+.exp-node-col {
+  position: relative;
+  flex: none;
+  width: 16px;
+  display: flex;
+  justify-content: center;
+}
+.exp-node-col::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  bottom: -32px;
+  left: 50%;
+  width: 2px;
+  background: var(--bd2);
+  transform: translateX(-50%);
+}
+.exp-row:last-child .exp-node-col::before {
+  display: none;
+}
+.exp-dot {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.exp-dot.purple {
+  background: var(--purple);
+}
+
+/* Desktop: alternate cards left/right of a centered spine instead of one
+   narrow column with empty space beside it. */
+@media (min-width: 761px) {
+  .exp-timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--bd2);
+    transform: translateX(-50%);
+  }
+  .exp-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .exp-row .tl-card {
+    grid-row: 1;
+    max-width: 460px;
+  }
+  .exp-row:nth-child(odd) .tl-card {
+    grid-column: 1;
+    justify-self: end;
+    margin-right: 32px;
+  }
+  .exp-row:nth-child(even) .tl-card {
+    grid-column: 2;
+    justify-self: start;
+    margin-left: 32px;
+  }
+  .exp-node-col {
+    grid-row: 1;
+    grid-column: 1 / 3;
+    width: auto;
+    height: 0;
+  }
+  /* the continuous .exp-timeline::before line above replaces the per-row segments */
+  .exp-node-col::before {
+    display: none;
+  }
+}
+
 /* ===========================================================================
    Footer / marquee
    =========================================================================== */
@@ -3354,6 +3464,16 @@ body.site-revealed .header {
   }
   .tl-card {
     margin-top: 16px;
+  }
+  .exp-row {
+    gap: 14px;
+    padding-bottom: 24px;
+  }
+  .exp-node-col {
+    width: 12px;
+  }
+  .exp-node-col::before {
+    bottom: -24px;
   }
   .about-side img {
     height: 150px;

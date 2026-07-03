@@ -31,10 +31,12 @@ export default function ExperiencePage() {
       {groups.map(([category, items]) => (
         <div className="timeline-group" key={category || "default"}>
           {category && <div className="timeline-group-head">{category}</div>}
-          <div className="timeline-grid">
+          <div className="exp-timeline">
             {items.map((e, i) => (
-              <div className="tl-card-wrap" key={i}>
-                <div className="tl-year-ghost" aria-hidden="true">{e.period}</div>
+              <div className="exp-row" key={i}>
+                <div className="exp-node-col">
+                  <span className={`exp-dot ${e.color ?? "blue"}`} />
+                </div>
                 <div className={`tl-card ${e.color ?? "blue"}`}>
                   <div className="tl-period">{e.period}</div>
                   <div className="tl-title">{e.title}</div>
