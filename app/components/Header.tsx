@@ -74,6 +74,17 @@ export default function Header() {
                 </Link>
               ))}
             </nav>
+            <button
+              className="theme-btn"
+              onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
+              aria-label="搜尋 (Ctrl+K)"
+              title="搜尋 (Ctrl+K)"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21l-4.3-4.3" />
+              </svg>
+            </button>
             <button className="theme-btn" onClick={toggle} aria-label="theme">
               {isDark ? (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

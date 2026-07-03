@@ -28,9 +28,15 @@ export function avatarThumb(src: string) {
   return wsrvThumb(src, 96, 96);
 }
 
-// 收藏卡片封面，最大顯示尺寸約 170x255（圓形版另外用 CSS 裁成圓，直接沿用同一張圖即可）
+// 收藏卡片封面，最大顯示尺寸約 170x255
 export function likeThumb(src: string) {
   return wsrvThumb(src, 340, 510);
+}
+
+// 圓形收藏卡片（VTuber 頭像等）：來源多是方形圖，若沿用 340x510 直式裁切
+// 會先被 wsrv 切掉左右再由 CSS 裁圓，頭像就缺角了，所以改抓方形縮圖。
+export function likeCircleThumb(src: string) {
+  return wsrvThumb(src, 340, 340);
 }
 
 // 音樂榜單的歌手頭像，顯示 52px
