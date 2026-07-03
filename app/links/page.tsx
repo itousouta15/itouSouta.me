@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 import { LINKS } from "../data";
+import { avatarThumb } from "../lib/imageThumb";
 
 const description = "itouSouta15.tw 的友情連結，收錄朋友與夥伴們的網站與社群連結。";
 
@@ -22,7 +23,15 @@ export default function LinksPage() {
             <div className="link-card-head">
               {l.avatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img className="link-avatar" src={l.avatar} alt={l.name} />
+                <img
+                  className="link-avatar"
+                  src={avatarThumb(l.avatar)}
+                  alt={l.name}
+                  width={48}
+                  height={48}
+                  loading="lazy"
+                  decoding="async"
+                />
               ) : (
                 <div className="link-avatar link-avatar--placeholder">{l.name[0]}</div>
               )}

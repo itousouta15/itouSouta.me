@@ -28,7 +28,7 @@ export default function AboutPage() {
             目前是臺中市立大里高中的學生，同時擔任校內資訊校隊隊長，也是第五屆 SCAICT 中電會會長。平常喜歡到處跑，順便認識一堆電到爆的人們
           </p>
           <p className="about-p">
-            除了寫程式之外，對資安也稍微有點興趣，順便投稿一些 VOCALOID 歌曲、畫畫插畫打發時間。座右銘是「情熱を失っては、何もできない」，希望自己能一直保持這份熱情，把想做的事情一件一件做出來
+            除了寫程式之外，對資安也稍微有點興趣。座右銘是「情熱を失っては、何もできない」，希望自己能一直保持這份熱情，把想做的事情一件一件做出來
           </p>
           <div className="divider" />
           <div className="stat-grid">
@@ -49,7 +49,7 @@ export default function AboutPage() {
         <div className="about-side">
           <img src="/assets/banner.webp" alt="" />
           <div className="about-side-body">
-            <div className="label mt16">座右銘</div>
+            <div className="label">座右銘</div>
             <div className="about-side-quote">情熱を失っては、何もできない。</div>
           </div>
         </div>
