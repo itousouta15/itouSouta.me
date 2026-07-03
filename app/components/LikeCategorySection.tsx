@@ -42,6 +42,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
   }, [cat.items.length]);
 
   const preview = cat.items.slice(0, visibleCount);
+  const useModal = cat.layout !== "circle";
 
   return (
     <div className="like-category">
@@ -56,11 +57,17 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
       </div>
       <div className="likes-track" ref={trackRef} data-lenis-prevent-wheel>
         {preview.map((l, i) => (
-          <LikeCard l={l} carousel layout={cat.layout} key={`${cat.key}-${i}`} onClick={() => setSelectedLike(l)} />
+          <LikeCard
+            l={l}
+            carousel
+            layout={cat.layout}
+            key={`${cat.key}-${i}`}
+            onClick={useModal ? () => setSelectedLike(l) : undefined}
+          />
         ))}
         {visibleCount < cat.items.length && <div ref={sentinelRef} className="likes-track-sentinel" aria-hidden />}
       </div>
-      {selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
+      {useModal && selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
     </div>
   );
 }

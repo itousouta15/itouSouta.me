@@ -15,6 +15,7 @@ export default function LikeFilterGrid({
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [selectedLike, setSelectedLike] = useState<Like | null>(null);
+  const useModal = layout !== "circle";
 
   const tags = useMemo(() => {
     const set = new Set<string>();
@@ -67,13 +68,18 @@ export default function LikeFilterGrid({
       {filtered.length > 0 ? (
         <div className={`likes-grid ${layout === "circle" ? "likes-grid--circle" : ""}`}>
           {filtered.map((l, i) => (
-            <LikeCard l={l} layout={layout} key={`${l.title}-${i}`} onClick={() => setSelectedLike(l)} />
+            <LikeCard
+              l={l}
+              layout={layout}
+              key={`${l.title}-${i}`}
+              onClick={useModal ? () => setSelectedLike(l) : undefined}
+            />
           ))}
         </div>
       ) : (
         <div className="likes-empty">沒有符合條件的項目</div>
       )}
-      {selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
+      {useModal && selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
     </>
   );
 }
