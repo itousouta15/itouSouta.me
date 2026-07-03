@@ -1,19 +1,23 @@
 import { Like } from "../data";
 import { likeThumb, likeCircleThumb } from "../lib/imageThumb";
+import { StarRating } from "../lib/ratingStars";
 
 export default function LikeCard({
   l,
   carousel,
   layout,
+  onClick,
 }: {
   l: Like;
   carousel?: boolean;
   layout?: "circle";
+  onClick?: () => void;
 }) {
   const className = [
     "like-card",
     carousel && "like-card--carousel",
     layout === "circle" && "like-card--circle",
+    onClick && "like-card--clickable",
   ]
     .filter(Boolean)
     .join(" ");
@@ -36,12 +40,20 @@ export default function LikeCard({
       <div className="like-body">
         <div className="like-title-row">
           <div className="like-title">{l.title}</div>
-          {l.rating != null && <span className="like-rating">★ {l.rating.toFixed(1)}</span>}
+          {l.rating != null && <span className="like-rating"><StarRating rating={l.rating} /></span>}
         </div>
         {layout !== "circle" && <div className="like-sub">{l.sub || " "}</div>}
       </div>
     </>
   );
+
+  if (onClick) {
+    return (
+      <button type="button" className={className} onClick={onClick}>
+        {body}
+      </button>
+    );
+  }
 
   return l.href ? (
     <a className={className} href={l.href} target="_blank" rel="noopener noreferrer">

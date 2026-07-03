@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Like } from "../data";
 import LikeCard from "./LikeCard";
+import LikeModalShell from "./LikeModalShell";
 
 export default function LikeFilterGrid({
   items,
@@ -13,6 +14,7 @@ export default function LikeFilterGrid({
 }) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [selectedLike, setSelectedLike] = useState<Like | null>(null);
 
   const tags = useMemo(() => {
     const set = new Set<string>();
@@ -65,12 +67,13 @@ export default function LikeFilterGrid({
       {filtered.length > 0 ? (
         <div className={`likes-grid ${layout === "circle" ? "likes-grid--circle" : ""}`}>
           {filtered.map((l, i) => (
-            <LikeCard l={l} layout={layout} key={`${l.title}-${i}`} />
+            <LikeCard l={l} layout={layout} key={`${l.title}-${i}`} onClick={() => setSelectedLike(l)} />
           ))}
         </div>
       ) : (
         <div className="likes-empty">沒有符合條件的項目</div>
       )}
+      {selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
     </>
   );
 }

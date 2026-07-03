@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-
-const CommandPaletteInner = dynamic(() => import("./CommandPaletteInner"), { ssr: false });
+import CommandPaletteInner from "./CommandPaletteInner";
 
 export default function CommandPalette() {
   const [open, setOpen] = useState(false);
