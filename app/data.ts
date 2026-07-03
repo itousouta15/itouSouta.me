@@ -14,6 +14,7 @@ export interface Like {
   cover?: string;
   href?: string;
   rating?: number;
+  personRating?: number;
   status?: string;
   tags?: string[];
   note?: string;
@@ -89,8 +90,8 @@ export const LIKE_CATEGORIES: LikeCategory[] = [
     label: "輕小說/輕文學",
     en: "NOVEL",
     items: [
-      { title: "義妹生活", tags: ["日常", "戀愛"], sub: "三河Ghost",cover:"https://upload.wikimedia.org/wikipedia/zh/b/b4/%E7%BE%A9%E5%A6%B9%E7%94%9F%E6%B4%BB1.jpg", href: "https://tw.linovelib.com/novel/2890.html" },
-      { title: "那個已然飽和的夏天。", tags: ["音樂","戀愛"], sub: "カンザキイオリ" , cover: "https://tw.linovelib.com/files/article/image/3/3492/3492s.jpg?1701184476", href: "https://tw.linovelib.com/novel/3492.html" },
+      { title: "義妹生活", tags: ["日常", "戀愛"], sub: "三河Ghost",cover:"https://upload.wikimedia.org/wikipedia/zh/b/b4/%E7%BE%A9%E5%A6%B9%E7%94%9F%E6%B4%BB1.jpg", href: "https://tw.linovelib.com/novel/2890.html",note:"與其說這部是輕小說，我更覺得他是像輕文學，看著男女主慢慢理解彼此，磨合彼此的差異及拿捏距離。有時候不注意時間就會不小心看到天亮呢。不過在17卷中作者越來越著重描寫兩人在分開的環境中各自生活。有點現實到我了-w-",personRating: 4.8},
+      { title: "那個已然飽和的夏天。", tags: ["音樂","戀愛"], sub: "カンザキイオリ" , cover: "https://tw.linovelib.com/files/article/image/3/3492/3492s.jpg?1701184476", href: "https://tw.linovelib.com/novel/3492.html",note:"カンザキイオリ老師的巔峰作，當初我是聽了音樂才買小說的，老實說前面有點折磨人，但是總體來說還是可以給到一個人上人。我記得差不多是兩年前看的，兩年過去了這首歌還是一樣好聽呢。夏天又到了呢。找個時間來二刷吧",personRating: 4.5},
       { title: "致親愛的你。", tags: ["校園","音樂","戀愛", "懸疑"], sub: "カンザキイオリ" , cover: "https://tw.linovelib.com/files/article/image/3/3907/3907s.jpg?1701237584", href: "https://tw.linovelib.com/novel/3907.html" },
       { title: "被自由囚禁。", tags: ["校園","音樂","懸疑"], sub: "カンザキイオリ" , cover: "https://tw.linovelib.com/files/article/image/4/4856/4856s.jpg?1758132879", href: "https://tw.linovelib.com/novel/4856.html" },
       { title: "妹妹人生", tags: ["青春","戀愛"], sub: "入間人間" , cover: "https://tw.linovelib.com/files/article/image/1/1410/1410s.jpg?1705327677", href: "https://tw.linovelib.com/novel/1410.html" },
@@ -115,19 +116,18 @@ export const LIKE_CATEGORIES: LikeCategory[] = [
     label: "漫畫",
     en: "MANGA",
     items: [
-      { title: "關於鄰家的天使大人不知不覺把我慣成廢人這檔子事", tags: ["校園", "戀愛", "日常"], sub: "芝田わん",cover:"https://www.bilimanga.net/files/cartoon/image/0/3/3s.jpg?1778696819", href: "https://www.bilimanga.net/detail/3.html" },
-      { title: "躲在超市後門抽菸的兩人", tags: ["戀愛", "日常"], sub: "地主",cover:"https://www.bilimanga.net/files/cartoon/image/0/921/921s.jpg?1779197884", href: "https://www.bilimanga.net/detail/921.html" },
-      { title: "敗北女角太多了！", tags: ["校園", "戀愛", "喜劇"], sub: "いたち",cover:"https://www.bilimanga.net/files/cartoon/image/0/54/54s.jpg?1770800917", href: "https://www.bilimanga.net/detail/54.html" },
-      { title: "葬送的芙莉蓮", tags: ["異世界", "奇幻", "戰鬥"], sub: "山田鐘人",cover:"https://www.bilimanga.net/files/cartoon/image/0/1/1s.jpg?1776867972", href: "https://wall.gamer.com.tw/fanpage.php?sn=21016&tab=7&userid=kuoray333" },
-      { title: "【我推的孩子】", tags: ["偶像", "懸疑"], sub: "赤坂アカ",cover:"https://www.bilimanga.net/files/cartoon/image/0/2/2s.jpg?1766597285", href: "https://wall.gamer.com.tw/fanpage.php?sn=22788&tab=7&userid=kuoray333" },
-      { title: "輝夜姬想讓人告白 ～天才們的戀愛頭腦戰～", tags: ["校園", "戀愛", "喜劇"], sub: "赤坂アカ",cover:"https://www.bilimanga.net/files/cartoon/image/0/23/23s.jpg?1778697209", href: "https://wall.gamer.com.tw/fanpage.php?sn=4921&tab=7&userid=kuoray333" },
-      { title: "我當備胎女友也沒關係。", tags: ["戀愛", "校園"], sub: "にの子",cover:"https://www.bilimanga.net/files/cartoon/image/0/24/24s.jpg?1778696806", href: "https://www.bilimanga.net/detail/24.html" },
-      { title: "總之就是非常可愛", tags: ["戀愛", "喜劇", "日常"], sub: "畑健二郎",cover:"https://www.bilimanga.net/files/cartoon/image/0/72/72s.jpg?1782674202", href: "https://www.bilimanga.net/detail/72.html" },
-      { title: "戀愛寄生蟲", tags: ["戀愛", "懸疑"], sub: "ホタテユウキ",cover:"https://www.bilimanga.net/files/cartoon/image/0/88/88s.jpg?1729528881", href: "https://www.bilimanga.net/detail/88.html" },
-      { title: "借給朋友500圓，他竟然拿妹妹來抵債，我到底該如何是好", tags: ["戀愛", "喜劇"], sub: "金子こがね",cover:"https://www.bilimanga.net/files/cartoon/image/0/150/150s.jpg?1725870112", href: "https://www.bilimanga.net/detail/150.html" },
-      { title: "久保同學不放過我", tags: ["校園", "戀愛", "喜劇"], sub: "雪森寧々",cover:"https://www.bilimanga.net/files/cartoon/image/0/325/325s.jpg?1774372428", href: "https://wall.gamer.com.tw/fanpage.php?sn=20798&tab=7&userid=kuoray333" },
-      { title: "櫻花莊的寵物女孩", tags: ["戀愛", "校園"], sub: "草野ほうき",cover:"https://www.bilimanga.net/files/cartoon/image/0/236/236s.jpg?1727528101", href: "https://www.bilimanga.net/detail/236.html" },
-
+      { title: "關於鄰家的天使大人不知不覺把我慣成廢人這檔子事", tags: ["校園", "戀愛", "日常"], sub: "芝田わん", cover: "https://www.bilimanga.net/files/cartoon/image/0/3/3s.jpg?1778696819", href: "https://home.gamer.com.tw/creationDetail.php?sn=4443577" },
+      { title: "躲在超市後門抽菸的兩人", tags: ["戀愛", "日常"], sub: "地主", cover: "https://www.bilimanga.net/files/cartoon/image/0/921/921s.jpg?1779197884", href: "https://acg.gamer.com.tw/acgDetail.php?s=146348" },
+      { title: "敗北女角太多了！", tags: ["校園", "戀愛", "喜劇"], sub: "いたち", cover: "https://www.bilimanga.net/files/cartoon/image/0/54/54s.jpg?1770800917", href: "https://acg.gamer.com.tw/acgDetail.php?s=136968" },
+      { title: "葬送的芙莉蓮", tags: ["異世界", "奇幻", "戰鬥"], sub: "山田鐘人", cover: "https://www.bilimanga.net/files/cartoon/image/0/1/1s.jpg?1776867972", href: "https://wall.gamer.com.tw/fanpage.php?sn=21016&tab=7&userid=kuoray333" },
+      { title: "【我推的孩子】", tags: ["偶像", "懸疑"], sub: "赤坂アカ", cover: "https://www.bilimanga.net/files/cartoon/image/0/2/2s.jpg?1766597285", href: "https://wall.gamer.com.tw/fanpage.php?sn=22788&tab=7&userid=kuoray333" },
+      { title: "輝夜姬想讓人告白 ～天才們的戀愛頭腦戰～", tags: ["校園", "戀愛", "喜劇"], sub: "赤坂アカ", cover: "https://www.bilimanga.net/files/cartoon/image/0/23/23s.jpg?1778697209", href: "https://wall.gamer.com.tw/fanpage.php?sn=4921&tab=7&userid=kuoray333" },
+      { title: "我當備胎女友也沒關係。", tags: ["戀愛", "校園"], sub: "にの子", cover: "https://www.bilimanga.net/files/cartoon/image/0/24/24s.jpg?1778696806", href: "https://home.gamer.com.tw/creationDetail.php?sn=5622951" },
+      { title: "總之就是非常可愛", tags: ["戀愛", "喜劇", "日常"], sub: "畑健二郎", cover: "https://www.bilimanga.net/files/cartoon/image/0/72/72s.jpg?1782674202", href: "https://www.bilimanga.net/detail/72.html" },
+      { title: "戀愛寄生蟲", tags: ["戀愛", "懸疑"], sub: "ホタテユウキ", cover: "https://www.bilimanga.net/files/cartoon/image/0/88/88s.jpg?1729528881", href: "https://home.gamer.com.tw/artwork.php?sn=3489465" },
+      { title: "借給朋友500圓，他竟然拿妹妹來抵債，我到底該如何是好", tags: ["戀愛", "喜劇"], sub: "金子こがね", cover: "https://www.bilimanga.net/files/cartoon/image/0/150/150s.jpg?1725870112", href: "https://www.bilimanga.net/detail/150.html" },
+      { title: "久保同學不放過我", tags: ["校園", "戀愛", "喜劇"], sub: "雪森寧々", cover: "https://www.bilimanga.net/files/cartoon/image/0/325/325s.jpg?1774372428", href: "https://wall.gamer.com.tw/fanpage.php?sn=20798&tab=7&userid=kuoray333" },
+      { title: "櫻花莊的寵物女孩", tags: ["戀愛", "校園"], sub: "草野ほうき", cover: "https://www.bilimanga.net/files/cartoon/image/0/236/236s.jpg?1727528101", href: "https://acg.gamer.com.tw/acgDetail.php?s=41824" },
     ],
   },
   {

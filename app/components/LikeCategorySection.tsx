@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { LikeCategory } from "../data";
+import { LikeCategory, Like } from "../data";
 import { useHorizontalWheelScroll } from "../hooks/useHorizontalWheelScroll";
 import LikeCard from "./LikeCard";
+import LikeModalShell from "./LikeModalShell";
 
 const INITIAL_COUNT = 14;
 const BATCH_SIZE = 14;
@@ -14,6 +15,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
   const sentinelRef = useRef<HTMLDivElement>(null);
   useHorizontalWheelScroll(trackRef);
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+  const [selectedLike, setSelectedLike] = useState<Like | null>(null);
 
   useEffect(() => {
     setVisibleCount(INITIAL_COUNT);
@@ -54,10 +56,11 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
       </div>
       <div className="likes-track" ref={trackRef} data-lenis-prevent-wheel>
         {preview.map((l, i) => (
-          <LikeCard l={l} carousel layout={cat.layout} key={`${cat.key}-${i}`} />
+          <LikeCard l={l} carousel layout={cat.layout} key={`${cat.key}-${i}`} onClick={() => setSelectedLike(l)} />
         ))}
         {visibleCount < cat.items.length && <div ref={sentinelRef} className="likes-track-sentinel" aria-hidden />}
       </div>
+      {selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
     </div>
   );
 }

@@ -9,7 +9,7 @@ Personal website of itouSouta / 郭家睿 / 伊藤蒼太, live at [itousouta15.t
 | Framework | Next.js 14 (App Router) |
 | Language | TypeScript |
 | Styling | Plain CSS (single global stylesheet, CSS custom properties) |
-| Data | Vercel KV (Redis) — Discord-sourced posts; Threads API — synced posts |
+| Data | Vercel KV (Redis) — Discord-sourced posts; Threads API — synced posts; GitHub API — repository info |
 | Real-time | [Lanyard API](https://github.com/Phineas/lanyard) — Discord presence |
 | Deployment | Vercel |
 
@@ -21,13 +21,15 @@ No UI library, no CSS-in-JS, no component framework.
 |---|---|
 | `/` | Home — profile card, hero, tech tiles, bento nav grid, GitHub contribution graph |
 | `/about` | About — bio, stats, social links |
-| `/thoughts` | 雜談 — feed merging Discord slash-command posts and synced Threads posts |
+| `/thoughts` | 雜談 — feed merging Discord slash-command posts, synced Threads posts, and GitHub events |
 | `/likes` | Likes — searchable, tag-filtered grid of novels, manga, and anime; music section |
 | `/likes/[category]` | Category detail — full list with carousel and filter |
 | `/likes/music` | Music — horizontally scrollable artist cards with song lists |
-| `/projects` | Projects — card grid of personal projects |
+| `/projects` | Projects — filterable card grid of personal projects with GitHub repository info |
 | `/links` | Friends — link cards for friends and communities |
 | `/experience` | Journey — timeline of experience and activities |
+| `/feed.xml` | RSS feed — unified feed of thoughts, projects, and updates |
+| (Cmd/Ctrl+K) | Command Palette — quick navigation and search for pages and projects |
 
 ## Features
 
@@ -68,6 +70,18 @@ Avatars, likes covers, music art, and project screenshots are hotlinked from doz
 - Card hover effects (disabled on touch devices via `@media (hover: none)`)
 - All animations respect `prefers-reduced-motion`
 
+**Command Palette**
+Quick site navigation and search via Cmd/Ctrl+K. Provides instant access to all pages and projects, with fuzzy search support for fast discovery.
+
+**RSS Feed**
+Unified RSS feed at `/feed.xml` merges thoughts from Discord (`/碎碎念` slash command), Threads posts, and GitHub repository events, sorted by timestamp.
+
+**Projects and Details**
+Projects page supports filtering by technology and category. Project cards fetch live repository information from GitHub API (stars, language, description). Clicking a project opens a modal with detailed information and a direct link.
+
+**Likes Details**
+Likes support detailed view with expanded descriptions and additional metadata beyond the grid card format.
+
 **Accessibility and UX**
 - Touch devices: hover transforms are reset; `:active` states provide tap feedback instead
 - Back-to-top button with smooth scroll, visible after 400 px scrolled
@@ -83,26 +97,35 @@ app/
   components/
     Header.tsx                       Sticky nav with mobile overlay
     Footer.tsx                       Footer with sitemap, projects, social links
+    CommandPalette.tsx               Command palette trigger and state management
+    CommandPaletteInner.tsx          Command palette UI and search logic (client-side)
     TileIcon.tsx                     Theme-aware technology icon tile (client component)
     tileIconMeta.ts                  Icon metadata (src, dark bg, light bg) — server-safe
     LanyardCards.tsx                 Discord presence components
     GithubContributionCard.tsx
     LikeCard.tsx
-    LikeCategorySection.tsx
+    LikeCategorySection.tsx          Category section with lazy-loading observer
+    LikeDetailBody.tsx               Expanded like detail view
     LikeFilterGrid.tsx
     MusicArtistCard.tsx
     MusicSection.tsx
+    ProjectDetailBody.tsx            Detailed project view with GitHub repository info
+    ProjectFilterGrid.tsx            Filterable project grid with modal support
+    ProjectModalShell.tsx            Modal wrapper for project details
     PageHead.tsx
     PageTransition.tsx
     BackToTopButton.tsx
     ThemeProvider.tsx
+    SiteLoader.tsx                   Full-page loader with blur and transition effects
   hooks/
     useHorizontalWheelScroll.ts          Mouse-wheel horizontal pan
     useScrollLinkedHorizontalReveal.ts   Scroll-position-linked horizontal pan
   lib/
     kv.ts                             Vercel KV read/write for Discord-sourced thoughts
     threads.ts                        Threads API fetch for synced posts
+    github.ts                         GitHub API fetch for repository info and events
     imageThumb.ts                     wsrv.nl resize-proxy helpers for external images
+    mergedThoughts.ts                 Merge and deduplicate thoughts from multiple sources
   about/page.tsx
   experience/page.tsx
   likes/page.tsx
@@ -111,8 +134,9 @@ app/
   links/page.tsx
   projects/page.tsx
   thoughts/page.tsx
+  feed.xml/route.ts                 RSS feed route (merged thoughts + projects)
   page.tsx            Home
-  layout.tsx          Root layout — fonts, theme script, header, footer
+  layout.tsx          Root layout — fonts, theme script, header, footer, command palette
   globals.css         All styles
   data.ts             All content — roles, likes, projects, music, links, fallback thoughts
 public/
@@ -145,6 +169,7 @@ Required for the `/thoughts` page and Discord integration (see `.env.local`):
 | `DISCORD_PUBLIC_KEY` | Verifying interaction signatures in `app/api/discord/route.ts` |
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection |
 | `THREADS_ACCESS_TOKEN` | Fetching synced posts from the Threads API |
+| `GITHUB_TOKEN` | GitHub API access for fetching repository information (optional; without it, repository details are unavailable) |
 
 
 ## Deployment

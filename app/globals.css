@@ -677,27 +677,37 @@ body.site-revealed .header {
 /* ===========================================================================
    Project detail modal
    =========================================================================== */
-.proj-modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 400;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(16px, 4vh, 48px) 16px;
-  animation: cmdk-fade-in 0.2s ease;
+@keyframes modal-overlay-fade {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+  }
 }
 @keyframes modal-pop {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.98);
+    transform: translateY(24px) scale(0.92) rotateX(8deg);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
     transform: none;
+    filter: blur(0);
   }
+}
+.proj-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vh, 48px) 16px;
+  animation: modal-overlay-fade 0.4s ease forwards;
 }
 .proj-modal {
   width: 100%;
@@ -709,7 +719,7 @@ body.site-revealed .header {
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   padding: 28px 32px 36px;
   scrollbar-width: none;
-  animation: modal-pop 0.3s cubic-bezier(0.32, 0.72, 0.35, 1) both;
+  animation: modal-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .proj-modal::-webkit-scrollbar {
   display: none;
@@ -758,6 +768,227 @@ body.site-revealed .header {
   }
   .proj-modal-title {
     font-size: 22px;
+  }
+}
+
+/* ===========================================================================
+   Like detail modal
+   =========================================================================== */
+.like-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vh, 48px) 16px;
+  animation: modal-overlay-fade 0.4s ease forwards;
+}
+.like-modal {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--bd2);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+  padding: 32px 40px 40px;
+  scrollbar-width: none;
+  animation: modal-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.like-modal::-webkit-scrollbar {
+  display: none;
+}
+.like-modal-head {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.like-modal-info {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.like-modal-cover {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border: 1px solid var(--bd2);
+  border-radius: 2px;
+  flex: none;
+}
+.like-modal-head-main {
+  margin-bottom: 18px;
+}
+.like-modal-head-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+.like-modal-content {
+  flex: 1;
+  min-width: 0;
+}
+.like-modal-title {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 24px;
+  color: var(--tx);
+  margin: 0 0 6px;
+  word-break: break-word;
+  line-height: 1.35;
+}
+.like-modal-sub {
+  color: var(--dim);
+  font-size: 15px;
+  margin: 0 0 12px;
+  word-break: break-word;
+}
+.like-modal-meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.like-modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0;
+}
+.like-modal-tag {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--dim);
+  background: var(--inset);
+  border: 1px solid var(--bd);
+  padding: 5px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+}
+.like-modal-ratings {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 14px 0;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.like-modal-rating {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+.like-modal-person-rating {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+.like-modal-rating-label {
+  font-size: 10px;
+  color: var(--mute);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+}
+.like-modal-rating .star-rating {
+  color: #ffc107;
+}
+.like-modal-person-rating .star-rating {
+  color: #ff6b6b;
+}
+.star-half {
+  display: inline-block;
+  font-size: 14px;
+  opacity: 0.8;
+}
+.star-score {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: var(--dim);
+  margin-left: 6px;
+}
+.like-modal-action {
+  align-self: center;
+  margin-top: 0;
+}
+.like-modal-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+.like-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--bd2);
+  background: var(--inset);
+  color: var(--tx);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, border-color 0.2s ease;
+  z-index: 1;
+}
+.like-modal-close:hover {
+  transform: rotate(90deg);
+  border-color: #8f9dc9;
+}
+.like-modal-note {
+  margin: 32px 0 0;
+  padding: 20px;
+  background: var(--inset);
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+}
+.like-modal-note-title {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 14px;
+  color: var(--dim);
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+.like-modal-note-text {
+  color: var(--tx);
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+@media (max-width: 600px) {
+  .like-modal {
+    padding: 24px 24px 28px;
+  }
+  .like-modal-title {
+    font-size: 20px;
+  }
+  .like-modal-cover {
+    width: 100px;
+    height: 150px;
   }
 }
 
@@ -2060,11 +2291,16 @@ body.site-revealed .header {
   min-height: calc(1.35em * 2);
 }
 .like-rating {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: var(--blue);
   white-space: nowrap;
   flex: none;
+}
+.like-rating .star-rating {
+  color: #ffc107;
+  font-size: 12px;
+}
+.like-rating .star-score {
+  font-size: 11px;
+  margin-left: 2px;
 }
 .like-sub {
   font-family: "JetBrains Mono", monospace;
