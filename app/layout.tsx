@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import BackToTopButton from "./components/BackToTopButton";
 import SiteLoader from "./components/SiteLoader";
+import CommandPalette from "./components/CommandPalette";
 
 const SITE_URL = "https://itousouta15.tw";
 const SITE_TITLE = "itouSouta15.tw";
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
           }}
         />
+        <link rel="alternate" type="application/rss+xml" title={`${SITE_TITLE} 雜談`} href="/feed.xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://font.emtech.cc" />
@@ -110,6 +112,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
           <BackToTopButton />
+          <CommandPalette />
           <ReactLenis root options={{ wheelMultiplier: 0.8, lerp: 0.1 }} />
         </ThemeProvider>
       </body>

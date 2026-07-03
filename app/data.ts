@@ -16,6 +16,7 @@ export interface Like {
   rating?: number;
   status?: string;
   tags?: string[];
+  note?: string;
 }
 
 export interface LikeCategory {
@@ -26,7 +27,14 @@ export interface LikeCategory {
   items: Like[];
 }
 
+export interface ProjectTimelineEntry {
+  version: string;
+  date: string;
+  note?: string;
+}
+
 export interface Project {
+  slug: string;
   kicker: string;
   color: "blue" | "purple";
   title: string;
@@ -35,6 +43,12 @@ export interface Project {
   icon: string;
   href: string;
   cover: string;
+  siteUrl?: string;
+  longDesc?: string;
+  why?: string;
+  difficulties?: string;
+  demoUrl?: string;
+  timeline?: ProjectTimelineEntry[];
 }
 
 export const ROLES: Role[] = [
@@ -389,21 +403,22 @@ export const MUSIC_ARTISTS: MusicArtist[] = [
 ];
 
 export const PROJECTS: Project[] = [
-    { kicker: "APP", color: "blue", title: "YetAnotherBusApp", desc: "現代化跨平台公車動態查詢 App", tags: ["Flutter", "Dart"], icon: "flutter", href: "https://github.com/AvianJay/yetanotherbusapp", cover: "/assets/YABus.webp" },
-    { kicker: "BOT", color: "blue", title: "SCAICT-uwu", desc: "中電喵：中電會 Discord Bot", tags: ["Python", "flask"], icon: "scaict", href: "https://github.com/SCAICT/SCAICT-uwu", cover: "https://raw.githubusercontent.com/SCAICT/doc/main/static/img/charge-demo.gif" },
-    { kicker: "WEB", color: "blue", title: "DLHIT-Website", desc: "大里高中資訊校隊官網", tags: ["Next.js", "TypeScript"], icon: "dlhit", href: "https://github.com/itousouta15/DLHIT-website", cover: "/assets/DLHIT.webp" },
-    { kicker: "WEB", color: "blue", title: "SCAICT.github.io", desc: "中電會官方網站", tags: ["HTML", "CSS","JavaScript"], icon: "scaict", href: "https://github.com/SCAICT/SCAICT.github.io", cover: "/assets/SCAICT.webp" },
-    { kicker: "PORTFOLIO", color: "blue", title: "itouSouta15.tw", desc: "就是這裡 www", tags: ["Next.js", "TypeScript"], icon: "nextjs", href: "https://github.com/itousouta15/itousouta15.tw", cover: "/assets/itousouta15.webp" },
-    { kicker: "BLOG", color: "blue", title: "itouBLoGa", desc: "一個基於 Hexo 的部落格", tags: ["Hexo", "Node.js"], icon: "hexo", href: "https://github.com/itousouta15/itouBLoGa", cover: "https://github.com/itousouta15/itouBLoGa/raw/source/source/images/mainweb.webp" },
-    { kicker: "ARCHIVE", color: "blue", title: "itouBLoldGa", desc: "一個基於 Hexo 及 anzhiyu 主題的舊部落格", tags: ["Hexo", "Node.js"], icon: "hexo", href: "https://github.com/itousouta15/itouBLoldGa", cover: "/assets/Newweb.webp" },
-    { kicker: "TOOL", color: "blue", title: "itouSlides", desc: "用 Astro + slidev 構建的公開簡報展示頁", tags: ["Astro", "TypeScript"], icon: "astro", href: "https://github.com/itousouta15/itouSlides", cover: "/assets/Slides.webp" },
-        { kicker: "WEB", color: "blue", title: "115-summer-camp", desc: "SCAICT 2026 暑訓官網", tags: ["Vite", "React"], icon: "scaict", href: "https://github.com/SCAICT/115-summer-camp", cover: "/assets/SCAICTsc.webp" },
-    { kicker: "WEB", color: "blue", title: "WinterCamp2026", desc: "SCIST x SCAICT 2026 寒訓官網", tags: ["Next.js", "React"], icon: "scaict", href: "https://github.com/scist-tw/WinterCamp2026", cover: "/assets/SCIST.webp" },
-    { kicker: "SHOWCASE", color: "blue", title: "itouCards", desc: "一個用純 HTML / CSS / JavaScript 製作的名片展示頁", tags: ["HTML", "CSS","JavaScript"], icon: "html", href: "https://github.com/itousouta15/itouCards", cover: "https://github.com/itousouta15/itouCards/raw/main/web.webp" },
-    { kicker: "HACKATHON", color: "blue", title: "2025codefestteam30", desc: "北市微服務大黑客松作品：北市避難設施資訊整合系統", tags: ["Flutter", "Dart"], icon: "flutter", href: "https://github.com/Twcat0503/2025Taipei-codefest-team30", cover: "/assets/cf.webp" },
+    { slug: "yetanotherbusapp", kicker: "APP", color: "blue", title: "YetAnotherBusApp", desc: "現代化跨平台公車動態查詢 App", tags: ["Flutter", "Dart"], icon: "flutter", href: "https://github.com/AvianJay/yetanotherbusapp", cover: "/assets/YABus.webp",siteUrl: "https://busapp.avianjay.sbs/" },
+    { slug: "scaict-uwu", kicker: "BOT", color: "blue", title: "SCAICT-uwu", desc: "中電喵：中電會 Discord Bot", tags: ["Python", "flask"], icon: "scaict", href: "https://github.com/SCAICT/SCAICT-uwu", cover: "https://raw.githubusercontent.com/SCAICT/doc/main/static/img/charge-demo.gif" },
+    { slug: "dlhit-website", kicker: "WEB", color: "blue", title: "DLHIT-Website", desc: "大里高中資訊校隊官網", tags: ["Next.js", "TypeScript"], icon: "dlhit", href: "https://github.com/itousouta15/DLHIT-website", cover: "/assets/DLHIT.webp",siteUrl: "https://dlhit.itousouta15.tw" },
+    { slug: "scaict-github-io", kicker: "WEB", color: "blue", title: "SCAICT.github.io", desc: "中電會官方網站", tags: ["HTML", "CSS","JavaScript"], icon: "scaict", href: "https://github.com/SCAICT/SCAICT.github.io", cover: "/assets/SCAICT.webp", siteUrl: "https://scaict.github.io" },
+    { slug: "itousouta15-tw", kicker: "PORTFOLIO", color: "blue", title: "itouSouta15.tw", desc: "就是這裡 www", tags: ["Next.js", "TypeScript", "itou 系列"], icon: "nextjs", href: "https://github.com/itousouta15/itousouta15.tw", cover: "/assets/itousouta15.webp", siteUrl: "https://itousouta15.tw" },
+    { slug: "itoubloga", kicker: "BLOG", color: "blue", title: "itouBLoGa", desc: "一個基於 Hexo 的部落格", tags: ["Hexo", "Node.js", "itou 系列"], icon: "hexo", href: "https://github.com/itousouta15/itouBLoGa", cover: "https://github.com/itousouta15/itouBLoGa/raw/source/source/images/mainweb.webp", siteUrl: "https://blog.itousouta15.tw" },
+    { slug: "itoubloldga", kicker: "ARCHIVE", color: "blue", title: "itouBLoldGa", desc: "一個基於 Hexo 及 anzhiyu 主題的舊部落格", tags: ["Hexo", "Node.js", "itou 系列"], icon: "hexo", href: "https://github.com/itousouta15/itouBLoldGa", cover: "/assets/Newweb.webp" },
+    { slug: "itouslides", kicker: "TOOL", color: "blue", title: "itouSlides", desc: "用 Astro + slidev 構建的公開簡報展示頁", tags: ["Astro", "TypeScript", "itou 系列"], icon: "astro", href: "https://github.com/itousouta15/itouSlides", cover: "/assets/Slides.webp" },
+    { slug: "115-summer-camp", kicker: "WEB", color: "blue", title: "115-summer-camp", desc: "SCAICT 2026 暑訓官網", tags: ["Vite", "React"], icon: "scaict", href: "https://github.com/SCAICT/115-summer-camp", cover: "/assets/SCAICTsc.webp" ,siteUrl: "https://sc.scaict.org"},
+    { slug: "wintercamp2026", kicker: "WEB", color: "blue", title: "WinterCamp2026", desc: "SCIST x SCAICT 2026 寒訓官網", tags: ["Next.js", "React"], icon: "scaict", href: "https://github.com/scist-tw/WinterCamp2026", cover: "/assets/SCIST.webp", siteUrl: "https://scist.camp" },
+    { slug: "itoucards", kicker: "SHOWCASE", color: "blue", title: "itouCards", desc: "一個用純 HTML / CSS / JavaScript 製作的名片展示頁", tags: ["HTML", "CSS","JavaScript", "itou 系列"], icon: "html", href: "https://github.com/itousouta15/itouCards", cover: "https://github.com/itousouta15/itouCards/raw/main/web.webp", siteUrl: "https://cards.itousouta15.tw" },
+    { slug: "2025codefestteam30", kicker: "HACKATHON", color: "blue", title: "2025codefestteam30", desc: "北市微服務大黑客松作品：北市避難設施資訊整合系統", tags: ["Flutter", "Dart"], icon: "flutter", href: "https://github.com/Twcat0503/2025Taipei-codefest-team30", cover: "/assets/cf.webp" },
   ];
   
 export const DISCORD_USER_ID = "942765194571055164";
+export const GITHUB_USERNAME = "itousouta15";
 
 export interface Thought {
   date: string;

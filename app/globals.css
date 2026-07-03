@@ -12,6 +12,12 @@
 html {
   zoom: 1.15;
   -webkit-tap-highlight-color: transparent;
+  /* 隱藏全站原生捲軸（滾動仍可用，另有 Lenis 平滑滾動）*/
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* 舊版 Edge/IE */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / 新 Edge */
 }
 /* 手機上移除 zoom，避免內距/字體比版型預設大 15%，造成小螢幕擁擠與 breakpoint 失效 */
 @media (max-width: 760px) {
@@ -301,7 +307,7 @@ body.site-revealed .header {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 .nav {
   display: flex;
@@ -500,7 +506,6 @@ body.site-revealed .header {
   }
 }
 .theme-btn {
-  margin-left: 8px;
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -518,6 +523,242 @@ body.site-revealed .header {
 }
 .theme-btn:active {
   transform: rotate(35deg) scale(0.85);
+}
+
+/* ===========================================================================
+   Fullscreen search (Ctrl+K)
+   =========================================================================== */
+/* 背景與手機版漢堡選單 (.nav-overlay) 一致 */
+.cmdk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: radial-gradient(1100px 560px at 72% -12%, rgba(141, 181, 200, 0.11), transparent 60%), var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(60px, 12vh, 120px) 24px 40px;
+  animation: cmdk-fade-in 0.25s ease;
+}
+@keyframes cmdk-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.cmdk-panel {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  animation: modal-pop 0.35s cubic-bezier(0.32, 0.72, 0.35, 1) both;
+}
+.cmdk-close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--bd2);
+  background: var(--inset);
+  color: var(--tx);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+.cmdk-close:hover {
+  transform: rotate(90deg);
+  border-color: #8f9dc9;
+}
+/* 手機版對齊 header 那排按鈕的上緣（header-inner padding-top 13px）*/
+@media (max-width: 960px) {
+  .cmdk-close {
+    top: 13px;
+  }
+}
+.cmdk-input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--bd2);
+  padding: 12px 4px 16px;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: clamp(24px, 5vw, 34px);
+  color: var(--tx);
+  width: 100%;
+  flex: none;
+}
+.cmdk-input:focus {
+  outline: none;
+  border-bottom-color: var(--purple);
+}
+.cmdk-input::placeholder {
+  color: var(--mute);
+}
+.cmdk-hint {
+  margin-top: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+  flex: none;
+}
+.cmdk-results {
+  overflow-y: auto;
+  margin-top: 22px;
+  padding-bottom: 20px;
+  min-height: 0;
+  scrollbar-width: none;
+}
+.cmdk-results::-webkit-scrollbar {
+  display: none;
+}
+.cmdk-empty {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: var(--mute);
+  text-align: center;
+  padding: 40px 0;
+}
+.cmdk-group {
+  margin-bottom: 22px;
+}
+.cmdk-group-head {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--purple);
+  margin-bottom: 6px;
+  padding-left: 4px;
+}
+.cmdk-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-left: 2px solid transparent;
+  color: var(--tx);
+  cursor: pointer;
+  font-family: "Noto Sans TC", sans-serif;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.cmdk-item.active,
+.cmdk-item:hover {
+  background: var(--inset);
+  border-left-color: var(--purple);
+}
+.cmdk-item-title {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 17px;
+  color: var(--tx);
+  flex: none;
+}
+.cmdk-item-sub {
+  font-size: 12.5px;
+  color: var(--dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cmdk-item-arrow {
+  margin-left: auto;
+  flex: none;
+  color: var(--mute);
+  font-size: 14px;
+}
+
+/* ===========================================================================
+   Project detail modal
+   =========================================================================== */
+.proj-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vh, 48px) 16px;
+  animation: cmdk-fade-in 0.2s ease;
+}
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.proj-modal {
+  width: 100%;
+  max-width: 760px;
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--bd2);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+  padding: 28px 32px 36px;
+  scrollbar-width: none;
+  animation: modal-pop 0.3s cubic-bezier(0.32, 0.72, 0.35, 1) both;
+}
+.proj-modal::-webkit-scrollbar {
+  display: none;
+}
+.proj-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.proj-modal-title {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 28px;
+  color: var(--tx);
+  margin-top: 4px;
+}
+.proj-modal-desc {
+  color: var(--dim);
+  font-size: 13.5px;
+  margin-top: 6px;
+  line-height: 1.8;
+}
+.proj-modal-close {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--bd2);
+  background: var(--inset);
+  color: var(--tx);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+.proj-modal-close:hover {
+  transform: rotate(90deg);
+  border-color: #8f9dc9;
+}
+@media (max-width: 600px) {
+  .proj-modal {
+    padding: 20px 18px 28px;
+  }
+  .proj-modal-title {
+    font-size: 22px;
+  }
 }
 
 /* ===========================================================================
@@ -1741,6 +1982,13 @@ body.site-revealed .header {
   box-shadow: none;
   display: block;
   transition: border-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  /* .like-card 現在是 <button>（開 modal 用），重置瀏覽器預設按鈕樣式 */
+  width: 100%;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 .like-card:hover {
   border-color: var(--bd2);
@@ -2101,6 +2349,27 @@ body.site-revealed .header {
   font-size: 18px;
   display: inline-block;
   transition: transform 0.25s ease;
+}
+.proj-detail-cover {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border: 1px solid var(--bd);
+  background: var(--inset);
+}
+.proj-detail-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.proj-detail-section {
+  margin-top: 28px;
+}
+.proj-detail-section .card-kicker {
+  margin-bottom: 8px;
+  display: block;
 }
 
 /* Blog */
@@ -2827,7 +3096,11 @@ body.site-revealed .header {
 
 @media (prefers-reduced-motion: reduce) {
   .tiles-row-track,
-  .page-transition {
+  .page-transition,
+  .cmdk-overlay,
+  .cmdk-panel,
+  .proj-modal-overlay,
+  .proj-modal {
     animation: none !important;
   }
   .site-loader-ring {
