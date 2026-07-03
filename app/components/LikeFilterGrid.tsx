@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Like } from "../data";
 import { sortLikesByRating } from "../lib/sortLikes";
 import LikeCard from "./LikeCard";
@@ -15,17 +16,30 @@ export default function LikeFilterGrid({
 }) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [sortMode, setSortMode] = useState<"default" | "rating-desc" | "rating-asc">("rating-desc");
   const [selectedLike, setSelectedLike] = useState<Like | null>(null);
   const useModal = layout !== "circle";
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // ?like=<index>（例如從全站搜尋導過來）時自動打開對應 modal
+  useEffect(() => {
+    const idx = searchParams.get("like");
+    if (idx == null) return;
+    const item = items[Number(idx)];
+    if (item) setSelectedLike(item);
+  }, [searchParams, items]);
+
+  const closeModal = () => {
+    setSelectedLike(null);
+    if (searchParams.get("like")) router.replace(pathname, { scroll: false });
+  };
 
   const tags = useMemo(() => {
     const set = new Set<string>();
     items.forEach(l => l.tags?.forEach(t => set.add(t)));
     return Array.from(set);
   }, [items]);
-
-  const hasRatings = useMemo(() => items.some(l => l.rating != null || l.personRating != null), [items]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -34,9 +48,8 @@ export default function LikeFilterGrid({
       if (q && !l.title.toLowerCase().includes(q) && !l.sub?.toLowerCase().includes(q)) return false;
       return true;
     });
-    if (sortMode === "default") return result;
-    return sortLikesByRating(result, sortMode === "rating-desc" ? "desc" : "asc");
-  }, [items, query, activeTag, sortMode]);
+    return sortLikesByRating(result, "desc");
+  }, [items, query, activeTag]);
 
   return (
     <>
@@ -70,31 +83,6 @@ export default function LikeFilterGrid({
             ))}
           </div>
         )}
-        {hasRatings && (
-          <div className="likes-tag-row">
-            <button
-              type="button"
-              className={`likes-tag-chip ${sortMode === "default" ? "active" : ""}`}
-              onClick={() => setSortMode("default")}
-            >
-              預設排序
-            </button>
-            <button
-              type="button"
-              className={`likes-tag-chip ${sortMode === "rating-desc" ? "active" : ""}`}
-              onClick={() => setSortMode("rating-desc")}
-            >
-              評分 高→低
-            </button>
-            <button
-              type="button"
-              className={`likes-tag-chip ${sortMode === "rating-asc" ? "active" : ""}`}
-              onClick={() => setSortMode("rating-asc")}
-            >
-              評分 低→高
-            </button>
-          </div>
-        )}
       </div>
       {filtered.length > 0 ? (
         <div className={`likes-grid ${layout === "circle" ? "likes-grid--circle" : ""}`}>
@@ -110,7 +98,7 @@ export default function LikeFilterGrid({
       ) : (
         <div className="likes-empty">沒有符合條件的項目</div>
       )}
-      {useModal && selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
+      {useModal && selectedLike && <LikeModalShell like={selectedLike} onClose={closeModal} />}
     </>
   );
 }
