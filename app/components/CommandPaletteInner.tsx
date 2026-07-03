@@ -12,6 +12,8 @@ interface SearchItem {
   external?: boolean;
   category: string;
   projectSlug?: string;
+  likeCategory?: string;
+  likeIndex?: number;
 }
 
 const STATIC_PAGES: SearchItem[] = [
@@ -37,9 +39,10 @@ const LIKE_ITEMS: SearchItem[] = LIKE_CATEGORIES.flatMap(cat =>
     id: `like-${cat.key}-${i}`,
     title: item.title,
     sub: item.sub,
-    href: item.href ?? `/likes/${cat.key}`,
-    external: !!item.href,
+    href: `/likes/${cat.key}?like=${i}`,
     category: `收藏・${cat.label}`,
+    likeCategory: cat.key,
+    likeIndex: i,
   }))
 );
 
@@ -119,6 +122,9 @@ export default function CommandPaletteInner({ onClose }: { onClose: () => void }
     if (item.projectSlug) {
       // 導到專案頁，由該頁讀 ?project= 觸發對應的 client-side modal
       router.push(`/projects?project=${encodeURIComponent(item.projectSlug)}`);
+    } else if (item.likeCategory != null && item.likeIndex != null) {
+      // 導到收藏分類頁，由該頁讀 ?like= 觸發對應的 client-side modal
+      router.push(`/likes/${item.likeCategory}?like=${item.likeIndex}`);
     } else if (item.external) {
       window.open(item.href, "_blank", "noopener,noreferrer");
     } else {
