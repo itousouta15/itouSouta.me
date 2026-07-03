@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { LikeCategory, Like } from "../data";
 import { useHorizontalWheelScroll } from "../hooks/useHorizontalWheelScroll";
+import { sortLikesByRating } from "../lib/sortLikes";
 import LikeCard from "./LikeCard";
 import LikeModalShell from "./LikeModalShell";
 
@@ -21,6 +22,8 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
     setVisibleCount(INITIAL_COUNT);
   }, [cat.key]);
 
+  const sortedItems = useMemo(() => sortLikesByRating(cat.items, "desc"), [cat.items]);
+
   useEffect(() => {
     const track = trackRef.current;
     const sentinel = sentinelRef.current;
@@ -32,16 +35,16 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
     const observer = new IntersectionObserver(
       entries => {
         if (entries[0]?.isIntersecting) {
-          setVisibleCount(c => Math.min(c + BATCH_SIZE, cat.items.length));
+          setVisibleCount(c => Math.min(c + BATCH_SIZE, sortedItems.length));
         }
       },
       { root: track, rootMargin: "0px 600px 0px 0px" }
     );
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [cat.items.length]);
+  }, [sortedItems.length]);
 
-  const preview = cat.items.slice(0, visibleCount);
+  const preview = sortedItems.slice(0, visibleCount);
   const useModal = cat.layout !== "circle";
 
   return (
@@ -65,7 +68,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
             onClick={useModal ? () => setSelectedLike(l) : undefined}
           />
         ))}
-        {visibleCount < cat.items.length && <div ref={sentinelRef} className="likes-track-sentinel" aria-hidden />}
+        {visibleCount < sortedItems.length && <div ref={sentinelRef} className="likes-track-sentinel" aria-hidden />}
       </div>
       {useModal && selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
     </div>

@@ -1,34 +1,23 @@
 /**
- * Convert numeric rating (0-5) to star representation
- * @param rating - Number from 0 to 5
- * @returns Object with full stars, half star, and empty stars
- */
-export function getRatingStars(rating: number) {
-  if (rating < 0 || rating > 5) {
-    throw new Error("Rating must be between 0 and 5");
-  }
-
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-  return { fullStars, hasHalfStar, emptyStars };
-}
-
-/**
- * Generate star HTML string
- * @param rating - Number from 0 to 5
- * @returns JSX element with stars
+ * Render a 5-star rating as an overlay of a dim "track" row of stars and a
+ * clipped "fill" row on top, sized to the rating percentage. This avoids
+ * relying on half-star Unicode glyphs (e.g. U+2BE8), which many fonts
+ * (especially on mobile) don't render correctly.
  */
 export function StarRating({ rating }: { rating: number }) {
-  const { fullStars, hasHalfStar, emptyStars } = getRatingStars(rating);
+  const clamped = Math.max(0, Math.min(5, rating));
+  const percent = (clamped / 5) * 100;
+  const stars = "★★★★★";
 
   return (
     <span className="star-rating">
-      {"★".repeat(fullStars)}
-      {hasHalfStar && <span className="star-half">⯨</span>}
-      {"☆".repeat(emptyStars)}
-      <span className="star-score">{rating.toFixed(1)}</span>
+      <span className="star-rating-glyphs" aria-hidden="true">
+        <span className="star-rating-track">{stars}</span>
+        <span className="star-rating-fill" style={{ width: `${percent}%` }}>
+          {stars}
+        </span>
+      </span>
+      <span className="star-score">{clamped.toFixed(1)}</span>
     </span>
   );
 }
