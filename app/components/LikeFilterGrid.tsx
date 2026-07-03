@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Like } from "../data";
+import { sortLikesByRating } from "../lib/sortLikes";
 import LikeCard from "./LikeCard";
 import LikeModalShell from "./LikeModalShell";
 
@@ -14,6 +15,7 @@ export default function LikeFilterGrid({
 }) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [sortMode, setSortMode] = useState<"default" | "rating-desc" | "rating-asc">("rating-desc");
   const [selectedLike, setSelectedLike] = useState<Like | null>(null);
   const useModal = layout !== "circle";
 
@@ -23,14 +25,18 @@ export default function LikeFilterGrid({
     return Array.from(set);
   }, [items]);
 
+  const hasRatings = useMemo(() => items.some(l => l.rating != null || l.personRating != null), [items]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return items.filter(l => {
+    const result = items.filter(l => {
       if (activeTag && !l.tags?.includes(activeTag)) return false;
       if (q && !l.title.toLowerCase().includes(q) && !l.sub?.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [items, query, activeTag]);
+    if (sortMode === "default") return result;
+    return sortLikesByRating(result, sortMode === "rating-desc" ? "desc" : "asc");
+  }, [items, query, activeTag, sortMode]);
 
   return (
     <>
@@ -62,6 +68,31 @@ export default function LikeFilterGrid({
                 {t}
               </button>
             ))}
+          </div>
+        )}
+        {hasRatings && (
+          <div className="likes-tag-row">
+            <button
+              type="button"
+              className={`likes-tag-chip ${sortMode === "default" ? "active" : ""}`}
+              onClick={() => setSortMode("default")}
+            >
+              預設排序
+            </button>
+            <button
+              type="button"
+              className={`likes-tag-chip ${sortMode === "rating-desc" ? "active" : ""}`}
+              onClick={() => setSortMode("rating-desc")}
+            >
+              評分 高→低
+            </button>
+            <button
+              type="button"
+              className={`likes-tag-chip ${sortMode === "rating-asc" ? "active" : ""}`}
+              onClick={() => setSortMode("rating-asc")}
+            >
+              評分 低→高
+            </button>
           </div>
         )}
       </div>
