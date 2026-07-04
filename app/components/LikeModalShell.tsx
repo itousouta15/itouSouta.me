@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Like } from "../data";
 import { StarRating } from "../lib/ratingStars";
+
+const CLOSE_MS = 160; // 需與 CSS .is-closing 動畫時長一致
 
 export default function LikeModalShell({
   like,
@@ -12,9 +14,22 @@ export default function LikeModalShell({
   like: Like;
   onClose: () => void;
 }) {
+  const [closing, setClosing] = useState(false);
+
+  // 先播放關閉動畫，動畫結束後才真的通知外層卸載，避免「關掉沒動畫」
+  const requestClose = useCallback(() => {
+    setClosing(true);
+  }, []);
+
+  useEffect(() => {
+    if (!closing) return;
+    const t = setTimeout(onClose, CLOSE_MS);
+    return () => clearTimeout(t);
+  }, [closing, onClose]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") requestClose();
     };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -22,14 +37,24 @@ export default function LikeModalShell({
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [onClose]);
+  }, [requestClose]);
 
   const hasStats = like.rating != null || like.personRating != null || like.status;
 
   return createPortal(
-    <div className="like-modal-overlay" onMouseDown={onClose} role="dialog" aria-modal="true" aria-label={like.title}>
-      <div className="like-modal" onMouseDown={e => e.stopPropagation()} data-lenis-prevent>
-        <button type="button" className="like-modal-close" onClick={onClose} aria-label="關閉">
+    <div
+      className={`like-modal-overlay${closing ? " is-closing" : ""}`}
+      onMouseDown={requestClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={like.title}
+    >
+      <div
+        className={`like-modal${closing ? " is-closing" : ""}`}
+        onMouseDown={e => e.stopPropagation()}
+        data-lenis-prevent
+      >
+        <button type="button" className="like-modal-close" onClick={requestClose} aria-label="關閉">
           ✕
         </button>
 

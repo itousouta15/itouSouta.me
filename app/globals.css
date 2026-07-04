@@ -230,6 +230,16 @@ svg {
   transform: translateY(-100%);
   pointer-events: none;
 }
+/* 圈圈用自己獨立的 fixed + 置中，不靠 .site-loader 的 flex 置中：
+   萬一 .site-loader 那個蓋滿全螢幕的 fixed 容器在第一幀量錯尺寸（手機上
+   偶爾會發生的 viewport/合成時序問題），圈圈還是會直接對齊「真正的」
+   螢幕中心，不會跟著容器一起跑位。 */
+.site-loader-ring-pos {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .site-loader-ring {
   width: 80px;
   height: 80px;
@@ -679,34 +689,38 @@ body.site-revealed .header {
    =========================================================================== */
 @keyframes modal-overlay-fade {
   from {
-    background-color: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(0);
+    opacity: 0;
   }
   to {
-    background-color: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(6px);
+    opacity: 1;
   }
 }
-@keyframes modal-overlay-fade-light {
+@keyframes modal-overlay-fade-out {
   from {
-    background-color: rgba(20, 24, 34, 0);
-    backdrop-filter: blur(0);
+    opacity: 1;
   }
   to {
-    background-color: rgba(20, 24, 34, 0.22);
-    backdrop-filter: blur(6px);
+    opacity: 0;
   }
 }
 @keyframes modal-pop {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.92) rotateX(8deg);
-    filter: blur(4px);
+    transform: translateY(20px) scale(0.95);
   }
   to {
     opacity: 1;
     transform: none;
-    filter: blur(0);
+  }
+}
+@keyframes modal-pop-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
   }
 }
 .proj-modal-overlay {
@@ -717,7 +731,12 @@ body.site-revealed .header {
   align-items: center;
   justify-content: center;
   padding: clamp(16px, 4vh, 48px) 16px;
-  animation: modal-overlay-fade 0.18s ease forwards;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  animation: modal-overlay-fade 0.18s ease both;
+}
+.proj-modal-overlay.is-closing {
+  animation: modal-overlay-fade-out 0.16s ease both;
 }
 .proj-modal {
   width: 100%;
@@ -729,7 +748,11 @@ body.site-revealed .header {
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   padding: 28px 32px 36px;
   scrollbar-width: none;
-  animation: modal-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+  animation: modal-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.proj-modal.is-closing {
+  animation: modal-pop-out 0.16s cubic-bezier(0.4, 0, 1, 1) both;
 }
 .proj-modal::-webkit-scrollbar {
   display: none;
@@ -792,10 +815,15 @@ body.site-revealed .header {
   align-items: center;
   justify-content: center;
   padding: clamp(16px, 4vh, 48px) 16px;
-  animation: modal-overlay-fade 0.18s ease forwards;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  animation: modal-overlay-fade 0.18s ease both;
+}
+.like-modal-overlay.is-closing {
+  animation: modal-overlay-fade-out 0.16s ease both;
 }
 :root[data-theme="light"] .like-modal-overlay {
-  animation: modal-overlay-fade-light 0.18s ease forwards;
+  background-color: rgba(20, 24, 34, 0.22);
 }
 .like-modal {
   position: relative;
@@ -809,7 +837,11 @@ body.site-revealed .header {
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   padding-bottom: 44px;
   scrollbar-width: none;
-  animation: modal-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+  animation: modal-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.like-modal.is-closing {
+  animation: modal-pop-out 0.16s cubic-bezier(0.4, 0, 1, 1) both;
 }
 .like-modal::-webkit-scrollbar {
   display: none;
@@ -2266,7 +2298,7 @@ body.site-revealed .header {
   overflow: hidden;
   box-shadow: none;
   display: block;
-  transition: border-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition: border-color 0.2s ease;
   /* .like-card 現在是 <button>（開 modal 用），重置瀏覽器預設按鈕樣式 */
   width: 100%;
   padding: 0;
@@ -2277,8 +2309,6 @@ body.site-revealed .header {
 }
 .like-card:hover {
   border-color: var(--bd2);
-  transform: translateY(-4px);
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
 }
 .like-card--carousel {
   width: 170px;
@@ -2288,6 +2318,7 @@ body.site-revealed .header {
 .like-thumb {
   position: relative;
   aspect-ratio: 2 / 3;
+  overflow: hidden;
   background-image: repeating-linear-gradient(
     45deg,
     var(--inset),
@@ -2310,6 +2341,10 @@ body.site-revealed .header {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.like-card:hover .like-thumb-img {
+  transform: scale(1.06);
 }
 .like-status {
   position: absolute;
@@ -2554,29 +2589,32 @@ body.site-revealed .header {
   border-radius: 0;
   padding: 22px 24px;
   box-shadow: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: border-color 0.25s ease;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 .proj-card:hover {
-  transform: translateY(-4px);
   border-color: var(--bd2);
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
 }
 .proj-card:hover .proj-cover {
+  transform: scale(1.06);
   filter: brightness(1.05);
 }
 .proj-card:hover .proj-arrow {
   transform: translate(3px, -3px);
+}
+.proj-cover-wrap {
+  overflow: hidden;
+  border: 1px solid var(--bd);
+  background: var(--inset);
 }
 .proj-cover {
   display: block;
   width: 100%;
   height: 150px;
   object-fit: cover;
-  border: 1px solid var(--bd);
-  background: var(--inset);
+  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), filter 0.25s ease;
 }
 .proj-top {
   display: flex;
@@ -2739,16 +2777,17 @@ body.site-revealed .header {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: border-color 0.2s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition: border-color 0.2s ease;
 }
 .link-card:hover {
   border-color: var(--bd2);
-  transform: translateY(-4px);
-  box-shadow: 0 14px 26px var(--shadow);
 }
 .link-card:hover .link-arrow {
   transform: translate(3px, -3px);
   color: var(--blue);
+}
+.link-card:hover .link-avatar {
+  transform: scale(1.08);
 }
 .link-card-head {
   display: flex;
@@ -2762,6 +2801,7 @@ body.site-revealed .header {
   object-fit: cover;
   flex-shrink: 0;
   background: var(--inset);
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
 .link-avatar--placeholder {
   display: flex;
@@ -2911,17 +2951,15 @@ body.site-revealed .header {
   border-radius: 0;
   padding: 22px 26px;
   margin-top: 32px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: border-color 0.25s ease;
 }
 .tl-card.purple {
   border-top-color: var(--purple);
 }
 .tl-card:hover {
-  transform: translateY(-4px);
   border-left-color: var(--bd2);
   border-right-color: var(--bd2);
   border-bottom-color: var(--bd2);
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
 }
 .tl-period {
   font-family: "JetBrains Mono", monospace;
@@ -3225,15 +3263,13 @@ body.site-revealed .header {
    Touch devices — prevent hover states from sticking after tap
    =========================================================================== */
 @media (hover: none) {
-  /* Reset card transform/shadow/opacity hovers that get stuck on touch */
+  /* Reset card opacity hovers that get stuck on touch */
   .like-card:hover {
-    transform: none;
-    box-shadow: none;
     border-color: var(--bd);
   }
+  .like-card:hover .like-thumb-img { transform: none; }
+  .proj-card:hover .proj-cover { transform: none; filter: none; }
   .tl-card:hover {
-    transform: none;
-    box-shadow: none;
     border-left-color: var(--bd);
     border-right-color: var(--bd);
     border-bottom-color: var(--bd);
@@ -3256,11 +3292,10 @@ body.site-revealed .header {
   .nav-card:hover .nav-card-arrow { transform: rotate(45deg); color: var(--dim); }
   .nav-card:hover .nav-card-ghost { transform: none; opacity: 1; }
   .link-card:hover {
-    transform: none;
-    box-shadow: none;
     border-color: var(--bd);
   }
   .link-card:hover .link-arrow { transform: none; color: var(--dim); }
+  .link-card:hover .link-avatar { transform: none; }
   /* Touch feedback via :active */
   .like-card:active { border-color: var(--bd2); }
   .card-likes:active { border-color: var(--bd2); }
@@ -3499,7 +3534,9 @@ body.site-revealed .header {
   .cmdk-overlay,
   .cmdk-panel,
   .proj-modal-overlay,
-  .proj-modal {
+  .proj-modal,
+  .like-modal-overlay,
+  .like-modal {
     animation: none !important;
   }
   .site-loader-ring {

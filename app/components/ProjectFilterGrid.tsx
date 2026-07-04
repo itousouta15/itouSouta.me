@@ -109,13 +109,15 @@ export default function ProjectFilterGrid({
                 </div>
                 <span className="proj-arrow">↗</span>
               </div>
-              <img
-                className="proj-cover"
-                src={projectCoverThumb(p.cover)}
-                alt={`${p.title} 預覽圖`}
-                loading="lazy"
-                decoding="async"
-              />
+              <div className="proj-cover-wrap">
+                <img
+                  className="proj-cover"
+                  src={projectCoverThumb(p.cover)}
+                  alt={`${p.title} 預覽圖`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
               <div className="proj-title">{p.title}</div>
               <div className="proj-desc">{p.desc}</div>
               <div className="proj-tags">
