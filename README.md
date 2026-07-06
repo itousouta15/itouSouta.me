@@ -9,7 +9,7 @@ Personal website of itouSouta / 郭家睿 / 伊藤蒼太, live at [itousouta15.t
 | Framework | Next.js 14 (App Router) |
 | Language | TypeScript |
 | Styling | Plain CSS (single global stylesheet, CSS custom properties) |
-| Data | Vercel KV (Redis) — Discord-sourced posts; Threads API — synced posts; GitHub API — repository info |
+| Data | Vercel KV (Redis) — Discord-sourced posts; Threads API — synced posts; GitHub API — repository info; Last.fm API — top albums |
 | Real-time | [Lanyard API](https://github.com/Phineas/lanyard) — Discord presence |
 | Deployment | Vercel |
 
@@ -20,11 +20,11 @@ No UI library, no CSS-in-JS, no component framework.
 | Route | Description |
 |---|---|
 | `/` | Home — profile card, hero, tech tiles, bento nav grid, GitHub contribution graph |
-| `/about` | About — bio, stats, social links |
+| `/about` | About — bio, stats, motto, and two Last.fm/likes teaser cards (top anime, top album) |
 | `/thoughts` | 雜談 — feed merging Discord slash-command posts, synced Threads posts, and GitHub events |
-| `/likes` | Likes — searchable, tag-filtered grid of novels, manga, and anime; music section |
+| `/likes` | Likes — searchable, tag-filtered grid of novels, manga, and anime; Last.fm top-albums preview row |
 | `/likes/[category]` | Category detail — full list with carousel and filter |
-| `/likes/music` | Music — horizontally scrollable artist cards with song lists |
+| `/likes/music` | Music — searchable grid of Last.fm top albums (square covers), same modal detail view as other categories |
 | `/projects` | Projects — filterable card grid of personal projects with GitHub repository info |
 | `/links` | Friends — link cards for friends and communities |
 | `/experience` | Journey — timeline of experience and activities |
@@ -51,8 +51,11 @@ The logo is hidden until `ChenYuLuoYan` is active (detected via `document.fonts.
 **雜談 (Thoughts)**
 A Discord bot backs a `/碎碎念` slash command; submissions are verified (Ed25519, via `tweetnacl`) in `app/api/discord/route.ts` and stored in Vercel KV. The `/thoughts` page merges these entries with posts pulled from the Threads API (`app/lib/threads.ts`), sorted newest-first by timestamp, and revalidates on each new Discord post. If no remote data is available, it falls back to the static `THOUGHTS` array in `app/data.ts`.
 
-**Likes and music**
-All content is statically defined in `app/data.ts`. The likes pages support client-side full-text search and multi-tag filtering without any server dependency. Horizontal carousels use custom hooks for mouse-wheel and scroll-linked panning.
+**Likes**
+Novels, manga, anime, and VTuber entries are statically defined in `app/data.ts`. The likes pages support client-side full-text search and multi-tag filtering without any server dependency. Horizontal carousels use custom hooks for mouse-wheel and scroll-linked panning. `LikeCard`/`LikeFilterGrid` support a `layout` prop (`"circle"` for VTuber avatars, `"square"` for album covers) that swaps the thumbnail crop and, for `"circle"`, hides the sub-line and skips the detail modal in favor of linking straight out.
+
+**Music (Last.fm)**
+Unlike the rest of the likes content, music is live data: `app/lib/lastfm.ts` calls Last.fm's `user.gettopalbums` (album art is the only Last.fm entity that still returns real cover images — the artist/track endpoints now return one shared placeholder). It backs three surfaces at increasing scope: the about-page mini card (this month, top 4), the `/likes` preview row (overall, top 12), and the full `/likes/music` grid (overall, top 50). Every call site treats a `null` result (missing `LASTFM_API_KEY`/`LASTFM_USER`, or the API failing) as "no data" and degrades gracefully — the about-page card falls back to the static `MUSIC_ARTISTS` avatars in `app/data.ts`, and `/likes` simply omits the preview row.
 
 **Lanyard integration**
 Discord presence (online status, activity, Spotify playback) is fetched live from the Lanyard WebSocket API and displayed in the profile card. The component gracefully handles disconnection.
@@ -103,15 +106,16 @@ app/
     tileIconMeta.ts                  Icon metadata (src, dark bg, light bg) — server-safe
     LanyardCards.tsx                 Discord presence components
     GithubContributionCard.tsx
-    LikeCard.tsx
+    GithubGlyph.tsx                  Inline GitHub mark (SVGProps passthrough)
+    LikeCard.tsx                     Supports default / "circle" (VTuber) / "square" (album) layouts
     LikeCategorySection.tsx          Category section with lazy-loading observer
-    LikeDetailBody.tsx               Expanded like detail view
-    LikeFilterGrid.tsx
-    MusicArtistCard.tsx
-    MusicSection.tsx
+    LikeDetailBody.tsx               Expanded like detail view (used in the modal)
+    LikeFilterGrid.tsx               Search + tag filter + grid + modal wiring
+    LikeModalShell.tsx               Portal-based modal shell for like details
+    MusicSection.tsx                 Last.fm top-albums preview row (renders LikeCard, layout="square")
     ProjectDetailBody.tsx            Detailed project view with GitHub repository info
     ProjectFilterGrid.tsx            Filterable project grid with modal support
-    ProjectModalShell.tsx            Modal wrapper for project details
+    ProjectModalShell.tsx            Portal-based modal shell for project details
     PageHead.tsx
     PageTransition.tsx
     BackToTopButton.tsx
@@ -124,7 +128,10 @@ app/
     kv.ts                             Vercel KV read/write for Discord-sourced thoughts
     threads.ts                        Threads API fetch for synced posts
     github.ts                         GitHub API fetch for repository info and events
+    lastfm.ts                         Last.fm API fetch for top albums (about/likes/music)
     imageThumb.ts                     wsrv.nl resize-proxy helpers for external images
+    sortLikes.ts                      Rating-based sort (rating → personRating, unrated sinks last)
+    ratingStars.tsx                   5-star rating renderer (dim track + clipped fill overlay)
     mergedThoughts.ts                 Merge and deduplicate thoughts from multiple sources
   about/page.tsx
   experience/page.tsx
@@ -135,10 +142,12 @@ app/
   projects/page.tsx
   thoughts/page.tsx
   feed.xml/route.ts                 RSS feed route (merged thoughts + projects)
+  robots.ts           robots.txt route
+  sitemap.ts          Sitemap route (includes per-category likes URLs)
   page.tsx            Home
   layout.tsx          Root layout — fonts, theme script, header, footer, command palette
   globals.css         All styles
-  data.ts             All content — roles, likes, projects, music, links, fallback thoughts
+  data.ts             All content — roles, likes, projects, music fallback, links, fallback thoughts
 public/
   assets/             Images and GitHub contribution SVGs
   icon/               Custom SVG icons
@@ -170,6 +179,9 @@ Required for the `/thoughts` page and Discord integration (see `.env.local`):
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection |
 | `THREADS_ACCESS_TOKEN` | Fetching synced posts from the Threads API |
 | `GITHUB_TOKEN` | GitHub API access for fetching repository information (optional; without it, repository details are unavailable) |
+| `LASTFM_API_KEY`, `LASTFM_USER` | Fetching top albums for the about page, `/likes`, and `/likes/music` (optional; see below if unset) |
+
+Spotify's Web API now requires a Premium account to register a new developer app, so the music integration goes through Last.fm instead — a free, instant-approval API key, with Spotify plays scrobbled to it. Without `LASTFM_API_KEY`/`LASTFM_USER` (or if the account has no scrobbles yet), `getTopAlbums()` returns `null` and each call site falls back accordingly: the about-page card shows the static `MUSIC_ARTISTS` avatars, and the `/likes` preview row is simply omitted.
 
 
 ## Deployment
