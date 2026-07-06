@@ -2250,6 +2250,17 @@ body.site-revealed .header {
   transform: translateX(calc(var(--i) * 8px)) translateY(-6px);
 }
 
+/* Light mode: neko.webp/nacho.webp are pale pastel art, so a normal blend at
+   low opacity washes out against the light panel. Multiply keeps the
+   artwork's darker tones visible instead of fading to near-white. */
+:root[data-theme="light"] .mini-interest-bg {
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+}
+:root[data-theme="light"] .mini-card:hover .mini-interest-bg {
+  opacity: 0.7;
+}
+
 /* Likes */
 .like-category {
   margin-top: 34px;
