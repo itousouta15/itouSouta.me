@@ -44,6 +44,11 @@ export function artistAvatarThumb(src: string) {
   return wsrvThumb(src, 104, 104);
 }
 
+// Discord 狀態卡片的封面/活動圖示，顯示 48px
+export function discordArtThumb(src: string) {
+  return wsrvThumb(src, 96, 96);
+}
+
 // 音樂榜單的歌曲縮圖，顯示 44px
 export function songThumb(src: string) {
   return wsrvThumb(src, 88, 88);
