@@ -10,13 +10,14 @@ export default function LikeCard({
 }: {
   l: Like;
   carousel?: boolean;
-  layout?: "circle";
+  layout?: "circle" | "square";
   onClick?: () => void;
 }) {
   const className = [
     "like-card",
     carousel && "like-card--carousel",
     layout === "circle" && "like-card--circle",
+    layout === "square" && "like-card--square",
     onClick && "like-card--clickable",
   ]
     .filter(Boolean)
@@ -27,7 +28,7 @@ export default function LikeCard({
         {l.cover ? (
           <img
             className="like-thumb-img"
-            src={layout === "circle" ? likeCircleThumb(l.cover) : likeThumb(l.cover)}
+            src={layout ? likeCircleThumb(l.cover) : likeThumb(l.cover)}
             alt={l.title}
             loading="lazy"
             decoding="async"

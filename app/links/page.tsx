@@ -3,7 +3,7 @@ import PageHead from "../components/PageHead";
 import { LINKS } from "../data";
 import { avatarThumb } from "../lib/imageThumb";
 
-const description = "itouSouta15.tw 的友情連結，收錄朋友與夥伴們的網站與社群連結。";
+const description = "itouSouta的偷摸他基";
 
 export const metadata: Metadata = {
   title: "友鏈",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function LinksPage() {
   return (
     <section style={{ paddingBottom: 8 }}>
-      <PageHead kicker="LINKS" title="友鏈" />
+      <PageHead kicker="LINKS" title="偷摸他基" />
       <div className="links-grid">
         {LINKS.map((l, i) => (
           <a className="link-card" key={`${l.href}-${i}`} href={l.href} target="_blank" rel="noopener noreferrer">

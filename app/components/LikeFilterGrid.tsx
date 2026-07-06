@@ -12,7 +12,7 @@ export default function LikeFilterGrid({
   layout,
 }: {
   items: Like[];
-  layout?: "circle";
+  layout?: "circle" | "square";
 }) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);

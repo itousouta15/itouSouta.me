@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import PageHead from "../../components/PageHead";
-import MusicArtistCard from "../../components/MusicArtistCard";
-import { MUSIC_ARTISTS } from "../../data";
+import LikeFilterGrid from "../../components/LikeFilterGrid";
+import { getTopAlbums } from "../../lib/lastfm";
+import type { Like } from "../../data";
 
-const description = "itouSouta 喜歡的音樂人與 VOCALOID 歌曲整理清單。";
+const description = "itouSouta 在 Last.fm 上最常聽的專輯整理清單。";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "音樂",
@@ -13,15 +17,21 @@ export const metadata: Metadata = {
   twitter: { title: "音樂 | itouSouta15.tw", description },
 };
 
-export default function MusicDetailPage() {
+export default async function MusicDetailPage() {
+  const topAlbums = await getTopAlbums({ limit: 50, period: "overall" });
+  const items: Like[] = (topAlbums ?? []).map(a => ({
+    title: a.title,
+    sub: a.artist,
+    cover: a.cover,
+    href: a.href,
+  }));
+
   return (
     <section style={{ paddingBottom: 8 }}>
       <PageHead kicker="MUSIC" title="音樂" back="/likes" />
-      <div className="music-artist-col">
-        {MUSIC_ARTISTS.map((artist, index) => (
-          <MusicArtistCard artist={artist} index={index} key={artist.name} />
-        ))}
-      </div>
+      <Suspense fallback={null}>
+        <LikeFilterGrid items={items} layout="square" />
+      </Suspense>
     </section>
   );
 }

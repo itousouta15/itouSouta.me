@@ -21,7 +21,7 @@ export default async function ThoughtsPage() {
 
   return (
     <section>
-      <PageHead kicker="THOUGHTS" title="雜談" desc="腦中跑出來的廢話，同步 Threads / GitHub / Discord" />
+      <PageHead kicker="THOUGHTS" title="一些廢話" desc="同步 Threads / GitHub / Discord" />
       <div className="thoughts-list">
         {useRemote
           ? items.map((item) => (
