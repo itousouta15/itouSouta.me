@@ -1,4 +1,7 @@
 # itousouta15.tw
+
+English | [繁體中文](README.zh-TW.md)
+
 ![示意圖](public/assets/itousouta15.webp)
 Personal website of itouSouta / 郭家睿 / 伊藤蒼太, live at [itousouta15.tw](https://itousouta15.tw).
 
