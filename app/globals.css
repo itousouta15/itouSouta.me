@@ -2008,14 +2008,15 @@ body.site-revealed .header {
 
 /* About */
 .about-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(280px, 2fr) minmax(240px, 1fr);
+  grid-template-rows: auto 1fr auto;
   gap: 20px;
-  align-items: flex-start;
 }
 .about-main {
-  flex: 2 1 380px;
-  min-width: 280px;
+  grid-column: 1;
+  grid-row: 1 / 3;
+  min-width: 0;
   background: var(--panel);
   border: 1px solid var(--bd);
   border-radius: 0;
@@ -2074,8 +2075,11 @@ body.site-revealed .header {
   margin-top: 7px;
 }
 .about-side {
-  flex: 1 1 240px;
-  min-width: 240px;
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
   background: var(--panel2);
   border: 1px solid var(--bd);
   border-radius: 0;
@@ -2087,8 +2091,13 @@ body.site-revealed .header {
   height: 120px;
   object-fit: cover;
   display: block;
+  flex: none;
 }
 .about-side-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 20px;
 }
 .about-side-v {
@@ -2103,6 +2112,142 @@ body.site-revealed .header {
   font-size: 19px;
   line-height: 1.7;
   color: var(--tx);
+}
+.mini-card {
+  position: relative;
+  min-height: 208px;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  padding: 24px 26px;
+  transition: border-color 0.2s ease;
+}
+.mini-card:hover {
+  border-color: var(--bd2);
+}
+.mini-kicker {
+  position: relative;
+  z-index: 1;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--mute);
+}
+.mini-arrow {
+  position: absolute;
+  z-index: 1;
+  right: 20px;
+  bottom: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--bd2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--tx);
+  background: var(--panel2);
+  transform: rotate(45deg);
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), border-color 0.45s ease;
+}
+.mini-card:hover .mini-arrow {
+  border-color: var(--blue);
+  transform: rotate(0deg);
+}
+
+/* ---- Interest card ---- */
+.mini-interest {
+  grid-column: 1;
+  grid-row: 3;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.mini-interest-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.22;
+  transform: scale(1.35);
+  transform-origin: 60% 32%;
+  transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1), transform 1.1s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.mini-card:hover .mini-interest-bg {
+  opacity: 0.34;
+  transform: scale(1.5);
+}
+.mini-interest-title {
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--tx);
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.mini-card:hover .mini-interest-title {
+  transform: translateX(3px);
+}
+.mini-interest-stack {
+  position: relative;
+  z-index: 1;
+  height: 66px;
+  margin-top: 18px;
+}
+.mini-interest-stack-img {
+  --i: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 46px;
+  height: 64px;
+  object-fit: cover;
+  border: 2px solid var(--panel);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transform: translateX(calc(var(--i) * 26px)) rotate(calc((var(--i) - 1.5) * 8deg));
+  transition: transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.mini-interest:hover .mini-interest-stack-img {
+  transform: translateX(calc(var(--i) * 40px)) rotate(calc((var(--i) - 1.5) * 8deg)) translateY(-6px);
+}
+
+/* ---- Music card ---- */
+.mini-music {
+  grid-column: 2;
+  grid-row: 2 / 4;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+.mini-music-avatars {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  margin-top: auto;
+  padding-top: 18px;
+}
+.mini-music-avatar {
+  --i: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--panel);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  margin-left: -14px;
+  transition: transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
+  transition-delay: calc(var(--i) * 40ms);
+}
+.mini-music-avatar:first-child {
+  margin-left: 0;
+}
+.mini-music:hover .mini-music-avatar {
+  transform: translateX(calc(var(--i) * 8px)) translateY(-6px);
 }
 
 /* Likes */
@@ -2362,7 +2507,7 @@ body.site-revealed .header {
 }
 .like-sub {
   font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.4;
   min-height: 1.4em;
   color: var(--mute);
@@ -2402,7 +2547,14 @@ body.site-revealed .header {
 .likes-grid--circle {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
-/* Music: horizontally scrolling artist cards, each with a vertically scrolling song list */
+/* 專輯封面等方形圖：跟預設卡一樣的版面，只把縮圖裁成 1:1 而非直式 2:3 */
+.like-card--square .like-thumb {
+  aspect-ratio: 1 / 1;
+}
+.like-card--square .like-sub {
+  font-size: 12px;
+}
+/* Music: horizontally scrolling row of like-card carousels (Last.fm top albums) */
 .music-artist-row {
   display: flex;
   gap: 20px;
@@ -2423,127 +2575,6 @@ body.site-revealed .header {
 .music-artist-row::-webkit-scrollbar {
   display: none;
 }
-.music-artist-col {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.music-artist-col .artist-card-big {
-  width: 100%;
-}
-.artist-card-big {
-  flex: none;
-  width: 380px;
-  scroll-snap-align: start;
-  background: var(--panel);
-  border: 1px solid var(--bd);
-  padding: 20px;
-  transition: border-color 0.2s ease;
-}
-.artist-card-big:hover {
-  border-color: var(--bd2);
-}
-.artist-card-head {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-.artist-avatar-sm {
-  width: 52px;
-  height: 52px;
-  flex: none;
-  border-radius: 50%;
-  overflow: hidden;
-  background: var(--inset);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.artist-avatar-sm img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.artist-avatar-sm span {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 8px;
-  color: var(--mute);
-}
-.artist-card-name {
-  flex: 1;
-  font-family: "Shippori Mincho", "Noto Serif TC", serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--tx);
-}
-.artist-card-rank {
-  flex: none;
-  font-family: "Shippori Mincho", "Noto Serif TC", serif;
-  font-size: 40px;
-  font-weight: 700;
-  color: var(--bd2);
-  line-height: 1;
-}
-.song-list-scroll {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 280px;
-  overflow-y: auto;
-  scrollbar-width: none;
-}
-.song-list-scroll::-webkit-scrollbar {
-  display: none;
-}
-.song-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--inset);
-  padding: 10px 14px;
-  color: inherit;
-  transition: background 0.2s ease;
-}
-.song-row:hover {
-  background: var(--panel2);
-}
-.song-rank {
-  flex: none;
-  width: 20px;
-  font-family: "Shippori Mincho", "Noto Serif TC", serif;
-  font-weight: 800;
-  font-size: 20px;
-  color: var(--tx);
-}
-.song-thumb-sm {
-  flex: none;
-  width: 44px;
-  height: 44px;
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--panel),
-    var(--panel) 8px,
-    rgba(255, 255, 255, 0.04) 8px,
-    rgba(255, 255, 255, 0.04) 16px
-  );
-  overflow: hidden;
-}
-.song-thumb-sm img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.song-row-title {
-  flex: 1;
-  min-width: 0;
-  font-size: 14px;
-  color: var(--tx);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 /* Projects */
 .proj-grid {
   display: grid;
@@ -3482,6 +3513,19 @@ body.site-revealed .header {
   }
   .profile-banner {
     height: clamp(120px, 32vw, 180px);
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+  .about-main,
+  .about-side {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .mini-interest,
+  .mini-music {
+    display: none;
   }
 }
 

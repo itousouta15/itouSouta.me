@@ -1,7 +1,7 @@
 import type { Like } from "../data";
 import { likeThumb, likeCircleThumb } from "../lib/imageThumb";
 
-export default function LikeDetailBody({ item, layout }: { item: Like; layout?: "circle" }) {
+export default function LikeDetailBody({ item, layout }: { item: Like; layout?: "circle" | "square" }) {
   const hasMeta = item.rating != null || item.status;
 
   return (
@@ -9,7 +9,7 @@ export default function LikeDetailBody({ item, layout }: { item: Like; layout?: 
       {item.cover && (
         <img
           className="proj-detail-cover"
-          src={layout === "circle" ? likeCircleThumb(item.cover) : likeThumb(item.cover)}
+          src={layout ? likeCircleThumb(item.cover) : likeThumb(item.cover)}
           alt={`${item.title} 封面`}
           loading="lazy"
           decoding="async"

@@ -53,3 +53,9 @@ export function songThumb(src: string) {
 export function projectCoverThumb(src: string) {
   return wsrvThumb(src, 640, 300);
 }
+
+// 卡片滿版背景圖（如 about 頁興趣卡片）：會被 CSS transform 放大鋪滿卡片，
+// 沿用小尺寸縮圖會被拉伸到模糊，所以抓比顯示尺寸大上不少的來源。
+export function cardBgThumb(src: string) {
+  return wsrvThumb(src, 960, 720);
+}

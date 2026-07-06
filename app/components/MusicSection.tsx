@@ -2,11 +2,11 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { MUSIC_ARTISTS } from "../data";
+import type { TopAlbum } from "../lib/lastfm";
 import { useHorizontalWheelScroll } from "../hooks/useHorizontalWheelScroll";
-import MusicArtistCard from "./MusicArtistCard";
+import LikeCard from "./LikeCard";
 
-export default function MusicSection() {
+export default function MusicSection({ albums }: { albums: TopAlbum[] }) {
   const rowRef = useRef<HTMLDivElement>(null);
   useHorizontalWheelScroll(rowRef);
 
@@ -22,8 +22,8 @@ export default function MusicSection() {
         </Link>
       </div>
       <div className="music-artist-row" ref={rowRef} data-lenis-prevent-wheel>
-        {MUSIC_ARTISTS.map((artist, index) => (
-          <MusicArtistCard artist={artist} index={index} key={artist.name} />
+        {albums.map((a, i) => (
+          <LikeCard l={{ title: a.title, sub: a.artist, cover: a.cover, href: a.href }} carousel layout="square" key={`${a.title}-${i}`} />
         ))}
       </div>
     </div>
