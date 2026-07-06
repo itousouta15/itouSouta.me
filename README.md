@@ -64,7 +64,7 @@ Discord presence (online status, activity, Spotify playback) is fetched live fro
 The graph SVG is pre-generated and committed as a static asset in both dark and light variants. On mobile, the card scrolls horizontally; the scroll position is linked to the card's progress through the viewport via `useScrollLinkedHorizontalReveal`, so the graph pans left to right as the user scrolls down the page — the reveal is remapped to a narrower window of that scroll distance (`TRIGGER_RANGE` in the hook) rather than the full enter-to-exit transit, so it doesn't take a full screen-height of scrolling to complete.
 
 **Image thumbnails**
-Avatars, likes covers, music art, and project screenshots are hotlinked from dozens of external, uncontrolled domains — too many to allowlist individually via `next/image`'s `remotePatterns`. `app/lib/imageThumb.ts` routes any `http(s)` source through the [wsrv.nl](https://wsrv.nl) resize proxy at the size actually needed for display (`avatarThumb`, `likeThumb`, `artistAvatarThumb`, `songThumb`, `projectCoverThumb`), falling back to the original URL for local `/assets` paths, animated `.gif`s (the proxy's webp conversion drops animation), and the handful of domains in `PROXY_BLOCKED_HOSTS` that reject requests from the proxy.
+Avatars, likes covers, music art, and project screenshots are hotlinked from dozens of external, uncontrolled domains — too many to allowlist individually via `next/image`'s `remotePatterns`. `app/lib/imageThumb.ts` routes any `http(s)` source through the [wsrv.nl](https://wsrv.nl) resize proxy at the size actually needed for display (`avatarThumb`, `likeThumb`, `likeCircleThumb`, `artistAvatarThumb`, `songThumb`, `projectCoverThumb`, `cardBgThumb`), falling back to the original URL for local `/assets` paths, animated `.gif`s (the proxy's webp conversion drops animation), and the handful of domains in `PROXY_BLOCKED_HOSTS` that reject requests from the proxy.
 
 **Animations**
 - CSS keyframe marquee for the footer strip and tech tile rows
@@ -190,8 +190,10 @@ Deployed on Vercel; pushes to `main` trigger a new production deployment. The cu
 
 ## Content
 
-Most page content lives in `app/data.ts`. To add or update a like, project, music artist, or friend link, edit the relevant exported array and push. No configuration changes are needed.
+Most page content lives in `app/data.ts`. To add or update a like, project, or friend link, edit the relevant exported array and push. No configuration changes are needed.
 
 雜談 content comes from two live sources instead: Discord (`/碎碎念` slash command → KV) and Threads (synced automatically). The `THOUGHTS` array in `app/data.ts` is only a fallback shown when neither remote source returns data.
+
+Music is likewise live (Last.fm top albums, see [Environment variables](#environment-variables)); the `MUSIC_ARTISTS` array in `app/data.ts` is only a fallback for the about-page card, shown when Last.fm isn't configured or returns nothing. To change which album/background image the about-page mini cards feature, edit the `INTEREST_BG` / `MUSIC_BG` constants near the top of `app/about/page.tsx`.
 
 Technology icons are defined in `app/components/tileIconMeta.ts`. Each entry has a label, a Devicons CDN URL, a dark-mode background colour, and a light-mode background colour.
