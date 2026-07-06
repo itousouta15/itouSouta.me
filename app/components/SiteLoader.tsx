@@ -79,14 +79,7 @@ export default function SiteLoader() {
         role="status"
         aria-live="polite"
         aria-label="頁面載入中"
-      >
-        <div className="site-loader-ring-pos">
-          <svg className="site-loader-ring" viewBox="0 0 50 50" aria-hidden="true">
-            <circle className="site-loader-ring-track" cx="25" cy="25" r="20" fill="none" />
-            <circle className="site-loader-ring-arc" cx="25" cy="25" r="20" fill="none" />
-          </svg>
-        </div>
-      </div>
+      />
     </>
   );
 }
