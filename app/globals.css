@@ -201,11 +201,6 @@ svg {
 /* ===========================================================================
    Site loader — full-page splash shown until the window "load" event fires
    =========================================================================== */
-@keyframes itSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 .site-loader {
   position: fixed;
   inset: 0;
@@ -229,34 +224,6 @@ svg {
 .site-loader--hide {
   transform: translateY(-100%);
   pointer-events: none;
-}
-/* 圈圈用自己獨立的 fixed + 置中，不靠 .site-loader 的 flex 置中：
-   萬一 .site-loader 那個蓋滿全螢幕的 fixed 容器在第一幀量錯尺寸（手機上
-   偶爾會發生的 viewport/合成時序問題），圈圈還是會直接對齊「真正的」
-   螢幕中心，不會跟著容器一起跑位。 */
-.site-loader-ring-pos {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.site-loader-ring {
-  width: 80px;
-  height: 80px;
-  animation: itSpin 0.9s linear infinite;
-}
-.site-loader-ring-track,
-.site-loader-ring-arc {
-  fill: none;
-  stroke-width: 8;
-}
-.site-loader-ring-track {
-  stroke: var(--bd2);
-}
-.site-loader-ring-arc {
-  stroke: var(--blue);
-  stroke-linecap: round;
-  stroke-dasharray: 33 92;
 }
 /* ===========================================================================
    Header
@@ -3537,9 +3504,6 @@ body.site-revealed .header {
   .proj-modal,
   .like-modal-overlay,
   .like-modal {
-    animation: none !important;
-  }
-  .site-loader-ring {
     animation: none !important;
   }
   .site-loader {
