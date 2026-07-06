@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { DISCORD_USER_ID } from "../data";
+import { discordArtThumb } from "../lib/imageThumb";
 
 /* ---------------------------------------------------------------------------
    Minimal Lanyard typings (only the fields we use)
@@ -126,7 +127,7 @@ export function ProfileStatusDot() {
   const state = useLanyardState();
   const cls = state.kind === "ready" ? STATUS_META[state.data.discord_status].cls : "offline";
   const label = state.kind === "ready" ? STATUS_META[state.data.discord_status].label : placeholderText(state, "離線");
-  return <span className={`status-dot ${cls}`} title={label} aria-label={label} />;
+  return <span className={`status-dot ${cls}`} role="img" title={label} aria-label={label} />;
 }
 
 /* ---------------------------------------------------------------------------
@@ -176,7 +177,7 @@ export function ProfileStatus() {
       {spotify ? (
         <div className="dc-act dc-act-spotify">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="dc-act-art" src={spotify.album_art_url} alt={spotify.album} />
+          <img className="dc-act-art" src={discordArtThumb(spotify.album_art_url)} alt={spotify.album} />
           <div className="dc-act-meta">
             <div className="dc-act-kicker">
               <SpotifyGlyph />
@@ -199,7 +200,7 @@ export function ProfileStatus() {
         <div className="dc-act">
           {actImg && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img className="dc-act-art" src={actImg} alt="" />
+            <img className="dc-act-art" src={discordArtThumb(actImg)} alt="" />
           )}
           <div className="dc-act-meta">
             <div className="dc-act-kicker">{actKicker}</div>
