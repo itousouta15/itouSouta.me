@@ -5,7 +5,7 @@ import MusicSection from "../components/MusicSection";
 import { LIKE_CATEGORIES } from "../data";
 import { getTopAlbums } from "../lib/lastfm";
 
-const description = "itouSouta 喜歡的音樂、VOCALOID 作品、動漫與其他事物整理。";
+const description = "itouSouta 喜歡的音樂、VOCALOID 、動漫 (╯✧∇✧)╯";
 
 export const revalidate = 3600;
 
