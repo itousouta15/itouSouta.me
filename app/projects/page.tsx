@@ -5,7 +5,7 @@ import ProjectFilterGrid from "../components/ProjectFilterGrid";
 import { PROJECTS } from "../data";
 import { getRepoInfo, parseGithubRepo, type GithubRepoInfo } from "../lib/github";
 
-const description = "郭家睿 / 伊藤蒼太製作的一些程式專案、網站與作品集展示。";
+const description = "itouSouta 的專案們 (◍•ᴗ•◍)ゝ";
 
 export const metadata: Metadata = {
   title: "一些專案們",

@@ -3,7 +3,7 @@ import PageHead from "../components/PageHead";
 import { THOUGHTS } from "../data";
 import { getMergedThoughts } from "../lib/mergedThoughts";
 
-const description = "itouSouta 的雜談與生活紀錄，隨手記下的想法與日常。";
+const description = "itouSouta 的雜談 (๑•̀ω•́)ノ";
 
 export const metadata: Metadata = {
   title: "雜談",

@@ -5,7 +5,7 @@ import LikeFilterGrid from "../../components/LikeFilterGrid";
 import { getTopAlbums } from "../../lib/lastfm";
 import type { Like } from "../../data";
 
-const description = "itouSouta 在 Last.fm 上最常聽的專輯整理清單。";
+const description = "itouSouta 喜歡聽的音樂們 (⁎⁍̴̛ᴗ⁍̴̛⁎)";
 
 export const revalidate = 3600;
 
