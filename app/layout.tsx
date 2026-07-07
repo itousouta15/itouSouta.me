@@ -13,7 +13,7 @@ import CommandPalette from "./components/CommandPalette";
 const SITE_URL = "https://itousouta15.tw";
 const SITE_TITLE = "itouSouta15.tw";
 const SITE_DESCRIPTION =
-  "itouSouta / 郭家睿 / 伊藤蒼太的官方網站。臺中市立大里高中學生、SCAICT 第五屆會長，喜歡 VOCALOID 創作、插畫與寫程式。這裡收錄自我介紹、經歷、專案作品與喜歡的事物。";
+  "itouSouta / 郭家睿 / 伊藤蒼太的個人網站 ε(*´･∀･｀)зﾞ";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

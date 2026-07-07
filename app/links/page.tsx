@@ -3,7 +3,7 @@ import PageHead from "../components/PageHead";
 import { LINKS } from "../data";
 import { avatarThumb } from "../lib/imageThumb";
 
-const description = "itouSouta的偷摸他基";
+const description = "itouSouta的偷摸他基們 ∠( ᐛ 」∠)_";
 
 export const metadata: Metadata = {
   title: "友鏈",

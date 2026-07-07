@@ -8,7 +8,7 @@ import { getTopAlbums } from "../lib/lastfm";
 // Last.fm「最近常聽」每小時重抓一次
 export const revalidate = 3600;
 
-const description = "itouSouta 的自我介紹";
+const description = "itouSouta 的自我介紹 (*´з｀*)";
 
 // ===== 卡片背景圖入口：想換背景改這兩行 =====
 // 可填外部圖片網址，或把圖片放進 public/assets 後填 "/assets/檔名.webp"

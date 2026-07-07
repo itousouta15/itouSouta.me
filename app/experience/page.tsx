@@ -27,7 +27,7 @@ export default function ExperiencePage() {
 
   return (
     <section style={{ paddingBottom: 8 }}>
-      <PageHead kicker="JOURNEY" title="那些走過的路" desc="持續追求自身所愛" />
+      <PageHead kicker="JOURNEY" title="沒有路!!!" desc="持續追求自身所愛" />
       {groups.map(([category, items]) => (
         <div className="timeline-group" key={category || "default"}>
           {category && <div className="timeline-group-head">{category}</div>}

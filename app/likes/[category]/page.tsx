@@ -13,8 +13,8 @@ export function generateMetadata({ params }: { params: { category: string } }): 
   const cat = LIKE_CATEGORIES.find(c => c.key === params.category);
   const title = cat ? cat.label : "喜歡的東西";
   const description = cat
-    ? `itouSouta 喜歡的${cat.label}整理清單。`
-    : "itouSouta 喜歡的音樂、VOCALOID 作品、動漫與其他事物整理。";
+    ? `itouSouta 喜歡的${cat.label}們 (╯✧∇✧)╯`
+    : "itouSouta 喜歡的音樂、VOCALOID 、動漫 (╯✧∇✧)╯";
   const url = `/likes/${params.category}`;
   return {
     title,
