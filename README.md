@@ -52,7 +52,7 @@ Multiple typefaces are loaded from Google Fonts and the [emfont](https://font.em
 The logo is hidden until `ChenYuLuoYan` is active (detected via `document.fonts.load`) to prevent a FOUT caused by the fallback font rendering at a significantly larger apparent size.
 
 **雜談 (Thoughts)**
-A Discord bot backs a `/碎碎念` slash command; submissions are verified (Ed25519, via `tweetnacl`) in `app/api/discord/route.ts` and stored in Vercel KV. The `/thoughts` page merges these entries with posts pulled from the Threads API (`app/lib/threads.ts`), sorted newest-first by timestamp, and revalidates on each new Discord post. If no remote data is available, it falls back to the static `THOUGHTS` array in `app/data.ts`.
+A standalone Discord bot ([itouBot](../itouBot)) backs a `/碎碎念` slash command and writes entries to Vercel KV; after each post it pings `app/api/revalidate/route.ts` (guarded by `REVALIDATE_SECRET`) so the page updates immediately. The `/thoughts` page merges these entries with posts pulled from the Threads API (`app/lib/threads.ts`), sorted newest-first by timestamp. If no remote data is available, it falls back to the static `THOUGHTS` array in `app/data.ts`.
 
 **Likes**
 Novels, manga, anime, and VTuber entries are statically defined in `app/data.ts`. The likes pages support client-side full-text search and multi-tag filtering without any server dependency. Horizontal carousels use custom hooks for mouse-wheel and scroll-linked panning. `LikeCard`/`LikeFilterGrid` support a `layout` prop (`"circle"` for VTuber avatars, `"square"` for album covers) that swaps the thumbnail crop and, for `"circle"`, hides the sub-line and skips the detail modal in favor of linking straight out.
@@ -99,7 +99,7 @@ Likes support detailed view with expanded descriptions and additional metadata b
 ```
 app/
   api/
-    discord/route.ts                 Discord interaction webhook (slash command → KV)
+    revalidate/route.ts              Secret-guarded revalidation hook (called by itouBot after each post)
   components/
     Header.tsx                       Sticky nav with mobile overlay
     Footer.tsx                       Footer with sitemap, projects, social links
@@ -155,7 +155,6 @@ public/
   assets/             Images and GitHub contribution SVGs
   icon/               Custom SVG icons
 scripts/
-  register-command.mjs    One-off script to register the Discord "/碎碎念" slash command
   cleanup-thoughts.mjs     Remove KV thought entries matching a given text
 ```
 
@@ -173,12 +172,11 @@ npm run lint
 
 ### Environment variables
 
-Required for the `/thoughts` page and Discord integration (see `.env.local`):
+Required for the `/thoughts` page (see `.env.local`):
 
 | Variable | Purpose |
 |---|---|
-| `DISCORD_APP_ID`, `DISCORD_BOT_TOKEN` | Registering the slash command (`scripts/register-command.mjs`) |
-| `DISCORD_PUBLIC_KEY` | Verifying interaction signatures in `app/api/discord/route.ts` |
+| `REVALIDATE_SECRET` | Shared secret for `app/api/revalidate/route.ts` (itouBot uses the same value) |
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection |
 | `THREADS_ACCESS_TOKEN` | Fetching synced posts from the Threads API |
 | `GITHUB_TOKEN` | GitHub API access for fetching repository information (optional; without it, repository details are unavailable) |
@@ -189,7 +187,7 @@ Spotify's Web API now requires a Premium account to register a new developer app
 
 ## Deployment
 
-Deployed on Vercel; pushes to `main` trigger a new production deployment. The custom domain is configured in the Vercel project (the `CNAME` file is a legacy artifact from a prior GitHub Pages setup). Discord webhook events are received via the `/api/discord` route, which requires the app's Vercel deployment URL to be registered as the interactions endpoint in the Discord Developer Portal.
+Deployed on Vercel; pushes to `main` trigger a new production deployment. The custom domain is configured in the Vercel project (the `CNAME` file is a legacy artifact from a prior GitHub Pages setup). Discord slash commands are handled by the standalone [itouBot](../itouBot) process, which shares the same Vercel KV store and calls `/api/revalidate` after each post.
 
 ## Content
 
