@@ -1,0 +1,32 @@
+name: Generate GitHub Snake Contribution Graph
+
+on:
+  schedule:
+    - cron: "0 20 * * *" # 每天 UTC 20:00（台灣時間 04:00）
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate snake contribution SVGs
+        uses: Platane/snk@v3
+        with:
+          github_user_name: itousouta15
+          outputs: |
+            public/assets/github-user-contribution-dark.svg?color_dots=#3b444a,#254f77,#31699f,#4183c4,#8db5dc&color_snake=#8db5dc
+            public/assets/github-user-contribution-light.svg?color_dots=#d0d7de,#8db5dc,#679cd0,#4183c4,#254f77&color_snake=#254f77
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/assets/github-user-contribution-dark.svg public/assets/github-user-contribution-light.svg
+          git diff --staged --quiet || git commit -m "chore: 更新 GitHub 貢獻牆動畫"
+          git push
