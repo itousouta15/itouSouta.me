@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { LikeCategory, Like } from "../data";
 import { useHorizontalWheelScroll } from "../hooks/useHorizontalWheelScroll";
+import { useVtuberLiveStatus } from "../hooks/useVtuberLiveStatus";
 import { sortLikesByRating } from "../lib/sortLikes";
 import LikeCard from "./LikeCard";
 import LikeModalShell from "./LikeModalShell";
@@ -23,6 +24,9 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
   }, [cat.key]);
 
   const sortedItems = useMemo(() => sortLikesByRating(cat.items, "desc"), [cat.items]);
+  // circle 版（目前只有 vtuber）才需要開台偵測；hub 頁一進來就先熱這個 API 的快取，
+  // 這裡直接複用同一份 60s 快取，不會額外多打
+  const liveMap = useVtuberLiveStatus(cat.layout === "circle");
 
   useEffect(() => {
     const track = trackRef.current;
@@ -64,8 +68,9 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
             l={l}
             carousel
             layout={cat.layout}
-            key={`${cat.key}-${i}`}
+            key={`${cat.key}-${l.href ?? l.title}-${i}`}
             onClick={useModal ? () => setSelectedLike(l) : undefined}
+            live={l.href ? liveMap[l.href] : undefined}
           />
         ))}
         {visibleCount < sortedItems.length && <div ref={sentinelRef} className="likes-track-sentinel" aria-hidden />}
