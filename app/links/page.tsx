@@ -9,8 +9,8 @@ export const metadata: Metadata = {
   title: "友鏈",
   description,
   alternates: { canonical: "/links" },
-  openGraph: { title: "友鏈 | itouSouta15.tw", description, url: "/links" },
-  twitter: { title: "友鏈 | itouSouta15.tw", description },
+  openGraph: { title: "友鏈 | itousouta.me", description, url: "/links" },
+  twitter: { title: "友鏈 | itousouta.me", description },
 };
 
 export default function LinksPage() {

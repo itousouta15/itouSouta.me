@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   title: "經歷",
   description,
   alternates: { canonical: "/experience" },
-  openGraph: { title: "經歷 | itouSouta15.tw", description, url: "/experience" },
-  twitter: { title: "經歷 | itouSouta15.tw", description },
+  openGraph: { title: "經歷 | itousouta.me", description, url: "/experience" },
+  twitter: { title: "經歷 | itousouta.me", description },
 };
 
 function groupByCategory(items: ExperienceItem[]) {

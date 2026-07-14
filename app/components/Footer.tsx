@@ -13,17 +13,17 @@ const NAV_LINKS = [
 ];
 
 const PROJECT_LINKS = [
-  { label: "itouLinks", href: "https://links.itousouta15.tw" },
-  { label: "itouSlides", href: "https://slides.itousouta15.tw/" },
-  { label: "itouCards", href: "https://cards.itousouta15.tw/" },
-  { label: "itouBLoGa", href: "https://blog.itousouta15.tw/" },
+  { label: "itouLinks", href: "https://links.itousouta.me" },
+  { label: "itouSlides", href: "https://slides.itousouta.me/" },
+  { label: "itouCards", href: "https://cards.itousouta.me/" },
+  { label: "itouBLoGa", href: "https://blog.itousouta.me/" },
 ];
 
 const SOCIAL_LINKS = [
   { icon: "instagram", label: "Instagram", href: "https://www.instagram.com/itou.souta15" },
   { icon: "github", label: "GitHub", href: "https://github.com/itousouta15" },
   { icon: "x", label: "X", href: "https://x.com/itou_souta15" },
-  { icon: "discord", label: "Discord", href: "https://DC.itousouta15.tw" },
+  { icon: "discord", label: "Discord", href: "https://DC.itousouta.me" },
   { icon: "telegram", label: "Telegram", href: "https://t.me/itousouta15" },
 ];
 
@@ -47,7 +47,7 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link href="/" className="footer-logo">
-              itouSouta15.tw
+              itousouta.me
             </Link>
             <p className="footer-tagline">
               情熱を失っては、

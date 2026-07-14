@@ -92,7 +92,7 @@ export default function HomePage() {
               <Link className="btn-primary" href="/about" style={{ textDecoration: "none" }}>
                 關於我 <span className="btn-arrow dark">→</span>
               </Link>
-              <a className="btn-ghost" href="https://blog.itousouta15.tw" target="_blank" rel="noopener nofollow noreferrer" style={{ textDecoration: "none" }}>
+              <a className="btn-ghost" href="https://blog.itousouta.me" target="_blank" rel="noopener nofollow noreferrer" style={{ textDecoration: "none" }}>
                 BLOG <span className="btn-arrow inset">→</span>
               </a>
             </div>

@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   title: "關於我",
   description,
   alternates: { canonical: "/about" },
-  openGraph: { title: "關於我 | itouSouta15.tw", description, url: "/about" },
-  twitter: { title: "關於我 | itouSouta15.tw", description },
+  openGraph: { title: "關於我 | itousouta.me", description, url: "/about" },
+  twitter: { title: "關於我 | itousouta.me", description },
 };
 
 export default async function AboutPage() {
