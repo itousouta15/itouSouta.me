@@ -57,6 +57,9 @@ A standalone Discord bot ([itouBot](../itouBot)) backs a `/碎碎念` slash comm
 **Likes**
 Novels, manga, anime, and VTuber entries are statically defined in `app/data.ts`. The likes pages support client-side full-text search and multi-tag filtering without any server dependency. Horizontal carousels use custom hooks for mouse-wheel and scroll-linked panning. `LikeCard`/`LikeFilterGrid` support a `layout` prop (`"circle"` for VTuber avatars, `"square"` for album covers) that swaps the thumbnail crop and, for `"circle"`, hides the sub-line and skips the detail modal in favor of linking straight out.
 
+**VTuber live status**
+`app/api/vtuber-live/route.ts` checks whether each VTuber is currently streaming by requesting their YouTube channel's `/live` path and scanning the response for an embedded `isLive: true` in `ytInitialPlayerResponse` — no YouTube Data API key or quota needed. Results are cached for 60 seconds (`revalidate = 60`). `useVtuberLiveStatus` polls this endpoint every 60s while a `"circle"`-layout section is mounted, and `VtuberLiveWarmup` fires an unawaited fetch as soon as `/likes` loads so the cache is already warm by the time a user opens the VTuber category. A live channel's `LikeCard` gets a pulsing red outline and a "LIVE" badge, and clicking it links straight to the broadcast instead of the channel page.
+
 **Music (Last.fm)**
 Unlike the rest of the likes content, music is live data: `app/lib/lastfm.ts` calls Last.fm's `user.gettopalbums` (album art is the only Last.fm entity that still returns real cover images — the artist/track endpoints now return one shared placeholder). It backs three surfaces at increasing scope: the about-page mini card (this month, top 4), the `/likes` preview row (overall, top 12), and the full `/likes/music` grid (overall, top 50). Every call site treats a `null` result (missing `LASTFM_API_KEY`/`LASTFM_USER`, or the API failing) as "no data" and degrades gracefully — the about-page card falls back to the static `MUSIC_ARTISTS` avatars in `app/data.ts`, and `/likes` simply omits the preview row.
 
@@ -68,6 +71,9 @@ The graph SVG is pre-generated and committed as a static asset in both dark and 
 
 **Image thumbnails**
 Avatars, likes covers, music art, and project screenshots are hotlinked from dozens of external, uncontrolled domains — too many to allowlist individually via `next/image`'s `remotePatterns`. `app/lib/imageThumb.ts` routes any `http(s)` source through the [wsrv.nl](https://wsrv.nl) resize proxy at the size actually needed for display (`avatarThumb`, `likeThumb`, `likeCircleThumb`, `artistAvatarThumb`, `songThumb`, `projectCoverThumb`, `cardBgThumb`), falling back to the original URL for local `/assets` paths, animated `.gif`s (the proxy's webp conversion drops animation), and the handful of domains in `PROXY_BLOCKED_HOSTS` that reject requests from the proxy.
+
+**Hero interactions**
+The hero's ASCII face (`HeroFace`) subtly follows the cursor (displacement clamped and throttled via `requestAnimationFrame`), winks the near-side eye on click, and switches to a "leaving" expression with a wiggle animation once it scrolls past a threshold near the top of the viewport (`IntersectionObserver` with a negative `rootMargin`). Clicking the profile avatar 5 times in quick succession (`AvatarEasterEgg`) spins it and opens the Discord invite in a new tab; a pending click streak resets after 1.5s of inactivity.
 
 **Animations**
 - CSS keyframe marquee for the footer strip and tech tile rows
@@ -100,6 +106,7 @@ Likes support detailed view with expanded descriptions and additional metadata b
 app/
   api/
     revalidate/route.ts              Secret-guarded revalidation hook (called by itouBot after each post)
+    vtuber-live/route.ts             Polls each VTuber's YouTube /live page for isLive; 60s revalidate cache
   components/
     Header.tsx                       Sticky nav with mobile overlay
     Footer.tsx                       Footer with sitemap, projects, social links
@@ -110,11 +117,14 @@ app/
     LanyardCards.tsx                 Discord presence components
     GithubContributionCard.tsx
     GithubGlyph.tsx                  Inline GitHub mark (SVGProps passthrough)
-    LikeCard.tsx                     Supports default / "circle" (VTuber) / "square" (album) layouts
+    HeroFace.tsx                     Interactive ASCII hero face — cursor-follow, wink, leaving wiggle
+    AvatarEasterEgg.tsx              5-click avatar easter egg — spins and opens Discord
+    LikeCard.tsx                     Supports default / "circle" (VTuber) / "square" (album) layouts, live badge
     LikeCategorySection.tsx          Category section with lazy-loading observer
     LikeDetailBody.tsx               Expanded like detail view (used in the modal)
     LikeFilterGrid.tsx               Search + tag filter + grid + modal wiring
     LikeModalShell.tsx               Portal-based modal shell for like details
+    VtuberLiveWarmup.tsx             Pre-warms /api/vtuber-live cache when /likes loads
     MusicSection.tsx                 Last.fm top-albums preview row (renders LikeCard, layout="square")
     ProjectDetailBody.tsx            Detailed project view with GitHub repository info
     ProjectFilterGrid.tsx            Filterable project grid with modal support
@@ -127,6 +137,7 @@ app/
   hooks/
     useHorizontalWheelScroll.ts          Mouse-wheel horizontal pan
     useScrollLinkedHorizontalReveal.ts   Scroll-position-linked horizontal pan
+    useVtuberLiveStatus.ts               Polls /api/vtuber-live every 60s while a circle-layout section is mounted
   lib/
     kv.ts                             Vercel KV read/write for Discord-sourced thoughts
     threads.ts                        Threads API fetch for synced posts
