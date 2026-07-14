@@ -12,6 +12,7 @@ interface LanyardSpotify {
   artist: string;
   album: string;
   album_art_url: string;
+  track_id?: string;
   timestamps?: { start: number; end: number };
 }
 interface LanyardActivity {
@@ -125,9 +126,22 @@ function activityImage(act: LanyardActivity): string | null {
    --------------------------------------------------------------------------- */
 export function ProfileStatusDot() {
   const state = useLanyardState();
+  const [open, setOpen] = useState(false);
   const cls = state.kind === "ready" ? STATUS_META[state.data.discord_status].cls : "offline";
   const label = state.kind === "ready" ? STATUS_META[state.data.discord_status].label : placeholderText(state, "離線");
-  return <span className={`status-dot ${cls}`} role="img" title={label} aria-label={label} />;
+  return (
+    <span
+      className={`status-dot ${cls}`}
+      role="button"
+      tabIndex={0}
+      title={label}
+      aria-label={label}
+      onClick={() => setOpen(o => !o)}
+      onBlur={() => setOpen(false)}
+    >
+      {open && <span className="status-bubble">{label}</span>}
+    </span>
+  );
 }
 
 /* ---------------------------------------------------------------------------
@@ -139,6 +153,7 @@ export function ProfileStatusDot() {
 export function ProfileStatus() {
   const state = useLanyardState();
   const [now, setNow] = useState(() => Date.now());
+  const [flipped, setFlipped] = useState(false);
 
   const ready = state.kind === "ready" ? state.data : null;
   const spotify = ready && ready.listening_to_spotify ? ready.spotify : null;
@@ -172,55 +187,101 @@ export function ProfileStatus() {
     actSub = activity.state || undefined;
   }
 
+  // 卡片本身當開關：點下去翻面看背後的小訊息／連結，再點一次翻回來——
+  // 不是浮動也不是整體放大，是真的 3D 翻牌。背面連結會冒泡到這個 onClick，
+  // 用 stopPropagation 擋掉，不然點連結開新分頁的同時卡片還會跟著翻回去。
+  const toggleFlip = () => setFlipped(f => !f);
+
   return (
     <div className="dc-status">
       {spotify ? (
-        <div className="dc-act dc-act-spotify">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="dc-act-art" src={discordArtThumb(spotify.album_art_url)} alt={spotify.album} />
-          <div className="dc-act-meta">
-            <div className="dc-act-kicker">
-              <SpotifyGlyph />
-              正在聽 Spotify
-            </div>
-            <div className="dc-act-title" title={spotify.song}>
-              {spotify.song}
-            </div>
-            <div className="dc-act-sub" title={spotify.artist}>
-              {spotify.artist}
-            </div>
-            {spotify.timestamps && (
-              <div className="spotify-bar">
-                <span style={{ width: `${progress * 100}%` }} />
+        <div
+          className={`dc-act dc-act-spotify dc-flip${flipped ? " dc-flip--flipped" : ""}`}
+          onClick={toggleFlip}
+          role="button"
+          tabIndex={0}
+        >
+          <div className="dc-flip-inner">
+            <div className="dc-flip-face dc-flip-face--front">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="dc-act-art" src={discordArtThumb(spotify.album_art_url)} alt={spotify.album} />
+              <div className="dc-act-meta">
+                <div className="dc-act-kicker">
+                  <SpotifyGlyph />
+                  正在聽 Spotify
+                </div>
+                <div className="dc-act-title" title={spotify.song}>
+                  {spotify.song}
+                </div>
+                <div className="dc-act-sub" title={spotify.artist}>
+                  {spotify.artist}
+                </div>
+                {spotify.timestamps && (
+                  <div className="spotify-bar">
+                    <span style={{ width: `${progress * 100}%` }} />
+                  </div>
+                )}
               </div>
-            )}
+            </div>
+            <div className="dc-flip-face dc-flip-face--back">
+              {spotify.track_id ? (
+                <a
+                  className="dc-flip-back-link"
+                  href={`https://open.spotify.com/track/${spotify.track_id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={e => e.stopPropagation()}
+                >
+                  <SpotifyGlyph />
+                  在 Spotify 開啟這首歌 ↗
+                </a>
+              ) : (
+                <div className="dc-flip-back-caption">被你發現在偷聽 {spotify.song} 了 (¬‿¬)</div>
+              )}
+            </div>
           </div>
         </div>
       ) : activity ? (
-        <div className="dc-act">
-          {actImg && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className="dc-act-art" src={discordArtThumb(actImg)} alt="" />
-          )}
-          <div className="dc-act-meta">
-            <div className="dc-act-kicker">{actKicker}</div>
-            <div className="dc-act-title" title={actTitle}>
-              {actTitle}
-            </div>
-            {actSub && (
-              <div className="dc-act-sub" title={actSub}>
-                {actSub}
+        <div className={`dc-act dc-flip${flipped ? " dc-flip--flipped" : ""}`} onClick={toggleFlip} role="button" tabIndex={0}>
+          <div className="dc-flip-inner">
+            <div className="dc-flip-face dc-flip-face--front">
+              {actImg && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="dc-act-art" src={discordArtThumb(actImg)} alt="" />
+              )}
+              <div className="dc-act-meta">
+                <div className="dc-act-kicker">{actKicker}</div>
+                <div className="dc-act-title" title={actTitle}>
+                  {actTitle}
+                </div>
+                {actSub && (
+                  <div className="dc-act-sub" title={actSub}>
+                    {actSub}
+                  </div>
+                )}
               </div>
-            )}
+            </div>
+            <div className="dc-flip-face dc-flip-face--back">
+              <div className="dc-flip-back-caption">
+                幹嘛呢，你以為翻過來會有甚麼 (¬‿¬)      
+              </div>
+            </div>
           </div>
         </div>
       ) : (
-        <div className="dc-act dc-act-idle">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="dc-act-art" src="/assets/cat.webp" alt="" />
-          <div className="dc-act-meta">
-            <div className="dc-act-title">這個人不知道跑哪去了。</div>
-            <div className="dc-act-sub">大概是在睡覺吧Zzzz</div>
+        <div className={`dc-act dc-act-idle dc-flip${flipped ? " dc-flip--flipped" : ""}`} onClick={toggleFlip} role="button" tabIndex={0}>
+          <div className="dc-flip-inner">
+            <div className="dc-flip-face dc-flip-face--front">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="dc-act-art" src="/assets/cat.webp" alt="" />
+              <div className="dc-act-meta">
+                <div className="dc-act-title">這個人不知道跑哪去了。</div>
+                <div className="dc-act-sub">大概是在睡覺吧Zzzz</div>
+              </div>
+            </div>
+            <div className="dc-flip-face dc-flip-face--back">
+              <div className="dc-flip-back-caption">翻過來也只有貓貓在打呼而已 (=^･ω･^=)</div>
+            </div>
           </div>
         </div>
       )}

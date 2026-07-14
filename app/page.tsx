@@ -7,6 +7,7 @@ import GithubContributionCard from "./components/GithubContributionCard";
 import { LanyardProvider, ProfileStatus, ProfileStatusDot } from "./components/LanyardCards";
 import AvatarEasterEgg from "./components/AvatarEasterEgg";
 import HeroFace from "./components/HeroFace";
+import BadgeShape from "./components/BadgeShape";
 
 export default function HomePage() {
   const tileIcons = TILE_COLS.flat();
@@ -36,10 +37,10 @@ export default function HomePage() {
                 <ProfileStatusDot />
               </div>
               <div className="badges">
-                <span style={{ width: 12, height: 12, borderRadius: "50%", background: "var(--blue)" }} />
-                <span style={{ width: 0, height: 0, borderLeft: "6px solid transparent", borderRight: "6px solid transparent", borderTop: "9px solid var(--purple)" }} />
-                <span style={{ width: 11, height: 11, borderRadius: 3, background: "var(--dim)" }} />
-                <span style={{ width: 11, height: 11, background: "var(--blue)", transform: "rotate(45deg)", borderRadius: 2 }} />
+                <BadgeShape kind="circle" color="var(--blue)" />
+                <BadgeShape kind="triangle" color="var(--purple)" />
+                <BadgeShape kind="square" color="var(--dim)" />
+                <BadgeShape kind="diamond" color="var(--blue)" />
               </div>
             </div>
             <div className="name-row">
