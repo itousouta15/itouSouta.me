@@ -64,7 +64,7 @@ Unlike the rest of the likes content, music is live data: `app/lib/lastfm.ts` ca
 Discord presence (online status, activity, Spotify playback) is fetched live from the Lanyard WebSocket API and displayed in the profile card. The component gracefully handles disconnection.
 
 **GitHub contribution graph**
-The graph SVG is pre-generated and committed as a static asset in both dark and light variants. On mobile, the card scrolls horizontally; the scroll position is linked to the card's progress through the viewport via `useScrollLinkedHorizontalReveal`, so the graph pans left to right as the user scrolls down the page — the reveal is remapped to a narrower window of that scroll distance (`TRIGGER_RANGE` in the hook) rather than the full enter-to-exit transit, so it doesn't take a full screen-height of scrolling to complete.
+The graph SVG is pre-generated and committed as a static asset in both dark and light variants, regenerated daily by the `.github/workflows/snake.yml` GitHub Action (`Platane/snk`), which commits directly to `main` if the output changed. On mobile, the card scrolls horizontally; the scroll position is linked to the card's progress through the viewport via `useScrollLinkedHorizontalReveal`, so the graph pans left to right as the user scrolls down the page — the reveal is remapped to a narrower window of that scroll distance (`TRIGGER_RANGE` in the hook) rather than the full enter-to-exit transit, so it doesn't take a full screen-height of scrolling to complete.
 
 **Image thumbnails**
 Avatars, likes covers, music art, and project screenshots are hotlinked from dozens of external, uncontrolled domains — too many to allowlist individually via `next/image`'s `remotePatterns`. `app/lib/imageThumb.ts` routes any `http(s)` source through the [wsrv.nl](https://wsrv.nl) resize proxy at the size actually needed for display (`avatarThumb`, `likeThumb`, `likeCircleThumb`, `artistAvatarThumb`, `songThumb`, `projectCoverThumb`, `cardBgThumb`), falling back to the original URL for local `/assets` paths, animated `.gif`s (the proxy's webp conversion drops animation), and the handful of domains in `PROXY_BLOCKED_HOSTS` that reject requests from the proxy.
@@ -156,6 +156,9 @@ public/
   icon/               Custom SVG icons
 scripts/
   cleanup-thoughts.mjs     Remove KV thought entries matching a given text
+.github/
+  workflows/
+    snake.yml              Daily cron regenerating the GitHub contribution SVGs and auto-committing them
 ```
 
 ## Development
@@ -188,6 +191,8 @@ Spotify's Web API now requires a Premium account to register a new developer app
 ## Deployment
 
 Deployed on Vercel; pushes to `main` trigger a new production deployment. The custom domain is configured in the Vercel project (the `CNAME` file is a legacy artifact from a prior GitHub Pages setup). Discord slash commands are handled by the standalone [itouBot](../itouBot) process, which shares the same Vercel KV store and calls `/api/revalidate` after each post.
+
+A separate scheduled job, `.github/workflows/snake.yml`, runs daily (cron, plus manual `workflow_dispatch`) to regenerate the GitHub contribution SVGs via `Platane/snk` and pushes the update straight to `main` — this also triggers a Vercel redeploy when the graph changed.
 
 ## Content
 
