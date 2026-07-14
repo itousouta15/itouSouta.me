@@ -60,6 +60,9 @@ Novels, manga, anime, and VTuber entries are statically defined in `app/data.ts`
 **VTuber live status**
 `app/api/vtuber-live/route.ts` checks whether each VTuber is currently streaming, using two sources. For VSPO-affiliated members (identified by a `channelId` on the `Like` entry in `app/data.ts`, either explicit or parsed from a `/channel/UC…` `href`), it fetches `vspo-schedule.com`'s own live-schedule page once and extracts the live-stream list embedded in that page's Next.js RSC payload — one request covers every VSPO member's status. VTubers outside that roster fall back to requesting their own YouTube channel's `/live` path and scanning for an embedded `isLive: true` in `ytInitialPlayerResponse`. Neither source needs a YouTube Data API key or quota. Results are cached for 60 seconds (`revalidate = 60`). `useVtuberLiveStatus` polls this endpoint every 60s while a `"circle"`-layout section is mounted, and `VtuberLiveWarmup` fires an unawaited fetch as soon as `/likes` loads so the cache is already warm by the time a user opens the VTuber category. A live channel's `LikeCard` gets a pulsing red outline and a "LIVE" badge, and clicking it links straight to the broadcast instead of the channel page.
 
+**Live-first sorting**
+`sortLikesByRating` (`app/lib/sortLikes.ts`) takes an optional `isLive` predicate; when given, live items sort ahead of non-live ones, with rating only breaking ties within each group. Both `LikeCategorySection` (the `/likes` hub carousels) and `LikeFilterGrid` (category detail grids) re-sort whenever `useVtuberLiveStatus`'s data updates, so a VTuber who starts streaming jumps to the front. Reordering is animated with a small hand-rolled FLIP (First-Last-Invert-Play) hook, `useFlipReorder` — no animation library — that measures each card's position before and after a reorder and animates the delta via `transform`, so cards visibly slide into place instead of snapping. On the hub carousel, `overflow-anchor: none` stops the browser from silently compensating scroll position against the DOM reorder, and a scroll-position pin keeps the live-sorted front visible — but only until the user manually scrolls the carousel themselves, at which point it stops fighting them.
+
 **Music (Last.fm)**
 Unlike the rest of the likes content, music is live data: `app/lib/lastfm.ts` calls Last.fm's `user.gettopalbums` (album art is the only Last.fm entity that still returns real cover images — the artist/track endpoints now return one shared placeholder). It backs three surfaces at increasing scope: the about-page mini card (this month, top 4), the `/likes` preview row (overall, top 12), and the full `/likes/music` grid (overall, top 50). Every call site treats a `null` result (missing `LASTFM_API_KEY`/`LASTFM_USER`, or the API failing) as "no data" and degrades gracefully — the about-page card falls back to the static `MUSIC_ARTISTS` avatars in `app/data.ts`, and `/likes` simply omits the preview row.
 
@@ -119,6 +122,7 @@ app/
     GithubGlyph.tsx                  Inline GitHub mark (SVGProps passthrough)
     HeroFace.tsx                     Interactive ASCII hero face — cursor-follow, wink, leaving wiggle
     AvatarEasterEgg.tsx              5-click avatar easter egg — spins and opens Discord
+    BadgeShape.tsx                   Profile badge that morphs shape (clip-path) on click
     LikeCard.tsx                     Supports default / "circle" (VTuber) / "square" (album) layouts, live badge
     LikeCategorySection.tsx          Category section with lazy-loading observer
     LikeDetailBody.tsx               Expanded like detail view (used in the modal)
@@ -138,13 +142,14 @@ app/
     useHorizontalWheelScroll.ts          Mouse-wheel horizontal pan
     useScrollLinkedHorizontalReveal.ts   Scroll-position-linked horizontal pan
     useVtuberLiveStatus.ts               Polls /api/vtuber-live every 60s while a circle-layout section is mounted
+    useFlipReorder.ts                    Hand-rolled FLIP animation for reordering cards (no library)
   lib/
     kv.ts                             Vercel KV read/write for Discord-sourced thoughts
     threads.ts                        Threads API fetch for synced posts
     github.ts                         GitHub API fetch for repository info and events
     lastfm.ts                         Last.fm API fetch for top albums (about/likes/music)
     imageThumb.ts                     wsrv.nl resize-proxy helpers for external images
-    sortLikes.ts                      Rating-based sort (rating → personRating, unrated sinks last)
+    sortLikes.ts                      Rating-based sort with optional live-first predicate (rating → personRating, unrated sinks last)
     ratingStars.tsx                   5-star rating renderer (dim track + clipped fill overlay)
     mergedThoughts.ts                 Merge and deduplicate thoughts from multiple sources
   about/page.tsx
