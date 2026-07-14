@@ -18,6 +18,8 @@ export interface Like {
   status?: string;
   tags?: string[];
   note?: string;
+  /** YouTube channel ID, only needed when `href` is an @handle URL that doesn't already encode it (used to match VSPO's own live-schedule feed). */
+  channelId?: string;
 }
 
 export interface LikeCategory {
@@ -248,10 +250,10 @@ export const LIKE_CATEGORIES: LikeCategory[] = [
     en: "VTUBER",
     layout: "circle",
     items: [
-      { title: "花芽すみれ",tags:["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@kagasumire", cover: "https://yt3.googleusercontent.com/62gVOJZDVb-9pPCbljnoRlwqEuvcGk0pNl32GNi_GA_KQS3N7X6-B660Pk3crHh3zi1XSzHMNQ=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "花芽なずな", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@nazunakaga", cover: "https://yt3.googleusercontent.com/AiM0dD6-tajxuBeozH1YberZhKAANawzH_WDwLo9zLaqlGaen_nxW6q1RQt7k79FXEeQLXPFOIM=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "胡桃のあ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@963Noah", cover: "https://yt3.googleusercontent.com/P0TCuLWSv_bK-G6p7j-wY2XM6w78G8Z-vtZ-XxkuIXfjFuScBCL3_LLCl1W6dgdMe3GcikiskQ=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "猫汰つな", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@tsuna_nekota", cover: "https://yt3.googleusercontent.com/t8oKW3u3BqieOUZ4j3d_qxV2fBEypIpVkq3vY2SYlOD2gblH-4fSjBOGW9O5eiOagOhhuUzA=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "花芽すみれ",tags:["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@kagasumire", channelId: "UCyLGcqYs7RsBb3L0SJfzGYA", cover: "https://yt3.googleusercontent.com/62gVOJZDVb-9pPCbljnoRlwqEuvcGk0pNl32GNi_GA_KQS3N7X6-B660Pk3crHh3zi1XSzHMNQ=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "花芽なずな", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@nazunakaga", channelId: "UCiMG6VdScBabPhJ1ZtaVmbw", cover: "https://yt3.googleusercontent.com/AiM0dD6-tajxuBeozH1YberZhKAANawzH_WDwLo9zLaqlGaen_nxW6q1RQt7k79FXEeQLXPFOIM=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "胡桃のあ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@963Noah", channelId: "UCIcAj6WkJ8vZ7DeJVgmeqKw", cover: "https://yt3.googleusercontent.com/P0TCuLWSv_bK-G6p7j-wY2XM6w78G8Z-vtZ-XxkuIXfjFuScBCL3_LLCl1W6dgdMe3GcikiskQ=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "猫汰つな", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@tsuna_nekota", channelId: "UCIjdfjcSaEgdjwbgjxC3ZWg", cover: "https://yt3.googleusercontent.com/t8oKW3u3BqieOUZ4j3d_qxV2fBEypIpVkq3vY2SYlOD2gblH-4fSjBOGW9O5eiOagOhhuUzA=s900-c-k-c0x00ffffff-no-rj" },
       { title: "小雀とと", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/channel/UCgTzsBI0DIRopMylJEDqnog", cover: "https://yt3.googleusercontent.com/ytc/AIdro_lEifEusAxSkqQg12z_wUO1bGfGIqo9Vv4OYz6X5BhCIg=s900-c-k-c0x00ffffff-no-rj" },
       { title: "一ノ瀬うるは", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/channel/UC5LyYg6cCA4yHEYvtUsir3g", cover: "https://yt3.googleusercontent.com/ytc/AIdro_myySkwnJbRZM78Ct6Zqok5H0oegoEjLOtg6sdq117VRAM=s900-c-k-c0x00ffffff-no-rj" },
       { title: "兎咲ミミ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/channel/UCnvVG9RbOW3J6Ifqo-zKLiw", cover: "https://yt3.googleusercontent.com/9cJ6zJabky32vTsNMD4NdQQrCIttzqpmC_kW55tKwJuh6OUiCs8MVziidVYfJOa9dBLlgcNwHw=s900-c-k-c0x00ffffff-no-rj" },
@@ -264,15 +266,15 @@ export const LIKE_CATEGORIES: LikeCategory[] = [
       { title: "藍沢エマ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/channel/UCPkKpOHxEDcwmUAnRpIu-Ng", cover: "https://yt3.googleusercontent.com/wuec9EJq49vLP5Urd_Jtr-2-UcRnKA_Z0VffwgIV5OCkrdiYqKURoN8q431M6MxCnGzMGDtlLw=s900-c-k-c0x00ffffff-no-rj" },
       { title: "紫宮るな", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/channel/UCD5W21JqNMv_tV9nfjvF9sw", cover: "https://yt3.googleusercontent.com/Rgt9lslf7OZntxcW8A9mMFWDdXTG1IxqCq4tZ14Rd7rB1rm4gxQZPTc5kM9LdGTPmXGWkfyzWw=s900-c-k-c0x00ffffff-no-rj" },
       { title: "白波らむね", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/channel/UC61OwuYOVuKkpKnid-43Twg", cover: "https://yt3.googleusercontent.com/zkGtVL-NEnjNR53Bf02AeO5AlzwxXOcrTBbaY62YY9wQoQh7S13ASJdMGMsPXyw2U2zxNFUysg=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "小森めと", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Met_Komori", cover: "https://yt3.googleusercontent.com/8km4MzJjHfYgZ7gbACC42-p2iwGFjmRFL-mppdpn4y35mIWhDTg2qVxmrGV1WQCqrjV7ZB9_Bw=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "夢野あかり", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@akarindao", cover: "https://yt3.googleusercontent.com/hW-Z9l93zqxXn56bdRyo4OgVHn9XIMq7T991dsmnwJ-LTWACf306bVYRb8GSbWEATM3UNhqklw=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "夜乃くろむ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@YanoKuromu", cover: "https://yt3.googleusercontent.com/1akMwH-5NFyiA_cSCHjkOi-h0ZygMVcxMdRHYmCgBtjfha__trYziilH92BCAYgYZQBGOWynsg=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "紡木こかげ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Kokage_Tsumugi", cover: "https://yt3.googleusercontent.com/k5cVF6C4_wfjYaf3iNU9ZfqTUZp6nwk_f4_Jid3VPIMJcjQj4Zll31sdE0J3yP1HEJoNtl0gyho=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "千燈ゆうひ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@SendoYuuhi", cover: "https://yt3.googleusercontent.com/LwrClvbMurf6c81aevjCuKoy8CKwQbuChZlNExzHHeWfaeQQ1kQpbMZPjqBu24TmVeg0RBH7Cg=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "蝶屋はなび", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@HanabiChoya", cover: "https://yt3.googleusercontent.com/N7qEUQMbq8z1lQdp4WBUz3vQ83gYiYmPt-alI5K1xMYnOh4uAxuQlUVPneZQKetzACogh6E_qA=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "甘結もか", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Moka_Amayui", cover: "https://yt3.googleusercontent.com/e_Vc-qiRBWmj9PaysPGhh9b2bn5YDLs-FhmqDwZTiog6umosQzQEa7phbJwz4eaZsGwzfFze=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "銀城サイネ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Saine_Ginjo", cover: "https://yt3.googleusercontent.com/1GsQmWJZ_ABGy-QkyuVM59_5F-iOPMMk5r5dR8bBVwRWjfY2u_Y-vuQptYrnezEvcDiTqXU7=s900-c-k-c0x00ffffff-no-rj" },
-      { title: "龍巻ちせ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Chise_Tatsumaki", cover: "https://yt3.googleusercontent.com/iY4fKYP5hjgVTNz69v9pXqmndDfJgYj3YSA47zsDeROBIp3tzxgZQqG3x6W6UZFQum64Dse2b5k=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "小森めと", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Met_Komori", channelId: "UCzUNASdzI4PV5SlqtYwAkKQ", cover: "https://yt3.googleusercontent.com/8km4MzJjHfYgZ7gbACC42-p2iwGFjmRFL-mppdpn4y35mIWhDTg2qVxmrGV1WQCqrjV7ZB9_Bw=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "夢野あかり", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@akarindao", channelId: "UCS5l_Y0oMVTjEos2LuyeSZQ", cover: "https://yt3.googleusercontent.com/hW-Z9l93zqxXn56bdRyo4OgVHn9XIMq7T991dsmnwJ-LTWACf306bVYRb8GSbWEATM3UNhqklw=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "夜乃くろむ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@YanoKuromu", channelId: "UCX4WL24YEOUYd7qDsFSLDOw", cover: "https://yt3.googleusercontent.com/1akMwH-5NFyiA_cSCHjkOi-h0ZygMVcxMdRHYmCgBtjfha__trYziilH92BCAYgYZQBGOWynsg=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "紡木こかげ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Kokage_Tsumugi", channelId: "UC-WX1CXssCtCtc2TNIRnJzg", cover: "https://yt3.googleusercontent.com/k5cVF6C4_wfjYaf3iNU9ZfqTUZp6nwk_f4_Jid3VPIMJcjQj4Zll31sdE0J3yP1HEJoNtl0gyho=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "千燈ゆうひ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@SendoYuuhi", channelId: "UCuDY3ibSP2MFRgf7eo3cojg", cover: "https://yt3.googleusercontent.com/LwrClvbMurf6c81aevjCuKoy8CKwQbuChZlNExzHHeWfaeQQ1kQpbMZPjqBu24TmVeg0RBH7Cg=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "蝶屋はなび", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@HanabiChoya", channelId: "UCL9hJsdk9eQa0IlWbFB2oRg", cover: "https://yt3.googleusercontent.com/N7qEUQMbq8z1lQdp4WBUz3vQ83gYiYmPt-alI5K1xMYnOh4uAxuQlUVPneZQKetzACogh6E_qA=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "甘結もか", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Moka_Amayui", channelId: "UC8vKBjGY2HVfbW9GAmgikWw", cover: "https://yt3.googleusercontent.com/e_Vc-qiRBWmj9PaysPGhh9b2bn5YDLs-FhmqDwZTiog6umosQzQEa7phbJwz4eaZsGwzfFze=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "銀城サイネ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Saine_Ginjo", channelId: "UC2xXx1m1jeL0W84_0jTg-Yw", cover: "https://yt3.googleusercontent.com/1GsQmWJZ_ABGy-QkyuVM59_5F-iOPMMk5r5dR8bBVwRWjfY2u_Y-vuQptYrnezEvcDiTqXU7=s900-c-k-c0x00ffffff-no-rj" },
+      { title: "龍巻ちせ", tags: ["VSPO"], sub: "VSPO", href: "https://www.youtube.com/@Chise_Tatsumaki", channelId: "UCoW8qQy80mKH0RJTKAK-nNA", cover: "https://yt3.googleusercontent.com/iY4fKYP5hjgVTNz69v9pXqmndDfJgYj3YSA47zsDeROBIp3tzxgZQqG3x6W6UZFQum64Dse2b5k=s900-c-k-c0x00ffffff-no-rj" },
       { title: "Nachoneko", tags: ["個人勢"], sub: "個人勢", href: "https://www.youtube.com/@Nachoneko_dayo", cover: "https://yt3.googleusercontent.com/N5l6FkLje3jSEAvxcSuqFFlE734_Ld0iI0QoTU5q-tbdfPQd2_dPHfFUWK3XIIoM6T4ep1itsw=s900-c-k-c0x00ffffff-no-rj" },
       { title: "我部りえる", tags: ["あおぎり高校"], sub: "あおぎり高校", href: "https://www.youtube.com/channel/UCFvEuP2EDkvrgJpHI6-pyNw", cover: "https://yt3.googleusercontent.com/PQTsSjQKuLXwv22OmnrQC0PwID65eb-0ltBcI29VNcFGvNB-zepdiuPQo-PGBn7kpyHYNS_nxQ=s900-c-k-c0x00ffffff-no-rj" },
       { title: "音霊魂子", tags: ["あおぎり高校"], sub: "あおぎり高校", href: "https://www.youtube.com/@tamako0212", cover: "https://yt3.googleusercontent.com/mZMKfTknmgnZ7SCyJ58hsJklu5H0BXZvxfnMoVy9dEOnO9KmAFLqX4LIgKewn2x_NxB1oJTPjg=s900-c-k-c0x00ffffff-no-rj" },
