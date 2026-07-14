@@ -1178,7 +1178,37 @@ body.site-revealed .header {
   border-radius: 50%;
   background: #b9c0cc;
   border: 4px solid var(--panel2);
-  transition: background 0.25s ease;
+  transition: background 0.25s ease, filter 0.2s ease;
+  cursor: pointer;
+}
+.status-dot:hover {
+  filter: brightness(1.25);
+}
+/* 點狀態圓點展開一個小註解泡泡——用 clip-path 從下往上「掀開」，不是
+   淡入或放大，比較像布幕被掀起來的手感 */
+.status-bubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--panel2);
+  border: 1px solid var(--bd);
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tx);
+  white-space: nowrap;
+  animation: status-bubble-unfurl 0.3s ease both;
+}
+@keyframes status-bubble-unfurl {
+  from {
+    clip-path: inset(100% 0 0 0 round 6px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 6px);
+  }
 }
 .status-dot.online {
   background: #43b581;
@@ -1201,6 +1231,81 @@ body.site-revealed .header {
   border-radius: 10px;
   padding: 8px 12px;
   margin-bottom: 8px;
+}
+.badge-shape {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+.badge-shape:hover {
+  filter: brightness(1.35);
+}
+/* 四種形狀都是 8 個點的 polygon，點數對齊才能讓瀏覽器在兩個形狀之間逐點
+   內插出平滑的變形動畫（見 BadgeShape.tsx 的說明）。 */
+.badge-shape--circle {
+  clip-path: polygon(29.3% 0%, 70.7% 0%, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0% 70.7%, 0% 29.3%);
+}
+.badge-shape--triangle {
+  clip-path: polygon(50% 0%, 66.67% 33.33%, 83.33% 66.67%, 100% 100%, 66.67% 100%, 33.33% 100%, 0% 100%, 25% 50%);
+}
+.badge-shape--square {
+  clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+}
+.badge-shape--diamond {
+  clip-path: polygon(50% 0%, 75% 25%, 100% 50%, 75% 75%, 50% 100%, 25% 75%, 0% 50%, 25% 25%);
+}
+.badge-shape--morph-to-triangle {
+  animation: badge-morph-circle-triangle var(--badge-morph-ms) ease;
+}
+.badge-shape--morph-to-square {
+  animation: badge-morph-triangle-square var(--badge-morph-ms) ease;
+}
+.badge-shape--morph-to-diamond {
+  animation: badge-morph-square-diamond var(--badge-morph-ms) ease;
+}
+.badge-shape--morph-to-circle {
+  animation: badge-morph-diamond-circle var(--badge-morph-ms) ease;
+}
+:root {
+  --badge-morph-ms: 0.62s;
+}
+@keyframes badge-morph-circle-triangle {
+  0%,
+  100% {
+    clip-path: polygon(29.3% 0%, 70.7% 0%, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0% 70.7%, 0% 29.3%);
+  }
+  50% {
+    clip-path: polygon(50% 0%, 66.67% 33.33%, 83.33% 66.67%, 100% 100%, 66.67% 100%, 33.33% 100%, 0% 100%, 25% 50%);
+  }
+}
+@keyframes badge-morph-triangle-square {
+  0%,
+  100% {
+    clip-path: polygon(50% 0%, 66.67% 33.33%, 83.33% 66.67%, 100% 100%, 66.67% 100%, 33.33% 100%, 0% 100%, 25% 50%);
+  }
+  50% {
+    clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+  }
+}
+@keyframes badge-morph-square-diamond {
+  0%,
+  100% {
+    clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+  }
+  50% {
+    clip-path: polygon(50% 0%, 75% 25%, 100% 50%, 75% 75%, 50% 100%, 25% 75%, 0% 50%, 25% 25%);
+  }
+}
+@keyframes badge-morph-diamond-circle {
+  0%,
+  100% {
+    clip-path: polygon(50% 0%, 75% 25%, 100% 50%, 75% 75%, 50% 100%, 25% 75%, 0% 50%, 25% 25%);
+  }
+  50% {
+    clip-path: polygon(29.3% 0%, 70.7% 0%, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0% 70.7%, 0% 29.3%);
+  }
 }
 .name-row {
   margin-top: 0px;
@@ -1269,12 +1374,15 @@ body.site-revealed .header {
   align-items: center;
   gap: 7px;
   background: var(--panel2);
-  border: 1px solid var(--bd);
   border-radius: 8px;
   padding: 6px 12px;
   font-family: "JetBrains Mono", monospace;
   font-size: 13px;
   color: var(--tx);
+  transition: filter 0.2s ease;
+}
+.role-chip:hover {
+  filter: brightness(1.15);
 }
 .role-dot {
   width: 8px;
@@ -1907,9 +2015,6 @@ body.site-revealed .header {
 /* Activity / Spotify mini-card */
 .dc-act {
   margin-top: 10px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
   background: var(--inset);
   border: 1px solid var(--bd);
   border-radius: 10px;
@@ -1917,6 +2022,67 @@ body.site-revealed .header {
 }
 .dc-act-spotify {
   border-color: rgba(29, 185, 84, 0.35);
+}
+/* 點卡片翻到背面看小訊息／連結，再點一次翻回來——3D 翻牌，不是浮動也不是
+   整體放大。perspective 開在最外層（.dc-act 本身），旋轉發生在 .dc-flip-inner，
+   兩個面用 backface-visibility 互相遮住背面，翻到 180deg 時背面那面才會露出來。 */
+.dc-flip {
+  position: relative;
+  perspective: 1000px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+.dc-flip:hover {
+  /* 只調整整體亮度，不動 border-color——四周那圈線維持原樣不變 */
+  filter: brightness(1.2);
+}
+.dc-flip-inner {
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-style: preserve-3d;
+}
+.dc-flip--flipped .dc-flip-inner {
+  transform: rotateY(180deg);
+}
+.dc-flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.dc-flip-face--front {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.dc-flip-face--back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.dc-flip-back-caption {
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.5;
+  text-align: center;
+}
+.dc-flip-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #1db954;
+  text-decoration: none;
+}
+.dc-flip-back-link:hover {
+  text-decoration: underline;
+}
+.dc-flip-back-link .status-glyph {
+  width: 14px;
+  height: 14px;
 }
 .dc-act-idle .dc-act-title,
 .dc-act-idle .dc-act-sub {
@@ -2413,6 +2579,11 @@ body.site-revealed .header {
   align-items: flex-start;
   gap: 18px;
   overflow-x: auto;
+  /* 開台狀態載入後會把直播中的卡片重排到最前面；沒有這行，瀏覽器的
+     scroll anchoring 會在卡片被搬到目前可視範圍之前的位置時，自動偏移
+     scrollLeft 去「補償」讓畫面看起來沒變──等於悄悄把剛排到最前面的
+     卡片捲出畫面外，還得使用者自己往回捲才找得到。 */
+  overflow-anchor: none;
   /* CSS 規定 overflow-x 只要不是 visible，overflow-y 沒明講也會被瀏覽器
      強制升級成 auto（沒辦法只讓某一軸不裁切）——所以這裡直接留出上緣空間，
      開台紅框往上凸出的 6px 才不會被這層橫向捲動容器自己的裁切吃掉 */

@@ -51,8 +51,8 @@ export default function LikeFilterGrid({
       if (q && !l.title.toLowerCase().includes(q) && !l.sub?.toLowerCase().includes(q)) return false;
       return true;
     });
-    return sortLikesByRating(result, "desc");
-  }, [items, query, activeTag]);
+    return sortLikesByRating(result, "desc", l => !!(l.href && liveMap[l.href]?.live));
+  }, [items, query, activeTag, liveMap]);
 
   return (
     <>
@@ -89,11 +89,11 @@ export default function LikeFilterGrid({
       </div>
       {filtered.length > 0 ? (
         <div className={`likes-grid ${layout === "circle" ? "likes-grid--circle" : ""}`}>
-          {filtered.map((l, i) => (
+          {filtered.map(l => (
             <LikeCard
               l={l}
               layout={layout}
-              key={`${l.title}-${i}`}
+              key={l.href ?? l.title}
               onClick={useModal ? () => setSelectedLike(l) : undefined}
               live={l.href ? liveMap[l.href] : undefined}
             />
