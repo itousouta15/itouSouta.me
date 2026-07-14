@@ -1,9 +1,9 @@
-# itousouta.me
+# itouSouta.me
 
 [English](README.md) | 繁體中文
 
 ![示意圖](public/assets/itousouta15.webp)
-itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](https://itousouta.me)。
+itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](https://itouSouta.me)。
 
 ## 技術棧
 
