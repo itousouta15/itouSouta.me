@@ -9,8 +9,8 @@ export const metadata: Metadata = {
   title: "雜談",
   description,
   alternates: { canonical: "/thoughts" },
-  openGraph: { title: "雜談 | itouSouta15.tw", description, url: "/thoughts" },
-  twitter: { title: "雜談 | itouSouta15.tw", description },
+  openGraph: { title: "雜談 | itousouta.me", description, url: "/thoughts" },
+  twitter: { title: "雜談 | itousouta.me", description },
 };
 
 export const revalidate = 3600;

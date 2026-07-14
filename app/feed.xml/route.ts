@@ -1,7 +1,7 @@
 import { getMergedThoughts } from "../lib/mergedThoughts";
 
-const SITE_URL = "https://itousouta15.tw";
-const TITLE = "itouSouta15.tw 雜談";
+const SITE_URL = "https://itousouta.me";
+const TITLE = "itousouta.me 雜談";
 const DESCRIPTION = "itouSouta 的雜談與生活紀錄，隨手記下的想法與日常。";
 
 export const revalidate = 3600;

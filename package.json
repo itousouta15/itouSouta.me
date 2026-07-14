@@ -2,7 +2,7 @@
   "name": "itousouta-tw",
   "version": "1.0.0",
   "private": true,
-  "description": "itousouta15.tw — personal site (Next.js App Router)",
+  "description": "itousouta.me — personal site (Next.js App Router)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
