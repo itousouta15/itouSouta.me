@@ -5,6 +5,8 @@ import { TILE_ICON_META } from "./components/tileIconMeta";
 import GithubGlyph from "./components/GithubGlyph";
 import GithubContributionCard from "./components/GithubContributionCard";
 import { LanyardProvider, ProfileStatus, ProfileStatusDot } from "./components/LanyardCards";
+import AvatarEasterEgg from "./components/AvatarEasterEgg";
+import HeroFace from "./components/HeroFace";
 
 export default function HomePage() {
   const tileIcons = TILE_COLS.flat();
@@ -25,7 +27,12 @@ export default function HomePage() {
           <div className="profile-body">
             <div className="avatar-row">
               <div className="avatar-wrap">
-                <img className="avatar" src="/assets/avatar.webp" alt="郭家睿 / 伊藤蒼太" />
+                <AvatarEasterEgg
+                  className="avatar"
+                  src="/assets/avatar.webp"
+                  alt="郭家睿 / 伊藤蒼太"
+                  href="https://dc.itousouta.me"
+                />
                 <ProfileStatusDot />
               </div>
               <div className="badges">
@@ -98,7 +105,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="hero-side">
-            <div className="hero-face">= ᗜ ω ᗜ.=</div>
+            <HeroFace />
           </div>
         </div>
 

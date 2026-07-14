@@ -17,13 +17,14 @@ const PROJECT_LINKS = [
   { label: "itouSlides", href: "https://slides.itousouta.me/" },
   { label: "itouCards", href: "https://cards.itousouta.me/" },
   { label: "itouBLoGa", href: "https://blog.itousouta.me/" },
+  { label: "itouOJ", href: "https://oj.itousouta.me/" },
 ];
 
 const SOCIAL_LINKS = [
   { icon: "instagram", label: "Instagram", href: "https://www.instagram.com/itou.souta15" },
   { icon: "github", label: "GitHub", href: "https://github.com/itousouta15" },
   { icon: "x", label: "X", href: "https://x.com/itou_souta15" },
-  { icon: "discord", label: "Discord", href: "https://DC.itousouta.me" },
+  { icon: "discord", label: "Discord", href: "https://dc.itousouta.me" },
   { icon: "telegram", label: "Telegram", href: "https://t.me/itousouta15" },
 ];
 

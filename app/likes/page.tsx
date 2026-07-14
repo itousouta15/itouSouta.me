@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 import LikeCategorySection from "../components/LikeCategorySection";
 import MusicSection from "../components/MusicSection";
+import VtuberLiveWarmup from "../components/VtuberLiveWarmup";
 import { LIKE_CATEGORIES } from "../data";
 import { getTopAlbums } from "../lib/lastfm";
 
@@ -22,6 +23,7 @@ export default async function LikesPage() {
 
   return (
     <section style={{ paddingBottom: 8 }}>
+      <VtuberLiveWarmup />
       <PageHead kicker="LIKES" title="喜歡的東西" />
       {LIKE_CATEGORIES.map(cat => (
         <LikeCategorySection cat={cat} key={cat.key} />

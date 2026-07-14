@@ -1160,6 +1160,15 @@ body.site-revealed .header {
   background: var(--panel2);
   display: block;
 }
+/* 彩蛋：頭像連點 5 下才觸發，轉一圈再跳轉 */
+.avatar--spinning {
+  animation: avatar-spin 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+@keyframes avatar-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .status-dot {
   position: absolute;
   right: 2px;
@@ -1425,7 +1434,21 @@ body.site-revealed .header {
   align-self: stretch;
   padding-bottom: 6px;
 }
+.hero-face-mouse {
+  /* 跟著滑鼠稍微偏移的位移用這個補間，不然每個 mousemove 影格都用同一顆
+     transform 硬切會頓頓的。這層只管這件事，搖擺動畫另外分層見 .hero-face-track，
+     兩個都動 transform 疊在同一個元素上會互相打架 */
+  transition: transform 0.15s ease-out;
+}
+.hero-face-track {
+  display: grid;
+  cursor: pointer;
+}
+.hero-face-track--wiggle {
+  animation: itWiggle 0.9s ease-in-out infinite;
+}
 .hero-face {
+  grid-area: 1 / 1;
   font-family: "JetBrains Mono", monospace;
   font-size: 40px;
   font-weight: 700;
@@ -1436,6 +1459,12 @@ body.site-revealed .header {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
+  /* 兩個表情疊在同一個 grid cell，純靠 opacity 交叉淡入淡出切換，捲動來回
+     跨過邊界也只是讓這個 transition 反向播放，不會卡住 */
+  transition: opacity 0.35s ease;
+}
+.hero-face--out {
+  opacity: 0;
 }
 .hero-face:hover {
   animation: itWiggle 0.75s ease-in-out;
@@ -2384,6 +2413,10 @@ body.site-revealed .header {
   align-items: flex-start;
   gap: 18px;
   overflow-x: auto;
+  /* CSS 規定 overflow-x 只要不是 visible，overflow-y 沒明講也會被瀏覽器
+     強制升級成 auto（沒辦法只讓某一軸不裁切）——所以這裡直接留出上緣空間，
+     開台紅框往上凸出的 6px 才不會被這層橫向捲動容器自己的裁切吃掉 */
+  padding-top: 8px;
   /* 不能設 scroll-behavior: smooth：useHorizontalWheelScroll 每影格賦值一次
      scrollLeft，smooth 會把每次賦值都變成瀏覽器自己的緩動動畫，疊在 hook 的
      緩動上，結果是嚴重的延遲和「滾完才動」。 */
@@ -2459,6 +2492,13 @@ body.site-revealed .header {
   color: var(--mute);
   letter-spacing: 0.15em;
 }
+.like-thumb-clip {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .like-thumb-img {
   width: 100%;
   height: 100%;
@@ -2527,6 +2567,10 @@ body.site-revealed .header {
 .like-card--circle {
   background: transparent;
   border: none;
+  /* .like-card 本身有 overflow: hidden（給方形卡片裁圖用），頭像貼著卡片頂端，
+     開台紅框往上凸出的部分會被這層一起裁掉，只有上緣被切、其他三邊因為卡片
+     內還有多餘空間所以沒事。circle 版整張卡都不需要裁切，直接關掉 */
+  overflow: visible;
 }
 .like-card--circle:hover {
   transform: none;
@@ -2537,8 +2581,26 @@ body.site-revealed .header {
 }
 .like-card--circle .like-thumb {
   aspect-ratio: 1 / 1;
-  width: 180px;
+  /* 180px 是上限，不是固定值：欄寬比這個窄的時候（窄視窗、手機）要跟著縮，
+     不然圓形頭像會撐破自己的格子，直接疊到隔壁欄位上。頭像本身填滿整欄，
+     不因為紅框而縮小 —— 紅框往外凸出的空間靠 grid gap 留（見 .likes-grid--circle /
+     mobile 那條 gap 必須 >= 2 * outline 凸出量，不夠寬就會撞到隔壁）。 */
+  width: min(180px, 100%);
   margin: 0 auto;
+  /* border-radius 留著：outline 本身會沿著它畫成圓形，不能拿掉。
+     但 overflow 絕對不能是 hidden —— outline + overflow:hidden + border-radius
+     疊在同一個元素上，Chrome/Safari 都會把 outline 沿著圓弧啃掉一截，紅框變成
+     缺一角或直接退化成方框。真正的圖片裁切交給下面 .like-thumb-clip 那層做，
+     裁切跟畫框分成兩層元素，outline 才不會被自己的裁切範圍影響。 */
+  border-radius: 50%;
+  overflow: visible;
+  /* 平常就把 outline 準備好、只是透明的，開台時只需要淡入顏色，而不是整圈
+     從無到有瞬間跳出來 —— outline-width 不變才能讓 outline-color 的漸變生效 */
+  outline: 3px solid transparent;
+  outline-offset: 3px;
+  transition: outline-color 0.5s ease;
+}
+.like-card--circle .like-thumb-clip {
   border-radius: 50%;
   overflow: hidden;
 }
@@ -2557,6 +2619,45 @@ body.site-revealed .header {
 }
 .likes-grid--circle {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.like-card--live .like-thumb {
+  /* transition 負責「消失 → 出現」那次的淡入；一旦亮了才交給 pulse 動畫接手閃爍 */
+  outline-color: #ff3b3b;
+  animation: like-live-pulse 1.8s ease-in-out 0.5s infinite;
+}
+.like-live-badge {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: #ff3b3b;
+  border-radius: 3px;
+  padding: 2px 7px;
+  z-index: 1;
+  animation: like-badge-fade-in 0.4s ease both;
+}
+@keyframes like-live-pulse {
+  0%, 100% {
+    outline-color: #ff3b3b;
+  }
+  50% {
+    outline-color: #ff8080;
+  }
+}
+@keyframes like-badge-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 /* 專輯封面等方形圖：跟預設卡一樣的版面，只把縮圖裁成 1:1 而非直式 2:3 */
 .like-card--square .like-thumb {
@@ -3368,9 +3469,17 @@ body.site-revealed .header {
   .page-head-desc {
     display: none;
   }
-  .likes-grid {
+  /* circle 版另外處理：這條原本連 .likes-grid--circle 一起蓋成固定兩欄，
+     圓形頭貼卻還是吃 180px 的寬度，欄位一窄頭貼就直接疊到隔壁去 */
+  .likes-grid:not(.likes-grid--circle) {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+  }
+  .likes-grid--circle {
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    /* 開台紅框 outline 往外凸 6px（3px 寬 + 3px offset），兩邊加起來要吃掉 12px
+       的縫，gap 沒留超過這個數字，紅框就會碰到隔壁頭像 —— 16px 留 4px 緩衝 */
+    gap: 16px;
   }
   .likes-search {
     max-width: none;
