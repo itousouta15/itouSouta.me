@@ -59,7 +59,7 @@ export default function Header() {
       <header className="header">
         <div className="header-inner">
           <Link className="logo" href="/" style={{ textDecoration: "none" }}>
-            itousouta.me
+            itouSouta.me
           </Link>
           <div className="header-right">
             <nav className="nav">
