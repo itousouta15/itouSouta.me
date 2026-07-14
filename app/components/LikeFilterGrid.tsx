@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Like } from "../data";
 import { sortLikesByRating } from "../lib/sortLikes";
+import { useVtuberLiveStatus } from "../hooks/useVtuberLiveStatus";
 import LikeCard from "./LikeCard";
 import LikeModalShell from "./LikeModalShell";
 
@@ -21,6 +22,8 @@ export default function LikeFilterGrid({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  // circle layout 目前只有 vtuber 分類在用，開台偵測跟著這個條件掛載即可
+  const liveMap = useVtuberLiveStatus(layout === "circle");
 
   // ?like=<index>（例如從全站搜尋導過來）時自動打開對應 modal
   useEffect(() => {
@@ -92,6 +95,7 @@ export default function LikeFilterGrid({
               layout={layout}
               key={`${l.title}-${i}`}
               onClick={useModal ? () => setSelectedLike(l) : undefined}
+              live={l.href ? liveMap[l.href] : undefined}
             />
           ))}
         </div>
