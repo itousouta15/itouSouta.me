@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   title: "喜歡的東西",
   description,
   alternates: { canonical: "/likes" },
-  openGraph: { title: "喜歡的東西 | itouSouta15.tw", description, url: "/likes" },
-  twitter: { title: "喜歡的東西 | itouSouta15.tw", description },
+  openGraph: { title: "喜歡的東西 | itousouta.me", description, url: "/likes" },
+  twitter: { title: "喜歡的東西 | itousouta.me", description },
 };
 
 export default async function LikesPage() {

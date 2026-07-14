@@ -20,8 +20,8 @@ export function generateMetadata({ params }: { params: { category: string } }): 
     title,
     description,
     alternates: { canonical: url },
-    openGraph: { title: `${title} | itouSouta15.tw`, description, url },
-    twitter: { title: `${title} | itouSouta15.tw`, description },
+    openGraph: { title: `${title} | itousouta.me`, description, url },
+    twitter: { title: `${title} | itousouta.me`, description },
   };
 }
 

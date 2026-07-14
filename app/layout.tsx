@@ -10,8 +10,8 @@ import BackToTopButton from "./components/BackToTopButton";
 import SiteLoader from "./components/SiteLoader";
 import CommandPalette from "./components/CommandPalette";
 
-const SITE_URL = "https://itousouta15.tw";
-const SITE_TITLE = "itouSouta15.tw";
+const SITE_URL = "https://itousouta.me";
+const SITE_TITLE = "itousouta.me";
 const SITE_DESCRIPTION =
   "itouSouta / 郭家睿 / 伊藤蒼太的個人網站 ε(*´･∀･｀)зﾞ";
 
@@ -98,7 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               alternateName: ["伊藤蒼太", "itouSouta", "itouSouta15"],
               url: SITE_URL,
               image: `${SITE_URL}/assets/avatar.webp`,
-              sameAs: ["https://blog.itousouta15.tw"],
+              sameAs: ["https://blog.itousouta.me"],
               affiliation: { "@type": "Organization", name: "臺中市立大里高中" },
               description: SITE_DESCRIPTION,
             }),

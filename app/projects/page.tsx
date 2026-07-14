@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   title: "一些專案們",
   description,
   alternates: { canonical: "/projects" },
-  openGraph: { title: "一些專案們 | itouSouta15.tw", description, url: "/projects" },
-  twitter: { title: "一些專案們 | itouSouta15.tw", description },
+  openGraph: { title: "一些專案們 | itousouta.me", description, url: "/projects" },
+  twitter: { title: "一些專案們 | itousouta.me", description },
 };
 
 export const revalidate = 3600;
