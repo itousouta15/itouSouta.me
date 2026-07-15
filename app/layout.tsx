@@ -9,6 +9,7 @@ import PageTransition from "./components/PageTransition";
 import BackToTopButton from "./components/BackToTopButton";
 import SiteLoader from "./components/SiteLoader";
 import CommandPalette from "./components/CommandPalette";
+import GravityMode from "./components/GravityMode";
 
 const SITE_URL = "https://itousouta.me";
 const SITE_TITLE = "itousouta.me";
@@ -113,6 +114,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <BackToTopButton />
           <CommandPalette />
+          <GravityMode />
           <ReactLenis root options={{ wheelMultiplier: 0.8, lerp: 0.1 }} />
         </ThemeProvider>
       </body>

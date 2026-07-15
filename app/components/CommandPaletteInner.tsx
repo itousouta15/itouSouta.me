@@ -96,6 +96,19 @@ export default function CommandPaletteInner({ onClose }: { onClose: () => void }
     };
   }, []);
 
+  // 彩蛋：輸入 "67" 按下 Enter，關閉搜尋回到首頁後讓整個頁面輕輕左右擺動幾下
+  // （致敬 Google 搜尋列的 67 彩蛋）。搖晃動畫掛在 body 上，setTimeout 是原生
+  // 計時器，不受這個元件即將 unmount 影響，所以擺動能撐到動畫播完。
+  const goHome67 = () => {
+    onClose();
+    if (window.location.pathname !== "/") router.push("/");
+    const body = document.body;
+    body.classList.remove("shake-67");
+    void body.offsetWidth; // 強制 reflow，確保重新播放動畫
+    body.classList.add("shake-67");
+    setTimeout(() => body.classList.remove("shake-67"), 1400);
+  };
+
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return ALL_ITEMS.slice(0, MAX_RESULTS);
@@ -143,6 +156,16 @@ export default function CommandPaletteInner({ onClose }: { onClose: () => void }
       setActiveIndex(i => Math.max(i - 1, 0));
     } else if (e.key === "Enter") {
       e.preventDefault();
+      if (query.trim() === "67") {
+        goHome67();
+        return;
+      }
+      if (query.trim() === "114514") {
+        onClose();
+        // 讓搜尋面板先 unmount，再啟動 Google Gravity 彩蛋
+        setTimeout(() => window.dispatchEvent(new Event("gravity:activate")), 0);
+        return;
+      }
       const item = results[activeIndex];
       if (item) goTo(item);
     }
