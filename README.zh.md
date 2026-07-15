@@ -76,17 +76,22 @@ Discord 狀態（上線狀態、活動、Spotify 播放）透過 Lanyard WebSock
 頭像、Likes 封面、音樂封面與專案截圖皆熱連結自數十個外部、不受控的網域 — 數量太多，無法逐一透過 `next/image` 的 `remotePatterns` 加入允許清單。`app/lib/imageThumb.ts` 會將任何 `http(s)` 來源導向 [wsrv.nl](https://wsrv.nl) 縮圖代理服務，並依實際顯示所需的尺寸縮放（`avatarThumb`、`likeThumb`、`likeCircleThumb`、`artistAvatarThumb`、`songThumb`、`projectCoverThumb`、`cardBgThumb`），對本機 `/assets` 路徑、動態 `.gif`（代理服務的 webp 轉換會使動畫失效）以及 `PROXY_BLOCKED_HOSTS` 中少數會拒絕代理服務請求的網域，則回退使用原始網址。
 
 **Hero 互動效果**
-Hero 區塊的 ASCII 表情（`HeroFace`）會微幅跟隨滑鼠游標（位移經過夾限並透過 `requestAnimationFrame` 節流），點擊時會眨靠近點擊側的那隻眼睛，捲動超過視窗頂端附近的門檻時（`IntersectionObserver` 搭配負值 `rootMargin`）會切換成「快消失」的表情並伴隨搖擺動畫。快速連續點擊個人頭像 5 次（`AvatarEasterEgg`）會讓頭像旋轉一圈並在新分頁開啟 Discord 邀請連結；連續點擊若中斷超過 1.5 秒則重新計數。
+Hero 區塊的 ASCII 表情（`HeroFace`）會微幅跟隨滑鼠游標（位移經過夾限並透過 `requestAnimationFrame` 節流），點擊時會眨靠近點擊側的那隻眼睛，捲動超過視窗頂端附近的門檻時（`IntersectionObserver` 搭配負值 `rootMargin`）會切換成「快消失」的表情並伴隨搖擺動畫。快速連續點擊個人頭像 5 次（`AvatarEasterEgg`）會讓頭像旋轉一圈並在新分頁開啟 Discord 邀請連結；連續點擊若中斷超過 1.5 秒則重新計數。輪播顯示的名字（`NameRotator`）會以 CSS 捲動在 `itouSouta` / `伊藤蒼太` / `郭家睿` 之間切換；滑鼠移入時會暫停輪播並跑一段文字解碼效果，把當下顯示的名字從隨機符號由左至右逐字解出（解碼目標是游標移入當下輪播正停在的那個名字，依經過時間對 8 秒的 CSS 週期推算）。
 
 **動畫效果**
 - 頁尾跑馬燈與技術磚牆列使用 CSS 關鍵影格
-- Hero 區塊中輪播顯示名稱的名稱輪播器
+- Hero 區塊中輪播顯示名稱的名稱輪播器，並帶有滑鼠移入觸發的文字解碼效果
 - 透過 `PageTransition` 實現的頁面轉場
 - 卡片懸停效果（觸控裝置上透過 `@media (hover: none)` 停用）
 - 所有動畫皆遵循 `prefers-reduced-motion`
 
 **指令面板**
 透過 Cmd/Ctrl+K 快速導覽並搜尋網站內容，可即時存取所有頁面與專案，並支援模糊搜尋以加快查找速度。
+
+**搜尋框彩蛋**
+指令面板（`CommandPaletteInner`）藏了兩組輸入：
+- 輸入 `67` 按下 Enter 會關閉面板、回到首頁，並讓整個頁面做一段 `skewY` 剪切擺動後衰減回穩 — 致敬 Google 搜尋自己的「67」彩蛋。
+- 輸入 `114514` 按下 Enter 會讓整個網站進入自帶的 Google Gravity 模式（`GravityMode`）。一顆手刻的 2D 物理迴圈（`requestAnimationFrame`，不依賴函式庫）會走訪 DOM，把幾乎每個可見元素變成 `position: fixed` 的剛體，套用重力、地板／牆壁彈跳與 AABB 方塊堆疊，讓所有東西掉落並堆在底部。剛體可用滑鼠拖曳與甩動（拖曳中的剛體在碰撞計算時視為不可推動），連結點擊會被攔截以免誤導航，另有一顆會俏皮閃避游標的浮動「還原」按鈕，按下即重新載入頁面復原。
 
 **RSS Feed**
 統一的 RSS Feed 位於 `/feed.xml`，整合來自 Discord（`/碎碎念` 斜線指令）、Threads 貼文與 GitHub 專案事件的雜談內容，並依時間戳排序。
@@ -121,7 +126,9 @@ app/
     GithubContributionCard.tsx
     GithubGlyph.tsx                  行內 GitHub 標誌（透傳 SVGProps）
     HeroFace.tsx                     互動式 ASCII Hero 表情 — 跟隨游標、眨眼、消失時搖擺
+    NameRotator.tsx                  Hero 名字輪播，含滑鼠移入的文字解碼效果
     AvatarEasterEgg.tsx              連點頭像 5 下的彩蛋 — 旋轉並開啟 Discord
+    GravityMode.tsx                  「114514」搜尋彩蛋 — 整頁 DOM 重力物理，可拖曳／甩動
     BadgeShape.tsx                   點擊後變形（clip-path）的個人名片徽章
     LikeCard.tsx                     支援預設 / "circle"（VTuber）/ "square"（專輯）版面，含開台徽章
     LikeCategorySection.tsx          含延遲載入觀察器的分類區塊

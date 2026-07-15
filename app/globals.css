@@ -63,7 +63,7 @@ svg {
 :root {
   --bg: #1b1e23;
   --panel: #24262b;
-  --panel2: #27292e;
+  --panel2: #24262b;
   --panel2-a: rgba(39, 41, 46, 0.82);
   --inset: #181b20;
   --bd: rgba(255, 255, 255, 0.07);
@@ -89,11 +89,11 @@ svg {
 }
 
 :root[data-theme="light"] {
-  --bg: #bfc0c7f1;
-  --panel: #d5d6dd;
-  --panel2: #d5d6dd;
+  --bg: #d2d3dcf1;
+  --panel: #e0e1eb;
+  --panel2: #e0e1eb;
   --panel2-a: rgba(227, 228, 233, 0.82);
-  --inset: #d2d5db;
+  --inset: #eaedf4;
   --bd: rgba(6, 6, 7, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
   --tx: #22262d;
@@ -175,6 +175,72 @@ svg {
   90% {
     transform: translateX(1px) rotate(1.5deg);
   }
+}
+/* 搜尋框輸入 "67" 按下 Enter 回到首頁後的彩蛋：以畫面中央那條垂直中線為軸，
+   左半、右半往相反的上下方向被「剪切拉扯」（skewY，中線不動），像旗子被扭一下
+   再彈回，來回幾下逐漸衰減後回穩。 */
+@keyframes itShake67 {
+  0%,
+  100% {
+    transform: skewY(0deg);
+  }
+  10% {
+    transform: skewY(7deg);
+  }
+  28% {
+    transform: skewY(-5deg);
+  }
+  46% {
+    transform: skewY(3.5deg);
+  }
+  64% {
+    transform: skewY(-2.2deg);
+  }
+  82% {
+    transform: skewY(1deg);
+  }
+}
+body.shake-67 {
+  overflow: hidden;
+  transform-origin: center center;
+  animation: itShake67 1.4s ease-in-out both;
+}
+
+/* Google Gravity 彩蛋（輸入 114514）的「還原」浮動按鈕。
+   兩層疊放：底層是原本的字，上層是強調色的同一組字，用 clip-path 從左往右
+   擦入（inset(0 100% 0 0) → inset(0 0 0 0)），box overflow hidden。 */
+#gravity-exit {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--bd2);
+  background: var(--panel);
+  color: var(--tx);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: inline-grid;
+  transition: transform 0.18s ease-out;
+}
+/* 兩層完全重疊在同一格 */
+#gravity-exit .gravity-exit-base,
+#gravity-exit .gravity-exit-fill {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+#gravity-exit .gravity-exit-fill {
+  color: var(--blue);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#gravity-exit:hover .gravity-exit-fill {
+  clip-path: inset(0 0 0 0);
 }
 @keyframes itNameRoll {
   0%,
@@ -486,7 +552,7 @@ body.site-revealed .header {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  border: 1px solid var(--bd2);
+  border: none;
   background: var(--inset);
   color: var(--tx);
   display: flex;
@@ -711,7 +777,6 @@ body.site-revealed .header {
   max-height: 100%;
   overflow-y: auto;
   background: var(--panel);
-  border: 1px solid var(--bd2);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   padding: 28px 32px 36px;
   scrollbar-width: none;
@@ -800,7 +865,6 @@ body.site-revealed .header {
   overflow-y: auto;
   overflow-x: hidden;
   background: var(--panel);
-  border: 1px solid var(--bd2);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   padding-bottom: 44px;
   scrollbar-width: none;
@@ -912,7 +976,6 @@ body.site-revealed .header {
   font-size: 13px;
   color: var(--dim);
   background: var(--inset);
-  border: 1px solid var(--bd);
   padding: 6px 12px;
   border-radius: 2px;
   letter-spacing: 0.04em;
@@ -931,7 +994,6 @@ body.site-revealed .header {
   gap: 10px;
   padding: 9px 16px;
   background: var(--inset);
-  border: 1px solid var(--bd);
   border-radius: 2px;
 }
 .like-modal-stat-label {
@@ -987,7 +1049,6 @@ body.site-revealed .header {
   font-size: 12.5px;
   color: #4caf50;
   background: rgba(76, 175, 80, 0.1);
-  border: 1px solid rgba(76, 175, 80, 0.2);
   padding: 8px 12px;
   border-radius: 2px;
 }
@@ -995,7 +1056,6 @@ body.site-revealed .header {
   margin: 26px 40px 0;
   padding: 22px 24px;
   background: var(--inset);
-  border: 1px solid var(--bd);
   border-radius: 2px;
 }
 .like-modal-note-title {
@@ -1106,7 +1166,6 @@ body.site-revealed .header {
 }
 .card {
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   box-shadow: none;
 }
@@ -1123,7 +1182,6 @@ body.site-revealed .header {
 }
 .profile-card {
   background: var(--panel2);
-  border: 1px solid var(--bd);
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
@@ -1192,7 +1250,6 @@ body.site-revealed .header {
   left: 50%;
   transform: translateX(-50%);
   background: var(--panel2);
-  border: 1px solid var(--bd);
   border-radius: 6px;
   padding: 4px 9px;
   font-family: "JetBrains Mono", monospace;
@@ -1227,7 +1284,6 @@ body.site-revealed .header {
   gap: 9px;
   align-items: center;
   background: var(--inset);
-  border: 1px solid var(--bd);
   border-radius: 10px;
   padding: 8px 12px;
   margin-bottom: 8px;
@@ -1347,7 +1403,6 @@ body.site-revealed .header {
 .field {
   margin-top: 10px;
   background: var(--inset);
-  border: 1px solid var(--bd);
   border-radius: 10px;
   padding: 14px 16px;
   font-family: "JetBrains Mono", monospace;
@@ -1357,7 +1412,6 @@ body.site-revealed .header {
 .roles {
   margin-top: 10px;
   background: var(--inset);
-  border: 1px solid var(--bd);
   border-radius: 12px;
   padding: 12px;
   display: flex;
@@ -1438,6 +1492,7 @@ body.site-revealed .header {
   color: var(--blue);
 }
 .name-rotator {
+  position: relative;
   display: inline-block;
   vertical-align: baseline;
   height: 1.18em;
@@ -1456,6 +1511,7 @@ body.site-revealed .header {
   flex-direction: column;
   will-change: transform;
   animation: itNameRoll 8s ease-in-out infinite;
+  transition: opacity 0.15s ease;
 }
 .name-rotator-track b {
   display: block;
@@ -1463,6 +1519,28 @@ body.site-revealed .header {
   line-height: 1.18em;
   color: var(--blue);
   font-weight: 800;
+}
+/* 滑鼠移入時暫停自動輪播，改由 .name-rotator-decode 疊在上面跑解碼動畫 */
+.name-rotator.is-decoding .name-rotator-track {
+  animation-play-state: paused;
+  opacity: 0;
+}
+.name-rotator-decode {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  height: 1.18em;
+  line-height: 1.18em;
+  color: var(--blue);
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.name-rotator.is-decoding .name-rotator-decode {
+  opacity: 1;
 }
 .hero-sub {
   font-size: 18px;
@@ -1693,7 +1771,6 @@ body.site-revealed .header {
   max-width: 100%;
   padding: 6px 8px;
   background: var(--inset);
-  border: 1px solid var(--bd);
 }
 .quote-tech-icon {
   position: relative;
@@ -1762,17 +1839,12 @@ body.site-revealed .header {
   min-height: 236px;
   height: 100%;
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   text-align: left;
   display: block;
-  transition: border-color 0.2s ease;
-}
-.card-likes:hover {
-  border-color: var(--bd2);
 }
 .card-likes-img {
   position: absolute;
@@ -1840,17 +1912,12 @@ body.site-revealed .header {
 .card-projects {
   min-height: 120px;
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   text-align: left;
   display: block;
-  transition: border-color 0.2s ease;
-}
-.card-projects:hover {
-  border-color: var(--bd2);
 }
 .card-projects-glyph {
   position: absolute;
@@ -1904,16 +1971,14 @@ body.site-revealed .header {
   height: 100%;
   min-height: 108px;
   background: var(--panel);
-  border: 1px solid var(--bd);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 22px 24px;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: background 0.2s ease;
 }
 .nav-card:hover {
-  border-color: var(--bd2);
   background: var(--panel2);
 }
 .nav-card-ghost {
@@ -2016,73 +2081,11 @@ body.site-revealed .header {
 .dc-act {
   margin-top: 10px;
   background: var(--inset);
-  border: 1px solid var(--bd);
   border-radius: 10px;
   padding: 10px 12px;
-}
-.dc-act-spotify {
-  border-color: rgba(29, 185, 84, 0.35);
-}
-/* 點卡片翻到背面看小訊息／連結，再點一次翻回來——3D 翻牌，不是浮動也不是
-   整體放大。perspective 開在最外層（.dc-act 本身），旋轉發生在 .dc-flip-inner，
-   兩個面用 backface-visibility 互相遮住背面，翻到 180deg 時背面那面才會露出來。 */
-.dc-flip {
-  position: relative;
-  perspective: 1000px;
-  cursor: pointer;
-  transition: filter 0.2s ease;
-}
-.dc-flip:hover {
-  /* 只調整整體亮度，不動 border-color——四周那圈線維持原樣不變 */
-  filter: brightness(1.2);
-}
-.dc-flip-inner {
-  position: relative;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-style: preserve-3d;
-}
-.dc-flip--flipped .dc-flip-inner {
-  transform: rotateY(180deg);
-}
-.dc-flip-face {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.dc-flip-face--front {
   display: flex;
   gap: 12px;
   align-items: center;
-}
-.dc-flip-face--back {
-  position: absolute;
-  inset: 0;
-  transform: rotateY(180deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.dc-flip-back-caption {
-  font-size: 12px;
-  color: var(--dim);
-  line-height: 1.5;
-  text-align: center;
-}
-.dc-flip-back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: #1db954;
-  text-decoration: none;
-}
-.dc-flip-back-link:hover {
-  text-decoration: underline;
-}
-.dc-flip-back-link .status-glyph {
-  width: 14px;
-  height: 14px;
 }
 .dc-act-idle .dc-act-title,
 .dc-act-idle .dc-act-sub {
@@ -2213,7 +2216,6 @@ body.site-revealed .header {
   grid-row: 1 / 3;
   min-width: 0;
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   padding: 30px 32px;
   box-shadow: none;
@@ -2244,7 +2246,6 @@ body.site-revealed .header {
 }
 .stat {
   background: var(--inset);
-  border: 1px solid var(--bd);
   padding: 14px;
 }
 .stat-k {
@@ -2276,7 +2277,6 @@ body.site-revealed .header {
   display: flex;
   flex-direction: column;
   background: var(--panel2);
-  border: 1px solid var(--bd);
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
@@ -2313,12 +2313,7 @@ body.site-revealed .header {
   min-height: 208px;
   overflow: hidden;
   background: var(--panel);
-  border: 1px solid var(--bd);
   padding: 24px 26px;
-  transition: border-color 0.2s ease;
-}
-.mini-card:hover {
-  border-color: var(--bd2);
 }
 .mini-kicker {
   position: relative;
@@ -2517,7 +2512,7 @@ body.site-revealed .header {
 }
 .likes-search {
   background: var(--inset);
-  border: 1px solid var(--bd);
+  border: none;
   border-radius: 10px;
   padding: 12px 16px;
   min-height: 44px;
@@ -2532,7 +2527,6 @@ body.site-revealed .header {
 }
 .likes-search:focus {
   outline: none;
-  border-color: var(--blue);
 }
 .likes-tag-row {
   display: flex;
@@ -2541,7 +2535,7 @@ body.site-revealed .header {
 }
 .likes-tag-chip {
   background: var(--panel2);
-  border: 1px solid var(--bd);
+  border: none;
   border-radius: 8px;
   padding: 9px 14px;
   min-height: 40px;
@@ -2551,15 +2545,13 @@ body.site-revealed .header {
   font-size: 12.5px;
   color: var(--dim);
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease;
 }
 .likes-tag-chip:hover {
-  border-color: var(--bd2);
   color: var(--tx);
 }
 .likes-tag-chip.active {
   background: var(--purple);
-  border-color: var(--purple);
   color: #fff;
 }
 .likes-empty {
@@ -2620,22 +2612,18 @@ body.site-revealed .header {
 }
 .like-card {
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
   display: block;
-  transition: border-color 0.2s ease;
   /* .like-card 現在是 <button>（開 modal 用），重置瀏覽器預設按鈕樣式 */
+  border: none;
   width: 100%;
   padding: 0;
   font: inherit;
   color: inherit;
   text-align: left;
   cursor: pointer;
-}
-.like-card:hover {
-  border-color: var(--bd2);
 }
 .like-card--carousel {
   width: 170px;
@@ -2660,7 +2648,7 @@ body.site-revealed .header {
 .like-thumb span {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
-  color: var(--mute);
+  color: #fff;
   letter-spacing: 0.15em;
 }
 .like-thumb-clip {
@@ -2866,17 +2854,12 @@ body.site-revealed .header {
 }
 .proj-card {
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   padding: 22px 24px;
   box-shadow: none;
-  transition: border-color 0.25s ease;
   display: flex;
   flex-direction: column;
   gap: 14px;
-}
-.proj-card:hover {
-  border-color: var(--bd2);
 }
 .proj-card:hover .proj-cover {
   transform: scale(1.06);
@@ -2887,7 +2870,6 @@ body.site-revealed .header {
 }
 .proj-cover-wrap {
   overflow: hidden;
-  border: 1px solid var(--bd);
   background: var(--inset);
 }
 .proj-cover {
@@ -2951,7 +2933,6 @@ body.site-revealed .header {
   font-size: 11px;
   color: var(--dim);
   background: var(--inset);
-  border: 1px solid var(--bd);
   border-radius: 6px;
   padding: 4px 8px;
 }
@@ -2986,7 +2967,6 @@ body.site-revealed .header {
 /* Blog */
 .blog-empty {
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   padding: 48px 32px;
   text-align: center;
@@ -3011,7 +2991,6 @@ body.site-revealed .header {
 }
 .blog-skeleton {
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   padding: 18px 22px;
   display: flex;
@@ -3052,16 +3031,11 @@ body.site-revealed .header {
 }
 .link-card {
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-radius: 0;
   padding: 18px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: border-color 0.2s ease;
-}
-.link-card:hover {
-  border-color: var(--bd2);
 }
 .link-card:hover .link-arrow {
   transform: translate(3px, -3px);
@@ -3137,12 +3111,10 @@ body.site-revealed .header {
 }
 .thought-item {
   background: var(--panel);
-  border: 1px solid var(--bd);
   padding: 22px 26px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition: transform 0.2s ease;
 }
 .thought-item:hover {
-  border-color: var(--bd2);
   transform: translateY(-2px);
 }
 .thought-meta {
@@ -3164,7 +3136,6 @@ body.site-revealed .header {
   text-transform: uppercase;
   color: var(--blue);
   background: var(--inset);
-  border: 1px solid var(--bd);
   padding: 2px 8px;
 }
 .thought-text {
@@ -3227,20 +3198,13 @@ body.site-revealed .header {
   z-index: 1;
   flex: 1 1 auto;
   background: var(--panel);
-  border: 1px solid var(--bd);
   border-top: 2px solid var(--blue);
   border-radius: 0;
   padding: 22px 26px;
   margin-top: 32px;
-  transition: border-color 0.25s ease;
 }
 .tl-card.purple {
   border-top-color: var(--purple);
-}
-.tl-card:hover {
-  border-left-color: var(--bd2);
-  border-right-color: var(--bd2);
-  border-bottom-color: var(--bd2);
 }
 .tl-period {
   font-family: "JetBrains Mono", monospace;
@@ -3545,16 +3509,8 @@ body.site-revealed .header {
    =========================================================================== */
 @media (hover: none) {
   /* Reset card opacity hovers that get stuck on touch */
-  .like-card:hover {
-    border-color: var(--bd);
-  }
   .like-card:hover .like-thumb-img { transform: none; }
   .proj-card:hover .proj-cover { transform: none; filter: none; }
-  .tl-card:hover {
-    border-left-color: var(--bd);
-    border-right-color: var(--bd);
-    border-bottom-color: var(--bd);
-  }
   .card-likes:hover .card-likes-img {
     opacity: 0.24;
     transform: scale(1.5);
@@ -3572,17 +3528,10 @@ body.site-revealed .header {
   .nav-card:hover .nav-card-title::after { transform: scaleX(0); }
   .nav-card:hover .nav-card-arrow { transform: rotate(45deg); color: var(--dim); }
   .nav-card:hover .nav-card-ghost { transform: none; opacity: 1; }
-  .link-card:hover {
-    border-color: var(--bd);
-  }
   .link-card:hover .link-arrow { transform: none; color: var(--dim); }
   .link-card:hover .link-avatar { transform: none; }
   /* Touch feedback via :active */
-  .like-card:active { border-color: var(--bd2); }
-  .card-likes:active { border-color: var(--bd2); }
-  .nav-card:active { background: var(--panel2); border-color: var(--bd2); }
-  .card-projects:active { border-color: var(--bd2); }
-  .link-card:active { border-color: var(--bd2); }
+  .nav-card:active { background: var(--panel2); }
 }
 
 /* ===========================================================================
