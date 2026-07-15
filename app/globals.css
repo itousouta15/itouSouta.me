@@ -3500,6 +3500,9 @@ body.site-revealed .header {
 .footer-heart {
   color: var(--purple);
 }
+.footer-visitors {
+  color: var(--mute);
+}
 .icon-copyright::before {
   content: "©";
 }

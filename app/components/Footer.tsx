@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import Link from "next/link";
 import { MARQUEE } from "../data";
+import VisitorCounter from "./VisitorCounter";
 
 const NAV_LINKS = [
   { label: "首頁", href: "/" },
@@ -107,6 +108,7 @@ export default function Footer() {
             <span className="footer-heart">♥</span>
             <span>itouSouta</span>
           </div>
+          <VisitorCounter />
         </div>
       </div>
     </footer>
