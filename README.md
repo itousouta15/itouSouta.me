@@ -76,17 +76,22 @@ The graph SVG is pre-generated and committed as a static asset in both dark and 
 Avatars, likes covers, music art, and project screenshots are hotlinked from dozens of external, uncontrolled domains — too many to allowlist individually via `next/image`'s `remotePatterns`. `app/lib/imageThumb.ts` routes any `http(s)` source through the [wsrv.nl](https://wsrv.nl) resize proxy at the size actually needed for display (`avatarThumb`, `likeThumb`, `likeCircleThumb`, `artistAvatarThumb`, `songThumb`, `projectCoverThumb`, `cardBgThumb`), falling back to the original URL for local `/assets` paths, animated `.gif`s (the proxy's webp conversion drops animation), and the handful of domains in `PROXY_BLOCKED_HOSTS` that reject requests from the proxy.
 
 **Hero interactions**
-The hero's ASCII face (`HeroFace`) subtly follows the cursor (displacement clamped and throttled via `requestAnimationFrame`), winks the near-side eye on click, and switches to a "leaving" expression with a wiggle animation once it scrolls past a threshold near the top of the viewport (`IntersectionObserver` with a negative `rootMargin`). Clicking the profile avatar 5 times in quick succession (`AvatarEasterEgg`) spins it and opens the Discord invite in a new tab; a pending click streak resets after 1.5s of inactivity.
+The hero's ASCII face (`HeroFace`) subtly follows the cursor (displacement clamped and throttled via `requestAnimationFrame`), winks the near-side eye on click, and switches to a "leaving" expression with a wiggle animation once it scrolls past a threshold near the top of the viewport (`IntersectionObserver` with a negative `rootMargin`). Clicking the profile avatar 5 times in quick succession (`AvatarEasterEgg`) spins it and opens the Discord invite in a new tab; a pending click streak resets after 1.5s of inactivity. The rotating display name (`NameRotator`) cycles through `itouSouta` / `伊藤蒼太` / `郭家睿` on a CSS roll; on hover it pauses and runs a text-decode effect that scrambles the currently shown name from random glyphs and settles it left-to-right (the target is whichever name the roll was on when the cursor arrived, computed from elapsed time against the 8s CSS cycle).
 
 **Animations**
 - CSS keyframe marquee for the footer strip and tech tile rows
-- Name rotator cycling through display names in the hero
+- Name rotator cycling through display names in the hero, with a hover-triggered text-decode effect
 - Page transitions via `PageTransition`
 - Card hover effects (disabled on touch devices via `@media (hover: none)`)
 - All animations respect `prefers-reduced-motion`
 
 **Command Palette**
 Quick site navigation and search via Cmd/Ctrl+K. Provides instant access to all pages and projects, with fuzzy search support for fast discovery.
+
+**Search-box easter eggs**
+Two hidden inputs in the command palette (`CommandPaletteInner`):
+- Typing `67` and pressing Enter closes the palette, returns to the home page, and gives the whole page a brief `skewY` shear-wobble that decays back to rest — a nod to Google's own "67" search easter egg.
+- Typing `114514` and pressing Enter drops the site into a self-contained Google-Gravity mode (`GravityMode`). A hand-rolled 2D physics loop (`requestAnimationFrame`, no library) walks the DOM, turns nearly every visible element into a `position: fixed` rigid body, and applies gravity, floor/wall bouncing, and AABB box stacking so everything falls into a pile at the bottom. Bodies can be grabbed and thrown with the pointer (dragged bodies act as immovable during collision resolution), link clicks are suppressed so pieces don't navigate away, and a floating "還原" button — which playfully dodges the cursor — reloads the page to restore it.
 
 **RSS Feed**
 Unified RSS feed at `/feed.xml` merges thoughts from Discord (`/碎碎念` slash command), Threads posts, and GitHub repository events, sorted by timestamp.
@@ -121,7 +126,9 @@ app/
     GithubContributionCard.tsx
     GithubGlyph.tsx                  Inline GitHub mark (SVGProps passthrough)
     HeroFace.tsx                     Interactive ASCII hero face — cursor-follow, wink, leaving wiggle
+    NameRotator.tsx                  Hero display-name roll with hover text-decode effect
     AvatarEasterEgg.tsx              5-click avatar easter egg — spins and opens Discord
+    GravityMode.tsx                  "114514" search easter egg — DOM-wide gravity physics with drag/throw
     BadgeShape.tsx                   Profile badge that morphs shape (clip-path) on click
     LikeCard.tsx                     Supports default / "circle" (VTuber) / "square" (album) layouts, live badge
     LikeCategorySection.tsx          Category section with lazy-loading observer

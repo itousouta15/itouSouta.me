@@ -8,6 +8,7 @@ import { LanyardProvider, ProfileStatus, ProfileStatusDot } from "./components/L
 import AvatarEasterEgg from "./components/AvatarEasterEgg";
 import HeroFace from "./components/HeroFace";
 import BadgeShape from "./components/BadgeShape";
+import NameRotator from "./components/NameRotator";
 
 export default function HomePage() {
   const tileIcons = TILE_COLS.flat();
@@ -86,14 +87,7 @@ export default function HomePage() {
             <div className="hero-greet">ciallo (∠·ω )⌒★</div>
                         <h1 className="hero-title">
               I&apos;m{" "}
-              <span className="name-rotator" aria-label="itouSouta, 伊藤蒼太, 郭家睿">
-                <span className="name-rotator-track">
-                  <b>itouSouta</b>
-                  <b>伊藤蒼太</b>
-                  <b>郭家睿</b>
-                  <b>itouSouta</b>
-                </span>
-              </span>
+              <NameRotator />
             </h1>
             <div className="hero-sub">一個喜歡 VOCALOID 和畫插畫的怪人</div>
             <div className="hero-actions">
