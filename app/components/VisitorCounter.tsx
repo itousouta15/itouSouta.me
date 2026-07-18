@@ -1,26 +1,8 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
+// 由不蒜子（busuanzi）填入數值，script 見 app/layout.tsx
 export default function VisitorCounter() {
-  const [count, setCount] = useState<number | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetch("/api/visitors")
-      .then(res => (res.ok ? res.json() : null))
-      .then(data => {
-        if (!cancelled && data) setCount(data.count);
-      })
-      .catch(() => {});
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (count === null) return null;
-
-  return <span className="footer-visitors">造訪人數 {count.toLocaleString("zh-TW")}</span>;
+  return (
+    <span id="busuanzi_container_site_uv" className="footer-visitors" style={{ display: "none" }}>
+      造訪人數 <span id="busuanzi_value_site_uv" />
+    </span>
+  );
 }

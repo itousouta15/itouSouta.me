@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 import "./globals.css";
@@ -117,6 +118,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <GravityMode />
           <ReactLenis root options={{ wheelMultiplier: 0.8, lerp: 0.1 }} />
         </ThemeProvider>
+        <Script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" strategy="afterInteractive" />
       </body>
     </html>
   );
