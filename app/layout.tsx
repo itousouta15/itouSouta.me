@@ -13,7 +13,7 @@ import CommandPalette from "./components/CommandPalette";
 import GravityMode from "./components/GravityMode";
 
 const SITE_URL = "https://itousouta.me";
-const SITE_TITLE = "itousouta.me";
+const SITE_TITLE = "itouSouta.me";
 const SITE_DESCRIPTION =
   "itouSouta / 郭家睿 / 伊藤蒼太的個人網站 ε(*´･∀･｀)зﾞ";
 
