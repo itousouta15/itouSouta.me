@@ -415,7 +415,7 @@ body.site-revealed .header {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  border: 1px solid var(--bd2);
+  border: none;
   background: var(--inset);
   cursor: pointer;
   transition: transform 0.15s ease;
@@ -1520,28 +1520,6 @@ body.site-revealed .header {
   color: var(--blue);
   font-weight: 800;
 }
-/* 滑鼠移入時暫停自動輪播，改由 .name-rotator-decode 疊在上面跑解碼動畫 */
-.name-rotator.is-decoding .name-rotator-track {
-  animation-play-state: paused;
-  opacity: 0;
-}
-.name-rotator-decode {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  height: 1.18em;
-  line-height: 1.18em;
-  color: var(--blue);
-  font-weight: 800;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-}
-.name-rotator.is-decoding .name-rotator-decode {
-  opacity: 1;
-}
 .hero-sub {
   font-size: 18px;
   color: var(--dim);
@@ -2202,6 +2180,47 @@ body.site-revealed .header {
   line-height: 1.8;
   color: var(--dim);
   text-align: right;
+}
+
+/* 404 */
+.notfound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 90px 20px 70px;
+}
+.notfound-kicker {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--mute);
+}
+.notfound-code {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 128px;
+  font-weight: 700;
+  color: var(--tx);
+  line-height: 1;
+  margin: 8px 0 0;
+  /* 位移用補間，不然每個 mousemove 影格都硬切 transform 會頓頓的（同 .hero-face-mouse） */
+  transition: transform 0.15s ease-out;
+}
+.notfound-code-accent {
+  color: var(--blue);
+}
+.notfound-msg {
+  font-size: 18px;
+  color: var(--tx);
+  margin: 22px 0 0;
+}
+.notfound-sub {
+  font-size: 15px;
+  color: var(--dim);
+  margin: 6px 0 0;
+}
+.notfound-actions {
+  margin-top: 30px;
 }
 
 /* About */
@@ -3592,6 +3611,12 @@ body.site-revealed .header {
   .page-head-desc {
     display: none;
   }
+  .notfound {
+    padding: 60px 20px 50px;
+  }
+  .notfound-code {
+    font-size: 84px;
+  }
   /* circle 版另外處理：這條原本連 .likes-grid--circle 一起蓋成固定兩欄，
      圓形頭貼卻還是吃 180px 的寬度，欄位一窄頭貼就直接疊到隔壁去 */
   .likes-grid:not(.likes-grid--circle) {
@@ -3674,7 +3699,9 @@ body.site-revealed .header {
     gap: 26px;
   }
   .footer-inner {
-    padding: 44px 20px 36px;
+    /* 底部留出淨空，不然捲到頁尾時固定在右下角的回到頂端按鈕（48px + 20px offset）
+       會直接疊到造訪人數那行上 */
+    padding: 44px 20px 88px;
   }
   .footer-logo {
     font-size: 38px;
