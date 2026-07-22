@@ -46,6 +46,7 @@ export default function HomePage() {
             </div>
             <div className="name-row">
               <span className="name">郭家睿</span>
+              <span className="sr-only"> · </span>
               <span className="alias">伊藤蒼太</span>
             </div>
             <div className="handle">itou.souta15 · 人間になりたい</div>
