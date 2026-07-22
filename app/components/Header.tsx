@@ -19,10 +19,24 @@ export default function Header() {
   const isDark = theme === "dark";
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  // Overlay only mounts into the DOM while open (see render below), so it can't
+  // leak into the SSR HTML that Googlebot indexes. Keeping it mounted for one
+  // extra tick after close preserves the CSS fade-out transition.
+  const [overlayMounted, setOverlayMounted] = useState(false);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (open) {
+      setOverlayMounted(true);
+      return;
+    }
+    if (!overlayMounted) return;
+    const timer = window.setTimeout(() => setOverlayMounted(false), 300);
+    return () => window.clearTimeout(timer);
+  }, [open, overlayMounted]);
 
   // Logo 用的 ChenYuLuoYan 字面特別小，載入前 fallback 會先放大、載入完成才縮小（FOUT）。
   // 等該字體就緒後才加上 .fonts-ready 讓 logo 淡入，避免「先變大再縮小」的跳動。
@@ -113,27 +127,32 @@ export default function Header() {
 
       {/* Sibling of <header>, not nested inside it — .header has backdrop-filter,
           which creates a containing block for position:fixed and would trap this
-          overlay inside the header's box instead of covering the viewport. */}
-      <div id="nav-overlay" className={`nav-overlay${open ? " is-open" : ""}`} role="dialog" aria-modal="true" aria-label="主選單">
-        <div className="nav-overlay-faces" aria-hidden="true">
-          {["= ᗜ ω ᗜ.=", "(◕ᗜ◕✿)", "( ˘ω˘ )zzz", "ฅ^•ﻌ•^ฅ", "(´,,•ω•,,)"].map((f, i) => (
-            <span key={i} className={`nav-overlay-face nav-overlay-face--${i}`}>{f}</span>
-          ))}
+          overlay inside the header's box instead of covering the viewport.
+          Only mounted while open: it used to render unconditionally (just
+          CSS-hidden), which meant its decorative faces and numbered nav links
+          shipped in the initial HTML and got indexed as page content. */}
+      {overlayMounted && (
+        <div id="nav-overlay" className={`nav-overlay${open ? " is-open" : ""}`} role="dialog" aria-modal="true" aria-label="主選單">
+          <div className="nav-overlay-faces" aria-hidden="true">
+            {["= ᗜ ω ᗜ.=", "(◕ᗜ◕✿)", "( ˘ω˘ )zzz", "ฅ^•ﻌ•^ฅ", "(´,,•ω•,,)"].map((f, i) => (
+              <span key={i} className={`nav-overlay-face nav-overlay-face--${i}`}>{f}</span>
+            ))}
+          </div>
+          <nav className="nav-overlay-links" aria-label="主要導覽">
+            {NAV_LINKS.map((l, i) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`nav-overlay-link${pathname === l.href ? " active" : ""}`}
+                style={{ "--i": i } as React.CSSProperties}
+              >
+                <span className="nav-overlay-index">{String(i + 1).padStart(2, "0")}</span>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
         </div>
-        <nav className="nav-overlay-links" aria-label="主要導覽">
-          {NAV_LINKS.map((l, i) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`nav-overlay-link${pathname === l.href ? " active" : ""}`}
-              style={{ "--i": i } as React.CSSProperties}
-            >
-              <span className="nav-overlay-index">{String(i + 1).padStart(2, "0")}</span>
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+      )}
     </>
   );
 }
