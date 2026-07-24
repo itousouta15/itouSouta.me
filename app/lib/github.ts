@@ -43,22 +43,49 @@ export interface GithubEvent {
   repo: string;
   createdAt: string;
   summary: string;
+  url: string;
 }
 
-const EVENT_LABELS: Record<string, (payload: any, repo: string) => string | null> = {
+type GithubEventSummary = {
+  summary: string;
+  url?: string;
+};
+
+function excerpt(text: string | null | undefined, maxLength = 220): string {
+  const normalized = text?.replace(/\s+/g, " ").trim();
+  if (!normalized) return "";
+  return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}...` : normalized;
+}
+
+const EVENT_LABELS: Record<string, (payload: any, repo: string) => GithubEventSummary | null> = {
   PushEvent: (payload, repo) => {
     const count = payload.commits?.length ?? 0;
     if (count === 0) return null;
-    return `推送了 ${count} 個 commit 到 ${repo}`;
+    return { summary: `Pushed ${count} commit${count === 1 ? "" : "s"} to ${repo}` };
   },
   CreateEvent: (payload, repo) =>
-    payload.ref_type === "repository" ? `建立了新專案 ${repo}` : null,
-  PullRequestEvent: (payload, repo) =>
-    payload.action === "opened" ? `在 ${repo} 開了一個 PR：${payload.pull_request?.title ?? ""}` : null,
+    payload.ref_type === "repository" ? { summary: `Created a new repository: ${repo}` } : null,
+  PullRequestEvent: (payload, repo) => {
+    if (payload.action !== "opened") return null;
+
+    const title = payload.pull_request?.title?.trim();
+    const body = excerpt(payload.pull_request?.body);
+    const detail = [title, body].filter(Boolean).join("\n\n");
+    if (!detail) return null;
+
+    return {
+      summary: `Opened a PR in ${repo}:\n${detail}`,
+      url: payload.pull_request?.html_url,
+    };
+  },
   IssuesEvent: (payload, repo) =>
-    payload.action === "opened" ? `在 ${repo} 開了一個 Issue：${payload.issue?.title ?? ""}` : null,
+    payload.action === "opened"
+      ? { summary: `Opened an issue in ${repo}: ${payload.issue?.title ?? ""}`, url: payload.issue?.html_url }
+      : null,
   ReleaseEvent: (payload, repo) =>
-    payload.action === "published" ? `在 ${repo} 發布了 Release ${payload.release?.tag_name ?? ""}` : null,
+    payload.action === "published"
+      ? { summary: `Published release ${payload.release?.tag_name ?? ""} in ${repo}`, url: payload.release?.html_url }
+      : null,
 };
 
 export async function getUserEvents(username: string): Promise<GithubEvent[]> {
@@ -73,9 +100,19 @@ export async function getUserEvents(username: string): Promise<GithubEvent[]> {
   for (const e of json) {
     const label = EVENT_LABELS[e.type];
     if (!label) continue;
-    const summary = label(e.payload, e.repo?.name ?? "");
-    if (!summary) continue;
-    events.push({ id: e.id, type: e.type, repo: e.repo?.name ?? "", createdAt: e.created_at, summary });
+
+    const repo = e.repo?.name ?? "";
+    const event = label(e.payload, repo);
+    if (!event) continue;
+
+    events.push({
+      id: e.id,
+      type: e.type,
+      repo,
+      createdAt: e.created_at,
+      summary: event.summary,
+      url: event.url ?? `https://github.com/${repo}`,
+    });
   }
   return events;
 }
