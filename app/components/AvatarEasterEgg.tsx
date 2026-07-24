@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import DecorativeImage from "./DecorativeImage";
 
 const CLICKS_NEEDED = 5;
 const SPIN_MS = 600;
@@ -42,12 +43,14 @@ export default function AvatarEasterEgg({
   };
 
   return (
-    <img
+    <button
+      type="button"
       className={`${className ?? ""}${spinning ? " avatar--spinning" : ""}`}
-      src={src}
-      alt={alt}
+      aria-label={alt}
       onClick={handleClick}
       style={{ cursor: "pointer" }}
-    />
+    >
+      <DecorativeImage className="avatar-image" src={src} />
+    </button>
   );
 }
