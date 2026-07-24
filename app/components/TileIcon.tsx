@@ -28,13 +28,15 @@ export default function TileIcon({ kind }: { kind: string }) {
         justifyContent: "center",
       }}
     >
-      <img
-        src={icon.src}
-        alt={icon.label}
+      <span
+        aria-hidden="true"
         style={{
           width: "52px",
           height: "52px",
-          objectFit: "contain",
+          backgroundImage: `url("${icon.src}")`,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
           filter: imgFilter,
         }}
       />

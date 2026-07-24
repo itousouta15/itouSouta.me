@@ -1214,9 +1214,20 @@ body.site-revealed .header {
   height: 98px;
   border-radius: 50%;
   border: 7px solid var(--panel2);
-  object-fit: cover;
   background: var(--panel2);
   display: block;
+  padding: 0;
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.avatar-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 /* 彩蛋：頭像連點 5 下才觸發，轉一圈再跳轉 */
 .avatar--spinning {
@@ -1819,8 +1830,11 @@ body.site-revealed .header {
 .card-github-img {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 880 / 192;
   margin-top: -16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 /* ---- Likes (overlay removed) ---- */
@@ -1840,7 +1854,9 @@ body.site-revealed .header {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   opacity: 0.24;
   transform: scale(1.5);
   transform-origin: 62% 42%;
@@ -3763,6 +3779,7 @@ body.site-revealed .header {
   .card-github-img {
     width: auto;
     height: 150px;
+    aspect-ratio: 880 / 192;
     max-width: none;
     margin-top: 0;
   }
