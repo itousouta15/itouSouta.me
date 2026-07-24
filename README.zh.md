@@ -2,7 +2,7 @@
 
 [English](README.md) | 繁體中文
 
-![示意圖](public/assets/itousouta15.webp)
+![示意圖](public/assets/projects/itousouta15.webp)
 itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](https://itouSouta.me)。
 
 ## 技術棧

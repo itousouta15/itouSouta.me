@@ -11,9 +11,9 @@ export const revalidate = 3600;
 const description = "itouSouta 的自我介紹 (*´з｀*)";
 
 // ===== 卡片背景圖入口：想換背景改這兩行 =====
-// 可填外部圖片網址，或把圖片放進 public/assets 後填 "/assets/檔名.webp"
-const INTEREST_BG = "/assets/neko.webp";
-const MUSIC_BG = "/assets/nacho.webp";
+// 可填外部圖片網址，或把圖片放進 public/assets 後填 "/assets/分類/檔名.webp"
+const INTEREST_BG = "/assets/likes/neko.webp";
+const MUSIC_BG = "/assets/likes/nacho.webp";
 
 const ANIME_PREVIEW = (LIKE_CATEGORIES.find(c => c.key === "anime")?.items ?? [])
   .slice()
@@ -67,7 +67,7 @@ export default async function AboutPage() {
           </div>
         </div>
         <div className="about-side">
-          <img src="/assets/banner.webp" alt="" />
+          <img src="/assets/brand/banner.webp" alt="" />
           <div className="about-side-body">
             <div className="label">座右銘</div>
             <div className="about-side-quote">情熱を失っては、何もできない。</div>

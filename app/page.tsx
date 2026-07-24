@@ -24,7 +24,7 @@ export default function HomePage() {
       <aside className="profile">
         <div className="profile-card">
           <div className="profile-banner">
-            <img src="/assets/banner.webp" alt="" />
+            <img src="/assets/brand/banner.webp" alt="" />
           </div>
           <LanyardProvider>
           <div className="profile-body">
@@ -32,7 +32,7 @@ export default function HomePage() {
               <div className="avatar-wrap">
                 <AvatarEasterEgg
                   className="avatar"
-                  src="/assets/avatar.webp"
+                  src="/assets/brand/avatar.webp"
                   alt="郭家睿 / 伊藤蒼太"
                   href="https://dc.itousouta.me"
                 />
@@ -154,7 +154,7 @@ export default function HomePage() {
           </Link>
 
           <Link className="bento-likes card-likes" href="/likes" style={{ textDecoration: "none", color: "inherit" }}>
-            <DecorativeImage className="card-likes-img" src="/assets/art-miku.webp" />
+            <DecorativeImage className="card-likes-img" src="/assets/likes/art-miku.webp" />
             <div className="card-body">
               <div className="card-kicker">LIKES</div>
               <div className="card-title-lg">
