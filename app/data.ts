@@ -372,19 +372,19 @@ export const MUSIC_ARTISTS: MusicArtist[] = [
 ];
 
 export const PROJECTS: Project[] = [
-    { slug: "yetanotherbusapp", kicker: "APP", color: "blue", title: "YetAnotherBusApp", desc: "現代化跨平台公車動態查詢 App", tags: ["Flutter", "Dart"], icon: "flutter", href: "https://github.com/AvianJay/yetanotherbusapp", cover: "/assets/YABus.webp",siteUrl: "https://busapp.avianjay.sbs/" },
+    { slug: "yetanotherbusapp", kicker: "APP", color: "blue", title: "YetAnotherBusApp", desc: "現代化跨平台公車動態查詢 App", tags: ["Flutter", "Dart"], icon: "flutter", href: "https://github.com/AvianJay/yetanotherbusapp", cover: "/assets/projects/YABus.webp",siteUrl: "https://busapp.avianjay.sbs/" },
     { slug: "scaict-uwu", kicker: "BOT", color: "blue", title: "SCAICT-uwu", desc: "中電喵：中電會 Discord Bot", tags: ["Python", "flask"], icon: "scaict", href: "https://github.com/SCAICT/SCAICT-uwu", cover: "https://raw.githubusercontent.com/SCAICT/doc/main/static/img/charge-demo.gif" },
-    { slug: "dlhit-website", kicker: "WEB", color: "blue", title: "DLHIT-Website", desc: "大里高中資訊校隊官網", tags: ["Next.js", "TypeScript"], icon: "dlhit", href: "https://github.com/itousouta15/DLHIT-website", cover: "/assets/DLHIT.webp",siteUrl: "https://dlhit.itousouta.me" },
-    { slug: "scaict-github-io", kicker: "WEB", color: "blue", title: "SCAICT.github.io", desc: "中電會官方網站", tags: ["HTML", "CSS","JavaScript"], icon: "scaict", href: "https://github.com/SCAICT/SCAICT.github.io", cover: "/assets/SCAICT.webp", siteUrl: "https://scaict.github.io" },
-    { slug: "itousouta.me", kicker: "PORTFOLIO", color: "blue", title: "itousouta.me", desc: "就是這裡 www", tags: ["Next.js", "TypeScript", "itou 系列"], icon: "nextjs", href: "https://github.com/itousouta15/itousouta.me", cover: "/assets/itousouta15.webp", siteUrl: "https://itousouta.me" },
+    { slug: "dlhit-website", kicker: "WEB", color: "blue", title: "DLHIT-Website", desc: "大里高中資訊校隊官網", tags: ["Next.js", "TypeScript"], icon: "dlhit", href: "https://github.com/itousouta15/DLHIT-website", cover: "/assets/projects/DLHIT.webp",siteUrl: "https://dlhit.itousouta.me" },
+    { slug: "scaict-github-io", kicker: "WEB", color: "blue", title: "SCAICT.github.io", desc: "中電會官方網站", tags: ["HTML", "CSS","JavaScript"], icon: "scaict", href: "https://github.com/SCAICT/SCAICT.github.io", cover: "/assets/projects/SCAICT.webp", siteUrl: "https://scaict.github.io" },
+    { slug: "itousouta.me", kicker: "PORTFOLIO", color: "blue", title: "itousouta.me", desc: "就是這裡 www", tags: ["Next.js", "TypeScript", "itou 系列"], icon: "nextjs", href: "https://github.com/itousouta15/itousouta.me", cover: "/assets/projects/itousouta15.webp", siteUrl: "https://itousouta.me" },
     { slug: "itoubloga", kicker: "BLOG", color: "blue", title: "itouBLoGa", desc: "一個基於 Hexo 的部落格", tags: ["Hexo", "Node.js", "itou 系列"], icon: "hexo", href: "https://github.com/itousouta15/itouBLoGa", cover: "https://github.com/itousouta15/itouBLoGa/raw/source/source/images/mainweb.webp", siteUrl: "https://blog.itousouta.me" },
-    { slug: "itoubloldga", kicker: "ARCHIVE", color: "blue", title: "itouBLoldGa", desc: "一個基於 Hexo 及 anzhiyu 主題的舊部落格", tags: ["Hexo", "Node.js", "itou 系列"], icon: "hexo", href: "https://github.com/itousouta15/itouBLoldGa", cover: "/assets/Newweb.webp" },
-    { slug: "itouslides", kicker: "TOOL", color: "blue", title: "itouSlides", desc: "用 Astro + slidev 構建的公開簡報展示頁", tags: ["Astro", "TypeScript", "itou 系列"], icon: "astro", href: "https://github.com/itousouta15/itouSlides", cover: "/assets/Slides.webp" },
-    { slug: "itouOJ", kicker: "TOOL", color: "blue", title: "itouOJ", desc: "我的Online Judge", tags: ["Next.js", "TypeScript"], icon: "nextjs", href: "https://github.com/itousouta15/itouOJ", cover: "/assets/OJ.webp",siteUrl: "https://oj.itousouta.me" },
-    { slug: "115-summer-camp", kicker: "WEB", color: "blue", title: "115-summer-camp", desc: "SCAICT 2026 暑訓官網", tags: ["Vite", "React"], icon: "scaict", href: "https://github.com/SCAICT/115-summer-camp", cover: "/assets/SCAICTsc.webp" ,siteUrl: "https://sc.scaict.org"},
-    { slug: "wintercamp2026", kicker: "WEB", color: "blue", title: "WinterCamp2026", desc: "SCIST x SCAICT 2026 寒訓官網", tags: ["Next.js", "React"], icon: "scaict", href: "https://github.com/scist-tw/WinterCamp2026", cover: "/assets/SCIST.webp", siteUrl: "https://scist.camp" },
+    { slug: "itoubloldga", kicker: "ARCHIVE", color: "blue", title: "itouBLoldGa", desc: "一個基於 Hexo 及 anzhiyu 主題的舊部落格", tags: ["Hexo", "Node.js", "itou 系列"], icon: "hexo", href: "https://github.com/itousouta15/itouBLoldGa", cover: "/assets/projects/Newweb.webp" },
+    { slug: "itouslides", kicker: "TOOL", color: "blue", title: "itouSlides", desc: "用 Astro + slidev 構建的公開簡報展示頁", tags: ["Astro", "TypeScript", "itou 系列"], icon: "astro", href: "https://github.com/itousouta15/itouSlides", cover: "/assets/projects/Slides.webp" },
+    { slug: "itouOJ", kicker: "TOOL", color: "blue", title: "itouOJ", desc: "我的Online Judge", tags: ["Next.js", "TypeScript"], icon: "nextjs", href: "https://github.com/itousouta15/itouOJ", cover: "/assets/projects/OJ.webp",siteUrl: "https://oj.itousouta.me" },
+    { slug: "115-summer-camp", kicker: "WEB", color: "blue", title: "115-summer-camp", desc: "SCAICT 2026 暑訓官網", tags: ["Vite", "React"], icon: "scaict", href: "https://github.com/SCAICT/115-summer-camp", cover: "/assets/projects/SCAICTsc.webp" ,siteUrl: "https://sc.scaict.org"},
+    { slug: "wintercamp2026", kicker: "WEB", color: "blue", title: "WinterCamp2026", desc: "SCIST x SCAICT 2026 寒訓官網", tags: ["Next.js", "React"], icon: "scaict", href: "https://github.com/scist-tw/WinterCamp2026", cover: "/assets/projects/SCIST.webp", siteUrl: "https://scist.camp" },
     { slug: "itoucards", kicker: "SHOWCASE", color: "blue", title: "itouCards", desc: "一個用純 HTML / CSS / JavaScript 製作的名片展示頁", tags: ["HTML", "CSS","JavaScript", "itou 系列"], icon: "html", href: "https://github.com/itousouta15/itouCards", cover: "https://github.com/itousouta15/itouCards/raw/main/web.webp", siteUrl: "https://cards.itousouta.me" },
-    { slug: "2025codefestteam30", kicker: "HACKATHON", color: "blue", title: "2025codefestteam30", desc: "北市微服務大黑客松作品：北市避難設施資訊整合系統", tags: ["Flutter", "Dart"], icon: "flutter", href: "https://github.com/Twcat0503/2025Taipei-codefest-team30", cover: "/assets/cf.webp" },
+    { slug: "2025codefestteam30", kicker: "HACKATHON", color: "blue", title: "2025codefestteam30", desc: "北市微服務大黑客松作品：北市避難設施資訊整合系統", tags: ["Flutter", "Dart"], icon: "flutter", href: "https://github.com/Twcat0503/2025Taipei-codefest-team30", cover: "/assets/projects/cf.webp" },
   ];
   
 export const DISCORD_USER_ID = "942765194571055164";
@@ -411,12 +411,12 @@ export interface LinkItem {
 
 export const LINKS: LinkItem[] = [
   { name: "D-Sketon", handle: "d-sketon.github.io", href: "https://d-sketon.github.io/", desc: "一個車萬人", avatar: "https://d-sketon.github.io/avatar/avatar.webp" },
-  { name: "Small R", handle: "smallr-portfolio.vercel.app", href: "https://smallr-portfolio.vercel.app/en", desc: "全端電佬一個", avatar: "/assets/smallR.webp" },
-  { name: "PepperSauce", handle: "peppersauce0712.github.io", href: "https://peppersauce0712.github.io/", desc: "程式路上的小白", avatar: "/assets/3.webp" },
-  { name: "Small Z", handle: "yuzen9622.github.io", href: "https://yuzen9622.github.io/", desc: "前端電佬一個", avatar: "/assets/smallZ.webp" },
-  { name: "南宮柳信", handle: "nangong5421.com", href: "https://www.nangong5421.com/", desc: "電到我抬不起頭", avatar: "/assets/南宮.webp" },
+  { name: "Small R", handle: "smallr-portfolio.vercel.app", href: "https://smallr-portfolio.vercel.app/en", desc: "全端電佬一個", avatar: "/assets/likes/smallR.webp" },
+  { name: "PepperSauce", handle: "peppersauce0712.github.io", href: "https://peppersauce0712.github.io/", desc: "程式路上的小白", avatar: "/assets/likes/3.webp" },
+  { name: "Small Z", handle: "yuzen9622.github.io", href: "https://yuzen9622.github.io/", desc: "前端電佬一個", avatar: "/assets/likes/smallZ.webp" },
+  { name: "南宮柳信", handle: "nangong5421.com", href: "https://www.nangong5421.com/", desc: "電到我抬不起頭", avatar: "/assets/likes/南宮.webp" },
   { name: "Chumy", handle: "blog.chummydns.com", href: "https://blog.chummydns.com", desc: "AIS3隊友 | 資安大電神", avatar: "https://blog.chummydns.com/images/me.png" },
-  { name: "Frank", handle: "frankk.uk", href: "https://frankk.uk/", desc: "AIS3隊友 | 資安大電神", avatar: "/assets/frank.webp" },
+  { name: "Frank", handle: "frankk.uk", href: "https://frankk.uk/", desc: "AIS3隊友 | 資安大電神", avatar: "/assets/likes/frank.webp" },
   { name: "yochan06", handle: "yochan06.github.io", href: "https://yochan06.github.io/", desc: "AIS3隊友 | 資安電神", avatar: "https://yochan06.github.io/images/132590659.png" },
   { name: "伊藤喵喵", handle: "twcat0503.org", href: "https://twcat0503.org/", desc: "喵", avatar: "https://avatars.githubusercontent.com/u/130988476?v=4" },
   { name: "UmmIt Kin", handle: "l.ummit.dev", href: "https://ummit.dev/", desc: "Can't life without GNU/Linux", avatar: "https://avatars.githubusercontent.com/u/128139875?v=4" },

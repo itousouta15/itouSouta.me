@@ -14,7 +14,7 @@ export default function GithubContributionCard() {
     <div ref={cardRef} className="card card-github">
       <DecorativeImage
         className="card-github-img"
-        src={`/assets/github-user-contribution-${theme}.svg`}
+        src={`/assets/social/github-user-contribution-${theme}.svg`}
         title="GitHub contribution graph"
       />
     </div>
