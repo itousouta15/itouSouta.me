@@ -2,7 +2,7 @@ name: Generate GitHub Snake Contribution Graph
 
 on:
   schedule:
-    - cron: "0 20 * * *" # 每天 UTC 20:00（台灣時間 04:00）
+    - cron: "0 20 * * *" # UTC 20:00 / Taiwan 04:00
   workflow_dispatch:
 
 permissions:
@@ -28,5 +28,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add public/assets/social/github-user-contribution-dark.svg public/assets/social/github-user-contribution-light.svg
-          git diff --staged --quiet || git commit -m "chore: 更新 GitHub 貢獻牆動畫"
+          git diff --staged --quiet || git commit -m "chore: update GitHub contribution graph"
           git push
