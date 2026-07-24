@@ -36,10 +36,10 @@ No UI library, no CSS-in-JS, no component framework.
 
 ## Features
 
-**Theme**
+### Theme
 Dark and light modes. The selected theme is persisted to `localStorage` and applied via a blocking inline script before first paint, preventing a flash of unstyled content.
 
-**Typography**
+### Typography
 Multiple typefaces are loaded from Google Fonts and the [emfont](https://font.emtech.cc) CDN:
 
 - `ChenYuLuoYan` (emfont) — header logo
@@ -51,58 +51,58 @@ Multiple typefaces are loaded from Google Fonts and the [emfont](https://font.em
 
 The logo is hidden until `ChenYuLuoYan` is active (detected via `document.fonts.load`) to prevent a FOUT caused by the fallback font rendering at a significantly larger apparent size.
 
-**雜談 (Thoughts)**
+### 雜談 (Thoughts)
 A standalone Discord bot ([itouBot](../itouBot)) backs a `/碎碎念` slash command and writes entries to Vercel KV; after each post it pings `app/api/revalidate/route.ts` (guarded by `REVALIDATE_SECRET`) so the page updates immediately. The `/thoughts` page merges these entries with posts pulled from the Threads API (`app/lib/threads.ts`), sorted newest-first by timestamp. If no remote data is available, it falls back to the static `THOUGHTS` array in `app/data.ts`.
 
-**Likes**
+### Likes
 Novels, manga, anime, and VTuber entries are statically defined in `app/data.ts`. The likes pages support client-side full-text search and multi-tag filtering without any server dependency. Horizontal carousels use custom hooks for mouse-wheel and scroll-linked panning. `LikeCard`/`LikeFilterGrid` support a `layout` prop (`"circle"` for VTuber avatars, `"square"` for album covers) that swaps the thumbnail crop and, for `"circle"`, hides the sub-line and skips the detail modal in favor of linking straight out.
 
-**VTuber live status**
+### VTuber live status
 `app/api/vtuber-live/route.ts` checks whether each VTuber is currently streaming, using two sources. For VSPO-affiliated members (identified by a `channelId` on the `Like` entry in `app/data.ts`, either explicit or parsed from a `/channel/UC…` `href`), it fetches `vspo-schedule.com`'s own live-schedule page once and extracts the live-stream list embedded in that page's Next.js RSC payload — one request covers every VSPO member's status. VTubers outside that roster fall back to requesting their own YouTube channel's `/live` path and scanning for an embedded `isLive: true` in `ytInitialPlayerResponse`. Neither source needs a YouTube Data API key or quota. Results are cached for 60 seconds (`revalidate = 60`). `useVtuberLiveStatus` polls this endpoint every 60s while a `"circle"`-layout section is mounted, and `VtuberLiveWarmup` fires an unawaited fetch as soon as `/likes` loads so the cache is already warm by the time a user opens the VTuber category. A live channel's `LikeCard` gets a pulsing red outline and a "LIVE" badge, and clicking it links straight to the broadcast instead of the channel page.
 
-**Live-first sorting**
+### Live-first sorting
 `sortLikesByRating` (`app/lib/sortLikes.ts`) takes an optional `isLive` predicate; when given, live items sort ahead of non-live ones, with rating only breaking ties within each group. Both `LikeCategorySection` (the `/likes` hub carousels) and `LikeFilterGrid` (category detail grids) re-sort whenever `useVtuberLiveStatus`'s data updates, so a VTuber who starts streaming jumps to the front. Reordering is animated with a small hand-rolled FLIP (First-Last-Invert-Play) hook, `useFlipReorder` — no animation library — that measures each card's position before and after a reorder and animates the delta via `transform`, so cards visibly slide into place instead of snapping. On the hub carousel, `overflow-anchor: none` stops the browser from silently compensating scroll position against the DOM reorder, and a scroll-position pin keeps the live-sorted front visible — but only until the user manually scrolls the carousel themselves, at which point it stops fighting them.
 
-**Music (Last.fm)**
+### Music (Last.fm)
 Unlike the rest of the likes content, music is live data: `app/lib/lastfm.ts` calls Last.fm's `user.gettopalbums` (album art is the only Last.fm entity that still returns real cover images — the artist/track endpoints now return one shared placeholder). It backs three surfaces at increasing scope: the about-page mini card (this month, top 4), the `/likes` preview row (overall, top 12), and the full `/likes/music` grid (overall, top 50). Every call site treats a `null` result (missing `LASTFM_API_KEY`/`LASTFM_USER`, or the API failing) as "no data" and degrades gracefully — the about-page card falls back to the static `MUSIC_ARTISTS` avatars in `app/data.ts`, and `/likes` simply omits the preview row.
 
-**Lanyard integration**
+### Lanyard integration
 Discord presence (online status, activity, Spotify playback) is fetched live from the Lanyard WebSocket API and displayed in the profile card. The component gracefully handles disconnection.
 
-**GitHub contribution graph**
+### GitHub contribution graph
 The graph SVG is pre-generated and committed as a static asset in both dark and light variants, regenerated daily by the `.github/workflows/snake.yml` GitHub Action (`Platane/snk`), which commits directly to `main` if the output changed. On mobile, the card scrolls horizontally; the scroll position is linked to the card's progress through the viewport via `useScrollLinkedHorizontalReveal`, so the graph pans left to right as the user scrolls down the page — the reveal is remapped to a narrower window of that scroll distance (`TRIGGER_RANGE` in the hook) rather than the full enter-to-exit transit, so it doesn't take a full screen-height of scrolling to complete.
 
-**Image thumbnails**
+### Image thumbnails
 Avatars, likes covers, music art, and project screenshots are hotlinked from dozens of external, uncontrolled domains — too many to allowlist individually via `next/image`'s `remotePatterns`. `app/lib/imageThumb.ts` routes any `http(s)` source through the [wsrv.nl](https://wsrv.nl) resize proxy at the size actually needed for display (`avatarThumb`, `likeThumb`, `likeCircleThumb`, `artistAvatarThumb`, `songThumb`, `projectCoverThumb`, `cardBgThumb`), falling back to the original URL for local `/assets` paths, animated `.gif`s (the proxy's webp conversion drops animation), and the handful of domains in `PROXY_BLOCKED_HOSTS` that reject requests from the proxy.
 
-**Hero interactions**
+### Hero interactions
 The hero's ASCII face (`HeroFace`) subtly follows the cursor (displacement clamped and throttled via `requestAnimationFrame`), winks the near-side eye on click, and switches to a "leaving" expression with a wiggle animation once it scrolls past a threshold near the top of the viewport (`IntersectionObserver` with a negative `rootMargin`). Clicking the profile avatar 5 times in quick succession (`AvatarEasterEgg`) spins it and opens the Discord invite in a new tab; a pending click streak resets after 1.5s of inactivity. The rotating display name (`NameRotator`) cycles through `itouSouta` / `伊藤蒼太` / `郭家睿` on a CSS roll; on hover it pauses and runs a text-decode effect that scrambles the currently shown name from random glyphs and settles it left-to-right (the target is whichever name the roll was on when the cursor arrived, computed from elapsed time against the 8s CSS cycle).
 
-**Animations**
+### Animations
 - CSS keyframe marquee for the footer strip and tech tile rows
 - Name rotator cycling through display names in the hero, with a hover-triggered text-decode effect
 - Page transitions via `PageTransition`
 - Card hover effects (disabled on touch devices via `@media (hover: none)`)
 - All animations respect `prefers-reduced-motion`
 
-**Command Palette**
+### Command Palette
 Quick site navigation and search via Cmd/Ctrl+K. Provides instant access to all pages and projects, with fuzzy search support for fast discovery.
 
-**Search-box easter eggs**
+### Search-box easter eggs
 Two hidden inputs in the command palette (`CommandPaletteInner`):
 - Typing `67` and pressing Enter closes the palette, returns to the home page, and gives the whole page a brief `skewY` shear-wobble that decays back to rest — a nod to Google's own "67" search easter egg.
 - Typing `114514` and pressing Enter drops the site into a self-contained Google-Gravity mode (`GravityMode`). A hand-rolled 2D physics loop (`requestAnimationFrame`, no library) walks the DOM, turns nearly every visible element into a `position: fixed` rigid body, and applies gravity, floor/wall bouncing, and AABB box stacking so everything falls into a pile at the bottom. Bodies can be grabbed and thrown with the pointer (dragged bodies act as immovable during collision resolution), link clicks are suppressed so pieces don't navigate away, and a floating "還原" button — which playfully dodges the cursor — reloads the page to restore it.
 
-**RSS Feed**
+### RSS Feed
 Unified RSS feed at `/feed.xml` merges thoughts from Discord (`/碎碎念` slash command), Threads posts, and GitHub repository events, sorted by timestamp.
 
-**Projects and Details**
+### Projects and Details
 Projects page supports filtering by technology and category. Project cards fetch live repository information from GitHub API (stars, language, description). Clicking a project opens a modal with detailed information and a direct link.
 
-**Likes Details**
+### Likes Details
 Likes support detailed view with expanded descriptions and additional metadata beyond the grid card format.
 
-**Accessibility and UX**
+### Accessibility and UX
 - Touch devices: hover transforms are reset; `:active` states provide tap feedback instead
 - Back-to-top button with smooth scroll, visible after 400 px scrolled
 - Mobile nav: Escape key closes the overlay; `tabIndex` is managed on hidden controls

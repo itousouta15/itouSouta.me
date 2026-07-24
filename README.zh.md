@@ -36,10 +36,10 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](
 
 ## 功能特色
 
-**主題**
+### 主題
 支援深色與淺色模式。所選主題會存於 `localStorage`，並在首次繪製前透過阻塞式的行內腳本套用，避免出現無樣式內容閃爍（FOUC）。
 
-**字型**
+### 字型
 多種字型分別載入自 Google Fonts 與 [emfont](https://font.emtech.cc) CDN：
 
 - `ChenYuLuoYan`（emfont）— 頁首 Logo
@@ -51,58 +51,58 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](
 
 Logo 會在偵測到 `ChenYuLuoYan` 字型啟用（透過 `document.fonts.load`）前保持隱藏，以避免備援字型以明顯偏大的視覺尺寸顯示所造成的 FOUT。
 
-**雜談 (Thoughts)**
+### 雜談 (Thoughts)
 獨立的 Discord 機器人（[itouBot](../itouBot)）提供 `/碎碎念` 斜線指令，內容直接寫入 Vercel KV；每次發文後會呼叫 `app/api/revalidate/route.ts`（以 `REVALIDATE_SECRET` 保護），讓頁面立即更新。`/thoughts` 頁面會將這些內容與從 Threads API（`app/lib/threads.ts`）取得的貼文合併，依時間戳由新到舊排序。若無遠端資料可用，則回退至 `app/data.ts` 中的靜態 `THOUGHTS` 陣列。
 
-**Likes**
+### Likes
 小說、漫畫、動畫與 VTuber 條目皆靜態定義於 `app/data.ts`。Likes 頁面支援不依賴伺服器的客戶端全文搜尋與多標籤篩選。水平輪播使用自訂 Hook 處理滑鼠滾輪與捲動連動的平移。`LikeCard`/`LikeFilterGrid` 支援 `layout` 屬性（`"circle"` 用於 VTuber 頭像、`"square"` 用於專輯封面），會切換縮圖裁切方式，且在 `"circle"` 模式下隱藏副標行並跳過詳情模態，改為直接連結至外部頁面。
 
-**VTuber 開台狀態**
+### VTuber 開台狀態
 `app/api/vtuber-live/route.ts` 用兩種來源判斷 VTuber 是否正在開台。VSPO 旗下成員（`app/data.ts` 中該筆 `Like` 有 `channelId` — 明確設定的，或從 `/channel/UC…` 的 `href` 解析出來的）會走 `vspo-schedule.com` 自己的開台排程頁：只請求這一個頁面一次，就能從該頁 Next.js RSC payload 裡內嵌的直播清單解析出全體 VSPO 成員的開台狀態。不在這份名單內的 VTuber 則回退為請求各自 YouTube 頻道的 `/live` 路徑，掃描回應內嵌的 `ytInitialPlayerResponse` 中是否有 `isLive: true`。兩種方式都不需要 YouTube Data API 金鑰或配額。結果會快取 60 秒（`revalidate = 60`）。`useVtuberLiveStatus` 會在掛載 `"circle"` 版面的區塊時，每 60 秒輪詢一次此端點；`VtuberLiveWarmup` 則會在 `/likes` 載入時就先發出一次不等待結果的請求，讓使用者點進 VTuber 分類前快取就已經熱好。開台中的頻道，其 `LikeCard` 會顯示脈動的紅色外框與「LIVE」徽章，點擊會直接連到直播間而非頻道頁。
 
-**開台優先排序**
+### 開台優先排序
 `sortLikesByRating`（`app/lib/sortLikes.ts`）多接受一個選填的 `isLive` 判斷式；給了的話，開台中的項目一律排在最前面，rating 只用來在同一組（開台／未開台）內部排序。`LikeCategorySection`（`/likes` 首頁的輪播列）與 `LikeFilterGrid`（分類詳情頁的格狀清單）都會在 `useVtuberLiveStatus` 的資料更新時重新排序，所以一旦有人開台就會立刻跳到最前面。重新排序的過程用一個手刻的 FLIP（First-Last-Invert-Play）Hook `useFlipReorder` 做動畫——不依賴任何動畫函式庫——量測每張卡片重排前後的位置，透過 `transform` 把位移差做成動畫，讓卡片看起來是滑到新位置，而不是瞬間跳位。首頁輪播另外用 `overflow-anchor: none` 關掉瀏覽器對 DOM 重排的自動捲動補償，並用一個捲動位置釘選機制讓開台優先的排序結果保持在最前面可見——但只在使用者還沒自己手動滑動輪播之前才會這樣做，一旦使用者自己滑過就不再搶他的捲動位置。
 
-**音樂 (Last.fm)**
+### 音樂 (Last.fm)
 與其他 Likes 內容不同，音樂為即時資料：`app/lib/lastfm.ts` 呼叫 Last.fm 的 `user.gettopalbums`（專輯封面是 Last.fm 中唯一仍會回傳真實封面圖片的實體 — 藝人／單曲端點現在都回傳同一張佔位圖）。此資料支援三個依範圍遞增的展示位置：關於頁的迷你卡片（本月、前 4 名）、`/likes` 預覽列（總計、前 12 名），以及完整的 `/likes/music` 格狀清單（總計、前 50 名）。每個呼叫點都將 `null` 結果（缺少 `LASTFM_API_KEY`/`LASTFM_USER`，或 API 呼叫失敗）視為「無資料」並優雅降級 — 關於頁卡片會回退至 `app/data.ts` 中靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 則直接省略預覽列。
 
-**Lanyard 整合**
+### Lanyard 整合
 Discord 狀態（上線狀態、活動、Spotify 播放）透過 Lanyard WebSocket API 即時取得並顯示於個人檔案卡中。此元件能妥善處理斷線情況。
 
-**GitHub 貢獻圖**
+### GitHub 貢獻圖
 貢獻圖 SVG 為預先產生並提交的靜態資源，同時包含深色與淺色兩種版本，並由 `.github/workflows/snake.yml` GitHub Action（使用 `Platane/snk`）每日重新產生，若內容有變更則直接提交至 `main`。在行動裝置上，卡片可水平捲動；捲動位置透過 `useScrollLinkedHorizontalReveal` 與卡片在視窗中的捲動進度連動，因此使用者向下捲動頁面時貢獻圖會由左至右平移 — 該效果被重新對應至一段較窄的捲動距離視窗（Hook 中的 `TRIGGER_RANGE`），而非整個進入到離開視窗的過程，因此不需要捲動整個螢幕高度才能完成。
 
-**圖片縮圖**
+### 圖片縮圖
 頭像、Likes 封面、音樂封面與專案截圖皆熱連結自數十個外部、不受控的網域 — 數量太多，無法逐一透過 `next/image` 的 `remotePatterns` 加入允許清單。`app/lib/imageThumb.ts` 會將任何 `http(s)` 來源導向 [wsrv.nl](https://wsrv.nl) 縮圖代理服務，並依實際顯示所需的尺寸縮放（`avatarThumb`、`likeThumb`、`likeCircleThumb`、`artistAvatarThumb`、`songThumb`、`projectCoverThumb`、`cardBgThumb`），對本機 `/assets` 路徑、動態 `.gif`（代理服務的 webp 轉換會使動畫失效）以及 `PROXY_BLOCKED_HOSTS` 中少數會拒絕代理服務請求的網域，則回退使用原始網址。
 
-**Hero 互動效果**
+### Hero 互動效果
 Hero 區塊的 ASCII 表情（`HeroFace`）會微幅跟隨滑鼠游標（位移經過夾限並透過 `requestAnimationFrame` 節流），點擊時會眨靠近點擊側的那隻眼睛，捲動超過視窗頂端附近的門檻時（`IntersectionObserver` 搭配負值 `rootMargin`）會切換成「快消失」的表情並伴隨搖擺動畫。快速連續點擊個人頭像 5 次（`AvatarEasterEgg`）會讓頭像旋轉一圈並在新分頁開啟 Discord 邀請連結；連續點擊若中斷超過 1.5 秒則重新計數。輪播顯示的名字（`NameRotator`）會以 CSS 捲動在 `itouSouta` / `伊藤蒼太` / `郭家睿` 之間切換；滑鼠移入時會暫停輪播並跑一段文字解碼效果，把當下顯示的名字從隨機符號由左至右逐字解出（解碼目標是游標移入當下輪播正停在的那個名字，依經過時間對 8 秒的 CSS 週期推算）。
 
-**動畫效果**
+### 動畫效果
 - 頁尾跑馬燈與技術磚牆列使用 CSS 關鍵影格
 - Hero 區塊中輪播顯示名稱的名稱輪播器，並帶有滑鼠移入觸發的文字解碼效果
 - 透過 `PageTransition` 實現的頁面轉場
 - 卡片懸停效果（觸控裝置上透過 `@media (hover: none)` 停用）
 - 所有動畫皆遵循 `prefers-reduced-motion`
 
-**指令面板**
+### 指令面板
 透過 Cmd/Ctrl+K 快速導覽並搜尋網站內容，可即時存取所有頁面與專案，並支援模糊搜尋以加快查找速度。
 
-**搜尋框彩蛋**
+### 搜尋框彩蛋
 指令面板（`CommandPaletteInner`）藏了兩組輸入：
 - 輸入 `67` 按下 Enter 會關閉面板、回到首頁，並讓整個頁面做一段 `skewY` 剪切擺動後衰減回穩 — 致敬 Google 搜尋自己的「67」彩蛋。
 - 輸入 `114514` 按下 Enter 會讓整個網站進入自帶的 Google Gravity 模式（`GravityMode`）。一顆手刻的 2D 物理迴圈（`requestAnimationFrame`，不依賴函式庫）會走訪 DOM，把幾乎每個可見元素變成 `position: fixed` 的剛體，套用重力、地板／牆壁彈跳與 AABB 方塊堆疊，讓所有東西掉落並堆在底部。剛體可用滑鼠拖曳與甩動（拖曳中的剛體在碰撞計算時視為不可推動），連結點擊會被攔截以免誤導航，另有一顆會俏皮閃避游標的浮動「還原」按鈕，按下即重新載入頁面復原。
 
-**RSS Feed**
+### RSS Feed
 統一的 RSS Feed 位於 `/feed.xml`，整合來自 Discord（`/碎碎念` 斜線指令）、Threads 貼文與 GitHub 專案事件的雜談內容，並依時間戳排序。
 
-**專案與詳情**
+### 專案與詳情
 專案頁面支援依技術與分類篩選。專案卡片會從 GitHub API 即時取得專案資訊（星數、語言、描述）。點擊專案會開啟含詳細資訊與直接連結的模態視窗。
 
-**Likes 詳情**
+### Likes 詳情
 Likes 支援詳情檢視，提供比格狀卡片更完整的說明與額外中繼資料。
 
-**無障礙與使用者體驗**
+### 無障礙與使用者體驗
 - 觸控裝置：懸停變換效果會被重置；改用 `:active` 狀態提供點按回饋
 - 平滑捲動的回到頂部按鈕，捲動超過 400 px 後顯示
 - 行動裝置導覽：按 Escape 鍵可關閉覆蓋層；隱藏控制項的 `tabIndex` 會被適當管理
