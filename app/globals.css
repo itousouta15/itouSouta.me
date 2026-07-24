@@ -3190,6 +3190,7 @@ body.site-revealed .header {
   color: var(--tx);
   line-height: 1.9;
   margin: 0;
+  white-space: pre-line;
 }
 .thought-img {
   display: block;

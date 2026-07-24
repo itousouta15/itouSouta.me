@@ -47,7 +47,7 @@ export async function getMergedThoughts(): Promise<MergedThoughtItem[]> {
       date: formatDate(timestamp),
       timestamp,
       text: e.summary,
-      url: `https://github.com/${e.repo}`,
+      url: e.url,
     });
   }
 
