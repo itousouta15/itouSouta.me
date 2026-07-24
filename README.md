@@ -226,3 +226,7 @@ Most page content lives in `app/data.ts`. To add or update a like, project, or f
 Music is likewise live (Last.fm top albums, see [Environment variables](#environment-variables)); the `MUSIC_ARTISTS` array in `app/data.ts` is only a fallback for the about-page card, shown when Last.fm isn't configured or returns nothing. To change which album/background image the about-page mini cards feature, edit the `INTEREST_BG` / `MUSIC_BG` constants near the top of `app/about/page.tsx`.
 
 Technology icons are defined in `app/components/tileIconMeta.ts`. Each entry has a label, a Devicons CDN URL, a dark-mode background colour, and a light-mode background colour.
+
+## License
+
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.

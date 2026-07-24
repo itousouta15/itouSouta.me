@@ -9,6 +9,7 @@ import AvatarEasterEgg from "./components/AvatarEasterEgg";
 import HeroFace from "./components/HeroFace";
 import BadgeShape from "./components/BadgeShape";
 import NameRotator from "./components/NameRotator";
+import DecorativeImage from "./components/DecorativeImage";
 
 export default function HomePage() {
   const tileIcons = TILE_COLS.flat();
@@ -153,7 +154,7 @@ export default function HomePage() {
           </Link>
 
           <Link className="bento-likes card-likes" href="/likes" style={{ textDecoration: "none", color: "inherit" }}>
-            <img className="card-likes-img" src="/assets/art-miku.webp" alt="" fetchPriority="high" />
+            <DecorativeImage className="card-likes-img" src="/assets/art-miku.webp" />
             <div className="card-body">
               <div className="card-kicker">LIKES</div>
               <div className="card-title-lg">

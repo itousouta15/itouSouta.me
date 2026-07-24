@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useTheme } from "./ThemeProvider";
 import { useScrollLinkedHorizontalReveal } from "../hooks/useScrollLinkedHorizontalReveal";
+import DecorativeImage from "./DecorativeImage";
 
 export default function GithubContributionCard() {
   const { theme } = useTheme();
@@ -11,12 +12,10 @@ export default function GithubContributionCard() {
 
   return (
     <div ref={cardRef} className="card card-github">
-      <img
+      <DecorativeImage
         className="card-github-img"
         src={`/assets/github-user-contribution-${theme}.svg`}
-        alt="GitHub contribution graph"
-        width={880}
-        height={192}
+        title="GitHub contribution graph"
       />
     </div>
   );

@@ -99,7 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: "郭家睿",
               alternateName: ["伊藤蒼太", "itouSouta", "itouSouta15"],
               url: SITE_URL,
-              image: `${SITE_URL}/assets/avatar.webp`,
+              image: `${SITE_URL}/assets/banner.webp`,
               sameAs: ["https://blog.itousouta.me"],
               affiliation: { "@type": "Organization", name: "臺中市立大里高中" },
               description: SITE_DESCRIPTION,
