@@ -231,7 +231,7 @@ export function ProfileStatus() {
       ) : (
         <div className="dc-act dc-act-idle">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="dc-act-art" src="/assets/cat.webp" alt="" />
+          <img className="dc-act-art" src="/assets/brand/cat.webp" alt="" />
           <div className="dc-act-meta">
             <div className="dc-act-title">這個人不知道跑哪去了。</div>
             <div className="dc-act-sub">大概是在睡覺吧Zzzz</div>

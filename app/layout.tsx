@@ -36,13 +36,13 @@ export const metadata: Metadata = {
     siteName: SITE_TITLE,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: [{ url: "/assets/banner.webp", width: 1200, height: 630, alt: SITE_TITLE }],
+    images: [{ url: "/assets/brand/banner.webp", width: 1200, height: 630, alt: SITE_TITLE }],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/assets/banner.webp"],
+    images: ["/assets/brand/banner.webp"],
   },
 };
 
@@ -99,7 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: "郭家睿",
               alternateName: ["伊藤蒼太", "itouSouta", "itouSouta15"],
               url: SITE_URL,
-              image: `${SITE_URL}/assets/banner.webp`,
+              image: `${SITE_URL}/assets/brand/banner.webp`,
               sameAs: ["https://blog.itousouta.me"],
               affiliation: { "@type": "Organization", name: "臺中市立大里高中" },
               description: SITE_DESCRIPTION,
