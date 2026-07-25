@@ -19,6 +19,7 @@ export default function Header() {
   const isDark = theme === "dark";
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
   // Overlay only mounts into the DOM while open (see render below), so it can't
   // leak into the SSR HTML that Googlebot indexes. Keeping it mounted for one
   // extra tick after close preserves the CSS fade-out transition.
@@ -33,9 +34,18 @@ export default function Header() {
       setOverlayMounted(true);
       return;
     }
+    setOverlayVisible(false);
     if (!overlayMounted) return;
     const timer = window.setTimeout(() => setOverlayMounted(false), 300);
     return () => window.clearTimeout(timer);
+  }, [open, overlayMounted]);
+
+  useEffect(() => {
+    if (!open || !overlayMounted) return;
+    const frame = window.requestAnimationFrame(() => {
+      setOverlayVisible(true);
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [open, overlayMounted]);
 
   // Logo 用的 ChenYuLuoYan 字面特別小，載入前 fallback 會先放大、載入完成才縮小（FOUT）。
@@ -155,7 +165,7 @@ export default function Header() {
       {overlayMounted && (
         <div
           id="nav-overlay"
-          className={`nav-overlay${open ? " is-open" : ""}`}
+          className={`nav-overlay${overlayVisible ? " is-open" : ""}`}
           role="dialog"
           aria-modal="true"
           aria-label="主選單"
