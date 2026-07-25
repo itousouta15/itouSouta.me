@@ -3237,15 +3237,17 @@ body.site-revealed .header {
 }
 .proj-icon {
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   border-radius: 7px;
   overflow: hidden;
   flex: none;
+  display: grid;
+  place-items: center;
 }
 .proj-icon img {
-  width: 13px !important;
-  height: 13px !important;
+  width: 18px !important;
+  height: 18px !important;
 }
 .proj-kicker {
   font-family: "JetBrains Mono", monospace;

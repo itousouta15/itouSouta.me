@@ -1799,6 +1799,7 @@ export const PROJECTS: Project[] = [
     icon: "nextjs",
     href: "https://github.com/itousouta15/itouOJ",
     cover: "/assets/projects/OJ.webp",
+    siteUrl: "https://oj.itousouta.me",
   },
   {
     slug: "itouSandBox",
@@ -1809,8 +1810,7 @@ export const PROJECTS: Project[] = [
     tags: ["C", "Python"],
     icon: "nextjs",
     href: "https://github.com/itousouta15/itouSandBox",
-    cover: "/assets/projects/SandBox.webp",
-    siteUrl: "https://sandbox.itousouta.me",
+    cover: "/assets/projects/OJ.webp",
   },
   {
     slug: "115-summer-camp",
