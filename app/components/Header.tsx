@@ -77,7 +77,7 @@ export default function Header() {
           </Link>
           <div className="header-right">
             <nav className="nav">
-              {NAV_LINKS.map(l => (
+              {NAV_LINKS.map((l) => (
                 <Link
                   key={l.href}
                   className={`nav-link${pathname === l.href ? " active" : ""}`}
@@ -94,26 +94,47 @@ export default function Header() {
               aria-label="搜尋 (Ctrl+K)"
               title="搜尋 (Ctrl+K)"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
                 <circle cx="11" cy="11" r="7" />
                 <path d="M21 21l-4.3-4.3" />
               </svg>
             </button>
             <button className="theme-btn" onClick={toggle} aria-label="theme">
               {isDark ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                >
                   <circle cx="12" cy="12" r="4.2" />
                   <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19" />
                 </svg>
               ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
                   <path d="M21 13.2A8.4 8.4 0 1 1 10.8 3a6.6 6.6 0 0 0 10.2 10.2z" />
                 </svg>
               )}
             </button>
             <button
               className={`nav-toggle${open ? " is-open" : ""}`}
-              onClick={() => setOpen(o => !o)}
+              onClick={() => setOpen((o) => !o)}
               aria-label={open ? "關閉選單" : "開啟選單"}
               aria-expanded={open}
               aria-controls="nav-overlay"
@@ -132,11 +153,24 @@ export default function Header() {
           CSS-hidden), which meant its decorative faces and numbered nav links
           shipped in the initial HTML and got indexed as page content. */}
       {overlayMounted && (
-        <div id="nav-overlay" className={`nav-overlay${open ? " is-open" : ""}`} role="dialog" aria-modal="true" aria-label="主選單">
+        <div
+          id="nav-overlay"
+          className={`nav-overlay${open ? " is-open" : ""}`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="主選單"
+        >
           <div className="nav-overlay-faces" aria-hidden="true">
-            {["= ᗜ ω ᗜ.=", "(◕ᗜ◕✿)", "( ˘ω˘ )zzz", "ฅ^•ﻌ•^ฅ", "(´,,•ω•,,)"].map((f, i) => (
-              <span key={i} className={`nav-overlay-face nav-overlay-face--${i}`}>{f}</span>
-            ))}
+            {["= ᗜ ω ᗜ.=", "(◕ᗜ◕✿)", "( ˘ω˘ )zzz", "ฅ^•ﻌ•^ฅ", "(´,,•ω•,,)"].map(
+              (f, i) => (
+                <span
+                  key={i}
+                  className={`nav-overlay-face nav-overlay-face--${i}`}
+                >
+                  {f}
+                </span>
+              )
+            )}
           </div>
           <nav className="nav-overlay-links" aria-label="主要導覽">
             {NAV_LINKS.map((l, i) => (
@@ -146,7 +180,9 @@ export default function Header() {
                 className={`nav-overlay-link${pathname === l.href ? " active" : ""}`}
                 style={{ "--i": i } as React.CSSProperties}
               >
-                <span className="nav-overlay-index">{String(i + 1).padStart(2, "0")}</span>
+                <span className="nav-overlay-index">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 {l.label}
               </Link>
             ))}

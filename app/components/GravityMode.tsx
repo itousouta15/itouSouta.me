@@ -12,9 +12,11 @@ import { useEffect, useRef, useState } from "react";
 
 // 「原子元素」：走訪到這些就整塊當一顆剛體掉落、不再往下拆。連結／按鈕整塊掉，
 // 避免拆散也避免點擊導航；圖片／SVG 不能拆；tile、role-chip 這種小元件也整塊掉。
-const ATOMIC_SELECTOR = "a, button, input, img, svg, canvas, video, .tile, .role-chip, .badge, .dc-act";
+const ATOMIC_SELECTOR =
+  "a, button, input, img, svg, canvas, video, .tile, .role-chip, .badge, .dc-act";
 // 走訪時要略過的東西（腳本、載入畫面、還原按鈕本身）
-const SKIP_SELECTOR = "script, style, link, noscript, .site-loader, #gravity-exit, .cmdk-overlay";
+const SKIP_SELECTOR =
+  "script, style, link, noscript, .site-loader, #gravity-exit, .cmdk-overlay";
 
 const GRAVITY = 0.7; // 每幀增加的向下速度
 const RESTITUTION = 0.3; // 碰撞後的彈性（0 = 不彈，1 = 完全彈回）
@@ -48,7 +50,7 @@ export default function GravityMode() {
   } | null>(null);
 
   useEffect(() => {
-    const onActivate = () => setActive(a => a || true);
+    const onActivate = () => setActive((a) => a || true);
     window.addEventListener("gravity:activate", onActivate);
     return () => window.removeEventListener("gravity:activate", onActivate);
   }, []);
@@ -90,7 +92,11 @@ export default function GravityMode() {
     // 的文字），或本身就是會渲染的葉節點。這種要整塊當剛體，不再往子層拆。
     const hasDirectText = (el: HTMLElement) => {
       for (const n of Array.from(el.childNodes)) {
-        if (n.nodeType === Node.TEXT_NODE && (n.textContent ?? "").trim().length > 0) return true;
+        if (
+          n.nodeType === Node.TEXT_NODE &&
+          (n.textContent ?? "").trim().length > 0
+        )
+          return true;
       }
       return false;
     };
@@ -98,7 +104,11 @@ export default function GravityMode() {
     const isVisible = (el: HTMLElement, r: DOMRect) => {
       if (r.width < 4 || r.height < 4) return false;
       const cs = getComputedStyle(el);
-      return cs.display !== "none" && cs.visibility !== "hidden" && parseFloat(cs.opacity || "1") > 0.05;
+      return (
+        cs.display !== "none" &&
+        cs.visibility !== "hidden" &&
+        parseFloat(cs.opacity || "1") > 0.05
+      );
     };
 
     const setup = () => {
@@ -110,8 +120,13 @@ export default function GravityMode() {
         if (bodies.length >= MAX_BODIES) return;
         if (el.matches(SKIP_SELECTOR) || el.closest(SKIP_SELECTOR)) return;
 
-        const children = Array.from(el.children).filter((c): c is HTMLElement => c instanceof HTMLElement);
-        const atomic = el.matches(ATOMIC_SELECTOR) || hasDirectText(el) || children.length === 0;
+        const children = Array.from(el.children).filter(
+          (c): c is HTMLElement => c instanceof HTMLElement
+        );
+        const atomic =
+          el.matches(ATOMIC_SELECTOR) ||
+          hasDirectText(el) ||
+          children.length === 0;
 
         if (!atomic) {
           for (const c of children) walk(c);
@@ -138,8 +153,10 @@ export default function GravityMode() {
 
       // 把剩下的容器（沒被拆成剛體的卡片、header/footer 等）背景清掉，避免留下空盒子
       document
-        .querySelectorAll<HTMLElement>(".card, .profile-card, .header, .footer, .tiles-strip")
-        .forEach(c => {
+        .querySelectorAll<HTMLElement>(
+          ".card, .profile-card, .header, .footer, .tiles-strip"
+        )
+        .forEach((c) => {
           c.style.background = "transparent";
           c.style.border = "none";
           c.style.boxShadow = "none";
@@ -171,7 +188,7 @@ export default function GravityMode() {
     // 擋掉掉落中的連結／按鈕的點擊，免得點一下 falling 元素就導航離開
     const blockClick = (e: MouseEvent) => {
       const t = e.target as Node | null;
-      if (t && bodiesRef.current.some(b => b.el === t || b.el.contains(t))) {
+      if (t && bodiesRef.current.some((b) => b.el === t || b.el.contains(t))) {
         e.preventDefault();
         e.stopPropagation();
       }
@@ -180,7 +197,7 @@ export default function GravityMode() {
 
     const onPointerDown = (e: PointerEvent) => {
       const target = (e.currentTarget as HTMLElement) ?? null;
-      const body = bodiesRef.current.find(b => b.el === target);
+      const body = bodiesRef.current.find((b) => b.el === target);
       if (!body) return;
       e.preventDefault();
       body.dragging = true;
@@ -310,7 +327,8 @@ export default function GravityMode() {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
       document.removeEventListener("click", blockClick, true);
-      for (const b of bodiesRef.current) b.el.removeEventListener("pointerdown", onPointerDown);
+      for (const b of bodiesRef.current)
+        b.el.removeEventListener("pointerdown", onPointerDown);
     };
   }, [active]);
 

@@ -7,8 +7,12 @@ function authHeaders(): HeadersInit {
   return headers;
 }
 
-export function parseGithubRepo(href: string): { owner: string; repo: string } | null {
-  const m = href.match(/^https:\/\/github\.com\/([^/]+)\/([^/]+?)(?:\.git)?\/?$/);
+export function parseGithubRepo(
+  href: string
+): { owner: string; repo: string } | null {
+  const m = href.match(
+    /^https:\/\/github\.com\/([^/]+)\/([^/]+?)(?:\.git)?\/?$/
+  );
   if (!m) return null;
   return { owner: m[1], repo: m[2] };
 }
@@ -21,7 +25,10 @@ export interface GithubRepoInfo {
   defaultBranch: string;
 }
 
-export async function getRepoInfo(owner: string, repo: string): Promise<GithubRepoInfo | null> {
+export async function getRepoInfo(
+  owner: string,
+  repo: string
+): Promise<GithubRepoInfo | null> {
   const res = await fetch(`${API_BASE}/repos/${owner}/${repo}`, {
     headers: authHeaders(),
     next: { revalidate: 3600 },
@@ -54,17 +61,26 @@ type GithubEventSummary = {
 function excerpt(text: string | null | undefined, maxLength = 220): string {
   const normalized = text?.replace(/\s+/g, " ").trim();
   if (!normalized) return "";
-  return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}...` : normalized;
+  return normalized.length > maxLength
+    ? `${normalized.slice(0, maxLength - 1)}...`
+    : normalized;
 }
 
-const EVENT_LABELS: Record<string, (payload: any, repo: string) => GithubEventSummary | null> = {
+const EVENT_LABELS: Record<
+  string,
+  (payload: any, repo: string) => GithubEventSummary | null
+> = {
   PushEvent: (payload, repo) => {
     const count = payload.commits?.length ?? 0;
     if (count === 0) return null;
-    return { summary: `Pushed ${count} commit${count === 1 ? "" : "s"} to ${repo}` };
+    return {
+      summary: `Pushed ${count} commit${count === 1 ? "" : "s"} to ${repo}`,
+    };
   },
   CreateEvent: (payload, repo) =>
-    payload.ref_type === "repository" ? { summary: `Created a new repository: ${repo}` } : null,
+    payload.ref_type === "repository"
+      ? { summary: `Created a new repository: ${repo}` }
+      : null,
   PullRequestEvent: (payload, repo) => {
     if (payload.action !== "opened") return null;
 
@@ -80,19 +96,28 @@ const EVENT_LABELS: Record<string, (payload: any, repo: string) => GithubEventSu
   },
   IssuesEvent: (payload, repo) =>
     payload.action === "opened"
-      ? { summary: `Opened an issue in ${repo}: ${payload.issue?.title ?? ""}`, url: payload.issue?.html_url }
+      ? {
+          summary: `Opened an issue in ${repo}: ${payload.issue?.title ?? ""}`,
+          url: payload.issue?.html_url,
+        }
       : null,
   ReleaseEvent: (payload, repo) =>
     payload.action === "published"
-      ? { summary: `Published release ${payload.release?.tag_name ?? ""} in ${repo}`, url: payload.release?.html_url }
+      ? {
+          summary: `Published release ${payload.release?.tag_name ?? ""} in ${repo}`,
+          url: payload.release?.html_url,
+        }
       : null,
 };
 
 export async function getUserEvents(username: string): Promise<GithubEvent[]> {
-  const res = await fetch(`${API_BASE}/users/${username}/events/public?per_page=30`, {
-    headers: authHeaders(),
-    next: { revalidate: 3600 },
-  });
+  const res = await fetch(
+    `${API_BASE}/users/${username}/events/public?per_page=30`,
+    {
+      headers: authHeaders(),
+      next: { revalidate: 3600 },
+    }
+  );
   if (!res.ok) return [];
   const json: any[] = await res.json();
 

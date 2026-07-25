@@ -48,7 +48,11 @@ export default function LikeCard({
       <div className="like-body">
         <div className="like-title-row">
           <div className="like-title">{l.title}</div>
-          {l.rating != null && <span className="like-rating"><StarRating rating={l.rating} /></span>}
+          {l.rating != null && (
+            <span className="like-rating">
+              <StarRating rating={l.rating} />
+            </span>
+          )}
         </div>
         {layout !== "circle" && <div className="like-sub">{l.sub || " "}</div>}
       </div>
@@ -67,7 +71,12 @@ export default function LikeCard({
   const href = (live?.live && live.url) || l.href;
 
   return href ? (
-    <a className={className} href={href} target="_blank" rel="noopener noreferrer">
+    <a
+      className={className}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {body}
     </a>
   ) : (

@@ -4,7 +4,11 @@ import TileIcon from "./components/TileIcon";
 import { TILE_ICON_META } from "./components/tileIconMeta";
 import GithubGlyph from "./components/GithubGlyph";
 import GithubContributionCard from "./components/GithubContributionCard";
-import { LanyardProvider, ProfileStatus, ProfileStatusDot } from "./components/LanyardCards";
+import {
+  LanyardProvider,
+  ProfileStatus,
+  ProfileStatusDot,
+} from "./components/LanyardCards";
 import AvatarEasterEgg from "./components/AvatarEasterEgg";
 import HeroFace from "./components/HeroFace";
 import BadgeShape from "./components/BadgeShape";
@@ -27,56 +31,56 @@ export default function HomePage() {
             <img src="/assets/brand/banner.webp" alt="" />
           </div>
           <LanyardProvider>
-          <div className="profile-body">
-            <div className="avatar-row">
-              <div className="avatar-wrap">
-                <AvatarEasterEgg
-                  className="avatar"
-                  src="/assets/brand/avatar.webp"
-                  alt="郭家睿 / 伊藤蒼太"
-                  href="https://dc.itousouta.me"
-                />
-                <ProfileStatusDot />
+            <div className="profile-body">
+              <div className="avatar-row">
+                <div className="avatar-wrap">
+                  <AvatarEasterEgg
+                    className="avatar"
+                    src="/assets/brand/avatar.webp"
+                    alt="郭家睿 / 伊藤蒼太"
+                    href="https://dc.itousouta.me"
+                  />
+                  <ProfileStatusDot />
+                </div>
+                <div className="badges">
+                  <BadgeShape kind="circle" color="var(--blue)" />
+                  <BadgeShape kind="triangle" color="var(--purple)" />
+                  <BadgeShape kind="square" color="var(--dim)" />
+                  <BadgeShape kind="diamond" color="var(--blue)" />
+                </div>
               </div>
-              <div className="badges">
-                <BadgeShape kind="circle" color="var(--blue)" />
-                <BadgeShape kind="triangle" color="var(--purple)" />
-                <BadgeShape kind="square" color="var(--dim)" />
-                <BadgeShape kind="diamond" color="var(--blue)" />
+              <div className="name-row">
+                <span className="name">郭家睿</span>
+                <span className="sr-only"> · </span>
+                <span className="alias">伊藤蒼太</span>
               </div>
+              <div className="handle">itou.souta15 · 人間になりたい</div>
+              <ProfileStatus />
+              <div className="divider" />
+              <div className="label">關於我</div>
+              <div className="field">好想睡覺 Zzzz</div>
+              <div className="label mt16">身分組</div>
+              <div className="roles">
+                <div className="role-row">
+                  {ROLES.filter((r) => r.color === "blue").map((r) => (
+                    <span className="role-chip" key={r.label}>
+                      <span className={`role-dot ${r.color}`} />
+                      {r.label}
+                    </span>
+                  ))}
+                </div>
+                <div className="role-row">
+                  {ROLES.filter((r) => r.color === "purple").map((r) => (
+                    <span className="role-chip" key={r.label}>
+                      <span className={`role-dot ${r.color}`} />
+                      {r.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="label mt16">成為成員時間</div>
+              <div className="field">2009/01/15</div>
             </div>
-            <div className="name-row">
-              <span className="name">郭家睿</span>
-              <span className="sr-only"> · </span>
-              <span className="alias">伊藤蒼太</span>
-            </div>
-            <div className="handle">itou.souta15 · 人間になりたい</div>
-            <ProfileStatus />
-            <div className="divider" />
-            <div className="label">關於我</div>
-            <div className="field">好想睡覺 Zzzz</div>
-            <div className="label mt16">身分組</div>
-            <div className="roles">
-              <div className="role-row">
-                {ROLES.filter(r => r.color === "blue").map(r => (
-                  <span className="role-chip" key={r.label}>
-                    <span className={`role-dot ${r.color}`} />
-                    {r.label}
-                  </span>
-                ))}
-              </div>
-              <div className="role-row">
-                {ROLES.filter(r => r.color === "purple").map(r => (
-                  <span className="role-chip" key={r.label}>
-                    <span className={`role-dot ${r.color}`} />
-                    {r.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="label mt16">成為成員時間</div>
-            <div className="field">2009/01/15</div>
-          </div>
           </LanyardProvider>
         </div>
       </aside>
@@ -87,16 +91,25 @@ export default function HomePage() {
         <div className="card hero">
           <div className="hero-main">
             <div className="hero-greet">ciallo (∠·ω )⌒★</div>
-                        <h1 className="hero-title">
-              I&apos;m{" "}
-              <NameRotator />
+            <h1 className="hero-title">
+              I&apos;m <NameRotator />
             </h1>
             <div className="hero-sub">一個喜歡 VOCALOID 和畫插畫的怪人</div>
             <div className="hero-actions">
-              <Link className="btn-primary" href="/about" style={{ textDecoration: "none" }}>
+              <Link
+                className="btn-primary"
+                href="/about"
+                style={{ textDecoration: "none" }}
+              >
                 關於我 <span className="btn-arrow dark">→</span>
               </Link>
-              <a className="btn-ghost" href="https://blog.itousouta.me" target="_blank" rel="noopener nofollow noreferrer" style={{ textDecoration: "none" }}>
+              <a
+                className="btn-ghost"
+                href="https://blog.itousouta.me"
+                target="_blank"
+                rel="noopener nofollow noreferrer"
+                style={{ textDecoration: "none" }}
+              >
                 BLOG <span className="btn-arrow inset">→</span>
               </a>
             </div>
@@ -118,8 +131,12 @@ export default function HomePage() {
           <div className="tiles-strip">
             {Object.entries(tileRows).map(([row, icons]) => (
               <div className={`tiles-row tiles-row-${row}`} key={row}>
-                {[0, 1].map(g => (
-                  <div className="tiles-row-group" key={g} aria-hidden={g === 1 ? true : undefined}>
+                {[0, 1].map((g) => (
+                  <div
+                    className="tiles-row-group"
+                    key={g}
+                    aria-hidden={g === 1 ? true : undefined}
+                  >
                     {icons.map((icon, i) => (
                       <div key={`${row}-${i}`} className="tile">
                         <TileIcon kind={icon} />
@@ -131,12 +148,14 @@ export default function HomePage() {
             ))}
           </div>
           <div className="quote-tech-panel" aria-label="technology icons">
-            {tileIcons.map(icon => (
+            {tileIcons.map((icon) => (
               <div className="quote-tech-item" key={icon}>
                 <span className="quote-tech-icon">
                   <TileIcon kind={icon} />
                 </span>
-                <span className="quote-tech-name">{TILE_ICON_META[icon]?.label ?? icon}</span>
+                <span className="quote-tech-name">
+                  {TILE_ICON_META[icon]?.label ?? icon}
+                </span>
               </div>
             ))}
           </div>
@@ -144,17 +163,30 @@ export default function HomePage() {
 
         {/* Bento: nav cards */}
         <div className="bento">
-          <Link className="bento-thoughts nav-card" href="/thoughts" style={{ textDecoration: "none", color: "inherit" }}>
+          <Link
+            className="bento-thoughts nav-card"
+            href="/thoughts"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             <div>
               <div className="card-kicker">THOUGHTS</div>
               <div className="nav-card-title">雜談</div>
             </div>
-            <span className="nav-card-ghost" aria-hidden>念</span>
+            <span className="nav-card-ghost" aria-hidden>
+              念
+            </span>
             <span className="nav-card-arrow">↗</span>
           </Link>
 
-          <Link className="bento-likes card-likes" href="/likes" style={{ textDecoration: "none", color: "inherit" }}>
-            <DecorativeImage className="card-likes-img" src="/assets/likes/art-miku.webp" />
+          <Link
+            className="bento-likes card-likes"
+            href="/likes"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <DecorativeImage
+              className="card-likes-img"
+              src="/assets/likes/art-miku.webp"
+            />
             <div className="card-body">
               <div className="card-kicker">LIKES</div>
               <div className="card-title-lg">
@@ -166,25 +198,41 @@ export default function HomePage() {
             <span className="card-arrow-lg">↗</span>
           </Link>
 
-          <Link className="bento-friends nav-card" href="/links" style={{ textDecoration: "none", color: "inherit" }}>
+          <Link
+            className="bento-friends nav-card"
+            href="/links"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             <div>
               <div className="card-kicker">LINKS</div>
               <div className="nav-card-title">友鏈</div>
             </div>
-            <span className="nav-card-ghost" aria-hidden>友</span>
+            <span className="nav-card-ghost" aria-hidden>
+              友
+            </span>
             <span className="nav-card-arrow">↗</span>
           </Link>
 
-          <Link className="bento-experience nav-card" href="/experience" style={{ textDecoration: "none", color: "inherit" }}>
+          <Link
+            className="bento-experience nav-card"
+            href="/experience"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             <div>
               <div className="card-kicker">JOURNEY</div>
               <div className="nav-card-title">經歷</div>
             </div>
-            <span className="nav-card-ghost" aria-hidden>歷</span>
+            <span className="nav-card-ghost" aria-hidden>
+              歷
+            </span>
             <span className="nav-card-arrow">↗</span>
           </Link>
 
-          <Link className="bento-projects card-projects" href="/projects" style={{ textDecoration: "none", color: "inherit" }}>
+          <Link
+            className="bento-projects card-projects"
+            href="/projects"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             <GithubGlyph className="card-projects-glyph" fill="var(--tx)" />
             <div className="card-body-sm">
               <div className="card-kicker">PROJECTS</div>

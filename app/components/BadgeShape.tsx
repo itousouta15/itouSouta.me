@@ -10,7 +10,13 @@ const ORDER = ["circle", "triangle", "square", "diamond"] as const;
 type ShapeKind = (typeof ORDER)[number];
 const MORPH_MS = 620;
 
-export default function BadgeShape({ kind, color }: { kind: ShapeKind; color: string }) {
+export default function BadgeShape({
+  kind,
+  color,
+}: {
+  kind: ShapeKind;
+  color: string;
+}) {
   const [morphing, setMorphing] = useState(false);
   const nextKind = ORDER[(ORDER.indexOf(kind) + 1) % ORDER.length];
 

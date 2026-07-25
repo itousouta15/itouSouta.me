@@ -24,15 +24,20 @@ export default function ProjectFilterGrid({
 
   const tags = useMemo(() => {
     const set = new Set<string>();
-    items.forEach(p => p.tags.forEach(t => set.add(t)));
+    items.forEach((p) => p.tags.forEach((t) => set.add(t)));
     return Array.from(set);
   }, [items]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return items.filter(p => {
+    return items.filter((p) => {
       if (activeTag && !p.tags.includes(activeTag)) return false;
-      if (q && !p.title.toLowerCase().includes(q) && !p.desc.toLowerCase().includes(q)) return false;
+      if (
+        q &&
+        !p.title.toLowerCase().includes(q) &&
+        !p.desc.toLowerCase().includes(q)
+      )
+        return false;
       return true;
     });
   }, [items, query, activeTag]);
@@ -41,13 +46,14 @@ export default function ProjectFilterGrid({
   useEffect(() => {
     const slug = searchParams.get("project");
     if (!slug) return;
-    const p = items.find(x => x.slug === slug);
+    const p = items.find((x) => x.slug === slug);
     if (p) setActiveProject(p);
   }, [searchParams, items]);
 
   const closeModal = () => {
     setActiveProject(null);
-    if (searchParams.get("project")) router.replace("/projects", { scroll: false });
+    if (searchParams.get("project"))
+      router.replace("/projects", { scroll: false });
   };
 
   return (
@@ -59,7 +65,7 @@ export default function ProjectFilterGrid({
           inputMode="search"
           placeholder="搜尋專案..."
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
         />
         {tags.length > 0 && (
           <div className="likes-tag-row">
@@ -70,12 +76,12 @@ export default function ProjectFilterGrid({
             >
               全部
             </button>
-            {tags.map(t => (
+            {tags.map((t) => (
               <button
                 type="button"
                 key={t}
                 className={`likes-tag-chip ${activeTag === t ? "active" : ""}`}
-                onClick={() => setActiveTag(cur => (cur === t ? null : t))}
+                onClick={() => setActiveTag((cur) => (cur === t ? null : t))}
               >
                 {t}
               </button>
@@ -85,7 +91,7 @@ export default function ProjectFilterGrid({
       </div>
       {filtered.length > 0 ? (
         <div className="proj-grid">
-          {filtered.map(p => (
+          {filtered.map((p) => (
             // href 指向 GitHub：無 JS 或 Ctrl/中鍵點擊時直接開 repo，一般點擊則開 modal
             <a
               className="proj-card"
@@ -94,7 +100,7 @@ export default function ProjectFilterGrid({
               target="_blank"
               rel="noopener noreferrer"
               style={{ textDecoration: "none", color: "inherit" }}
-              onClick={e => {
+              onClick={(e) => {
                 if (e.metaKey || e.ctrlKey || e.shiftKey) return;
                 e.preventDefault();
                 setActiveProject(p);
@@ -121,8 +127,10 @@ export default function ProjectFilterGrid({
               <div className="proj-title">{p.title}</div>
               <div className="proj-desc">{p.desc}</div>
               <div className="proj-tags">
-                {p.tags.map(t => (
-                  <span className="proj-tag" key={t}>{t}</span>
+                {p.tags.map((t) => (
+                  <span className="proj-tag" key={t}>
+                    {t}
+                  </span>
                 ))}
               </div>
             </a>
@@ -139,7 +147,10 @@ export default function ProjectFilterGrid({
           desc={activeProject.desc}
           onClose={closeModal}
         >
-          <ProjectDetailBody project={activeProject} repoInfo={repoInfoBySlug[activeProject.slug] ?? null} />
+          <ProjectDetailBody
+            project={activeProject}
+            repoInfo={repoInfoBySlug[activeProject.slug] ?? null}
+          />
         </ProjectModalShell>
       )}
     </>

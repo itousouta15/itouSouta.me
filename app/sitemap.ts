@@ -15,9 +15,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/thoughts",
   ];
 
-  const likeCategoryRoutes = LIKE_CATEGORIES.map(cat => `/likes/${cat.key}`);
+  const likeCategoryRoutes = LIKE_CATEGORIES.map((cat) => `/likes/${cat.key}`);
 
-  return [...staticRoutes, ...likeCategoryRoutes].map(path => ({
+  return [...staticRoutes, ...likeCategoryRoutes].map((path) => ({
     url: `${SITE_URL}${path}`,
     lastModified: new Date(),
   }));

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 import { EXPERIENCE, ExperienceItem } from "../data";
 
-const description = "郭家睿 / 伊藤蒼太的學習與活動經歷，包含校內資訊校隊、SCAICT 中電會等歷程。";
+const description =
+  "郭家睿 / 伊藤蒼太的學習與活動經歷，包含校內資訊校隊、SCAICT 中電會等歷程。";
 
 export const metadata: Metadata = {
   title: "經歷",

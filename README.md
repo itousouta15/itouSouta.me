@@ -20,14 +20,14 @@ This is a highly customized portfolio site built around profile, projects, thoug
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 14 App Router |
-| Language | TypeScript |
-| Styling | Plain CSS with custom properties |
-| Data | Vercel KV, Threads API, GitHub API, Last.fm API |
-| Real-time | Lanyard API |
-| Deployment | Vercel |
+| Layer      | Technology                                      |
+| ---------- | ----------------------------------------------- |
+| Framework  | Next.js 14 App Router                           |
+| Language   | TypeScript                                      |
+| Styling    | Plain CSS with custom properties                |
+| Data       | Vercel KV, Threads API, GitHub API, Last.fm API |
+| Real-time  | Lanyard API                                     |
+| Deployment | Vercel                                          |
 
 No UI library, no CSS-in-JS, and no component framework.
 
@@ -59,13 +59,13 @@ npm run lint
 
 Required or optional depending on which live surfaces you want enabled:
 
-| Variable | Purpose |
-|---|---|
-| `REVALIDATE_SECRET` | Shared secret for the revalidation endpoint used by itouBot |
-| `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection |
-| `THREADS_ACCESS_TOKEN` | Fetching synced Threads posts |
-| `GITHUB_TOKEN` | Fetching GitHub repository metadata and activity |
-| `LASTFM_API_KEY`, `LASTFM_USER` | Fetching Last.fm top albums |
+| Variable                                                                                     | Purpose                                                     |
+| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `REVALIDATE_SECRET`                                                                          | Shared secret for the revalidation endpoint used by itouBot |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection                                        |
+| `THREADS_ACCESS_TOKEN`                                                                       | Fetching synced Threads posts                               |
+| `GITHUB_TOKEN`                                                                               | Fetching GitHub repository metadata and activity            |
+| `LASTFM_API_KEY`, `LASTFM_USER`                                                              | Fetching Last.fm top albums                                 |
 
 Missing optional credentials are handled gracefully; affected sections fall back or disappear instead of breaking the site.
 

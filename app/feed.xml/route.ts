@@ -20,8 +20,13 @@ export async function GET() {
 
   const itemsXml = items
     .slice(0, 50)
-    .map(item => {
-      const link = item.kind === "threads" ? item.permalink : item.kind === "github" ? item.url : SITE_URL + "/thoughts";
+    .map((item) => {
+      const link =
+        item.kind === "threads"
+          ? item.permalink
+          : item.kind === "github"
+            ? item.url
+            : SITE_URL + "/thoughts";
       const title = item.text ? item.text.slice(0, 60) : `雜談 ${item.date}`;
       return `<item>
   <title>${escapeXml(title)}</title>

@@ -7,10 +7,20 @@ interface PageHeadProps {
   back?: string;
 }
 
-export default function PageHead({ kicker, title, desc, back = "/" }: PageHeadProps) {
+export default function PageHead({
+  kicker,
+  title,
+  desc,
+  back = "/",
+}: PageHeadProps) {
   return (
     <div className="page-head">
-      <Link className="back-btn" href={back} aria-label="back" style={{ textDecoration: "none" }}>
+      <Link
+        className="back-btn"
+        href={back}
+        aria-label="back"
+        style={{ textDecoration: "none" }}
+      >
         ←
       </Link>
       <div>

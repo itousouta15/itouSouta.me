@@ -29,7 +29,12 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
   // liveMap 是非同步拿到的，一開始會先照 rating 排序顯示，資料回來後才補上開台優先——
   // 依賴 liveMap 是必要的，不然開台狀態變動不會觸發重新排序
   const sortedItems = useMemo(
-    () => sortLikesByRating(cat.items, "desc", l => !!(l.href && liveMap[l.href]?.live)),
+    () =>
+      sortLikesByRating(
+        cat.items,
+        "desc",
+        (l) => !!(l.href && liveMap[l.href]?.live)
+      ),
     [cat.items, liveMap]
   );
 
@@ -38,7 +43,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
   const liveSignature = useMemo(
     () =>
       Object.keys(liveMap)
-        .filter(href => liveMap[href]?.live)
+        .filter((href) => liveMap[href]?.live)
         .sort()
         .join(","),
     [liveMap]
@@ -62,9 +67,9 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
     // viewport): the default root only tracks vertical page scroll, so it
     // never fires while the user scrolls sideways within this row.
     const observer = new IntersectionObserver(
-      entries => {
+      (entries) => {
         if (entries[0]?.isIntersecting) {
-          setVisibleCount(c => Math.min(c + BATCH_SIZE, sortedItems.length));
+          setVisibleCount((c) => Math.min(c + BATCH_SIZE, sortedItems.length));
         }
       },
       { root: track, rootMargin: "0px 600px 0px 0px" }
@@ -88,7 +93,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
         </Link>
       </div>
       <div className="likes-track" ref={trackRef} data-lenis-prevent-wheel>
-        {preview.map(l => (
+        {preview.map((l) => (
           <LikeCard
             l={l}
             carousel
@@ -98,9 +103,16 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
             live={l.href ? liveMap[l.href] : undefined}
           />
         ))}
-        {visibleCount < sortedItems.length && <div ref={sentinelRef} className="likes-track-sentinel" aria-hidden />}
+        {visibleCount < sortedItems.length && (
+          <div ref={sentinelRef} className="likes-track-sentinel" aria-hidden />
+        )}
       </div>
-      {useModal && selectedLike && <LikeModalShell like={selectedLike} onClose={() => setSelectedLike(null)} />}
+      {useModal && selectedLike && (
+        <LikeModalShell
+          like={selectedLike}
+          onClose={() => setSelectedLike(null)}
+        />
+      )}
     </div>
   );
 }

@@ -18,7 +18,9 @@ export default function BackToTopButton() {
     // Once scrolled to top this button hides itself (tabIndex -1); blur it
     // first so focus doesn't get stranded on a now-invisible element.
     e.currentTarget.blur();
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     if (reduceMotion || !lenis) {
       window.scrollTo(0, 0);
     } else {
@@ -37,7 +39,16 @@ export default function BackToTopButton() {
       aria-label="回到頂端"
       tabIndex={visible ? 0 : -1}
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M12 19V5M5 12l7-7 7 7" />
       </svg>
     </button>

@@ -24,11 +24,15 @@ const TIMEOUT_MS = 2500;
 // 訊號沒能提前把它砍斷——整批查詢還是被拖到快 10 秒。改成用 Promise.race 在 JS
 // 這層強制設一個不依賴底層 fetch 是否配合中止的硬上限：時間一到就直接回傳 fallback，
 // 底下真正的 fetch 就讓它自己在背景收尾，不擋住外層 Promise.all。
-function withTimeout<T>(promise: Promise<T>, ms: number, fallback: T): Promise<T> {
-  return new Promise(resolve => {
+function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  fallback: T
+): Promise<T> {
+  return new Promise((resolve) => {
     const timer = setTimeout(() => resolve(fallback), ms);
     promise.then(
-      v => {
+      (v) => {
         clearTimeout(timer);
         resolve(v);
       },
@@ -63,7 +67,8 @@ function decodeChunk(raw: string): string | null {
 // 每筆直播資料是攤平的物件，欄位順序固定（id → type → ... → channelId → ... →
 // status → scheduledStartTime → scheduledEndTime），用非貪婪比對取到
 // scheduledEndTime 收尾，避免像 tags 那種長度不固定的陣列把邊界撐爆到下一筆。
-const STREAM_ENTRY = /\{"id":"[\w-]{11}","type":"livestream",[\s\S]*?"scheduledEndTime":(?:null|"[^"]*")\}/g;
+const STREAM_ENTRY =
+  /\{"id":"[\w-]{11}","type":"livestream",[\s\S]*?"scheduledEndTime":(?:null|"[^"]*")\}/g;
 
 async function fetchScheduleLiveMap(): Promise<Map<string, LiveInfo> | null> {
   const run = (async (): Promise<Map<string, LiveInfo> | null> => {
@@ -111,7 +116,8 @@ async function fetchScheduleLiveMap(): Promise<Map<string, LiveInfo> | null> {
 // 且 "isLive":true 這個字串在整頁到處都會出現（推薦影片、其他人的直播卡片等等），
 // 只在 videoDetails 開頭那小段（videoId → title → lengthSeconds → isLive）找才準，
 // 抓完整頁再 indexOf 全域比對會把別人的直播誤判成這個頻道在開台。
-const VIDEO_DETAILS_LIVE = /"videoDetails":\{"videoId":"([\w-]{11})"[\s\S]{0,200}?"isLive":true/;
+const VIDEO_DETAILS_LIVE =
+  /"videoDetails":\{"videoId":"([\w-]{11})"[\s\S]{0,200}?"isLive":true/;
 
 async function checkLive(channelHref: string): Promise<LiveInfo> {
   const liveUrl = `${channelHref.replace(/\/+$/, "")}/live`;
@@ -136,7 +142,9 @@ async function checkLive(channelHref: string): Promise<LiveInfo> {
     }
   })();
 
-  return withTimeout(run, TIMEOUT_MS, { live: false }).finally(() => controller.abort());
+  return withTimeout(run, TIMEOUT_MS, { live: false }).finally(() =>
+    controller.abort()
+  );
 }
 
 function channelIdFromHref(href: string): string | undefined {
@@ -144,7 +152,7 @@ function channelIdFromHref(href: string): string | undefined {
 }
 
 export async function GET() {
-  const vtubers = LIKE_CATEGORIES.find(c => c.key === "vtuber")?.items ?? [];
+  const vtubers = LIKE_CATEGORIES.find((c) => c.key === "vtuber")?.items ?? [];
 
   const scheduleMap = await fetchScheduleLiveMap();
 
@@ -163,7 +171,9 @@ export async function GET() {
 
   if (needsFallback.length > 0) {
     const uniqueHrefs = Array.from(new Set(needsFallback));
-    const entries = await Promise.all(uniqueHrefs.map(async href => [href, await checkLive(href)] as const));
+    const entries = await Promise.all(
+      uniqueHrefs.map(async (href) => [href, await checkLive(href)] as const)
+    );
     entries.forEach(([href, info]) => {
       map[href] = info;
     });

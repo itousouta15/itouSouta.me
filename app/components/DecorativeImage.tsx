@@ -7,7 +7,12 @@ type DecorativeImageProps = {
   style?: CSSProperties;
 };
 
-export default function DecorativeImage({ className, src, title, style }: DecorativeImageProps) {
+export default function DecorativeImage({
+  className,
+  src,
+  title,
+  style,
+}: DecorativeImageProps) {
   return (
     <span
       aria-hidden="true"

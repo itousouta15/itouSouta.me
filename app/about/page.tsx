@@ -15,12 +15,14 @@ const description = "itouSouta 的自我介紹 (*´з｀*)";
 const INTEREST_BG = "/assets/likes/neko.webp";
 const MUSIC_BG = "/assets/likes/nacho.webp";
 
-const ANIME_PREVIEW = (LIKE_CATEGORIES.find(c => c.key === "anime")?.items ?? [])
+const ANIME_PREVIEW = (
+  LIKE_CATEGORIES.find((c) => c.key === "anime")?.items ?? []
+)
   .slice()
   .sort((a, b) => (b.personRating ?? 0) - (a.personRating ?? 0))
   .slice(0, 6);
 
-const MUSIC_PREVIEW = MUSIC_ARTISTS.filter(a => a.avatar).slice(0, 4);
+const MUSIC_PREVIEW = MUSIC_ARTISTS.filter((a) => a.avatar).slice(0, 4);
 
 export const metadata: Metadata = {
   title: "關於我",
@@ -39,13 +41,15 @@ export default async function AboutPage() {
         <div className="about-main">
           <div className="about-lead">ciallo～ 我是 itouSouta</div>
           <p className="about-p">
-            一個喜歡 VOCALOID 和畫插畫的怪人。 會做點術曲和畫點插畫插畫，偶爾寫點程式/ᐠ｡ꞈ｡ᐟ\
+            一個喜歡 VOCALOID 和畫插畫的怪人。
+            會做點術曲和畫點插畫插畫，偶爾寫點程式/ᐠ｡ꞈ｡ᐟ\
           </p>
           <p className="about-p">
             嗯....我也想把自己說的好像很厲害，但感覺這樣蠻家豪的。反正我就是一個無聊的高中生
           </p>
           <p className="about-p">
-            目前是臺中市立大里高中的學生，同時擔任校內資訊校隊隊長，也是第五屆 SCAICT 中電會會長。平常喜歡到處跑，順便認識一堆電到爆的人們
+            目前是臺中市立大里高中的學生，同時擔任校內資訊校隊隊長，也是第五屆
+            SCAICT 中電會會長。平常喜歡到處跑，順便認識一堆電到爆的人們
           </p>
           <p className="about-p">
             除了寫程式之外，對資安也稍微有點興趣。座右銘是「情熱を失っては、何もできない」，希望自己能一直保持這份熱情，把想做的事情一件一件做出來
@@ -70,11 +74,20 @@ export default async function AboutPage() {
           <img src="/assets/brand/banner.webp" alt="" />
           <div className="about-side-body">
             <div className="label">座右銘</div>
-            <div className="about-side-quote">情熱を失っては、何もできない。</div>
+            <div className="about-side-quote">
+              情熱を失っては、何もできない。
+            </div>
           </div>
         </div>
         <Link href="/likes/anime" className="mini-card mini-interest">
-          <img className="mini-interest-bg" src={cardBgThumb(INTEREST_BG)} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <img
+            className="mini-interest-bg"
+            src={cardBgThumb(INTEREST_BG)}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+          />
           <div className="mini-kicker">愛好</div>
           <div className="mini-interest-title">追番</div>
           <div className="mini-interest-stack">
@@ -93,8 +106,17 @@ export default async function AboutPage() {
           <span className="mini-arrow">↗</span>
         </Link>
         <Link href="/likes/music" className="mini-card mini-music">
-          <img className="mini-interest-bg" src={cardBgThumb(MUSIC_BG)} alt="" aria-hidden="true" loading="lazy" decoding="async" />
-          <div className="mini-kicker">{topAlbums ? "愛好 · 最近常聽" : "愛好"}</div>
+          <img
+            className="mini-interest-bg"
+            src={cardBgThumb(MUSIC_BG)}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="mini-kicker">
+            {topAlbums ? "愛好 · 最近常聽" : "愛好"}
+          </div>
           <div className="mini-interest-title">音樂</div>
           <div className="mini-music-avatars">
             {topAlbums
