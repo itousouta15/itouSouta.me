@@ -40,18 +40,27 @@ export default function LikeFilterGrid({
 
   const tags = useMemo(() => {
     const set = new Set<string>();
-    items.forEach(l => l.tags?.forEach(t => set.add(t)));
+    items.forEach((l) => l.tags?.forEach((t) => set.add(t)));
     return Array.from(set);
   }, [items]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const result = items.filter(l => {
+    const result = items.filter((l) => {
       if (activeTag && !l.tags?.includes(activeTag)) return false;
-      if (q && !l.title.toLowerCase().includes(q) && !l.sub?.toLowerCase().includes(q)) return false;
+      if (
+        q &&
+        !l.title.toLowerCase().includes(q) &&
+        !l.sub?.toLowerCase().includes(q)
+      )
+        return false;
       return true;
     });
-    return sortLikesByRating(result, "desc", l => !!(l.href && liveMap[l.href]?.live));
+    return sortLikesByRating(
+      result,
+      "desc",
+      (l) => !!(l.href && liveMap[l.href]?.live)
+    );
   }, [items, query, activeTag, liveMap]);
 
   return (
@@ -63,7 +72,7 @@ export default function LikeFilterGrid({
           inputMode="search"
           placeholder="搜尋名稱..."
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
         />
         {tags.length > 0 && (
           <div className="likes-tag-row">
@@ -74,12 +83,12 @@ export default function LikeFilterGrid({
             >
               全部
             </button>
-            {tags.map(t => (
+            {tags.map((t) => (
               <button
                 type="button"
                 key={t}
                 className={`likes-tag-chip ${activeTag === t ? "active" : ""}`}
-                onClick={() => setActiveTag(cur => (cur === t ? null : t))}
+                onClick={() => setActiveTag((cur) => (cur === t ? null : t))}
               >
                 {t}
               </button>
@@ -88,8 +97,10 @@ export default function LikeFilterGrid({
         )}
       </div>
       {filtered.length > 0 ? (
-        <div className={`likes-grid ${layout === "circle" ? "likes-grid--circle" : ""}`}>
-          {filtered.map(l => (
+        <div
+          className={`likes-grid ${layout === "circle" ? "likes-grid--circle" : ""}`}
+        >
+          {filtered.map((l) => (
             <LikeCard
               l={l}
               layout={layout}
@@ -102,7 +113,9 @@ export default function LikeFilterGrid({
       ) : (
         <div className="likes-empty">沒有符合條件的項目</div>
       )}
-      {useModal && selectedLike && <LikeModalShell like={selectedLike} onClose={closeModal} />}
+      {useModal && selectedLike && (
+        <LikeModalShell like={selectedLike} onClose={closeModal} />
+      )}
     </>
   );
 }

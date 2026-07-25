@@ -7,7 +7,12 @@ export interface ThreadsPost {
   media_url?: string;
 }
 
-const DISPLAY_TYPES = new Set(["TEXT_POST", "IMAGE", "CAROUSEL_ALBUM", "VIDEO"]);
+const DISPLAY_TYPES = new Set([
+  "TEXT_POST",
+  "IMAGE",
+  "CAROUSEL_ALBUM",
+  "VIDEO",
+]);
 
 export async function fetchThreadsPosts(): Promise<ThreadsPost[]> {
   const token = process.env.THREADS_ACCESS_TOKEN;
@@ -22,6 +27,7 @@ export async function fetchThreadsPosts(): Promise<ThreadsPost[]> {
 
   const json = await res.json();
   return (json.data ?? []).filter(
-    (p: ThreadsPost) => DISPLAY_TYPES.has(p.media_type) && (p.text || p.media_url)
+    (p: ThreadsPost) =>
+      DISPLAY_TYPES.has(p.media_type) && (p.text || p.media_url)
   );
 }

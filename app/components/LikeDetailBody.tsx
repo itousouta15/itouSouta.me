@@ -1,7 +1,13 @@
 import type { Like } from "../data";
 import { likeThumb, likeCircleThumb } from "../lib/imageThumb";
 
-export default function LikeDetailBody({ item, layout }: { item: Like; layout?: "circle" | "square" }) {
+export default function LikeDetailBody({
+  item,
+  layout,
+}: {
+  item: Like;
+  layout?: "circle" | "square";
+}) {
   const hasMeta = item.rating != null || item.status;
 
   return (
@@ -18,22 +24,32 @@ export default function LikeDetailBody({ item, layout }: { item: Like; layout?: 
 
       {hasMeta && (
         <div className="like-detail-meta">
-          {item.rating != null && <span className="like-rating">★ {item.rating.toFixed(1)}</span>}
+          {item.rating != null && (
+            <span className="like-rating">★ {item.rating.toFixed(1)}</span>
+          )}
           {item.status && <span className="thought-tag">{item.status}</span>}
         </div>
       )}
 
       {item.tags && item.tags.length > 0 && (
         <div className="proj-tags" style={{ marginTop: 16 }}>
-          {item.tags.map(t => (
-            <span className="proj-tag" key={t}>{t}</span>
+          {item.tags.map((t) => (
+            <span className="proj-tag" key={t}>
+              {t}
+            </span>
           ))}
         </div>
       )}
 
       {item.href && (
         <div className="proj-detail-actions">
-          <a className="btn-primary" href={item.href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+          <a
+            className="btn-primary"
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
             前往 <span className="btn-arrow dark">→</span>
           </a>
         </div>

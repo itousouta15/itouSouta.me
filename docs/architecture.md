@@ -10,18 +10,18 @@ The project intentionally avoids UI libraries and CSS-in-JS. Most visual behavio
 
 ## Route Overview
 
-| Route | Purpose |
-|---|---|
-| `/` | Home profile, hero, navigation cards, GitHub contribution graph |
-| `/about` | Bio, stats, interests, and music preview |
-| `/thoughts` | Unified feed from Discord/KV, Threads, and GitHub events |
-| `/likes` | Hub for liked novels, manga, anime, VTubers, and music |
-| `/likes/[category]` | Category-specific likes grid |
-| `/likes/music` | Last.fm top albums |
-| `/projects` | Filterable project gallery |
-| `/links` | Friend/community links |
-| `/experience` | Timeline of activities |
-| `/feed.xml` | RSS feed |
+| Route               | Purpose                                                         |
+| ------------------- | --------------------------------------------------------------- |
+| `/`                 | Home profile, hero, navigation cards, GitHub contribution graph |
+| `/about`            | Bio, stats, interests, and music preview                        |
+| `/thoughts`         | Unified feed from Discord/KV, Threads, and GitHub events        |
+| `/likes`            | Hub for liked novels, manga, anime, VTubers, and music          |
+| `/likes/[category]` | Category-specific likes grid                                    |
+| `/likes/music`      | Last.fm top albums                                              |
+| `/projects`         | Filterable project gallery                                      |
+| `/links`            | Friend/community links                                          |
+| `/experience`       | Timeline of activities                                          |
+| `/feed.xml`         | RSS feed                                                        |
 
 ## Content
 
@@ -41,12 +41,12 @@ Call sites treat missing credentials or failed upstream requests as expected sta
 
 Local assets are grouped by purpose:
 
-| Folder | Purpose |
-|---|---|
-| `public/assets/brand` | Site identity assets such as banner, avatar, fallback status art |
-| `public/assets/projects` | Project cover images |
-| `public/assets/likes` | Likes, music, and friend-link imagery |
-| `public/assets/social` | Generated social/GitHub contribution assets |
+| Folder                   | Purpose                                                          |
+| ------------------------ | ---------------------------------------------------------------- |
+| `public/assets/brand`    | Site identity assets such as banner, avatar, fallback status art |
+| `public/assets/projects` | Project cover images                                             |
+| `public/assets/likes`    | Likes, music, and friend-link imagery                            |
+| `public/assets/social`   | Generated social/GitHub contribution assets                      |
 
 The home page keeps `banner.webp` as the primary `<img>` candidate for search previews. Other decorative home images are rendered as CSS backgrounds where practical, so search engines are less likely to select them as page thumbnails.
 

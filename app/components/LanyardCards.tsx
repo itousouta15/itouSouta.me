@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { DISCORD_USER_ID } from "../data";
 import { discordArtThumb } from "../lib/imageThumb";
 
@@ -47,7 +53,9 @@ const POLL_MS = 15000;
 
 /** Polls the Lanyard REST API for the configured Discord user. */
 function useLanyard(): State {
-  const [state, setState] = useState<State>(DISCORD_USER_ID ? { kind: "loading" } : { kind: "unconfigured" });
+  const [state, setState] = useState<State>(
+    DISCORD_USER_ID ? { kind: "loading" } : { kind: "unconfigured" }
+  );
 
   useEffect(() => {
     if (!DISCORD_USER_ID) return;
@@ -55,10 +63,14 @@ function useLanyard(): State {
 
     const load = async () => {
       try {
-        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`, { cache: "no-store" });
+        const res = await fetch(
+          `https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`,
+          { cache: "no-store" }
+        );
         const json = await res.json();
         if (!alive) return;
-        if (json?.success && json.data) setState({ kind: "ready", data: json.data as LanyardData });
+        if (json?.success && json.data)
+          setState({ kind: "ready", data: json.data as LanyardData });
         else setState({ kind: "error" });
       } catch {
         if (alive) setState({ kind: "error" });
@@ -81,14 +93,22 @@ const LanyardContext = createContext<State | null>(null);
 
 export function LanyardProvider({ children }: { children: ReactNode }) {
   const state = useLanyard();
-  return <LanyardContext.Provider value={state}>{children}</LanyardContext.Provider>;
+  return (
+    <LanyardContext.Provider value={state}>{children}</LanyardContext.Provider>
+  );
 }
 
 function useLanyardState(): State {
-  return useContext(LanyardContext) ?? (DISCORD_USER_ID ? { kind: "loading" } : { kind: "unconfigured" });
+  return (
+    useContext(LanyardContext) ??
+    (DISCORD_USER_ID ? { kind: "loading" } : { kind: "unconfigured" })
+  );
 }
 
-const STATUS_META: Record<LanyardData["discord_status"], { label: string; cls: string }> = {
+const STATUS_META: Record<
+  LanyardData["discord_status"],
+  { label: string; cls: string }
+> = {
   online: { label: "上線中", cls: "online" },
   idle: { label: "閒置", cls: "idle" },
   dnd: { label: "請勿打擾", cls: "dnd" },
@@ -115,9 +135,11 @@ const ACT_VERB: Record<number, string> = {
 function activityImage(act: LanyardActivity): string | null {
   const asset = act.assets?.large_image;
   if (!asset) return null;
-  if (asset.startsWith("mp:")) return `https://media.discordapp.net/${asset.slice(3)}`;
+  if (asset.startsWith("mp:"))
+    return `https://media.discordapp.net/${asset.slice(3)}`;
   if (/^https?:/.test(asset)) return asset;
-  if (act.application_id) return `https://cdn.discordapp.com/app-assets/${act.application_id}/${asset}.webp`;
+  if (act.application_id)
+    return `https://cdn.discordapp.com/app-assets/${act.application_id}/${asset}.webp`;
   return null;
 }
 
@@ -127,8 +149,14 @@ function activityImage(act: LanyardActivity): string | null {
 export function ProfileStatusDot() {
   const state = useLanyardState();
   const [open, setOpen] = useState(false);
-  const cls = state.kind === "ready" ? STATUS_META[state.data.discord_status].cls : "offline";
-  const label = state.kind === "ready" ? STATUS_META[state.data.discord_status].label : placeholderText(state, "離線");
+  const cls =
+    state.kind === "ready"
+      ? STATUS_META[state.data.discord_status].cls
+      : "offline";
+  const label =
+    state.kind === "ready"
+      ? STATUS_META[state.data.discord_status].label
+      : placeholderText(state, "離線");
   return (
     <span
       className={`status-dot ${cls}`}
@@ -136,7 +164,7 @@ export function ProfileStatusDot() {
       tabIndex={0}
       title={label}
       aria-label={label}
-      onClick={() => setOpen(o => !o)}
+      onClick={() => setOpen((o) => !o)}
       onBlur={() => setOpen(false)}
     >
       {open && <span className="status-bubble">{label}</span>}
@@ -158,7 +186,9 @@ export function ProfileStatus() {
   const spotify = ready && ready.listening_to_spotify ? ready.spotify : null;
 
   // First non-custom-status activity (game / streaming / watching / …).
-  const activity = !spotify ? ready?.activities.find(a => a.type !== 4) : undefined;
+  const activity = !spotify
+    ? ready?.activities.find((a) => a.type !== 4)
+    : undefined;
 
   useEffect(() => {
     if (!spotify?.timestamps) return;
@@ -191,7 +221,11 @@ export function ProfileStatus() {
       {spotify ? (
         <div className="dc-act dc-act-spotify">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="dc-act-art" src={discordArtThumb(spotify.album_art_url)} alt={spotify.album} />
+          <img
+            className="dc-act-art"
+            src={discordArtThumb(spotify.album_art_url)}
+            alt={spotify.album}
+          />
           <div className="dc-act-meta">
             <div className="dc-act-kicker">
               <SpotifyGlyph />
@@ -247,7 +281,14 @@ export function ProfileStatus() {
    --------------------------------------------------------------------------- */
 function SpotifyGlyph() {
   return (
-    <svg className="status-glyph spotify" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    <svg
+      className="status-glyph spotify"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+    >
       <path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm5.5 17.3a.75.75 0 0 1-1 .25c-2.8-1.7-6.3-2.1-10.4-1.15a.75.75 0 1 1-.33-1.46c4.5-1 8.4-.55 11.5 1.36.35.22.46.69.23 1Zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.2-1.97-8.08-2.54-11.86-1.39a.94.94 0 1 1-.55-1.8c4.32-1.31 9.7-.68 13.38 1.59.44.27.58.85.32 1.29Zm.13-3.4C15.8 8.36 9.5 8.13 5.9 9.22a1.12 1.12 0 1 1-.65-2.15c4.13-1.25 11.1-1 15.48 1.6a1.12 1.12 0 1 1-1.15 1.92Z" />
     </svg>
   );

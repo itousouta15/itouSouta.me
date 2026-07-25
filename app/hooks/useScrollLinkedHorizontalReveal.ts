@@ -7,13 +7,17 @@ import { RefObject, useEffect } from "react";
 // than the screen and only reachable via overflow-x scroll) the user doesn't
 // have to manually swipe it sideways — scrolling the page down auto-reveals
 // the rest of the content.
-export function useScrollLinkedHorizontalReveal(ref: RefObject<HTMLElement | null>) {
+export function useScrollLinkedHorizontalReveal(
+  ref: RefObject<HTMLElement | null>
+) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     const mobileQuery = window.matchMedia("(max-width: 760px)");
-    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const reduceMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
 
     let ticking = false;
 

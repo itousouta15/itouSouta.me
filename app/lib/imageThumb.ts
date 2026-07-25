@@ -11,7 +11,8 @@ function wsrvThumb(src: string, width: number, height: number) {
   if (!/^https?:\/\//.test(src)) return src;
   // wsrv 轉 webp 預設只留第一幀，動態 gif 會被代理弄成靜態圖，直接跳過保留原檔。
   if (/\.gif($|\?)/i.test(src)) return src;
-  if (PROXY_BLOCKED_HOSTS.some(host => src.includes(`://${host}/`))) return src;
+  if (PROXY_BLOCKED_HOSTS.some((host) => src.includes(`://${host}/`)))
+    return src;
   const params = new URLSearchParams({
     url: src,
     w: String(width),

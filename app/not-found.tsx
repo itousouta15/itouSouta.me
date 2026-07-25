@@ -16,7 +16,11 @@ export default function NotFound() {
       <p className="notfound-msg">{description}</p>
       <p className="notfound-sub">你要找的頁面不存在，或是已經搬家了</p>
       <div className="notfound-actions">
-        <Link className="btn-primary" href="/" style={{ textDecoration: "none" }}>
+        <Link
+          className="btn-primary"
+          href="/"
+          style={{ textDecoration: "none" }}
+        >
           回首頁 <span className="btn-arrow dark">→</span>
         </Link>
       </div>

@@ -23,7 +23,12 @@ export default function MusicSection({ albums }: { albums: TopAlbum[] }) {
       </div>
       <div className="music-artist-row" ref={rowRef} data-lenis-prevent-wheel>
         {albums.map((a, i) => (
-          <LikeCard l={{ title: a.title, sub: a.artist, cover: a.cover, href: a.href }} carousel layout="square" key={`${a.title}-${i}`} />
+          <LikeCard
+            l={{ title: a.title, sub: a.artist, cover: a.cover, href: a.href }}
+            carousel
+            layout="square"
+            key={`${a.title}-${i}`}
+          />
         ))}
       </div>
     </div>

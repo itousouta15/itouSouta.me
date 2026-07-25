@@ -58,7 +58,7 @@ export default function ProjectModalShell({
       {/* data-lenis-prevent：Lenis 會攔截整頁滾輪事件，沒有這個屬性內層容器滾不動 */}
       <div
         className={`proj-modal${closing ? " is-closing" : ""}`}
-        onMouseDown={e => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
         data-lenis-prevent
       >
         <div className="proj-modal-head">
@@ -67,7 +67,12 @@ export default function ProjectModalShell({
             <div className="proj-modal-title">{title}</div>
             <div className="proj-modal-desc">{desc}</div>
           </div>
-          <button type="button" className="proj-modal-close" onClick={requestClose} aria-label="關閉">
+          <button
+            type="button"
+            className="proj-modal-close"
+            onClick={requestClose}
+            aria-label="關閉"
+          >
             ✕
           </button>
         </div>

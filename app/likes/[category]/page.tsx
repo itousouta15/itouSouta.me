@@ -6,11 +6,15 @@ import LikeFilterGrid from "../../components/LikeFilterGrid";
 import { LIKE_CATEGORIES } from "../../data";
 
 export function generateStaticParams() {
-  return LIKE_CATEGORIES.map(cat => ({ category: cat.key }));
+  return LIKE_CATEGORIES.map((cat) => ({ category: cat.key }));
 }
 
-export function generateMetadata({ params }: { params: { category: string } }): Metadata {
-  const cat = LIKE_CATEGORIES.find(c => c.key === params.category);
+export function generateMetadata({
+  params,
+}: {
+  params: { category: string };
+}): Metadata {
+  const cat = LIKE_CATEGORIES.find((c) => c.key === params.category);
   const title = cat ? cat.label : "喜歡的東西";
   const description = cat
     ? `itouSouta 喜歡的${cat.label}們 (╯✧∇✧)╯`
@@ -25,8 +29,12 @@ export function generateMetadata({ params }: { params: { category: string } }): 
   };
 }
 
-export default function LikeCategoryPage({ params }: { params: { category: string } }) {
-  const cat = LIKE_CATEGORIES.find(c => c.key === params.category);
+export default function LikeCategoryPage({
+  params,
+}: {
+  params: { category: string };
+}) {
+  const cat = LIKE_CATEGORIES.find((c) => c.key === params.category);
   if (!cat) notFound();
 
   return (

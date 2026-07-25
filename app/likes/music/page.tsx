@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default async function MusicDetailPage() {
   const topAlbums = await getTopAlbums({ limit: 50, period: "overall" });
-  const items: Like[] = (topAlbums ?? []).map(a => ({
+  const items: Like[] = (topAlbums ?? []).map((a) => ({
     title: a.title,
     sub: a.artist,
     cover: a.cover,

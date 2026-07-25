@@ -5,7 +5,9 @@ import { kv } from "@vercel/kv";
 
 const target = process.argv[2];
 if (!target) {
-  console.error("用法: node --env-file=.env.local scripts/cleanup-thoughts.mjs \"要刪除的內容\"");
+  console.error(
+    '用法: node --env-file=.env.local scripts/cleanup-thoughts.mjs "要刪除的內容"'
+  );
   process.exit(1);
 }
 

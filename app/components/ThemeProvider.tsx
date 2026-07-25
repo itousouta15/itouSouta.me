@@ -1,12 +1,22 @@
 "use client";
-import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  ReactNode,
+} from "react";
 
 interface ThemeCtxValue {
   theme: "dark" | "light";
   toggle: () => void;
 }
 
-const ThemeCtx = createContext<ThemeCtxValue>({ theme: "dark", toggle: () => {} });
+const ThemeCtx = createContext<ThemeCtxValue>({
+  theme: "dark",
+  toggle: () => {},
+});
 export const useTheme = () => useContext(ThemeCtx);
 
 const STORAGE_KEY = "theme";
@@ -34,7 +44,12 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   return (
-    <ThemeCtx.Provider value={{ theme, toggle: () => setTheme(t => (t === "dark" ? "light" : "dark")) }}>
+    <ThemeCtx.Provider
+      value={{
+        theme,
+        toggle: () => setTheme((t) => (t === "dark" ? "light" : "dark")),
+      }}
+    >
       <div className="root">{children}</div>
     </ThemeCtx.Provider>
   );
