@@ -3,7 +3,13 @@
 import { useTheme } from "./ThemeProvider";
 import { TILE_ICON_META } from "./tileIconMeta";
 
-export default function TileIcon({ kind }: { kind: string }) {
+export default function TileIcon({
+  kind,
+  size = 52,
+}: {
+  kind: string;
+  size?: number;
+}) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const icon = TILE_ICON_META[kind];
@@ -31,8 +37,8 @@ export default function TileIcon({ kind }: { kind: string }) {
       <span
         aria-hidden="true"
         style={{
-          width: "18px",
-          height: "18px",
+          width: `${size}px`,
+          height: `${size}px`,
           backgroundImage: `url("${icon.src}")`,
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
