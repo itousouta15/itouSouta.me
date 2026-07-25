@@ -31,8 +31,8 @@ export default function TileIcon({ kind }: { kind: string }) {
       <span
         aria-hidden="true"
         style={{
-          width: "52px",
-          height: "52px",
+          width: "18px",
+          height: "18px",
           backgroundImage: `url("${icon.src}")`,
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
