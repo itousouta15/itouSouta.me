@@ -109,7 +109,7 @@ export default function ProjectFilterGrid({
               <div className="proj-top">
                 <div className="proj-top-left">
                   <div className="proj-icon">
-                    <TileIcon kind={p.icon} />
+                    <TileIcon kind={p.icon} size={18} />
                   </div>
                   <div className={`proj-kicker ${p.color}`}>{p.kicker}</div>
                 </div>
