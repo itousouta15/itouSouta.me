@@ -20,22 +20,42 @@ export default function ProjectDetailBody({
       />
 
       <div className="proj-tags" style={{ marginTop: 16 }}>
-        {project.tags.map(t => (
-          <span className="proj-tag" key={t}>{t}</span>
+        {project.tags.map((t) => (
+          <span className="proj-tag" key={t}>
+            {t}
+          </span>
         ))}
       </div>
 
       <div className="proj-detail-actions">
-        <a className="btn-primary" href={project.href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+        <a
+          className="btn-primary"
+          href={project.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none" }}
+        >
           GitHub <span className="btn-arrow dark">→</span>
         </a>
         {project.siteUrl && (
-          <a className="btn-ghost" href={project.siteUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+          <a
+            className="btn-ghost"
+            href={project.siteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
             網站 <span className="btn-arrow inset">→</span>
           </a>
         )}
         {project.demoUrl && (
-          <a className="btn-ghost" href={project.demoUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+          <a
+            className="btn-ghost"
+            href={project.demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
             Demo <span className="btn-arrow inset">→</span>
           </a>
         )}
@@ -55,7 +75,9 @@ export default function ProjectDetailBody({
           )}
           <div className="stat">
             <div className="stat-k">LAST PUSH</div>
-            <div className="stat-v sans">{new Date(repoInfo.pushedAt).toLocaleDateString("zh-TW")}</div>
+            <div className="stat-v sans">
+              {new Date(repoInfo.pushedAt).toLocaleDateString("zh-TW")}
+            </div>
           </div>
         </div>
       )}
@@ -87,7 +109,9 @@ export default function ProjectDetailBody({
           <div className="timeline-grid">
             {project.timeline.map((t, i) => (
               <div className="tl-card-wrap" key={i}>
-                <div className="tl-year-ghost" aria-hidden="true">{t.version}</div>
+                <div className="tl-year-ghost" aria-hidden="true">
+                  {t.version}
+                </div>
                 <div className={`tl-card ${project.color}`}>
                   <div className="tl-period">{t.date}</div>
                   <div className="tl-title">{t.version}</div>

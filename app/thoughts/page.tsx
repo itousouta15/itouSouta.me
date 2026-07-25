@@ -21,7 +21,11 @@ export default async function ThoughtsPage() {
 
   return (
     <section>
-      <PageHead kicker="THOUGHTS" title="一些廢話" desc="同步 Threads / GitHub / Discord" />
+      <PageHead
+        kicker="THOUGHTS"
+        title="一些廢話"
+        desc="同步 Threads / GitHub / Discord"
+      />
       <div className="thoughts-list">
         {useRemote
           ? items.map((item) => (
@@ -29,7 +33,12 @@ export default async function ThoughtsPage() {
                 <div className="thought-meta">
                   <span className="thought-date">{item.date}</span>
                   {item.kind === "threads" && item.permalink && (
-                    <a className="thought-tag" href={item.permalink} target="_blank" rel="noopener noreferrer">
+                    <a
+                      className="thought-tag"
+                      href={item.permalink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Threads ↗
                     </a>
                   )}
@@ -37,14 +46,24 @@ export default async function ThoughtsPage() {
                     <span className="thought-tag">Discord</span>
                   )}
                   {item.kind === "github" && (
-                    <a className="thought-tag" href={item.url} target="_blank" rel="noopener noreferrer">
+                    <a
+                      className="thought-tag"
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       GitHub ↗
                     </a>
                   )}
                 </div>
                 {item.text && <p className="thought-text">{item.text}</p>}
                 {item.kind === "threads" && item.media_url && (
-                  <img className="thought-img" src={item.media_url} alt="" loading="lazy" />
+                  <img
+                    className="thought-img"
+                    src={item.media_url}
+                    alt=""
+                    loading="lazy"
+                  />
                 )}
               </div>
             ))

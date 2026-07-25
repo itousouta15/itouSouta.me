@@ -44,7 +44,11 @@ export default function NotFoundCode() {
   }, []);
 
   return (
-    <h1 className="notfound-code" ref={trackRef} style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}>
+    <h1
+      className="notfound-code"
+      ref={trackRef}
+      style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
+    >
       4<span className="notfound-code-accent">0</span>4
     </h1>
   );

@@ -13,7 +13,10 @@ export interface TopAlbum {
   href: string;
 }
 
-export async function getTopAlbums(options?: { limit?: number; period?: string }): Promise<TopAlbum[] | null> {
+export async function getTopAlbums(options?: {
+  limit?: number;
+  period?: string;
+}): Promise<TopAlbum[] | null> {
   const apiKey = process.env.LASTFM_API_KEY;
   const user = process.env.LASTFM_USER;
   if (!apiKey || !user) return null;
@@ -27,7 +30,9 @@ export async function getTopAlbums(options?: { limit?: number; period?: string }
       period: options?.period ?? "1month",
       limit: String(options?.limit ?? 4),
     });
-    const res = await fetch(`${API_URL}?${params}`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}?${params}`, {
+      next: { revalidate: 3600 },
+    });
     if (!res.ok) return null;
     const json = await res.json();
 
@@ -36,7 +41,10 @@ export async function getTopAlbums(options?: { limit?: number; period?: string }
         title: a.name ?? "",
         artist: a.artist?.name ?? "",
         // image 尺寸依序 small/medium/large/extralarge，extralarge 是 300px
-        cover: (a.image ?? []).find((i: any) => i.size === "extralarge")?.["#text"] ?? "",
+        cover:
+          (a.image ?? []).find((i: any) => i.size === "extralarge")?.[
+            "#text"
+          ] ?? "",
         href: a.url ?? "",
       }))
       .filter((a: TopAlbum) => a.title && a.cover);

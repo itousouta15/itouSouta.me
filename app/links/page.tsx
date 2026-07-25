@@ -19,7 +19,13 @@ export default function LinksPage() {
       <PageHead kicker="LINKS" title="偷摸他基" />
       <div className="links-grid">
         {LINKS.map((l, i) => (
-          <a className="link-card" key={`${l.href}-${i}`} href={l.href} target="_blank" rel="noopener noreferrer">
+          <a
+            className="link-card"
+            key={`${l.href}-${i}`}
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <div className="link-card-head">
               {l.avatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -33,7 +39,9 @@ export default function LinksPage() {
                   decoding="async"
                 />
               ) : (
-                <div className="link-avatar link-avatar--placeholder">{l.name[0]}</div>
+                <div className="link-avatar link-avatar--placeholder">
+                  {l.name[0]}
+                </div>
               )}
               <div className="link-meta">
                 <div className="link-name">{l.name}</div>

@@ -21,7 +21,9 @@ html::-webkit-scrollbar {
 }
 /* 手機上移除 zoom，避免內距/字體比版型預設大 15%，造成小螢幕擁擠與 breakpoint 失效 */
 @media (max-width: 760px) {
-  html { zoom: 1; }
+  html {
+    zoom: 1;
+  }
 }
 
 html,
@@ -84,8 +86,16 @@ svg {
   min-height: 100vh;
   color: var(--tx);
   font-family: "Noto Sans TC", system-ui, sans-serif;
-  background: radial-gradient(1100px 560px at 72% -12%, rgba(141, 181, 200, 0.11), transparent 60%), var(--bg);
-  transition: background 0.35s ease, color 0.35s ease;
+  background:
+    radial-gradient(
+      1100px 560px at 72% -12%,
+      rgba(141, 181, 200, 0.11),
+      transparent 60%
+    ),
+    var(--bg);
+  transition:
+    background 0.35s ease,
+    color 0.35s ease;
 }
 
 :root[data-theme="light"] {
@@ -97,8 +107,8 @@ svg {
   --bd: rgba(6, 6, 7, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
   --tx: #22262d;
-  --dim: #494f59;   /* was #5b626d — darkened for WCAG AA contrast on panel bg */
-  --mute: #6b7280;  /* was #8a909b — darkened to improve readability */
+  --dim: #494f59; /* was #5b626d — darkened for WCAG AA contrast on panel bg */
+  --mute: #6b7280; /* was #8a909b — darkened to improve readability */
   --blue: #364a7c;
   --purple: #5c7cbf;
   --btn: #2b2f36;
@@ -370,7 +380,9 @@ body.site-revealed .header {
   font-weight: 500;
   padding: 11px 18px;
   border-radius: 10px;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 .nav-link::after {
   content: "";
@@ -445,15 +457,25 @@ body.site-revealed .header {
   align-items: center;
   justify-content: center;
   padding: 96px 24px 40px;
-  background: radial-gradient(1100px 560px at 72% -12%, rgba(141, 181, 200, 0.11), transparent 60%), var(--bg);
+  background:
+    radial-gradient(
+      1100px 560px at 72% -12%,
+      rgba(141, 181, 200, 0.11),
+      transparent 60%
+    ),
+    var(--bg);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  transition:
+    opacity 0.3s ease,
+    visibility 0s linear 0.3s;
 }
 .nav-overlay.is-open {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.3s ease, visibility 0s linear 0s;
+  transition:
+    opacity 0.3s ease,
+    visibility 0s linear 0s;
 }
 .nav-overlay-faces {
   position: absolute;
@@ -477,32 +499,101 @@ body.site-revealed .header {
 /* Each face wanders off-screen, pauses invisible, then re-enters from a different side.
    opacity steps create the "one at a time" feel without JS. */
 @keyframes wander-a {
-  0%   { transform: translate(-120%, 20px)   rotate(0deg);    opacity: 0;    }
-  8%   { opacity: 0.05; }
-  30%  { transform: translate(30px,  -20px)  rotate(130deg);  opacity: 0.05; }
-  42%  { transform: translate(110%,  40px)   rotate(260deg);  opacity: 0;    }
-  100% { transform: translate(110%,  40px)   rotate(360deg);  opacity: 0;    }
+  0% {
+    transform: translate(-120%, 20px) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.05;
+  }
+  30% {
+    transform: translate(30px, -20px) rotate(130deg);
+    opacity: 0.05;
+  }
+  42% {
+    transform: translate(110%, 40px) rotate(260deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(110%, 40px) rotate(360deg);
+    opacity: 0;
+  }
 }
 @keyframes wander-b {
-  0%   { transform: translate(20px,  -120%)  rotate(0deg);    opacity: 0;    }
-  8%   { opacity: 0.05; }
-  32%  { transform: translate(-24px,  30px)  rotate(-150deg); opacity: 0.05; }
-  44%  { transform: translate(30px,   120%)  rotate(-300deg); opacity: 0;    }
-  100% { transform: translate(30px,   120%)  rotate(-360deg); opacity: 0;    }
+  0% {
+    transform: translate(20px, -120%) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.05;
+  }
+  32% {
+    transform: translate(-24px, 30px) rotate(-150deg);
+    opacity: 0.05;
+  }
+  44% {
+    transform: translate(30px, 120%) rotate(-300deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(30px, 120%) rotate(-360deg);
+    opacity: 0;
+  }
 }
 @keyframes wander-c {
-  0%   { transform: translate(110%,  -10px)  rotate(0deg);    opacity: 0;    }
-  8%   { opacity: 0.05; }
-  28%  { transform: translate(-10px,  20px)  rotate(140deg);  opacity: 0.05; }
-  40%  { transform: translate(-120%,  50px)  rotate(280deg);  opacity: 0;    }
-  100% { transform: translate(-120%,  50px)  rotate(360deg);  opacity: 0;    }
+  0% {
+    transform: translate(110%, -10px) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.05;
+  }
+  28% {
+    transform: translate(-10px, 20px) rotate(140deg);
+    opacity: 0.05;
+  }
+  40% {
+    transform: translate(-120%, 50px) rotate(280deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-120%, 50px) rotate(360deg);
+    opacity: 0;
+  }
 }
-.nav-overlay.is-open .nav-overlay-face { opacity: 0; } /* individual keyframes control visible opacity */
-.nav-overlay-face--0 { top: 30%; left: 50%;  animation: wander-a 18s linear infinite; animation-delay: 0s;    }
-.nav-overlay-face--1 { top: 60%; left: 20%;  animation: wander-b 22s linear infinite; animation-delay: -7s;   }
-.nav-overlay-face--2 { top: 18%; left: 30%;  animation: wander-c 20s linear infinite; animation-delay: -13s;  }
-.nav-overlay-face--3 { top: 50%; left: 70%;  animation: wander-a 25s linear infinite; animation-delay: -4s;   }
-.nav-overlay-face--4 { top: 75%; left: 55%;  animation: wander-b 17s linear infinite; animation-delay: -10s;  }
+.nav-overlay.is-open .nav-overlay-face {
+  opacity: 0;
+} /* individual keyframes control visible opacity */
+.nav-overlay-face--0 {
+  top: 30%;
+  left: 50%;
+  animation: wander-a 18s linear infinite;
+  animation-delay: 0s;
+}
+.nav-overlay-face--1 {
+  top: 60%;
+  left: 20%;
+  animation: wander-b 22s linear infinite;
+  animation-delay: -7s;
+}
+.nav-overlay-face--2 {
+  top: 18%;
+  left: 30%;
+  animation: wander-c 20s linear infinite;
+  animation-delay: -13s;
+}
+.nav-overlay-face--3 {
+  top: 50%;
+  left: 70%;
+  animation: wander-a 25s linear infinite;
+  animation-delay: -4s;
+}
+.nav-overlay-face--4 {
+  top: 75%;
+  left: 55%;
+  animation: wander-b 17s linear infinite;
+  animation-delay: -10s;
+}
 
 .nav-overlay-links {
   display: flex;
@@ -519,7 +610,10 @@ body.site-revealed .header {
   color: var(--tx);
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.35s ease, transform 0.35s ease, color 0.2s ease;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    color 0.2s ease;
 }
 .nav-overlay.is-open .nav-overlay-link {
   opacity: 1;
@@ -576,7 +670,13 @@ body.site-revealed .header {
   position: fixed;
   inset: 0;
   z-index: 500;
-  background: radial-gradient(1100px 560px at 72% -12%, rgba(141, 181, 200, 0.11), transparent 60%), var(--bg);
+  background:
+    radial-gradient(
+      1100px 560px at 72% -12%,
+      rgba(141, 181, 200, 0.11),
+      transparent 60%
+    ),
+    var(--bg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -584,8 +684,12 @@ body.site-revealed .header {
   animation: cmdk-fade-in 0.25s ease;
 }
 @keyframes cmdk-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .cmdk-panel {
   width: 100%;
@@ -611,7 +715,9 @@ body.site-revealed .header {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease, border-color 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease;
 }
 .cmdk-close:hover {
   transform: rotate(90deg);
@@ -690,7 +796,9 @@ body.site-revealed .header {
   color: var(--tx);
   cursor: pointer;
   font-family: "Noto Sans TC", sans-serif;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
 }
 .cmdk-item.active,
 .cmdk-item:hover {
@@ -821,7 +929,9 @@ body.site-revealed .header {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease, border-color 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease;
 }
 .proj-modal-close:hover {
   transform: rotate(90deg);
@@ -894,7 +1004,9 @@ body.site-revealed .header {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease, border-color 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease;
   z-index: 3;
 }
 .like-modal-close:hover {
@@ -919,7 +1031,12 @@ body.site-revealed .header {
 .like-modal-hero-fade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.025) 45%, var(--panel) 96%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.01) 0%,
+    rgba(0, 0, 0, 0.025) 45%,
+    var(--panel) 96%
+  );
 }
 .like-modal-head {
   position: relative;
@@ -1127,7 +1244,10 @@ body.site-revealed .header {
   opacity: 0;
   visibility: hidden;
   transform: translateY(12px);
-  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.2s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    border-color 0.2s ease;
 }
 .back-to-top.is-visible {
   opacity: 1;
@@ -1188,7 +1308,11 @@ body.site-revealed .header {
 }
 .profile-banner {
   height: clamp(80px, 14vw, 136px);
-  background: linear-gradient(135deg, rgba(141, 181, 200, 0.18) 0%, #20232a 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(141, 181, 200, 0.18) 0%,
+    #20232a 100%
+  );
 }
 .profile-banner img {
   width: 100%;
@@ -1247,7 +1371,9 @@ body.site-revealed .header {
   border-radius: 50%;
   background: #b9c0cc;
   border: 4px solid var(--panel2);
-  transition: background 0.25s ease, filter 0.2s ease;
+  transition:
+    background 0.25s ease,
+    filter 0.2s ease;
   cursor: pointer;
 }
 .status-dot:hover {
@@ -1312,16 +1438,52 @@ body.site-revealed .header {
 /* 四種形狀都是 8 個點的 polygon，點數對齊才能讓瀏覽器在兩個形狀之間逐點
    內插出平滑的變形動畫（見 BadgeShape.tsx 的說明）。 */
 .badge-shape--circle {
-  clip-path: polygon(29.3% 0%, 70.7% 0%, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0% 70.7%, 0% 29.3%);
+  clip-path: polygon(
+    29.3% 0%,
+    70.7% 0%,
+    100% 29.3%,
+    100% 70.7%,
+    70.7% 100%,
+    29.3% 100%,
+    0% 70.7%,
+    0% 29.3%
+  );
 }
 .badge-shape--triangle {
-  clip-path: polygon(50% 0%, 66.67% 33.33%, 83.33% 66.67%, 100% 100%, 66.67% 100%, 33.33% 100%, 0% 100%, 25% 50%);
+  clip-path: polygon(
+    50% 0%,
+    66.67% 33.33%,
+    83.33% 66.67%,
+    100% 100%,
+    66.67% 100%,
+    33.33% 100%,
+    0% 100%,
+    25% 50%
+  );
 }
 .badge-shape--square {
-  clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+  clip-path: polygon(
+    0% 0%,
+    50% 0%,
+    100% 0%,
+    100% 50%,
+    100% 100%,
+    50% 100%,
+    0% 100%,
+    0% 50%
+  );
 }
 .badge-shape--diamond {
-  clip-path: polygon(50% 0%, 75% 25%, 100% 50%, 75% 75%, 50% 100%, 25% 75%, 0% 50%, 25% 25%);
+  clip-path: polygon(
+    50% 0%,
+    75% 25%,
+    100% 50%,
+    75% 75%,
+    50% 100%,
+    25% 75%,
+    0% 50%,
+    25% 25%
+  );
 }
 .badge-shape--morph-to-triangle {
   animation: badge-morph-circle-triangle var(--badge-morph-ms) ease;
@@ -1341,37 +1503,109 @@ body.site-revealed .header {
 @keyframes badge-morph-circle-triangle {
   0%,
   100% {
-    clip-path: polygon(29.3% 0%, 70.7% 0%, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0% 70.7%, 0% 29.3%);
+    clip-path: polygon(
+      29.3% 0%,
+      70.7% 0%,
+      100% 29.3%,
+      100% 70.7%,
+      70.7% 100%,
+      29.3% 100%,
+      0% 70.7%,
+      0% 29.3%
+    );
   }
   50% {
-    clip-path: polygon(50% 0%, 66.67% 33.33%, 83.33% 66.67%, 100% 100%, 66.67% 100%, 33.33% 100%, 0% 100%, 25% 50%);
+    clip-path: polygon(
+      50% 0%,
+      66.67% 33.33%,
+      83.33% 66.67%,
+      100% 100%,
+      66.67% 100%,
+      33.33% 100%,
+      0% 100%,
+      25% 50%
+    );
   }
 }
 @keyframes badge-morph-triangle-square {
   0%,
   100% {
-    clip-path: polygon(50% 0%, 66.67% 33.33%, 83.33% 66.67%, 100% 100%, 66.67% 100%, 33.33% 100%, 0% 100%, 25% 50%);
+    clip-path: polygon(
+      50% 0%,
+      66.67% 33.33%,
+      83.33% 66.67%,
+      100% 100%,
+      66.67% 100%,
+      33.33% 100%,
+      0% 100%,
+      25% 50%
+    );
   }
   50% {
-    clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+    clip-path: polygon(
+      0% 0%,
+      50% 0%,
+      100% 0%,
+      100% 50%,
+      100% 100%,
+      50% 100%,
+      0% 100%,
+      0% 50%
+    );
   }
 }
 @keyframes badge-morph-square-diamond {
   0%,
   100% {
-    clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+    clip-path: polygon(
+      0% 0%,
+      50% 0%,
+      100% 0%,
+      100% 50%,
+      100% 100%,
+      50% 100%,
+      0% 100%,
+      0% 50%
+    );
   }
   50% {
-    clip-path: polygon(50% 0%, 75% 25%, 100% 50%, 75% 75%, 50% 100%, 25% 75%, 0% 50%, 25% 25%);
+    clip-path: polygon(
+      50% 0%,
+      75% 25%,
+      100% 50%,
+      75% 75%,
+      50% 100%,
+      25% 75%,
+      0% 50%,
+      25% 25%
+    );
   }
 }
 @keyframes badge-morph-diamond-circle {
   0%,
   100% {
-    clip-path: polygon(50% 0%, 75% 25%, 100% 50%, 75% 75%, 50% 100%, 25% 75%, 0% 50%, 25% 25%);
+    clip-path: polygon(
+      50% 0%,
+      75% 25%,
+      100% 50%,
+      75% 75%,
+      50% 100%,
+      25% 75%,
+      0% 50%,
+      25% 25%
+    );
   }
   50% {
-    clip-path: polygon(29.3% 0%, 70.7% 0%, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0% 70.7%, 0% 29.3%);
+    clip-path: polygon(
+      29.3% 0%,
+      70.7% 0%,
+      100% 29.3%,
+      100% 70.7%,
+      70.7% 100%,
+      29.3% 100%,
+      0% 70.7%,
+      0% 29.3%
+    );
   }
 }
 .name-row {
@@ -1565,7 +1799,10 @@ body.site-revealed .header {
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  transition: box-shadow 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  transition:
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    transform 0.15s ease;
 }
 .btn-primary:active,
 .btn-ghost:active {
@@ -1593,7 +1830,10 @@ body.site-revealed .header {
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 .btn-primary:hover .btn-arrow {
   transform: rotate(-45deg);
@@ -1674,7 +1914,9 @@ body.site-revealed .header {
   font-size: 11px;
   color: var(--dim);
   text-decoration: none;
-  transition: transform 0.18s, color 0.2s;
+  transition:
+    transform 0.18s,
+    color 0.2s;
 }
 .social:hover {
   transform: translateY(-3px);
@@ -1715,8 +1957,20 @@ body.site-revealed .header {
   transform: rotate(-38deg);
   transform-origin: center;
   pointer-events: none;
-  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
 }
 .tiles-row {
   display: flex;
@@ -1757,7 +2011,9 @@ body.site-revealed .header {
   opacity: 0;
   transform: scale(0.985);
   pointer-events: none;
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
 }
 .quote-card:hover .quote-tech-panel {
   opacity: 1;
@@ -1860,7 +2116,9 @@ body.site-revealed .header {
   opacity: 0.24;
   transform: scale(1.5);
   transform-origin: 62% 42%;
-  transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1), transform 1.1s cubic-bezier(0.33, 1, 0.68, 1);
+  transition:
+    opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+    transform 1.1s cubic-bezier(0.33, 1, 0.68, 1);
 }
 .card-likes:hover .card-likes-img {
   opacity: 0.34;
@@ -1905,7 +2163,10 @@ body.site-revealed .header {
   color: var(--tx);
   background: rgba(0, 0, 0, 0.22);
   transform: rotate(45deg);
-  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), border-color 0.45s ease, background 0.45s ease;
+  transition:
+    transform 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+    border-color 0.45s ease,
+    background 0.45s ease;
 }
 .card-likes:hover .card-arrow-lg {
   border-color: var(--blue);
@@ -1932,7 +2193,9 @@ body.site-revealed .header {
   height: 120px;
   opacity: 0.07;
   transform-origin: top right;
-  transition: transform 0.8s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.6s ease;
+  transition:
+    transform 0.8s cubic-bezier(0.33, 1, 0.68, 1),
+    opacity 0.6s ease;
 }
 .card-projects:hover .card-projects-glyph {
   transform: scale(1.08) rotate(-4deg);
@@ -1963,7 +2226,9 @@ body.site-revealed .header {
   font-size: 20px;
   color: var(--dim);
   transform: rotate(45deg);
-  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), color 0.45s ease;
+  transition:
+    transform 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+    color 0.45s ease;
 }
 .card-projects:hover .card-arrow-sm {
   color: var(--blue);
@@ -1997,7 +2262,9 @@ body.site-revealed .header {
   pointer-events: none;
   line-height: 1;
   user-select: none;
-  transition: transform 0.65s cubic-bezier(0.33, 1, 0.68, 1), color 0.45s ease;
+  transition:
+    transform 0.65s cubic-bezier(0.33, 1, 0.68, 1),
+    color 0.45s ease;
 }
 .nav-card:hover .nav-card-ghost {
   transform: translate(4px, -8px) rotate(-4deg);
@@ -2044,7 +2311,9 @@ body.site-revealed .header {
   font-size: 18px;
   color: var(--dim);
   transform: rotate(45deg);
-  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), color 0.45s ease;
+  transition:
+    transform 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+    color 0.45s ease;
 }
 .nav-card:hover .nav-card-arrow {
   color: var(--blue);
@@ -2385,7 +2654,9 @@ body.site-revealed .header {
   color: var(--tx);
   background: var(--panel2);
   transform: rotate(45deg);
-  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), border-color 0.45s ease;
+  transition:
+    transform 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+    border-color 0.45s ease;
 }
 .mini-card:hover .mini-arrow {
   border-color: var(--blue);
@@ -2409,7 +2680,9 @@ body.site-revealed .header {
   opacity: 0.22;
   transform: scale(1.35);
   transform-origin: 60% 32%;
-  transition: opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1), transform 1.1s cubic-bezier(0.33, 1, 0.68, 1);
+  transition:
+    opacity 0.6s cubic-bezier(0.33, 1, 0.68, 1),
+    transform 1.1s cubic-bezier(0.33, 1, 0.68, 1);
 }
 .mini-card:hover .mini-interest-bg {
   opacity: 0.34;
@@ -2444,11 +2717,13 @@ body.site-revealed .header {
   object-fit: cover;
   border: 2px solid var(--panel);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  transform: translateX(calc(var(--i) * 26px)) rotate(calc((var(--i) - 1.5) * 8deg));
+  transform: translateX(calc(var(--i) * 26px))
+    rotate(calc((var(--i) - 1.5) * 8deg));
   transition: transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
 }
 .mini-interest:hover .mini-interest-stack-img {
-  transform: translateX(calc(var(--i) * 40px)) rotate(calc((var(--i) - 1.5) * 8deg)) translateY(-6px);
+  transform: translateX(calc(var(--i) * 40px))
+    rotate(calc((var(--i) - 1.5) * 8deg)) translateY(-6px);
 }
 
 /* ---- Music card ---- */
@@ -2528,7 +2803,10 @@ body.site-revealed .header {
   padding: 6px 12px;
   cursor: pointer;
   flex: none;
-  transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
 }
 .like-expand-btn:hover {
   border-color: var(--bd2);
@@ -2591,7 +2869,9 @@ body.site-revealed .header {
   font-size: 12.5px;
   color: var(--dim);
   cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
 }
 .likes-tag-chip:hover {
   color: var(--tx);
@@ -2633,8 +2913,16 @@ body.site-revealed .header {
   scrollbar-width: none;
   padding-right: 32px;
   /* 右側漸層提示有更多內容可滾動 */
-  mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+  mask-image: linear-gradient(
+    to right,
+    black calc(100% - 48px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    black calc(100% - 48px),
+    transparent 100%
+  );
 }
 /* 真正的根因在這裡：lenis/dist/lenis.css 只要看到 data-lenis-prevent-wheel
    就自動幫該元素套用 overscroll-behavior: contain（見
@@ -2847,7 +3135,8 @@ body.site-revealed .header {
   animation: like-badge-fade-in 0.4s ease both;
 }
 @keyframes like-live-pulse {
-  0%, 100% {
+  0%,
+  100% {
     outline-color: #ff3b3b;
   }
   50% {
@@ -2881,8 +3170,16 @@ body.site-revealed .header {
   scrollbar-width: none;
   padding-bottom: 4px;
   padding-right: 32px;
-  mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+  mask-image: linear-gradient(
+    to right,
+    black calc(100% - 48px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    black calc(100% - 48px),
+    transparent 100%
+  );
 }
 /* 同 .likes-track：蓋掉 lenis.css 自動加的 overscroll-behavior: contain，
    否則垂直滑動手勢沒地方去、又被 contain 擋住鏈到頁面，整個被吞掉 */
@@ -2923,7 +3220,9 @@ body.site-revealed .header {
   width: 100%;
   height: 150px;
   object-fit: cover;
-  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), filter 0.25s ease;
+  transition:
+    transform 0.4s cubic-bezier(0.33, 1, 0.68, 1),
+    filter 0.25s ease;
 }
 .proj-top {
   display: flex;
@@ -2938,15 +3237,15 @@ body.site-revealed .header {
 }
 .proj-icon {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   border-radius: 7px;
   overflow: hidden;
   flex: none;
 }
 .proj-icon img {
-  width: 18px !important;
-  height: 18px !important;
+  width: 13px !important;
+  height: 13px !important;
 }
 .proj-kicker {
   font-family: "JetBrains Mono", monospace;
@@ -3141,7 +3440,9 @@ body.site-revealed .header {
   color: var(--dim);
   font-size: 16px;
   align-self: flex-start;
-  transition: transform 0.25s ease, color 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
 }
 .link-desc {
   color: var(--dim);
@@ -3461,7 +3762,9 @@ body.site-revealed .header {
   font-family: "JetBrains Mono", monospace;
   font-size: 13.5px;
   opacity: 0.78;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 .footer-link-list a:hover {
   opacity: 1;
@@ -3486,7 +3789,10 @@ body.site-revealed .header {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 .footer-si:hover {
   background: var(--panel);
@@ -3559,29 +3865,61 @@ body.site-revealed .header {
    =========================================================================== */
 @media (hover: none) {
   /* Reset card opacity hovers that get stuck on touch */
-  .like-card:hover .like-thumb-img { transform: none; }
-  .proj-card:hover .proj-cover { transform: none; filter: none; }
+  .like-card:hover .like-thumb-img {
+    transform: none;
+  }
+  .proj-card:hover .proj-cover {
+    transform: none;
+    filter: none;
+  }
   .card-likes:hover .card-likes-img {
     opacity: 0.24;
     transform: scale(1.5);
   }
-  .card-likes:hover .card-title-lg { transform: none; }
+  .card-likes:hover .card-title-lg {
+    transform: none;
+  }
   .card-likes:hover .card-arrow-lg {
     transform: rotate(45deg);
     border-color: var(--bd2);
     background: rgba(0, 0, 0, 0.22);
   }
-  .card-projects:hover .card-projects-glyph { transform: none; opacity: 0.07; }
-  .card-projects:hover .card-title-md { transform: none; }
-  .card-projects:hover .card-arrow-sm { transform: rotate(45deg); color: var(--dim); }
-  .nav-card:hover .nav-card-title { transform: none; }
-  .nav-card:hover .nav-card-title::after { transform: scaleX(0); }
-  .nav-card:hover .nav-card-arrow { transform: rotate(45deg); color: var(--dim); }
-  .nav-card:hover .nav-card-ghost { transform: none; opacity: 1; }
-  .link-card:hover .link-arrow { transform: none; color: var(--dim); }
-  .link-card:hover .link-avatar { transform: none; }
+  .card-projects:hover .card-projects-glyph {
+    transform: none;
+    opacity: 0.07;
+  }
+  .card-projects:hover .card-title-md {
+    transform: none;
+  }
+  .card-projects:hover .card-arrow-sm {
+    transform: rotate(45deg);
+    color: var(--dim);
+  }
+  .nav-card:hover .nav-card-title {
+    transform: none;
+  }
+  .nav-card:hover .nav-card-title::after {
+    transform: scaleX(0);
+  }
+  .nav-card:hover .nav-card-arrow {
+    transform: rotate(45deg);
+    color: var(--dim);
+  }
+  .nav-card:hover .nav-card-ghost {
+    transform: none;
+    opacity: 1;
+  }
+  .link-card:hover .link-arrow {
+    transform: none;
+    color: var(--dim);
+  }
+  .link-card:hover .link-avatar {
+    transform: none;
+  }
   /* Touch feedback via :active */
-  .nav-card:active { background: var(--panel2); }
+  .nav-card:active {
+    background: var(--panel2);
+  }
 }
 
 /* ===========================================================================
@@ -3598,7 +3936,6 @@ body.site-revealed .header {
 }
 
 @media (max-width: 900px) {
-
   .roles {
     flex-direction: row;
     flex-wrap: wrap;

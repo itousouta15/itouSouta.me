@@ -10,7 +10,7 @@ export default function CommandPalette() {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen(o => !o);
+        setOpen((o) => !o);
       }
     };
     const onOpenEvent = () => setOpen(true);

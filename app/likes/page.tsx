@@ -25,7 +25,7 @@ export default async function LikesPage() {
     <section style={{ paddingBottom: 8 }}>
       <VtuberLiveWarmup />
       <PageHead kicker="LIKES" title="喜歡的東西" />
-      {LIKE_CATEGORIES.map(cat => (
+      {LIKE_CATEGORIES.map((cat) => (
         <LikeCategorySection cat={cat} key={cat.key} />
       ))}
       {topAlbums && topAlbums.length > 0 && <MusicSection albums={topAlbums} />}

@@ -63,17 +63,23 @@ export default function HeroFace() {
     if (!el) return;
     // rootMargin 把觀察範圍縮成只剩畫面最上面那一小條，臉滑到那個區間裡
     // 才算「快要消失」，不是隨便滾一下就切換
-    const observer = new IntersectionObserver(([entry]) => setLeaving(entry.isIntersecting), {
-      rootMargin: "0px 0px -80% 0px",
-      threshold: 0,
-    });
+    const observer = new IntersectionObserver(
+      ([entry]) => setLeaving(entry.isIntersecting),
+      {
+        rootMargin: "0px 0px -80% 0px",
+        threshold: 0,
+      }
+    );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => () => {
-    if (winkTimer.current) clearTimeout(winkTimer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (winkTimer.current) clearTimeout(winkTimer.current);
+    },
+    []
+  );
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -84,7 +90,14 @@ export default function HeroFace() {
   };
 
   // 眨眼優先於捲動快消失那個表情，眨完自動退回 leaving 目前該顯示的狀態
-  const activeFace: FaceKey = wink === "left" ? "winkLeft" : wink === "right" ? "winkRight" : leaving ? "leaving" : "normal";
+  const activeFace: FaceKey =
+    wink === "left"
+      ? "winkLeft"
+      : wink === "right"
+        ? "winkRight"
+        : leaving
+          ? "leaving"
+          : "normal";
 
   // 三層結構是刻意分開的：
   // - 最外層只管跟著滑鼠位移（JS 算出來的 inline transform）
@@ -103,8 +116,11 @@ export default function HeroFace() {
         className={`hero-face-track${leaving ? " hero-face-track--wiggle" : ""}`}
         onClick={handleClick}
       >
-        {(Object.keys(FACES) as FaceKey[]).map(key => (
-          <span key={key} className={`hero-face${activeFace === key ? "" : " hero-face--out"}`}>
+        {(Object.keys(FACES) as FaceKey[]).map((key) => (
+          <span
+            key={key}
+            className={`hero-face${activeFace === key ? "" : " hero-face--out"}`}
+          >
             {FACES[key]}
           </span>
         ))}
