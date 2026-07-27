@@ -22,8 +22,9 @@ export const useTheme = () => useContext(ThemeCtx);
 const STORAGE_KEY = "theme";
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  // SSR renders dark; the inline head script already applied the saved theme to
-  // <html> before paint, so there is no flash. We adopt it after hydration.
+  // SSR renders dark; the inline head script already applied the saved theme
+  // (and the auto-detected glass mode — see layout.tsx) to <html> before
+  // paint, so there is no flash. We adopt theme after hydration.
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const ready = useRef(false);
 

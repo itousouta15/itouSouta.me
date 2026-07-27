@@ -72,7 +72,16 @@ export default function RootLayout({
         {/* Apply the saved theme before first paint to avoid a dark→light flash. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);
+  /* Zen Browser is a Firefox fork and deliberately keeps navigator.userAgent
+     identical to Firefox's (changing it breaks too many sites) — there is no
+     reliable way to detect "Zen" specifically from a webpage. Firefox-family
+     UA is used as the closest available proxy: glass mode (translucent tokens
+     so Zen's transparent-window feature can show the desktop through) turns
+     on by default there, off elsewhere. */
+  var isFirefoxFamily=/firefox\\//i.test(navigator.userAgent)&&!/seamonkey\\//i.test(navigator.userAgent);
+  document.documentElement.setAttribute('data-glass',isFirefoxFamily?'on':'off');
+}catch(e){}})();`,
           }}
         />
         <link
