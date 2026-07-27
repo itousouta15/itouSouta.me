@@ -116,6 +116,69 @@ svg {
   --shadow: rgba(60, 70, 90, 0.16);
 }
 
+/* ===========================================================================
+   Glass mode — 半透明背景，搭配 Zen 瀏覽器的視窗透明（Windows Mica/Acrylic 或
+   Linux/macOS 的等效毛玻璃）。Zen 開啟 browser.tabs.allow_transparent_browser
+   後，分頁內容本身也會被拿去合成透明/模糊，如果網站背景是不透明色就會直接把
+   桌布擋住——這裡把 --bg/--panel 系列 token 換成半透明版本，讓桌布透得出來。
+   沒有切換開關：[data-glass] 屬性由 layout.tsx 的 blocking script 在畫面畫出來
+   之前，用 UA 是不是 Firefox 家族（Zen 是 Firefox fork，且刻意不把 UA 改成
+   帶 "Zen" 字樣，避免一堆網站認錯瀏覽器炸掉，所以偵測不到「就是 Zen」，只能
+   用 Firefox 家族當替代判斷）直接寫入，開就是 on、其他瀏覽器就是 off。
+   --glass-blur 只在 on 時才有值，下面那串「最外層」卡片（不是疊在其他半透明
+   卡片「裡面」的那種）共用同一個 backdrop-filter 宣告，沒開時 var(..., none)
+   會 fallback 回 none，等於什麼都沒發生；.header 自己 fallback 回原本固定的
+   blur(14px)，維持其他瀏覽器原本的樣子不變。 */
+:root[data-glass="on"] {
+  --glass-blur: blur(20px) saturate(160%);
+  --bg: rgba(27, 30, 35, 0.5);
+  --panel: rgba(36, 38, 43, 0.58);
+  --panel2: rgba(36, 38, 43, 0.58);
+  --panel2-a: rgba(39, 41, 46, 0.6);
+  --inset: rgba(24, 27, 32, 0.55);
+  --bd: rgba(255, 255, 255, 0.1);
+  --bd2: rgba(255, 255, 255, 0.2);
+}
+:root[data-theme="light"][data-glass="on"] {
+  --bg: rgba(210, 211, 220, 0.5);
+  --panel: rgba(224, 225, 235, 0.58);
+  --panel2: rgba(224, 225, 235, 0.58);
+  --panel2-a: rgba(227, 228, 233, 0.6);
+  --inset: rgba(234, 237, 244, 0.55);
+  --bd: rgba(6, 6, 7, 0.12);
+  --bd2: rgba(20, 24, 40, 0.22);
+}
+.card,
+.profile-card,
+.nav-card,
+.card-likes,
+.card-projects,
+.about-main,
+.about-side,
+.mini-card,
+.like-card,
+.proj-card,
+.link-card,
+.thought-item,
+.tl-card,
+.blog-empty,
+.blog-skeleton,
+.footer,
+.proj-modal,
+.like-modal,
+.nav-overlay,
+.cmdk-overlay,
+.back-to-top,
+.back-btn,
+.theme-btn,
+.nav-toggle,
+.cmdk-close,
+.status-bubble,
+#gravity-exit {
+  backdrop-filter: var(--glass-blur, none);
+  -webkit-backdrop-filter: var(--glass-blur, none);
+}
+
 /* ---- Fonts shorthand ---- */
 .serif {
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
@@ -320,8 +383,8 @@ body.shake-67 {
   z-index: 60;
   background: var(--panel2-a);
   border-bottom: 1px solid var(--bd2);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: var(--glass-blur, blur(14px));
+  -webkit-backdrop-filter: var(--glass-blur, blur(14px));
   /* Held at the itHeaderDrop 0% frame (via "both") until the loader clears
      the screen, then slides down into place — see body.site-revealed below. */
   animation: itHeaderDrop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
