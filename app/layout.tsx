@@ -72,15 +72,22 @@ export default function RootLayout({
         {/* Apply the saved theme before first paint to avoid a dark→light flash. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);
+            __html: `(function(){try{
   /* Zen Browser is a Firefox fork and deliberately keeps navigator.userAgent
      identical to Firefox's (changing it breaks too many sites) — there is no
      reliable way to detect "Zen" specifically from a webpage. Firefox-family
      UA is used as the closest available proxy: glass mode (translucent tokens
-     so Zen's transparent-window feature can show the desktop through) turns
-     on by default there, off elsewhere. */
+     so Zen's transparent-window feature can show the desktop through) defaults
+     on there, off elsewhere — but it's a per-browser toggle in the header (only
+     shown when Firefox-family), and localStorage('glass')==='off' overrides the
+     default back off. Glass mode forces dark theme (tokens are only tuned for
+     dark) whenever it's actually on; theme is free to be light/dark otherwise. */
   var isFirefoxFamily=/firefox\\//i.test(navigator.userAgent)&&!/seamonkey\\//i.test(navigator.userAgent);
-  document.documentElement.setAttribute('data-glass',isFirefoxFamily?'on':'off');
+  var glassOn=isFirefoxFamily&&localStorage.getItem('glass')!=='off';
+  var t;
+  if(glassOn){t='dark';}else{t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t='dark';}
+  document.documentElement.setAttribute('data-theme',t);
+  document.documentElement.setAttribute('data-glass',glassOn?'on':'off');
 }catch(e){}})();`,
           }}
         />

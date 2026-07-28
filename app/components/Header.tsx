@@ -15,7 +15,7 @@ const NAV_LINKS = [
 ];
 
 export default function Header() {
-  const { theme, toggle } = useTheme();
+  const { theme, toggle, glass, glassCapable, toggleGlass } = useTheme();
   const isDark = theme === "dark";
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -117,31 +117,80 @@ export default function Header() {
                 <path d="M21 21l-4.3-4.3" />
               </svg>
             </button>
-            <button className="theme-btn" onClick={toggle} aria-label="theme">
-              {isDark ? (
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                >
-                  <circle cx="12" cy="12" r="4.2" />
-                  <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19" />
-                </svg>
-              ) : (
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M21 13.2A8.4 8.4 0 1 1 10.8 3a6.6 6.6 0 0 0 10.2 10.2z" />
-                </svg>
-              )}
-            </button>
+            {/* Only shown for Firefox-family browsers (glass is only ever
+                relevant there) — lets the user turn the auto-enabled glass
+                mode back off, or re-enable it. */}
+            {glassCapable && (
+              <button
+                className="theme-btn glass-btn"
+                onClick={toggleGlass}
+                aria-label="切換半透明背景"
+                aria-pressed={glass}
+                title={
+                  glass
+                    ? "關閉半透明背景"
+                    : "開啟半透明背景（適合搭配 Zen 瀏覽器的視窗透明）"
+                }
+              >
+                {glass ? (
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 2.6c.32 0 .62.15.82.4 1.66 2.12 6.68 8.85 6.68 12.45a7.5 7.5 0 0 1-15 0c0-3.6 5.02-10.33 6.68-12.45.2-.25.5-.4.82-.4z" />
+                  </svg>
+                ) : (
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 2.6c1.66 2.12 6.68 8.85 6.68 12.45a7.5 7.5 0 0 1-15 0c0-3.6 5.02-10.33 6.68-12.45z" />
+                  </svg>
+                )}
+              </button>
+            )}
+            {/* Glass mode forces dark theme — the translucent tokens are only
+                tuned for dark, so there's nothing to toggle to while it's on
+                and the button is hidden rather than left non-functional. */}
+            {!glass && (
+              <button
+                className="theme-btn theme-btn--pop-in"
+                onClick={toggle}
+                aria-label="theme"
+              >
+                {isDark ? (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  >
+                    <circle cx="12" cy="12" r="4.2" />
+                    <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19" />
+                  </svg>
+                ) : (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M21 13.2A8.4 8.4 0 1 1 10.8 3a6.6 6.6 0 0 0 10.2 10.2z" />
+                  </svg>
+                )}
+              </button>
+            )}
             <button
               className={`nav-toggle${open ? " is-open" : ""}`}
               onClick={() => setOpen((o) => !o)}
