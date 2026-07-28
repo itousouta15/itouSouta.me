@@ -17,6 +17,7 @@ This is a highly customized portfolio site built around profile, projects, thoug
 - Friend links, experience timeline, RSS feed, sitemap, and robots routes.
 - Dark/light theme support with reduced-motion-aware animations.
 - Search and quick navigation through Cmd/Ctrl+K.
+- Glass mode: translucent background for Zen Browser's window-transparency feature, auto-enabled on Firefox-family browsers with a manual override ([details](docs/glass-mode.md)).
 
 ## Tech Stack
 
@@ -74,6 +75,7 @@ Missing optional credentials are handled gracefully; affected sections fall back
 - [Architecture](docs/architecture.md)
 - [VTuber Live Status](docs/vtuber-live.md)
 - [Easter Eggs](docs/easter-eggs.md)
+- [Glass Mode](docs/glass-mode.md)
 
 ## Deployment
 
