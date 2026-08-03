@@ -4,7 +4,7 @@ import LikeCategorySection from "../components/LikeCategorySection";
 import MusicSection from "../components/MusicSection";
 import VtuberLiveWarmup from "../components/VtuberLiveWarmup";
 import { LIKE_CATEGORIES } from "../data";
-import { getTopAlbums } from "../lib/lastfm";
+import { getTopTracks } from "../lib/spotify";
 
 const description = "itouSouta 喜歡的音樂、VOCALOID 、動漫 (╯✧∇✧)╯";
 
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LikesPage() {
-  const topAlbums = await getTopAlbums({ limit: 12, period: "overall" });
+  const topAlbums = await getTopTracks({ limit: 12, timeRange: "long_term" });
 
   return (
     <section style={{ paddingBottom: 8 }}>

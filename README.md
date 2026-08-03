@@ -12,7 +12,7 @@ This is a highly customized portfolio site built around profile, projects, thoug
 
 - Profile-style home page with Discord presence, theme-aware visuals, and project navigation.
 - Thoughts feed that merges Discord-sourced posts, Threads posts, and GitHub events.
-- Likes pages for novels, manga, anime, VTubers, and Last.fm-powered music data.
+- Likes pages for novels, manga, anime, VTubers, and Spotify-powered music data.
 - Project gallery with filters, modal details, and GitHub repository metadata.
 - Friend links, experience timeline, RSS feed, sitemap, and robots routes.
 - Dark/light theme support with reduced-motion-aware animations.
@@ -26,7 +26,7 @@ This is a highly customized portfolio site built around profile, projects, thoug
 | Framework  | Next.js 14 App Router                           |
 | Language   | TypeScript                                      |
 | Styling    | Plain CSS with custom properties                |
-| Data       | Vercel KV, Threads API, GitHub API, Last.fm API |
+| Data       | Vercel KV, Threads API, GitHub API, Spotify API |
 | Real-time  | Lanyard API                                     |
 | Deployment | Vercel                                          |
 
@@ -37,7 +37,7 @@ No UI library, no CSS-in-JS, and no component framework.
 Most content lives in [app/data.ts](app/data.ts). The app keeps the public pages mostly static, then layers live data where it matters:
 
 - `/thoughts` combines KV entries, Threads posts, and GitHub activity.
-- `/likes/music` reads Last.fm top albums when credentials are available.
+- `/likes/music` reads Spotify top tracks when credentials are available.
 - `/api/vtuber-live` checks VTuber live status and caches results for short intervals.
 - Project cards use GitHub API data when available and gracefully fall back otherwise.
 - Local images are grouped under `public/assets/brand`, `public/assets/projects`, `public/assets/likes`, and `public/assets/social`.
@@ -66,7 +66,7 @@ Required or optional depending on which live surfaces you want enabled:
 | `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection                                        |
 | `THREADS_ACCESS_TOKEN`                                                                       | Fetching synced Threads posts                               |
 | `GITHUB_TOKEN`                                                                               | Fetching GitHub repository metadata and activity            |
-| `LASTFM_API_KEY`, `LASTFM_USER`                                                              | Fetching Last.fm top albums                                 |
+| `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN` | Fetching Spotify top tracks (see `scripts/spotify-refresh-token.mjs`) |
 
 Missing optional credentials are handled gracefully; affected sections fall back or disappear instead of breaking the site.
 
