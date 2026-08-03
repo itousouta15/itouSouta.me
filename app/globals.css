@@ -3267,7 +3267,7 @@ body.site-revealed .header {
 .like-card--square .like-sub {
   font-size: 12px;
 }
-/* Music: horizontally scrolling row of like-card carousels (Last.fm top albums) */
+/* Music: horizontally scrolling row of like-card carousels (Spotify top tracks) */
 .music-artist-row {
   display: flex;
   gap: 20px;

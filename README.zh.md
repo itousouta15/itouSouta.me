@@ -12,7 +12,7 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](
 | 框架     | Next.js 14（App Router）                                                                                       |
 | 語言     | TypeScript                                                                                                     |
 | 樣式     | 純 CSS（單一全域樣式表，使用 CSS custom properties）                                                           |
-| 資料     | Vercel KV（Redis）— 來自 Discord 的貼文；Threads API — 同步貼文；GitHub API — 專案資訊；Last.fm API — 熱門專輯 |
+| 資料     | Vercel KV（Redis）— 來自 Discord 的貼文；Threads API — 同步貼文；GitHub API — 專案資訊；Spotify API — 常聽歌曲 |
 | 即時資料 | [Lanyard API](https://github.com/Phineas/lanyard) — Discord 狀態                                               |
 | 部署     | Vercel                                                                                                         |
 
@@ -23,11 +23,11 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](
 | 路由                | 說明                                                                                   |
 | ------------------- | -------------------------------------------------------------------------------------- |
 | `/`                 | 首頁 — 個人檔案卡、Hero 區塊、技術磚牆、bento 導覽格、GitHub 貢獻圖                    |
-| `/about`            | 關於 — 簡介、統計數據、座右銘，以及兩張 Last.fm/Likes 預覽卡（動畫、專輯）             |
+| `/about`            | 關於 — 簡介、統計數據、座右銘，以及兩張 Spotify/Likes 預覽卡（動畫、音樂）            |
 | `/thoughts`         | 雜談 — 整合 Discord 斜線指令貼文、同步的 Threads 貼文與 GitHub 事件的動態牆            |
-| `/likes`            | Likes — 可搜尋、可依標籤篩選的小說、漫畫、動畫格狀清單；Last.fm 熱門專輯預覽列         |
+| `/likes`            | Likes — 可搜尋、可依標籤篩選的小說、漫畫、動畫格狀清單；Spotify 常聽歌曲預覽列        |
 | `/likes/[category]` | 分類詳情 — 含輪播與篩選功能的完整清單                                                  |
-| `/likes/music`      | 音樂 — 可搜尋的 Last.fm 熱門專輯格狀清單（方形封面），與其他分類共用同一套模態詳情檢視 |
+| `/likes/music`      | 音樂 — 可搜尋的 Spotify 常聽歌曲格狀清單（方形封面），與其他分類共用同一套模態詳情檢視 |
 | `/projects`         | 專案 — 可篩選的個人專案卡片，含 GitHub 專案資訊                                        |
 | `/links`            | 朋友 — 朋友與社群的連結卡片                                                            |
 | `/experience`       | 歷程 — 經歷與活動時間軸                                                                |
@@ -79,9 +79,9 @@ Logo 會在偵測到 `ChenYuLuoYan` 字型啟用（透過 `document.fonts.load`�
 
 `sortLikesByRating`（`app/lib/sortLikes.ts`）多接受一個選填的 `isLive` 判斷式；給了的話，開台中的項目一律排在最前面，rating 只用來在同一組（開台／未開台）內部排序。`LikeCategorySection`（`/likes` 首頁的輪播列）與 `LikeFilterGrid`（分類詳情頁的格狀清單）都會在 `useVtuberLiveStatus` 的資料更新時重新排序，所以一旦有人開台就會立刻跳到最前面。重新排序的過程用一個手刻的 FLIP（First-Last-Invert-Play）Hook `useFlipReorder` 做動畫——不依賴任何動畫函式庫——量測每張卡片重排前後的位置，透過 `transform` 把位移差做成動畫，讓卡片看起來是滑到新位置，而不是瞬間跳位。首頁輪播另外用 `overflow-anchor: none` 關掉瀏覽器對 DOM 重排的自動捲動補償，並用一個捲動位置釘選機制讓開台優先的排序結果保持在最前面可見——但只在使用者還沒自己手動滑動輪播之前才會這樣做，一旦使用者自己滑過就不再搶他的捲動位置。
 
-### 音樂 (Last.fm)
+### 音樂 (Spotify)
 
-與其他 Likes 內容不同，音樂為即時資料：`app/lib/lastfm.ts` 呼叫 Last.fm 的 `user.gettopalbums`（專輯封面是 Last.fm 中唯一仍會回傳真實封面圖片的實體 — 藝人／單曲端點現在都回傳同一張佔位圖）。此資料支援三個依範圍遞增的展示位置：關於頁的迷你卡片（本月、前 4 名）、`/likes` 預覽列（總計、前 12 名），以及完整的 `/likes/music` 格狀清單（總計、前 50 名）。每個呼叫點都將 `null` 結果（缺少 `LASTFM_API_KEY`/`LASTFM_USER`，或 API 呼叫失敗）視為「無資料」並優雅降級 — 關於頁卡片會回退至 `app/data.ts` 中靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 則直接省略預覽列。
+與其他 Likes 內容不同，音樂為即時資料：`app/lib/spotify.ts` 呼叫 Spotify Web API 的 `/me/top/tracks`（透過 refresh token 換取 access token）。此資料支援三個依範圍遞增的展示位置：關於頁的迷你卡片（short_term、前 4 名）、`/likes` 預覽列（long_term、前 12 名），以及完整的 `/likes/music` 格狀清單（long_term、前 50 名）。每個呼叫點都將 `null` 結果（缺少 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET`/`SPOTIFY_REFRESH_TOKEN`，或 API 呼叫失敗）視為「無資料」並優雅降級 — 關於頁卡片會回退至 `app/data.ts` 中靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 則直接省略預覽列。
 
 ### Lanyard 整合
 
@@ -165,7 +165,7 @@ app/
     LikeFilterGrid.tsx               搜尋 + 標籤篩選 + 格狀清單 + 模態視窗的整合
     LikeModalShell.tsx               以 Portal 實作的 Like 詳情模態外殼
     VtuberLiveWarmup.tsx             /likes 載入時預先熱好 /api/vtuber-live 的快取
-    MusicSection.tsx                 Last.fm 熱門專輯預覽列（渲染 LikeCard，layout="square"）
+    MusicSection.tsx                 Spotify 常聽歌曲預覽列（渲染 LikeCard，layout="square"）
     ProjectDetailBody.tsx            含 GitHub 專案資訊的詳細專案檢視
     ProjectFilterGrid.tsx            支援模態視窗的可篩選專案格狀清單
     ProjectModalShell.tsx            以 Portal 實作的專案詳情模態外殼
@@ -183,7 +183,7 @@ app/
     kv.ts                             讀寫 Vercel KV 中來自 Discord 的雜談內容
     threads.ts                        擷取 Threads API 的同步貼文
     github.ts                         擷取 GitHub API 的專案資訊與事件
-    lastfm.ts                         擷取 Last.fm API 的熱門專輯（關於頁／Likes／音樂）
+    spotify.ts                        擷取 Spotify API 的常聽歌曲（關於頁／Likes／音樂）
     imageThumb.ts                     外部圖片的 wsrv.nl 縮圖代理輔助函式
     sortLikes.ts                      以評分為基準的排序（rating → personRating，未評分項目沉底）
     ratingStars.tsx                   五星評分渲染器（暗色底 + 裁切填色疊層）
@@ -235,9 +235,9 @@ npm run lint
 | `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL` | Vercel KV 連線設定                                                                  |
 | `THREADS_ACCESS_TOKEN`                                                                       | 擷取 Threads API 的同步貼文                                                         |
 | `GITHUB_TOKEN`                                                                               | 存取 GitHub API 以取得專案資訊（選填；未設定時無法取得專案詳情）                    |
-| `LASTFM_API_KEY`、`LASTFM_USER`                                                              | 取得關於頁、`/likes` 與 `/likes/music` 的熱門專輯資料（選填；未設定時請見下方說明） |
+| `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 取得關於頁、`/likes` 與 `/likes/music` 的常聽歌曲資料（選填；未設定時請見下方說明） |
 
-由於 Spotify 的 Web API 現在需要 Premium 帳號才能註冊新的開發者應用程式，音樂整合改為透過 Last.fm 進行 — 這是一組免費、即時核發的 API 金鑰，並將 Spotify 的播放記錄 Scrobble 至該帳號。若未設定 `LASTFM_API_KEY`/`LASTFM_USER`（或帳號尚無 Scrobble 紀錄），`getTopAlbums()` 會回傳 `null`，各呼叫點也會相應地降級處理：關於頁卡片顯示靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 預覽列則直接省略。
+音樂整合透過 Spotify Web API 進行 — 需要 Premium 帳號才能註冊新的開發者應用程式，取得 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` 後，跑一次 `node --env-file=.env.local scripts/spotify-refresh-token.mjs` 產生 `SPOTIFY_REFRESH_TOKEN`：授權會導到 `https://itousouta.me/callback`（`app/callback/route.ts` 換 token 並把結果顯示在頁面上），也可設 `SPOTIFY_REDIRECT_URI=http://localhost:8888/callback` 走本機流程（詳見該 script 的註解）。若未設定這三個變數，`getTopTracks()` 會回傳 `null`，各呼叫點也會相應地降級處理：關於頁卡片顯示靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 預覽列則直接省略。
 
 ## 部署
 
@@ -251,6 +251,6 @@ npm run lint
 
 雜談內容則改由兩個即時來源提供：Discord（`/碎碎念` 斜線指令 → KV）與 Threads（自動同步）。`app/data.ts` 中的 `THOUGHTS` 陣列僅在兩個遠端來源皆無資料時作為備援顯示。
 
-音樂資料同樣為即時資料（Last.fm 熱門專輯，詳見[環境變數](#環境變數)）；`app/data.ts` 中的 `MUSIC_ARTISTS` 陣列僅在 Last.fm 未設定或無回傳資料時，作為關於頁卡片的備援。若要變更關於頁迷你卡片所使用的專輯／背景圖片，編輯 `app/about/page.tsx` 頂部附近的 `INTEREST_BG` / `MUSIC_BG` 常數。
+音樂資料同樣為即時資料（Spotify 常聽歌曲，詳見[環境變數](#環境變數)）；`app/data.ts` 中的 `MUSIC_ARTISTS` 陣列僅在 Spotify 未設定或無回傳資料時，作為關於頁卡片的備援。若要變更關於頁迷你卡片所使用的專輯／背景圖片，編輯 `app/about/page.tsx` 頂部附近的 `INTEREST_BG` / `MUSIC_BG` 常數。
 
 技術圖示定義於 `app/components/tileIconMeta.ts`。每個項目包含標籤、Devicons CDN 網址、深色模式背景色與淺色模式背景色。
