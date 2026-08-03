@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import PageHead from "../../components/PageHead";
 import LikeFilterGrid from "../../components/LikeFilterGrid";
-import { getTopAlbums } from "../../lib/lastfm";
+import { getTopTracks } from "../../lib/spotify";
 import type { Like } from "../../data";
 
 const description = "itouSouta 喜歡聽的音樂們 (⁎⁍̴̛ᴗ⁍̴̛⁎)";
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MusicDetailPage() {
-  const topAlbums = await getTopAlbums({ limit: 50, period: "overall" });
+  const topAlbums = await getTopTracks({ limit: 50, timeRange: "long_term" });
   const items: Like[] = (topAlbums ?? []).map((a) => ({
     title: a.title,
     sub: a.artist,

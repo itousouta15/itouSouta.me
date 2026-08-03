@@ -17,7 +17,7 @@ The project intentionally avoids UI libraries and CSS-in-JS. Most visual behavio
 | `/thoughts`         | Unified feed from Discord/KV, Threads, and GitHub events        |
 | `/likes`            | Hub for liked novels, manga, anime, VTubers, and music          |
 | `/likes/[category]` | Category-specific likes grid                                    |
-| `/likes/music`      | Last.fm top albums                                              |
+| `/likes/music`      | Spotify top tracks                                             |
 | `/projects`         | Filterable project gallery                                      |
 | `/links`            | Friend/community links                                          |
 | `/experience`       | Timeline of activities                                          |
@@ -32,7 +32,7 @@ The live content layers are:
 - Vercel KV for Discord-sourced thoughts.
 - Threads API for synced posts.
 - GitHub API for repository information and activity.
-- Last.fm API for top albums.
+- Spotify API for top tracks (OAuth refresh-token flow).
 - Lanyard API for Discord presence.
 
 Call sites treat missing credentials or failed upstream requests as expected states. The UI should degrade rather than hard fail.

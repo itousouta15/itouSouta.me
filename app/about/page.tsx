@@ -3,9 +3,9 @@ import Link from "next/link";
 import PageHead from "../components/PageHead";
 import { LIKE_CATEGORIES, MUSIC_ARTISTS } from "../data";
 import { likeThumb, cardBgThumb, artistAvatarThumb } from "../lib/imageThumb";
-import { getTopAlbums } from "../lib/lastfm";
+import { getTopTracks } from "../lib/spotify";
 
-// Last.fm「最近常聽」每小時重抓一次
+// Spotify「最近常聽」每小時重抓一次
 export const revalidate = 3600;
 
 const description = "itouSouta 的自我介紹 (*´з｀*)";
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const topAlbums = await getTopAlbums();
+  const topAlbums = await getTopTracks({ limit: 4, timeRange: "short_term" });
   return (
     <section style={{ paddingBottom: 8 }}>
       <PageHead kicker="ABOUT" title="關於我" />

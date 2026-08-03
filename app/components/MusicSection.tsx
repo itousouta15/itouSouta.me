@@ -2,11 +2,11 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import type { TopAlbum } from "../lib/lastfm";
+import type { TopTrack } from "../lib/spotify";
 import { useHorizontalWheelScroll } from "../hooks/useHorizontalWheelScroll";
 import LikeCard from "./LikeCard";
 
-export default function MusicSection({ albums }: { albums: TopAlbum[] }) {
+export default function MusicSection({ albums }: { albums: TopTrack[] }) {
   const rowRef = useRef<HTMLDivElement>(null);
   useHorizontalWheelScroll(rowRef);
 
