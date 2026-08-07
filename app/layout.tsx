@@ -17,6 +17,7 @@ import NowPlayingBar from "./components/NowPlayingBar";
 import SeasonTint from "./components/SeasonTint";
 import KonamiEasterEgg from "./components/KonamiEasterEgg";
 import ConfettiBurst from "./components/ConfettiBurst";
+import ServiceWorkerRegistration from "./components/ServiceWorkerRegistration";
 
 const SITE_URL = "https://itousouta.me";
 const SITE_TITLE = "itouSouta.me";
@@ -195,6 +196,7 @@ export default function RootLayout({
             <KonamiEasterEgg />
             <ConfettiBurst />
             <NowPlayingBar />
+            <ServiceWorkerRegistration />
           </LanyardProvider>
         </ThemeProvider>
         <Script
