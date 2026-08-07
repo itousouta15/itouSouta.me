@@ -3505,6 +3505,9 @@ body.site-revealed .header {
   gap: 14px;
   margin-top: 20px;
 }
+.home-posts-more {
+  margin-top: 18px;
+}
 /* 摘要沒有現成的歸屬類別可借：.link-desc / .proj-desc 都是無襯線，跟同一張卡片
    上的 .thought-text（明體標題）擺一起會打架 */
 .blog-excerpt {
