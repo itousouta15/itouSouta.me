@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 import ThemeProvider from "./components/ThemeProvider";
@@ -200,6 +201,7 @@ export default function RootLayout({
           src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"
           strategy="afterInteractive"
         />
+        <Analytics />
       </body>
     </html>
   );
