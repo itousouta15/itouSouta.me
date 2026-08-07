@@ -11,6 +11,8 @@ import SiteLoader from "./components/SiteLoader";
 import CommandPalette from "./components/CommandPalette";
 import GravityModeLoader from "./components/GravityModeLoader";
 import SmoothScroll from "./components/SmoothScroll";
+import { LanyardProvider } from "./components/LanyardCards";
+import NowPlayingBar from "./components/NowPlayingBar";
 
 const SITE_URL = "https://itousouta.me";
 const SITE_TITLE = "itouSouta.me";
@@ -171,19 +173,22 @@ export default function RootLayout({
           }}
         />
         <ThemeProvider>
-          <a className="skip-link" href="#main">
-            跳到主要內容
-          </a>
-          <SiteLoader />
-          <Header />
-          <main className="main" id="main" tabIndex={-1}>
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
-          <BackToTopButton />
-          <CommandPalette />
-          <GravityModeLoader />
-          <SmoothScroll />
+          <LanyardProvider>
+            <a className="skip-link" href="#main">
+              跳到主要內容
+            </a>
+            <SiteLoader />
+            <Header />
+            <main className="main" id="main" tabIndex={-1}>
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <Footer />
+            <BackToTopButton />
+            <CommandPalette />
+            <GravityModeLoader />
+            <SmoothScroll />
+            <NowPlayingBar />
+          </LanyardProvider>
         </ThemeProvider>
         <Script
           src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"

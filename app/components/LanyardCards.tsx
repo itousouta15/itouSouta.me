@@ -62,6 +62,8 @@ function useLanyard(): State {
     let alive = true;
 
     const load = async () => {
+      // Provider 在 root layout，所有頁面都會常駐輪詢——背景分頁不做事
+      if (document.visibilityState !== "visible") return;
       try {
         const res = await fetch(
           `https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`,
@@ -79,9 +81,15 @@ function useLanyard(): State {
 
     load();
     const id = setInterval(load, POLL_MS);
+    // 分頁切回前景時立刻補一筆，不用等下一次 interval
+    const onVisible = () => {
+      if (document.visibilityState === "visible") load();
+    };
+    document.addEventListener("visibilitychange", onVisible);
     return () => {
       alive = false;
       clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, []);
 
@@ -98,7 +106,7 @@ export function LanyardProvider({ children }: { children: ReactNode }) {
   );
 }
 
-function useLanyardState(): State {
+export function useLanyardState(): State {
   return (
     useContext(LanyardContext) ??
     (DISCORD_USER_ID ? { kind: "loading" } : { kind: "unconfigured" })
