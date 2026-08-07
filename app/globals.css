@@ -1100,28 +1100,6 @@ body.site-revealed .header {
   align-items: center;
   gap: 8px;
 }
-.proj-modal-permalink {
-  flex: none;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--bd2);
-  background: var(--inset);
-  color: var(--dim);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    transform 0.15s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
-}
-.proj-modal-permalink:hover {
-  transform: translate(2px, -2px);
-  border-color: #8f9dc9;
-  color: var(--tx);
-}
 .proj-modal-close {
   flex: none;
   width: 38px;
@@ -3667,10 +3645,13 @@ body.site-revealed .header {
 }
 .proj-detail-cover {
   display: block;
+  max-width: 480px;
   width: 100%;
-  max-height: 420px;
+  margin: 0 auto;
+  max-height: 300px;
   object-fit: cover;
   border: 1px solid var(--bd);
+  border-radius: 8px;
   background: var(--inset);
 }
 .proj-detail-actions {

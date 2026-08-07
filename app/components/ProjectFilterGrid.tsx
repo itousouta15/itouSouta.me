@@ -125,12 +125,11 @@ export default function ProjectFilterGrid({
           {filtered.map((p) => {
             const stars = repoInfoBySlug[p.slug]?.stars;
             return (
-              // href 指向站內詳情頁：無 JS 或 Ctrl/中鍵點擊時落在 /projects/<slug>
-              // （可分享、可被索引），一般點擊則就地開 modal
+              // href 指向 GitHub：無 JS 或 Ctrl/中鍵點擊時直接開 repo，一般點擊開 modal
               <a
                 className="proj-card"
                 key={p.slug}
-                href={`/projects/${p.slug}`}
+                href={p.href}
                 style={{ textDecoration: "none", color: "inherit" }}
                 onClick={(e) => {
                   if (e.metaKey || e.ctrlKey || e.shiftKey) return;
@@ -186,7 +185,6 @@ export default function ProjectFilterGrid({
           kickerColor={activeProject.color}
           title={activeProject.title}
           desc={activeProject.desc}
-          permalink={`/projects/${activeProject.slug}`}
           onClose={closeModal}
         >
           <ProjectDetailBody

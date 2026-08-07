@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ROLES, TILE_COLS } from "./data";
-import { getBlogPosts } from "./lib/blogFeed";
 import { getTopTracks } from "./lib/spotify";
 import { likeCircleThumb } from "./lib/imageThumb";
 import TileIcon from "./components/TileIcon";
@@ -14,16 +13,10 @@ import BadgeShape from "./components/BadgeShape";
 import NameRotator from "./components/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
 
-// 首頁現在會渲染最新文章，跟著部落格 feed 走，改成 ISR
+// 首頁渲染最近在聽，跟著 Spotify 走，改成 ISR
 export const revalidate = 3600;
 
-const POSTS_TO_SHOW = 4;
-
 export default async function HomePage() {
-  // feed 本身照部落格輸出順序，這裡自己按時間由新到舊取最新幾篇
-  const posts = (await getBlogPosts().catch(() => []))
-    .sort((a, b) => b.timestamp - a.timestamp)
-    .slice(0, POSTS_TO_SHOW);
   // Spotify 沒設定環境變數時回 null，整段不渲染
   const tracks = await getTopTracks({ limit: 3 }).catch(() => null);
 
@@ -265,34 +258,6 @@ export default async function HomePage() {
             <span className="nav-card-arrow">↗</span>
           </Link>
         </div>
-
-        {/* 最新文章 */}
-        {posts.length > 0 && (
-          <div className="home-posts">
-            <div className="card-kicker">LATEST BLOG</div>
-            <div className="divider" />
-            <div className="blog-list">
-              {posts.map((post) => (
-                <a
-                  className="thought-item"
-                  key={post.id}
-                  href={post.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: "block", color: "inherit" }}
-                >
-                  <div className="thought-meta">
-                    <span className="thought-date">{post.date}</span>
-                    {post.category && (
-                      <span className="thought-tag">{post.category}</span>
-                    )}
-                  </div>
-                  <p className="thought-text">{post.title}</p>
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* 最近在聽 */}
         {tracks && tracks.length > 0 && (
