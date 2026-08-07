@@ -41,3 +41,23 @@ export async function rateLimit(
   if (n === 1) await kv.expire(k, ttlSec);
   return n <= max;
 }
+
+/* ---- 留言板（KV 自建，取代 waline）----
+   寫入端是站內的 /api/guestbook，資料存一條 list，最新的在最前面。 */
+const GUESTBOOK_KEY = "guestbook";
+
+export interface GuestbookEntry {
+  id: string;
+  nick: string;
+  text: string;
+  timestamp: string;
+}
+
+export async function getGuestbookEntries(): Promise<GuestbookEntry[]> {
+  const raw = await kv.lrange<string>(GUESTBOOK_KEY, 0, 99);
+  return raw.map((r) => (typeof r === "string" ? JSON.parse(r) : r));
+}
+
+export async function addGuestbookEntry(entry: GuestbookEntry): Promise<void> {
+  await kv.lpush(GUESTBOOK_KEY, JSON.stringify(entry));
+}
