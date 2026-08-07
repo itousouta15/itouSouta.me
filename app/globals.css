@@ -199,6 +199,33 @@ svg {
   --bd2: rgba(20, 24, 40, 0.2);
 }
 
+/* ---- 季節 accent（SeasonTint 依日期設 data-season）----
+   只覆寫 --blue/--purple 兩個 accent 色票，深淺主題各給一版；glass 強制深色，
+   所以深色版是主戰場。放在 theme 區塊之後，同 specificity 靠後者勝出。 */
+:root[data-season="halloween"] {
+  --blue: #ffa84c;
+  --purple: #c08cff;
+}
+:root[data-theme="light"][data-season="halloween"] {
+  --blue: #b06a00;
+  --purple: #7a3fd0;
+}
+:root[data-season="christmas"] {
+  --blue: #7ee7a0;
+  --purple: #ff8f8f;
+}
+:root[data-theme="light"][data-season="christmas"] {
+  --blue: #1f7a3d;
+  --purple: #c02f2f;
+}
+:root[data-season="newyear"] {
+  --blue: #f5c26b;
+  --purple: #d9a6f5;
+}
+:root[data-theme="light"][data-season="newyear"] {
+  --blue: #9a6b00;
+  --purple: #7a3fd0;
+}
 /* header/footer 是 .root 的子元素，.root 自己已經用 var(--bg) 鋪了一層底色。
    如果 header/footer 自己「再」用 var(--bg) 當背景，等於在同一個位置疊了兩層
    一樣的半透明色——兩層疊加的實際不透明度會比單層高（alpha 合成不是線性相
@@ -2593,6 +2620,40 @@ body.site-revealed .header {
   background: #1db954;
   border-radius: 2px;
   transition: width 1s linear;
+}
+
+/* Konami 彩蛋：五彩紙屑（全站 fixed，不進 glass 名單） */
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  top: -8%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 1;
+  animation-name: confetti-fall;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0.9;
+  }
 }
 
 /* ---------------------------------------------------------------------------

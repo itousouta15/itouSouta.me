@@ -13,6 +13,9 @@ import GravityModeLoader from "./components/GravityModeLoader";
 import SmoothScroll from "./components/SmoothScroll";
 import { LanyardProvider } from "./components/LanyardCards";
 import NowPlayingBar from "./components/NowPlayingBar";
+import SeasonTint from "./components/SeasonTint";
+import KonamiEasterEgg from "./components/KonamiEasterEgg";
+import ConfettiBurst from "./components/ConfettiBurst";
 
 const SITE_URL = "https://itousouta.me";
 const SITE_TITLE = "itouSouta.me";
@@ -187,6 +190,9 @@ export default function RootLayout({
             <CommandPalette />
             <GravityModeLoader />
             <SmoothScroll />
+            <SeasonTint />
+            <KonamiEasterEgg />
+            <ConfettiBurst />
             <NowPlayingBar />
           </LanyardProvider>
         </ThemeProvider>
