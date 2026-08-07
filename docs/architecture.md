@@ -15,6 +15,7 @@ The project intentionally avoids UI libraries and CSS-in-JS. Most visual behavio
 | `/`                 | Home profile, hero, navigation cards, GitHub contribution graph                                        |
 | `/about`            | Bio, stats, interests, and music preview                                                               |
 | `/writing`          | Articles (blog.itousouta.me index) + unified thoughts feed from Discord/KV, Threads, and GitHub events |
+| `/guestbook`        | Guestbook comments via the shared Waline server (web-eight-weld-65.vercel.app)                         |
 | `/likes`            | Hub for liked novels, manga, anime, VTubers, and music                                                 |
 | `/likes/[category]` | Category-specific likes grid                                                                           |
 | `/likes/music`      | Spotify top tracks                                                                                     |

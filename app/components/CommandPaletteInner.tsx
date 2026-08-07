@@ -32,6 +32,12 @@ const STATIC_PAGES: SearchItem[] = [
     category: "頁面",
   },
   { id: "page-stats", title: "數據", href: "/stats", category: "頁面" },
+  {
+    id: "page-guestbook",
+    title: "留言板",
+    href: "/guestbook",
+    category: "頁面",
+  },
   { id: "page-links", title: "友鏈", href: "/links", category: "頁面" },
   {
     id: "page-experience",

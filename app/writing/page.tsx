@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
+import ThoughtReaction from "../components/ThoughtReaction";
 import { THOUGHTS } from "../data";
 import { getBlogPosts } from "../lib/blogFeed";
 import { getMergedThoughts } from "../lib/mergedThoughts";
+import { getReactionCounts } from "../lib/kv";
 
 const description = "itouSouta 寫過的文章與雜談 φ(*￣0￣)";
 export const metadata: Metadata = {
@@ -23,9 +25,11 @@ export const revalidate = 3600;
    同步牆）合成一頁，雜談在前、文章在後。卡片沿用 .thought-item：有 hover 位移、
    已在 glass 名單。兩區共用 PageHead 底下的 .card-kicker + .divider 分節。 */
 export default async function WritingPage() {
-  const [posts, items] = await Promise.all([
+  const [posts, items, reactionCounts] = await Promise.all([
     getBlogPosts(),
     getMergedThoughts(),
+    // KV 沒環境（本機 dev）時回 null，按讚鈕整批不渲染
+    getReactionCounts().catch(() => null),
   ]);
   const useRemote = items.length > 0;
 
@@ -67,6 +71,12 @@ export default async function WritingPage() {
                     >
                       GitHub ↗
                     </a>
+                  )}
+                  {reactionCounts && (
+                    <ThoughtReaction
+                      id={item.id}
+                      initial={reactionCounts[item.id] ?? 0}
+                    />
                   )}
                 </div>
                 {item.text && <p className="thought-text">{item.text}</p>}
