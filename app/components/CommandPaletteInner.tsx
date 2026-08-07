@@ -38,6 +38,7 @@ const STATIC_PAGES: SearchItem[] = [
     href: "/guestbook",
     category: "頁面",
   },
+  { id: "page-api", title: "公開端點", href: "/api", category: "頁面" },
   { id: "page-links", title: "友鏈", href: "/links", category: "頁面" },
   {
     id: "page-experience",
