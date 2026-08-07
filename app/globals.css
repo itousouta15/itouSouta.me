@@ -160,48 +160,9 @@ svg {
   --shadow: rgba(60, 70, 90, 0.16);
 }
 
-/* ===========================================================================
-   Glass mode — 半透明背景，搭配 Zen 瀏覽器的視窗透明（Windows Mica/Acrylic 或
-   Linux/macOS 的等效毛玻璃）。Zen 開啟 browser.tabs.allow_transparent_browser
-   後，分頁內容本身也會被拿去合成透明/模糊，如果網站背景是不透明色就會直接把
-   桌布擋住——這裡把 --bg/--panel 系列 token 換成半透明版本，讓桌布透得出來。
-   沒有切換開關：[data-glass] 屬性由 layout.tsx 的 blocking script 在畫面畫出來
-   之前，用 UA 是不是 Firefox 家族（Zen 是 Firefox fork，且刻意不把 UA 改成
-   帶 "Zen" 字樣，避免一堆網站認錯瀏覽器炸掉，所以偵測不到「就是 Zen」，只能
-   用 Firefox 家族當替代判斷）直接寫入，開就是 on、其他瀏覽器就是 off。
-   --glass-blur 只在 on 時才有值，下面那串「最外層」卡片（不是疊在其他半透明
-   卡片「裡面」的那種）共用同一個 backdrop-filter 宣告，沒開時 var(..., none)
-   會 fallback 回 none，等於什麼都沒發生；.header 自己 fallback 回原本固定的
-   blur(14px)，維持其他瀏覽器原本的樣子不變。 */
-:root[data-glass="on"] {
-  --glass-blur: blur(26px) saturate(170%);
-  /* --bg 是最底層，鋪在 html/.root 上、也是頁面卡片與卡片之間「空白處」看到
-     的顏色——這裡設全透明（不是半透明），讓那些空白處完全看得到桌面，
-     不要有任何色調蓋在上面。
-     --panel/--inset 則是「卡片內部」在用的（包含 .quote-tech-panel 那種疊在
-     彩色圖示上的文字說明面板）——這些要撐住文字可讀性，半透明度不能跟著
-     --bg 一樣全開，所以維持比較高的不透明度，只靠 backdrop-filter 的模糊感
-     維持「玻璃」的觸感，不靠低透光率。 */
-  --bg: transparent;
-  --panel: rgba(36, 38, 43, 0.55);
-  --panel2: rgba(36, 38, 43, 0.55);
-  --panel2-a: rgba(39, 41, 46, 0.55);
-  --inset: rgba(24, 27, 32, 0.72);
-  --bd: rgba(255, 255, 255, 0.12);
-  --bd2: rgba(255, 255, 255, 0.2);
-}
-:root[data-theme="light"][data-glass="on"] {
-  --panel: rgba(224, 225, 235, 0.55);
-  --panel2: rgba(224, 225, 235, 0.55);
-  --panel2-a: rgba(227, 228, 233, 0.55);
-  --inset: rgba(234, 237, 244, 0.72);
-  --bd: rgba(6, 6, 7, 0.1);
-  --bd2: rgba(20, 24, 40, 0.2);
-}
-
 /* ---- 季節 accent（SeasonTint 依日期設 data-season）----
-   只覆寫 --blue/--purple 兩個 accent 色票，深淺主題各給一版；glass 強制深色，
-   所以深色版是主戰場。放在 theme 區塊之後，同 specificity 靠後者勝出。 */
+   只覆寫 --blue/--purple 兩個 accent 色票，深淺主題各給一版。放在 theme 區塊
+   之後，同 specificity 靠後者勝出。 */
 :root[data-season="halloween"] {
   --blue: #ffa84c;
   --purple: #c08cff;
@@ -225,54 +186,6 @@ svg {
 :root[data-theme="light"][data-season="newyear"] {
   --blue: #9a6b00;
   --purple: #7a3fd0;
-}
-/* header/footer 是 .root 的子元素，.root 自己已經用 var(--bg) 鋪了一層底色。
-   如果 header/footer 自己「再」用 var(--bg) 當背景，等於在同一個位置疊了兩層
-   一樣的半透明色——兩層疊加的實際不透明度會比單層高（alpha 合成不是線性相
-   加），所以就算 token 數值相同，看起來透光率還是會比頁面其他地方（只有
-   .root 那一層）低。改成 transparent：不額外鋪色，單純讓 .root 那唯一一層
-   透過去，邊界線也拿掉，讓 header/footer 跟頁面其他地方的透光率完全一致。
-   backdrop-filter 的模糊還是留著（見 .header 自己那條規則），只是不再疊一層
-   色調上去。 */
-:root[data-glass="on"] .header,
-:root[data-glass="on"] .footer {
-  background: transparent;
-  border-color: transparent;
-}
-/* .exp-dot 的 halo 原本是拿 --bg 當「橡皮擦」，蓋掉時間軸連接線跟圓點重疊的
-   邊緣；--bg 全透明後這個橡皮擦沒東西可以擦了，留著只會變成一圈看不見但還在
-   算圖層合成的 shadow，直接拿掉更乾淨。 */
-:root[data-glass="on"] .exp-dot {
-  box-shadow: none;
-}
-.card,
-.profile-card,
-.nav-card,
-.card-likes,
-.card-projects,
-.about-main,
-.about-side,
-.mini-card,
-.like-card,
-.proj-card,
-.link-card,
-.thought-item,
-.tl-card,
-.blog-empty,
-.footer,
-.proj-modal,
-.like-modal,
-.nav-overlay,
-.cmdk-overlay,
-.back-to-top,
-.back-btn,
-.theme-btn,
-.nav-toggle,
-.cmdk-close,
-.status-bubble,
-#gravity-exit {
-  backdrop-filter: var(--glass-blur, none);
-  -webkit-backdrop-filter: var(--glass-blur, none);
 }
 
 /* ---- Fonts shorthand ---- */
@@ -479,8 +392,8 @@ body.shake-67 {
   z-index: 60;
   background: var(--panel2-a);
   border-bottom: 1px solid var(--bd2);
-  backdrop-filter: var(--glass-blur, blur(14px));
-  -webkit-backdrop-filter: var(--glass-blur, blur(14px));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   /* Held at the itHeaderDrop 0% frame (via "both") until the loader clears
      the screen, then slides down into place — see body.site-revealed below. */
   animation: itHeaderDrop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -820,9 +733,9 @@ body.site-revealed .header {
 .theme-btn:active {
   transform: rotate(35deg) scale(0.85);
 }
-/* 只有這顆按鈕會因為 React 條件渲染整個掛載/卸載（關掉玻璃模式後日/月鈕才
-   出現），純 CSS transition 在剛掛載的那一刻沒有「之前的狀態」可以補間，所以
-   改用進場 keyframe——掛載當下直接從 itPopIn 的 0% 開始播放。
+/* 這顆按鈕會因為 React 條件渲染整個掛載/卸載，純 CSS transition 在剛掛載的
+   那一刻沒有「之前的狀態」可以補間，所以改用進場 keyframe——掛載當下直接從
+   itPopIn 的 0% 開始播放。
    刻意不加 both/forwards：這顆鈕的 :hover/:active 也會動 transform，如果讓
    進場動畫用 fill-mode 停在最後一幀，會一直蓋掉 :hover/:active 的 transform，
    讓這顆鈕動畫播完之後 hover 就再也轉不動了。播完直接交還正常的 cascade。 */
@@ -2602,7 +2515,7 @@ body.site-revealed .header {
   transition: width 1s linear;
 }
 
-/* Konami 彩蛋：五彩紙屑（全站 fixed，不進 glass 名單） */
+/* Konami 彩蛋：五彩紙屑（全站 fixed overlay） */
 .confetti {
   position: fixed;
   inset: 0;
@@ -2638,9 +2551,8 @@ body.site-revealed .header {
 
 /* ---------------------------------------------------------------------------
    Now-playing floating pill（全站固定）
-   刻意不進 glass backdrop-filter 名單：fixed 元素進名單會變成後代的 containing
-   block，而且名單語意是「有磨砂背景的版面卡片」。這裡自己掛 backdrop-filter。
-   z-index 45：header 60 / site-loader 200 之下，不壓任何覆蓋層。 */
+   fixed 元素自己掛 backdrop-filter。z-index 45：header 60 / site-loader 200
+   之下，不壓任何覆蓋層。 */
 .now-playing {
   position: fixed;
   left: 50%;
@@ -4468,9 +4380,6 @@ body.site-revealed .header {
     display: flex;
   }
   .nav {
-    display: none;
-  }
-  .glass-btn {
     display: none;
   }
 }

@@ -27,11 +27,7 @@ function Stat({ k, v, mono }: { k: string; v: string; mono?: boolean }) {
   );
 }
 
-/* 各區塊都包在 .card 裡，而不是把 .stat 加進 globals.css 的 backdrop-filter 名單。
-   .stat 用 var(--inset) 當底色、刻意不在名單內——在 /about 它躺在有磨砂的
-   .about-main 裡所以看起來對；這頁沒有磨砂的祖先，玻璃模式下就會顯得死板。
-   .card 本來就在名單裡，包一層是最省事也最安全的作法（不會多一個 fixed 定位的
-   containing block 問題）。 */
+/* 各區塊都包在 .card 裡，讓 .stat 的 var(--inset) 底色有個明確的容器。 */
 function Section({
   kicker,
   children,

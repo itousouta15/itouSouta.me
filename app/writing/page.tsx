@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 /* 文章（blog.itousouta.me 的站內索引）與雜談（Threads / GitHub / Discord / KV
-   同步牆）合成一頁，雜談在前、文章在後。卡片沿用 .thought-item：有 hover 位移、
-   已在 glass 名單。兩區共用 PageHead 底下的 .card-kicker + .divider 分節。 */
+   同步牆）合成一頁，雜談在前、文章在後。卡片沿用 .thought-item：有 hover 位移。
+   兩區共用 PageHead 底下的 .card-kicker + .divider 分節。 */
 export default async function WritingPage() {
   const [posts, items, reactionCounts] = await Promise.all([
     getBlogPosts(),
