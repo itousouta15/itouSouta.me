@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-const MAX_WAIT_MS = 4000;
+const READY_DELAY_MS = 150;
+const MAX_WAIT_MS = 2000;
 const SLIDE_MS = 600;
 
 export default function SiteLoader() {
@@ -41,16 +42,20 @@ export default function SiteLoader() {
       }, SLIDE_MS);
     };
 
-    if (document.readyState === "complete") {
-      hideTimer = setTimeout(startHide, 150);
+    // 這個 effect 是 hydration 之後才跑的，所以 DOM 幾乎一定 parse 完了
+    // （readyState 至少是 "interactive"）。以前這裡等的是 window 的 load 事件，
+    // 等於要整頁的圖片、wsrv 縮圖、busuanzi 全部回來才肯讓開——但遮罩的職責只是
+    // 遮 FOUC，不該押在最慢的那個第三方子資源上。
+    if (document.readyState !== "loading") {
+      hideTimer = setTimeout(startHide, READY_DELAY_MS);
     } else {
-      window.addEventListener("load", startHide);
-      // 保險：資源載入異常緩慢時，最多等 4 秒仍讓網站顯示。
+      document.addEventListener("DOMContentLoaded", startHide);
+      // 保險：真的卡住時最多等 2 秒仍讓網站顯示
       hideTimer = setTimeout(startHide, MAX_WAIT_MS);
     }
 
     return () => {
-      window.removeEventListener("load", startHide);
+      document.removeEventListener("DOMContentLoaded", startHide);
       clearTimeout(hideTimer);
       clearTimeout(removeTimer);
     };
@@ -74,11 +79,11 @@ export default function SiteLoader() {
           }
         `}</style>
       </noscript>
+      {/* 純視覺遮罩，內容是 CSS 畫的。掛 role="status" aria-live 只會讓螢幕
+          閱讀器盯著一個永遠沒有文字的節點，什麼都不會念，不如直接隱藏。 */}
       <div
         className={`site-loader${hiding ? " site-loader--hide" : ""}${blurred ? " site-loader--blurred" : ""}`}
-        role="status"
-        aria-live="polite"
-        aria-label="頁面載入中"
+        aria-hidden="true"
       />
     </>
   );

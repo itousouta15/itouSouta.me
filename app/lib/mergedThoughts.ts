@@ -1,4 +1,4 @@
-import { GITHUB_USERNAME } from "../data";
+import { GITHUB_USERNAME } from "../siteConfig";
 import { fetchThreadsPosts } from "./threads";
 import { getThoughts } from "./kv";
 import { getUserEvents } from "./github";

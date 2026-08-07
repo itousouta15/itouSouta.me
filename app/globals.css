@@ -39,17 +39,61 @@ a {
 }
 
 ::selection {
-  background: transparent;
+  background: color-mix(in srgb, var(--blue) 30%, transparent);
   color: inherit;
 }
 
 ::-moz-selection {
-  background: transparent;
+  background: color-mix(in srgb, var(--blue) 30%, transparent);
   color: inherit;
 }
 
 button {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- 鍵盤操作 ---- */
+
+/* 第一個 Tab 就能跳過 header 直接進內容。平常用 transform 推出畫面外而不是
+   display:none —— 後者會讓元素根本聚焦不到，skip link 就失去意義。
+   z-index 要壓過 .header(60) 與 .site-loader(200)。 */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 12px;
+  z-index: 300;
+  padding: 10px 16px;
+  background: var(--panel2);
+  color: var(--tx);
+  border: 1px solid var(--bd);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  transform: translateY(-120%);
+  transition: transform 0.18s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+/* skip link 的落點，使用者是自己跳過來的，不需要再框一圈 */
+.main:focus {
+  outline: none;
+}
+
+/* 全站共用的鍵盤焦點框。只挑真正可聚焦的元素，不要用 *:focus-visible ——
+   那會連 tabIndex={-1} 的程式化落點（.main）都框起來。 */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+/* .like-card 的 outline 已經被開台紅框徵用（透明 → 紅色的淡入機制，見下面
+   .like-card--circle .like-thumb 那段），再畫一圈藍框會直接蓋掉它。改用
+   box-shadow 環，兩者互不干擾。 */
+.like-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--blue);
 }
 
 img,
@@ -187,7 +231,6 @@ svg {
 .thought-item,
 .tl-card,
 .blog-empty,
-.blog-skeleton,
 .footer,
 .proj-modal,
 .like-modal,
@@ -1023,6 +1066,34 @@ body.site-revealed .header {
   margin-top: 6px;
   line-height: 1.8;
 }
+.proj-modal-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.proj-modal-permalink {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--bd2);
+  background: var(--inset);
+  color: var(--dim);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+.proj-modal-permalink:hover {
+  transform: translate(2px, -2px);
+  border-color: #8f9dc9;
+  color: var(--tx);
+}
 .proj-modal-close {
   flex: none;
   width: 38px;
@@ -1238,9 +1309,6 @@ body.site-revealed .header {
 .like-modal-stat .star-rating {
   color: #ffc107;
 }
-.like-modal-stat--mine .star-rating {
-  color: #ff6b6b;
-}
 .star-rating-glyphs {
   position: relative;
   display: inline-block;
@@ -1267,14 +1335,6 @@ body.site-revealed .header {
 }
 .like-modal-action {
   margin: 26px 40px 0;
-}
-.like-modal-status {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12.5px;
-  color: #4caf50;
-  background: rgba(76, 175, 80, 0.1);
-  padding: 8px 12px;
-  border-radius: 2px;
 }
 .like-modal-note {
   margin: 26px 40px 0;
@@ -3109,18 +3169,6 @@ body.site-revealed .header {
 .like-card:hover .like-thumb-img {
   transform: scale(1.06);
 }
-.like-status {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 3px 7px;
-}
 .like-body {
   padding: 16px 18px;
 }
@@ -3342,6 +3390,32 @@ body.site-revealed .header {
   gap: 10px;
   min-width: 0;
 }
+.proj-top-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+.proj-stars {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.proj-sort-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.proj-sort-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--mute);
+}
 .proj-icon {
   position: relative;
   width: 30px;
@@ -3443,38 +3517,13 @@ body.site-revealed .header {
   gap: 14px;
   margin-top: 20px;
 }
-.blog-skeleton {
-  background: var(--panel);
-  border-radius: 0;
-  padding: 18px 22px;
-  display: flex;
-  gap: 18px;
-  align-items: center;
-}
-.blog-skeleton .thumb {
-  width: 90px;
-  height: 64px;
-  border-radius: 10px;
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--inset),
-    var(--inset) 9px,
-    rgba(255, 255, 255, 0.04) 9px,
-    rgba(255, 255, 255, 0.04) 18px
-  );
-  flex: none;
-}
-.blog-skeleton .lines {
-  flex: 1;
-}
-.bar {
-  height: 14px;
-  background: var(--inset);
-  border-radius: 6px;
-}
-.bar.sm {
-  height: 11px;
-  margin-top: 10px;
+/* 摘要沒有現成的歸屬類別可借：.link-desc / .proj-desc 都是無襯線，跟同一張卡片
+   上的 .thought-text（明體標題）擺一起會打架 */
+.blog-excerpt {
+  color: var(--dim);
+  font-size: 13px;
+  line-height: 1.9;
+  margin: 8px 0 0;
 }
 
 /* Links (友鏈) */
@@ -3602,10 +3651,17 @@ body.site-revealed .header {
   margin: 0;
   white-space: pre-line;
 }
+/* 唯一真的會造成版面位移的圖：來源是 Threads 的遠端媒體，伺服器端拿不到原始
+   尺寸，所以沒辦法靠 width/height 屬性宣告比例（站上其他圖的盒子都已經被 CSS
+   鎖死了——.like-thumb 有 aspect-ratio、.proj-cover 高度固定，都不會跳）。
+   這裡改成固定比例的盒子，圖片載入前就把位置佔好。 */
 .thought-img {
   display: block;
   max-width: 100%;
   width: 480px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--inset);
   border-radius: 8px;
   margin-top: 12px;
   border: 1px solid var(--bd);
@@ -4288,6 +4344,20 @@ body.site-revealed .header {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* 打底：與其逐條列舉（漏掉的永遠比列到的多——footer 跑馬燈、itNameRoll、
+     開台紅框脈動、67 彩蛋的抖動本來都不在下面那張清單裡），不如全部壓到趨近零。
+     不用 animation: none 是因為有些元素的最終樣式就靠關鍵影格的 100% frame
+     交付（例如 .header 的 itHeaderDrop 用 both fill），直接 none 會讓它停在
+     未動畫的狀態；把時長壓到 0.01ms 則是瞬間跳到終態，正是想要的結果。
+     下面那些更具體的規則照舊生效，留著當文件。 */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
   .tiles-row-track,
   .page-transition,
   .cmdk-overlay,

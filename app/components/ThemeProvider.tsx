@@ -31,7 +31,8 @@ const GLASS_STORAGE_KEY = "glass";
 // Firefox fork that deliberately keeps navigator.userAgent identical to real
 // Firefox's, so this is the closest available proxy for "could be Zen".
 const isFirefoxFamilyUA = () =>
-  /firefox\//i.test(navigator.userAgent) && !/seamonkey\//i.test(navigator.userAgent);
+  /firefox\//i.test(navigator.userAgent) &&
+  !/seamonkey\//i.test(navigator.userAgent);
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   // SSR renders dark/non-glass; the inline head script already applied the
@@ -45,7 +46,8 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   const glassReady = useRef(false);
 
   useEffect(() => {
-    const isGlass = document.documentElement.getAttribute("data-glass") === "on";
+    const isGlass =
+      document.documentElement.getAttribute("data-glass") === "on";
     setGlass(isGlass);
     setGlassCapable(isFirefoxFamilyUA());
     // Glass forces dark (the head script already set that before paint) —

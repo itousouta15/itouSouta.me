@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { DISCORD_USER_ID } from "../data";
+import { DISCORD_USER_ID } from "../siteConfig";
 import { discordArtThumb } from "../lib/imageThumb";
 
 /* ---------------------------------------------------------------------------
@@ -194,6 +194,9 @@ export function ProfileStatus() {
     if (!spotify?.timestamps) return;
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
+    // 只跟著曲目的起訖時間走：依賴整個 timestamps 物件的話，每 15 秒輪詢回來的
+    // 新物件參照都會重建一次計時器，進度條就會每 15 秒抖一下
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spotify?.timestamps?.start, spotify?.timestamps?.end]);
 
   let progress = 0;

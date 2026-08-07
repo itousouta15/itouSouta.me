@@ -23,9 +23,9 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](
 | 路由                | 說明                                                                                   |
 | ------------------- | -------------------------------------------------------------------------------------- |
 | `/`                 | 首頁 — 個人檔案卡、Hero 區塊、技術磚牆、bento 導覽格、GitHub 貢獻圖                    |
-| `/about`            | 關於 — 簡介、統計數據、座右銘，以及兩張 Spotify/Likes 預覽卡（動畫、音樂）            |
+| `/about`            | 關於 — 簡介、統計數據、座右銘，以及兩張 Spotify/Likes 預覽卡（動畫、音樂）             |
 | `/thoughts`         | 雜談 — 整合 Discord 斜線指令貼文、同步的 Threads 貼文與 GitHub 事件的動態牆            |
-| `/likes`            | Likes — 可搜尋、可依標籤篩選的小說、漫畫、動畫格狀清單；Spotify 常聽歌曲預覽列        |
+| `/likes`            | Likes — 可搜尋、可依標籤篩選的小說、漫畫、動畫格狀清單；Spotify 常聽歌曲預覽列         |
 | `/likes/[category]` | 分類詳情 — 含輪播與篩選功能的完整清單                                                  |
 | `/likes/music`      | 音樂 — 可搜尋的 Spotify 常聽歌曲格狀清單（方形封面），與其他分類共用同一套模態詳情檢視 |
 | `/projects`         | 專案 — 可篩選的個人專案卡片，含 GitHub 專案資訊                                        |
@@ -77,7 +77,7 @@ Logo 會在偵測到 `ChenYuLuoYan` 字型啟用（透過 `document.fonts.load`�
 
 ### 開台優先排序
 
-`sortLikesByRating`（`app/lib/sortLikes.ts`）多接受一個選填的 `isLive` 判斷式；給了的話，開台中的項目一律排在最前面，rating 只用來在同一組（開台／未開台）內部排序。`LikeCategorySection`（`/likes` 首頁的輪播列）與 `LikeFilterGrid`（分類詳情頁的格狀清單）都會在 `useVtuberLiveStatus` 的資料更新時重新排序，所以一旦有人開台就會立刻跳到最前面。重新排序的過程用一個手刻的 FLIP（First-Last-Invert-Play）Hook `useFlipReorder` 做動畫——不依賴任何動畫函式庫——量測每張卡片重排前後的位置，透過 `transform` 把位移差做成動畫，讓卡片看起來是滑到新位置，而不是瞬間跳位。首頁輪播另外用 `overflow-anchor: none` 關掉瀏覽器對 DOM 重排的自動捲動補償，並用一個捲動位置釘選機制讓開台優先的排序結果保持在最前面可見——但只在使用者還沒自己手動滑動輪播之前才會這樣做，一旦使用者自己滑過就不再搶他的捲動位置。
+`sortLikesByRating`（`app/lib/sortLikes.ts`）多接受一個選填的 `isLive` 判斷式；給了的話，開台中的項目一律排在最前面，rating 只用來在同一組（開台／未開台）內部排序。`LikeCategorySection`（`/likes` 首頁的輪播列）與 `LikeFilterGrid`（分類詳情頁的格狀清單）都會在 `useVtuberLiveStatus` 的資料更新時重新排序，所以一旦有人開台就會立刻跳到最前面。重排本身沒有動畫，卡片是直接跳位的。首頁輪播另外用 `overflow-anchor: none` 關掉瀏覽器對 DOM 重排的自動捲動補償，並用一個捲動位置釘選機制讓開台優先的排序結果保持在最前面可見——但只在使用者還沒自己手動滑動輪播之前才會這樣做，一旦使用者自己滑過就不再搶他的捲動位置。
 
 ### 音樂 (Spotify)
 
@@ -93,16 +93,16 @@ Discord 狀態（上線狀態、活動、Spotify 播放）透過 Lanyard WebSock
 
 ### 圖片縮圖
 
-頭像、Likes 封面、音樂封面與專案截圖皆熱連結自數十個外部、不受控的網域 — 數量太多，無法逐一透過 `next/image` 的 `remotePatterns` 加入允許清單。`app/lib/imageThumb.ts` 會將任何 `http(s)` 來源導向 [wsrv.nl](https://wsrv.nl) 縮圖代理服務，並依實際顯示所需的尺寸縮放（`avatarThumb`、`likeThumb`、`likeCircleThumb`、`artistAvatarThumb`、`songThumb`、`projectCoverThumb`、`cardBgThumb`），對本機 `/assets` 路徑、動態 `.gif`（代理服務的 webp 轉換會使動畫失效）以及 `PROXY_BLOCKED_HOSTS` 中少數會拒絕代理服務請求的網域，則回退使用原始網址。
+頭像、Likes 封面、音樂封面與專案截圖皆熱連結自數十個外部、不受控的網域 — 數量太多，無法逐一透過 `next/image` 的 `remotePatterns` 加入允許清單。`app/lib/imageThumb.ts` 會將任何 `http(s)` 來源導向 [wsrv.nl](https://wsrv.nl) 縮圖代理服務，並依實際顯示所需的尺寸縮放（`avatarThumb`、`likeThumb`、`likeCircleThumb`、`artistAvatarThumb`、`discordArtThumb`、`projectCoverThumb`、`cardBgThumb`），對本機 `/assets` 路徑、動態 `.gif`（代理服務的 webp 轉換會使動畫失效）以及 `PROXY_BLOCKED_HOSTS` 中少數會拒絕代理服務請求的網域，則回退使用原始網址。
 
 ### Hero 互動效果
 
-Hero 區塊的 ASCII 表情（`HeroFace`）會微幅跟隨滑鼠游標（位移經過夾限並透過 `requestAnimationFrame` 節流），點擊時會眨靠近點擊側的那隻眼睛，捲動超過視窗頂端附近的門檻時（`IntersectionObserver` 搭配負值 `rootMargin`）會切換成「快消失」的表情並伴隨搖擺動畫。快速連續點擊個人頭像 5 次（`AvatarEasterEgg`）會讓頭像旋轉一圈並在新分頁開啟 Discord 邀請連結；連續點擊若中斷超過 1.5 秒則重新計數。輪播顯示的名字（`NameRotator`）會以 CSS 捲動在 `itouSouta` / `伊藤蒼太` / `郭家睿` 之間切換；滑鼠移入時會暫停輪播並跑一段文字解碼效果，把當下顯示的名字從隨機符號由左至右逐字解出（解碼目標是游標移入當下輪播正停在的那個名字，依經過時間對 8 秒的 CSS 週期推算）。
+Hero 區塊的 ASCII 表情（`HeroFace`）會微幅跟隨滑鼠游標（位移經過夾限並透過 `requestAnimationFrame` 節流），點擊時會眨靠近點擊側的那隻眼睛，捲動超過視窗頂端附近的門檻時（`IntersectionObserver` 搭配負值 `rootMargin`）會切換成「快消失」的表情並伴隨搖擺動畫。快速連續點擊個人頭像 5 次（`AvatarEasterEgg`）會讓頭像旋轉一圈並在新分頁開啟 Discord 邀請連結；連續點擊若中斷超過 1.5 秒則重新計數。輪播顯示的名字（`NameRotator`）會以純 CSS keyframe（8 秒一輪）在 `itouSouta` / `伊藤蒼太` / `郭家睿` 之間切換，元件本身完全沒有 JS；另外附一份 `.sr-only` 的完整名字串給螢幕閱讀器與搜尋引擎。
 
 ### 動畫效果
 
 - 頁尾跑馬燈與技術磚牆列使用 CSS 關鍵影格
-- Hero 區塊中輪播顯示名稱的名稱輪播器，並帶有滑鼠移入觸發的文字解碼效果
+- Hero 區塊中輪播顯示名稱的名稱輪播器（純 CSS，無 JS）
 - 透過 `PageTransition` 實現的頁面轉場
 - 卡片懸停效果（觸控裝置上透過 `@media (hover: none)` 停用）
 - 所有動畫皆遵循 `prefers-reduced-motion`
@@ -155,13 +155,12 @@ app/
     GithubContributionCard.tsx
     GithubGlyph.tsx                  行內 GitHub 標誌（透傳 SVGProps）
     HeroFace.tsx                     互動式 ASCII Hero 表情 — 跟隨游標、眨眼、消失時搖擺
-    NameRotator.tsx                  Hero 名字輪播，含滑鼠移入的文字解碼效果
+    NameRotator.tsx                  Hero 名字輪播（純 CSS keyframe，無 JS）
     AvatarEasterEgg.tsx              連點頭像 5 下的彩蛋 — 旋轉並開啟 Discord
     GravityMode.tsx                  「114514」搜尋彩蛋 — 整頁 DOM 重力物理，可拖曳／甩動
     BadgeShape.tsx                   點擊後變形（clip-path）的個人名片徽章
     LikeCard.tsx                     支援預設 / "circle"（VTuber）/ "square"（專輯）版面，含開台徽章
     LikeCategorySection.tsx          含延遲載入觀察器的分類區塊
-    LikeDetailBody.tsx               展開的 Like 詳情檢視（用於模態視窗）
     LikeFilterGrid.tsx               搜尋 + 標籤篩選 + 格狀清單 + 模態視窗的整合
     LikeModalShell.tsx               以 Portal 實作的 Like 詳情模態外殼
     VtuberLiveWarmup.tsx             /likes 載入時預先熱好 /api/vtuber-live 的快取
@@ -178,7 +177,6 @@ app/
     useHorizontalWheelScroll.ts          滑鼠滾輪水平平移
     useScrollLinkedHorizontalReveal.ts   與捲動位置連動的水平平移
     useVtuberLiveStatus.ts               掛載 circle 版面區塊時，每 60 秒輪詢 /api/vtuber-live
-    useFlipReorder.ts                    手刻的卡片重排 FLIP 動畫 Hook（不依賴函式庫）
   lib/
     kv.ts                             讀寫 Vercel KV 中來自 Discord 的雜談內容
     threads.ts                        擷取 Threads API 的同步貼文
@@ -237,7 +235,7 @@ npm run lint
 | `GITHUB_TOKEN`                                                                               | 存取 GitHub API 以取得專案資訊（選填；未設定時無法取得專案詳情）                    |
 | `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 取得關於頁、`/likes` 與 `/likes/music` 的常聽歌曲資料（選填；未設定時請見下方說明） |
 
-音樂整合透過 Spotify Web API 進行 — 需要 Premium 帳號才能註冊新的開發者應用程式，取得 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` 後，跑一次 `node --env-file=.env.local scripts/spotify-refresh-token.mjs` 產生 `SPOTIFY_REFRESH_TOKEN`：授權會導到 `https://itousouta.me/callback`（`app/callback/route.ts` 換 token 並把結果顯示在頁面上），也可設 `SPOTIFY_REDIRECT_URI=http://localhost:8888/callback` 走本機流程（詳見該 script 的註解）。若未設定這三個變數，`getTopTracks()` 會回傳 `null`，各呼叫點也會相應地降級處理：關於頁卡片顯示靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 預覽列則直接省略。
+音樂整合透過 Spotify Web API 進行 — 需要 Premium 帳號才能註冊新的開發者應用程式，取得 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` 後，跑一次 `node --env-file=.env.local scripts/spotify-refresh-token.mjs` 產生 `SPOTIFY_REFRESH_TOKEN`：授權會導到 `http://localhost:8888/callback`，由該 script 自己起的本機伺服器接住並把 token 印在終端機（該位址要先加進 Spotify Dashboard 的 Redirect URIs，詳見 script 註解）。若未設定這三個變數，`getTopTracks()` 會回傳 `null`，各呼叫點也會相應地降級處理：關於頁卡片顯示靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 預覽列則直接省略。
 
 ## 部署
 

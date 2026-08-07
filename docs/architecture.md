@@ -17,7 +17,7 @@ The project intentionally avoids UI libraries and CSS-in-JS. Most visual behavio
 | `/thoughts`         | Unified feed from Discord/KV, Threads, and GitHub events        |
 | `/likes`            | Hub for liked novels, manga, anime, VTubers, and music          |
 | `/likes/[category]` | Category-specific likes grid                                    |
-| `/likes/music`      | Spotify top tracks                                             |
+| `/likes/music`      | Spotify top tracks                                              |
 | `/projects`         | Filterable project gallery                                      |
 | `/links`            | Friend/community links                                          |
 | `/experience`       | Timeline of activities                                          |
@@ -77,4 +77,4 @@ Animations are mostly CSS keyframes and small client-side effects:
 - Scroll-linked reveal for wide content.
 - Reduced-motion support through CSS media queries.
 
-The likes grid uses a small FLIP reorder helper so live-first sorting can animate without a full animation library.
+Live-first sorting reorders the grid directly — cards snap to their new position, there is no reorder animation.

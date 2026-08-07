@@ -7,6 +7,7 @@ const description = "這個頁面不知道飛去哪裡了 (´；ω；`)";
 export const metadata: Metadata = {
   title: "404",
   description,
+  robots: { index: false, follow: false },
 };
 
 export default function NotFound() {

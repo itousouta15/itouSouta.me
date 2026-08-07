@@ -50,11 +50,6 @@ export function discordArtThumb(src: string) {
   return wsrvThumb(src, 96, 96);
 }
 
-// 音樂榜單的歌曲縮圖，顯示 44px
-export function songThumb(src: string) {
-  return wsrvThumb(src, 88, 88);
-}
-
 // 專案卡片封面，顯示寬度隨卡片流動、高度固定 150px
 export function projectCoverThumb(src: string) {
   return wsrvThumb(src, 640, 300);
