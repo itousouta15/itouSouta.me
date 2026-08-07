@@ -18,6 +18,7 @@ import SeasonTint from "./components/SeasonTint";
 import KonamiEasterEgg from "./components/KonamiEasterEgg";
 import ConfettiBurst from "./components/ConfettiBurst";
 import ServiceWorkerRegistration from "./components/ServiceWorkerRegistration";
+import GuestbookSection from "./components/GuestbookSection";
 
 const SITE_URL = "https://itousouta.me";
 const SITE_TITLE = "itouSouta.me";
@@ -186,6 +187,8 @@ export default function RootLayout({
             <Header />
             <main className="main" id="main" tabIndex={-1}>
               <PageTransition>{children}</PageTransition>
+              {/* 留言板：每一頁的內容底下都有，滾到頁底才載入 Waline */}
+              <GuestbookSection />
             </main>
             <Footer />
             <BackToTopButton />

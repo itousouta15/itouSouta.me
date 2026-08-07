@@ -11,13 +11,36 @@ export default function ProjectDetailBody({
 }) {
   return (
     <>
-      <img
-        className="proj-detail-cover"
-        src={projectCoverThumb(project.cover)}
-        alt={`${project.title} 預覽圖`}
-        loading="lazy"
-        decoding="async"
-      />
+      <div className="proj-detail-media">
+        <img
+          className="proj-detail-cover"
+          src={projectCoverThumb(project.cover)}
+          alt={`${project.title} 預覽圖`}
+          loading="lazy"
+          decoding="async"
+        />
+
+        {repoInfo && (
+          <div className="stat-grid proj-detail-stats">
+            <div className="stat">
+              <div className="stat-k">STARS</div>
+              <div className="stat-v mono">{repoInfo.stars}</div>
+            </div>
+            {repoInfo.language && (
+              <div className="stat">
+                <div className="stat-k">LANGUAGE</div>
+                <div className="stat-v sans">{repoInfo.language}</div>
+              </div>
+            )}
+            <div className="stat">
+              <div className="stat-k">LAST PUSH</div>
+              <div className="stat-v sans">
+                {new Date(repoInfo.pushedAt).toLocaleDateString("zh-TW")}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className="proj-tags" style={{ marginTop: 16 }}>
         {project.tags.map((t) => (
@@ -60,27 +83,6 @@ export default function ProjectDetailBody({
           </a>
         )}
       </div>
-
-      {repoInfo && (
-        <div className="stat-grid" style={{ marginTop: 24 }}>
-          <div className="stat">
-            <div className="stat-k">STARS</div>
-            <div className="stat-v mono">{repoInfo.stars}</div>
-          </div>
-          {repoInfo.language && (
-            <div className="stat">
-              <div className="stat-k">LANGUAGE</div>
-              <div className="stat-v sans">{repoInfo.language}</div>
-            </div>
-          )}
-          <div className="stat">
-            <div className="stat-k">LAST PUSH</div>
-            <div className="stat-v sans">
-              {new Date(repoInfo.pushedAt).toLocaleDateString("zh-TW")}
-            </div>
-          </div>
-        </div>
-      )}
 
       {project.why && (
         <div className="proj-detail-section">
