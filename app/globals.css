@@ -3897,6 +3897,26 @@ body.site-revealed .header {
   margin-top: 28px;
 }
 
+/* /offline（PWA 離線頁） */
+.offline {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 96px 24px;
+  text-align: center;
+}
+.offline-title {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-top: 16px;
+}
+.offline-sub {
+  margin: 14px 0 28px;
+  font-size: 15px;
+  color: var(--dim);
+}
+
 /* /api 文件頁 */
 .api-endpoint {
   margin-top: 24px;
