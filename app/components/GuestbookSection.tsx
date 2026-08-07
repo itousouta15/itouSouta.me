@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 
 /* Waline 的 bundle 約 77KB，全站每頁都掛會直接把每頁的 JS 翻倍。
@@ -9,10 +10,12 @@ import dynamic from "next/dynamic";
 const Guestbook = dynamic(() => import("./Guestbook"), { ssr: false });
 
 export default function GuestbookSection() {
+  const pathname = usePathname();
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
+    if (pathname === "/") return;
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
@@ -26,7 +29,10 @@ export default function GuestbookSection() {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [pathname]);
+
+  // 首頁不放留言板
+  if (pathname === "/") return null;
 
   return (
     <div ref={ref} className="guestbook-section">
