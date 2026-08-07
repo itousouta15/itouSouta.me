@@ -41,16 +41,6 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](
 
 支援深色與淺色模式。所選主題會存於 `localStorage`，並在首次繪製前透過阻塞式的行內腳本套用，避免出現無樣式內容閃爍（FOUC）。
 
-### 玻璃模式（Glass Mode）
-
-網站背景在特定瀏覽器上會自動變成半透明，用意是搭配 [Zen 瀏覽器](https://zen-browser.app) 的視窗透明功能（Windows 上靠 Mica/Acrylic、Linux/macOS 則有對應的毛玻璃效果）——Zen 開啟該功能後，分頁內容本身也會被拿去合成透明，如果網站背景是不透明色就會直接擋住桌布。由於 Zen 是 Firefox 的分支，且刻意不修改 `navigator.userAgent`（避免大量網站認錯瀏覽器而故障，Zen 官方 GitHub 討論串已證實這點），網站端沒有辦法精準辨識「這是 Zen」，只能退而求其次，用「是否為 Firefox 家族」（`/firefox\//i`，排除 SeaMonkey）當替代判斷，偵測到就預設開啟。
-
-`app/layout.tsx` 的阻塞式行內腳本會在首次繪製前，依 UA 判斷結果與 `localStorage` 中使用者自行切換過的偏好（`glass` 鍵）決定要不要套用，避免出現閃爍。Header 右上角只有 Firefox 家族瀏覽器才會顯示一顆水滴圖示按鈕（`ThemeProvider` 的 `glassCapable`），讓使用者自行開關；玻璃模式開啟時會強制鎖定深色主題（半透明色票只調過深色版本），日/月主題切換鈕也會跟著隱藏，等關閉玻璃模式後才會以進場動畫重新出現。
-
-實際效果是把 `--bg`（頁面最底層、卡片與卡片之間的留白處，以及 Header／Footer）改成完全透明，讓桌布真正透出來；卡片、彈窗等真正需要襯字的地方（`--panel`/`--panel2`/`--inset`）則維持較高的不透明度以確保可讀性，並用共用的 `--glass-blur`（`blur(26px) saturate(170%)`）當作 `backdrop-filter` 套在最外層的卡片、彈窗、浮動按鈕上，做出毛玻璃質感。
-
-只改 CSS 並不會自動生出「桌布透出來」的效果——那是 Zen 瀏覽器本身視窗透明功能的工作。要親眼看到完整效果，還需要使用者自行在 Zen 的 `about:config` 開啟 `browser.tabs.allow_transparent_browser`、`widget.transparent-windows`、`widget.windows.mica`（Windows），在 Windows 設定關閉「在標題列與視窗框顯示重點色」後重開瀏覽器；通常還會搭配 [MicaForEveryone](https://github.com/MicaForEveryone/MicaForEveryone) 才能有真正模糊的桌布，而不只是平面的穿透。
-
 ### 字型
 
 多種字型分別載入自 Google Fonts 與 [emfont](https://font.emtech.cc) CDN：

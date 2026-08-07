@@ -9,7 +9,7 @@ export const contentType = "image/png";
    1.38MB 的 resvg.wasm 也不必塞進去。設 runtime = "edge" 反而會製造出那個問題。 */
 
 // satori 只吃 CSS 的一個子集：沒有 CSS 變數、沒有 backdrop-filter、沒有 zoom，
-// 所以直接寫死 globals.css 的深色色票（PNG 沒有主題之分，玻璃模式又強制深色）
+// 所以直接寫死 globals.css 的深色色票（PNG 沒有主題之分）
 const BG = "#1b1e23";
 const PANEL = "#24262b";
 const TX = "#e8ebf2";
