@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ROLES, TILE_COLS } from "./data";
+import { getBlogPosts } from "./lib/blogFeed";
 import TileIcon from "./components/TileIcon";
 import { TILE_ICON_META } from "./components/tileIconMeta";
 import GithubGlyph from "./components/GithubGlyph";
@@ -15,7 +16,17 @@ import BadgeShape from "./components/BadgeShape";
 import NameRotator from "./components/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
 
-export default function HomePage() {
+// 首頁現在會渲染最新文章，跟著部落格 feed 走，改成 ISR
+export const revalidate = 3600;
+
+const POSTS_TO_SHOW = 4;
+
+export default async function HomePage() {
+  // feed 本身照部落格輸出順序，這裡自己按時間由新到舊取最新幾篇
+  const posts = (await getBlogPosts().catch(() => []))
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, POSTS_TO_SHOW);
+
   const tileIcons = TILE_COLS.flat();
   const tileRows = {
     upper: tileIcons.filter((_, i) => i % 2 === 0),
@@ -241,6 +252,41 @@ export default function HomePage() {
             <span className="card-arrow-sm">↗</span>
           </Link>
         </div>
+
+        {/* 最新文章 */}
+        {posts.length > 0 && (
+          <div className="home-posts">
+            <div className="card-kicker">LATEST BLOG</div>
+            <div className="divider" />
+            <div className="blog-list">
+              {posts.map((post) => (
+                <a
+                  className="thought-item"
+                  key={post.id}
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "block", color: "inherit" }}
+                >
+                  <div className="thought-meta">
+                    <span className="thought-date">{post.date}</span>
+                    {post.category && (
+                      <span className="thought-tag">{post.category}</span>
+                    )}
+                  </div>
+                  <p className="thought-text">{post.title}</p>
+                </a>
+              ))}
+            </div>
+            <Link
+              href="/writing"
+              className="btn-ghost home-posts-more"
+              style={{ textDecoration: "none" }}
+            >
+              更多文章與雜談 <span className="btn-arrow inset">→</span>
+            </Link>
+          </div>
+        )}
 
         {/* GitHub contribution graph */}
         <GithubContributionCard />
