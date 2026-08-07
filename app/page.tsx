@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { ROLES, TILE_COLS } from "./data";
-import { getTopTracks } from "./lib/spotify";
-import { likeCircleThumb } from "./lib/imageThumb";
 import TileIcon from "./components/TileIcon";
 import { TILE_ICON_META } from "./components/tileIconMeta";
 import GithubGlyph from "./components/GithubGlyph";
@@ -13,13 +11,7 @@ import BadgeShape from "./components/BadgeShape";
 import NameRotator from "./components/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
 
-// 首頁渲染最近在聽，跟著 Spotify 走，改成 ISR
-export const revalidate = 3600;
-
-export default async function HomePage() {
-  // Spotify 沒設定環境變數時回 null，整段不渲染
-  const tracks = await getTopTracks({ limit: 3 }).catch(() => null);
-
+export default function HomePage() {
   const tileIcons = TILE_COLS.flat();
   const tileRows = {
     upper: tileIcons.filter((_, i) => i % 2 === 0),
@@ -242,52 +234,7 @@ export default async function HomePage() {
             </div>
             <span className="card-arrow-sm">↗</span>
           </Link>
-
-          <Link
-            className="bento-guestbook nav-card"
-            href="/guestbook"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <div>
-              <div className="card-kicker">GUESTBOOK</div>
-              <div className="nav-card-title">留言板</div>
-            </div>
-            <span className="nav-card-ghost" aria-hidden>
-              言
-            </span>
-            <span className="nav-card-arrow">↗</span>
-          </Link>
         </div>
-
-        {/* 最近在聽 */}
-        {tracks && tracks.length > 0 && (
-          <Link
-            href="/likes/music"
-            className="home-music"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <div className="card-kicker">TOP TRACKS</div>
-            <div className="divider" />
-            <div className="home-music-list">
-              {tracks.map((t, i) => (
-                <div className="home-music-row" key={`${t.href}-${i}`}>
-                  <span className="home-music-rank">{i + 1}</span>
-                  <img
-                    className="home-music-cover"
-                    src={likeCircleThumb(t.cover)}
-                    alt=""
-                    loading="lazy"
-                  />
-                  <div className="home-music-meta">
-                    <div className="home-music-title">{t.title}</div>
-                    <div className="home-music-artist">{t.artist}</div>
-                  </div>
-                  <span className="home-music-arrow">↗</span>
-                </div>
-              ))}
-            </div>
-          </Link>
-        )}
 
         {/* GitHub contribution graph */}
         <GithubContributionCard />

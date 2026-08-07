@@ -1537,8 +1537,10 @@ body.site-revealed .header {
 }
 .status-dot {
   position: absolute;
-  right: 2px;
-  bottom: 4px;
+  /* 跨在頭像的 7px 圓環上（圓點中心對齊圓環中心），一半在外一半在內——
+     跟 Discord 的 presence indicator 一樣「掛」在頭像邊緣，不是印在角落 */
+  right: -7px;
+  bottom: -7px;
   width: 22px;
   height: 22px;
   border-radius: 50%;
@@ -2233,8 +2235,7 @@ body.site-revealed .header {
   grid-template-areas:
     "likes     likes     thoughts   thoughts"
     "likes     likes     experience friends"
-    "projects  projects  experience friends"
-    "guestbook guestbook guestbook   guestbook";
+    "projects  projects  experience friends";
   gap: 18px;
 }
 .bento-thoughts {
@@ -2253,9 +2254,6 @@ body.site-revealed .header {
 }
 .bento-projects {
   grid-area: projects;
-}
-.bento-guestbook {
-  grid-area: guestbook;
 }
 .card-github {
   padding: 28px 30px;
@@ -2713,70 +2711,6 @@ body.site-revealed .header {
   .now-playing {
     bottom: 12px;
   }
-}
-
-/* 首頁「最近在聽」小卡 */
-.home-music {
-  display: block;
-  margin-top: 28px;
-}
-.home-music-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-}
-.home-music-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: var(--inset);
-  transition: background 0.2s ease;
-}
-.home-music:hover .home-music-row {
-  background: var(--panel);
-}
-.home-music-rank {
-  flex: none;
-  width: 18px;
-  text-align: center;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  color: var(--mute);
-}
-.home-music-cover {
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-.home-music-meta {
-  flex: 1;
-  min-width: 0;
-}
-.home-music-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--tx);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.home-music-artist {
-  font-size: 11px;
-  color: var(--mute);
-  margin-top: 1px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.home-music-arrow {
-  flex: none;
-  font-size: 12px;
-  color: var(--dim);
 }
 
 /* ===========================================================================
@@ -3643,16 +3577,34 @@ body.site-revealed .header {
   display: inline-block;
   transition: transform 0.25s ease;
 }
+.proj-detail-media {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
 .proj-detail-cover {
   display: block;
-  max-width: 480px;
+  flex: none;
   width: 100%;
-  margin: 0 auto;
+  max-width: 320px;
   max-height: 300px;
   object-fit: cover;
   border: 1px solid var(--bd);
   border-radius: 8px;
   background: var(--inset);
+}
+.proj-detail-stats {
+  flex: 1;
+  min-width: 0;
+}
+@media (max-width: 600px) {
+  .proj-detail-media {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .proj-detail-cover {
+    margin: 0 auto;
+  }
 }
 .proj-detail-actions {
   display: flex;
@@ -3876,6 +3828,11 @@ body.site-revealed .header {
 /* Guestbook（Waline）容器：與其他卡片區塊保持一致的節奏 */
 .guestbook-waline {
   margin-top: 28px;
+}
+
+/* 每頁底部固定出現的留言板區塊 */
+.guestbook-section {
+  margin-top: 48px;
 }
 
 /* /offline（PWA 離線頁） */
