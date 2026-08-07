@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { ROLES, TILE_COLS } from "./data";
 import { getBlogPosts } from "./lib/blogFeed";
+import { getTopTracks } from "./lib/spotify";
+import { likeCircleThumb } from "./lib/imageThumb";
 import TileIcon from "./components/TileIcon";
 import { TILE_ICON_META } from "./components/tileIconMeta";
 import GithubGlyph from "./components/GithubGlyph";
 import GithubContributionCard from "./components/GithubContributionCard";
-import {
-  LanyardProvider,
-  ProfileStatus,
-  ProfileStatusDot,
-} from "./components/LanyardCards";
+import { ProfileStatus, ProfileStatusDot } from "./components/LanyardCards";
 import AvatarEasterEgg from "./components/AvatarEasterEgg";
 import HeroFace from "./components/HeroFace";
 import BadgeShape from "./components/BadgeShape";
@@ -26,6 +24,8 @@ export default async function HomePage() {
   const posts = (await getBlogPosts().catch(() => []))
     .sort((a, b) => b.timestamp - a.timestamp)
     .slice(0, POSTS_TO_SHOW);
+  // Spotify 沒設定環境變數時回 null，整段不渲染
+  const tracks = await getTopTracks({ limit: 3 }).catch(() => null);
 
   const tileIcons = TILE_COLS.flat();
   const tileRows = {
@@ -41,58 +41,56 @@ export default async function HomePage() {
           <div className="profile-banner">
             <img src="/assets/brand/banner.webp" alt="" />
           </div>
-          <LanyardProvider>
-            <div className="profile-body">
-              <div className="avatar-row">
-                <div className="avatar-wrap">
-                  <AvatarEasterEgg
-                    className="avatar"
-                    src="/assets/brand/avatar.webp"
-                    alt="郭家睿 / 伊藤蒼太"
-                    href="https://dc.itousouta.me"
-                  />
-                  <ProfileStatusDot />
-                </div>
-                <div className="badges">
-                  <BadgeShape kind="circle" color="var(--blue)" />
-                  <BadgeShape kind="triangle" color="var(--purple)" />
-                  <BadgeShape kind="square" color="var(--dim)" />
-                  <BadgeShape kind="diamond" color="var(--blue)" />
-                </div>
+          <div className="profile-body">
+            <div className="avatar-row">
+              <div className="avatar-wrap">
+                <AvatarEasterEgg
+                  className="avatar"
+                  src="/assets/brand/avatar.webp"
+                  alt="郭家睿 / 伊藤蒼太"
+                  href="https://dc.itousouta.me"
+                />
+                <ProfileStatusDot />
               </div>
-              <div className="name-row">
-                <span className="name">郭家睿</span>
-                <span className="sr-only"> · </span>
-                <span className="alias">伊藤蒼太</span>
+              <div className="badges">
+                <BadgeShape kind="circle" color="var(--blue)" />
+                <BadgeShape kind="triangle" color="var(--purple)" />
+                <BadgeShape kind="square" color="var(--dim)" />
+                <BadgeShape kind="diamond" color="var(--blue)" />
               </div>
-              <div className="handle">itou.souta15 · 人間になりたい</div>
-              <ProfileStatus />
-              <div className="divider" />
-              <div className="label">關於我</div>
-              <div className="field">好想睡覺 Zzzz</div>
-              <div className="label mt16">身分組</div>
-              <div className="roles">
-                <div className="role-row">
-                  {ROLES.filter((r) => r.color === "blue").map((r) => (
-                    <span className="role-chip" key={r.label}>
-                      <span className={`role-dot ${r.color}`} />
-                      {r.label}
-                    </span>
-                  ))}
-                </div>
-                <div className="role-row">
-                  {ROLES.filter((r) => r.color === "purple").map((r) => (
-                    <span className="role-chip" key={r.label}>
-                      <span className={`role-dot ${r.color}`} />
-                      {r.label}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="label mt16">成為成員時間</div>
-              <div className="field">2009/01/15</div>
             </div>
-          </LanyardProvider>
+            <div className="name-row">
+              <span className="name">郭家睿</span>
+              <span className="sr-only"> · </span>
+              <span className="alias">伊藤蒼太</span>
+            </div>
+            <div className="handle">itou.souta15 · 人間になりたい</div>
+            <ProfileStatus />
+            <div className="divider" />
+            <div className="label">關於我</div>
+            <div className="field">好想睡覺 Zzzz</div>
+            <div className="label mt16">身分組</div>
+            <div className="roles">
+              <div className="role-row">
+                {ROLES.filter((r) => r.color === "blue").map((r) => (
+                  <span className="role-chip" key={r.label}>
+                    <span className={`role-dot ${r.color}`} />
+                    {r.label}
+                  </span>
+                ))}
+              </div>
+              <div className="role-row">
+                {ROLES.filter((r) => r.color === "purple").map((r) => (
+                  <span className="role-chip" key={r.label}>
+                    <span className={`role-dot ${r.color}`} />
+                    {r.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="label mt16">成為成員時間</div>
+            <div className="field">2009/01/15</div>
+          </div>
         </div>
       </aside>
 
@@ -278,14 +276,37 @@ export default async function HomePage() {
                 </a>
               ))}
             </div>
-            <Link
-              href="/writing"
-              className="btn-ghost home-posts-more"
-              style={{ textDecoration: "none" }}
-            >
-              更多文章與雜談 <span className="btn-arrow inset">→</span>
-            </Link>
           </div>
+        )}
+
+        {/* 最近在聽 */}
+        {tracks && tracks.length > 0 && (
+          <Link
+            href="/likes/music"
+            className="home-music"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <div className="card-kicker">TOP TRACKS</div>
+            <div className="divider" />
+            <div className="home-music-list">
+              {tracks.map((t, i) => (
+                <div className="home-music-row" key={`${t.href}-${i}`}>
+                  <span className="home-music-rank">{i + 1}</span>
+                  <img
+                    className="home-music-cover"
+                    src={likeCircleThumb(t.cover)}
+                    alt=""
+                    loading="lazy"
+                  />
+                  <div className="home-music-meta">
+                    <div className="home-music-title">{t.title}</div>
+                    <div className="home-music-artist">{t.artist}</div>
+                  </div>
+                  <span className="home-music-arrow">↗</span>
+                </div>
+              ))}
+            </div>
+          </Link>
         )}
 
         {/* GitHub contribution graph */}

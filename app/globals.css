@@ -198,6 +198,7 @@ svg {
   --bd: rgba(6, 6, 7, 0.1);
   --bd2: rgba(20, 24, 40, 0.2);
 }
+
 /* header/footer 是 .root 的子元素，.root 自己已經用 var(--bg) 鋪了一層底色。
    如果 header/footer 自己「再」用 var(--bg) 當背景，等於在同一個位置疊了兩層
    一樣的半透明色——兩層疊加的實際不透明度會比單層高（alpha 合成不是線性相
@@ -2592,6 +2593,147 @@ body.site-revealed .header {
   background: #1db954;
   border-radius: 2px;
   transition: width 1s linear;
+}
+
+/* ---------------------------------------------------------------------------
+   Now-playing floating pill（全站固定）
+   刻意不進 glass backdrop-filter 名單：fixed 元素進名單會變成後代的 containing
+   block，而且名單語意是「有磨砂背景的版面卡片」。這裡自己掛 backdrop-filter。
+   z-index 45：header 60 / site-loader 200 之下，不壓任何覆蓋層。 */
+.now-playing {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(430px, calc(100vw - 28px));
+  padding: 8px 16px 8px 8px;
+  background: var(--panel);
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: inherit;
+  text-decoration: none;
+  font-family: "Noto Sans TC", sans-serif;
+}
+.now-playing-art {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+.now-playing-meta {
+  flex: 1;
+  min-width: 0;
+}
+.now-playing-song {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tx);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.now-playing-artist {
+  font-size: 11px;
+  color: var(--mute);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.now-playing-progress {
+  flex: none;
+  width: 72px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--bd2);
+  overflow: hidden;
+}
+.now-playing-progress span {
+  display: block;
+  height: 100%;
+  background: #1db954;
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+@media (max-width: 640px) {
+  .now-playing-progress {
+    display: none;
+  }
+  .now-playing {
+    bottom: 12px;
+  }
+}
+
+/* 首頁「最近在聽」小卡 */
+.home-music {
+  display: block;
+  margin-top: 28px;
+}
+.home-music-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+.home-music-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--inset);
+  transition: background 0.2s ease;
+}
+.home-music:hover .home-music-row {
+  background: var(--panel);
+}
+.home-music-rank {
+  flex: none;
+  width: 18px;
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--mute);
+}
+.home-music-cover {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.home-music-meta {
+  flex: 1;
+  min-width: 0;
+}
+.home-music-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tx);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.home-music-artist {
+  font-size: 11px;
+  color: var(--mute);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.home-music-arrow {
+  flex: none;
+  font-size: 12px;
+  color: var(--dim);
 }
 
 /* ===========================================================================
