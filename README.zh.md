@@ -20,19 +20,19 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](
 
 ## 頁面
 
-| 路由                | 說明                                                                                   |
-| ------------------- | -------------------------------------------------------------------------------------- |
-| `/`                 | 首頁 — 個人檔案卡、Hero 區塊、技術磚牆、bento 導覽格、GitHub 貢獻圖                    |
-| `/about`            | 關於 — 簡介、統計數據、座右銘，以及兩張 Spotify/Likes 預覽卡（動畫、音樂）             |
-| `/thoughts`         | 雜談 — 整合 Discord 斜線指令貼文、同步的 Threads 貼文與 GitHub 事件的動態牆            |
-| `/likes`            | Likes — 可搜尋、可依標籤篩選的小說、漫畫、動畫格狀清單；Spotify 常聽歌曲預覽列         |
-| `/likes/[category]` | 分類詳情 — 含輪播與篩選功能的完整清單                                                  |
-| `/likes/music`      | 音樂 — 可搜尋的 Spotify 常聽歌曲格狀清單（方形封面），與其他分類共用同一套模態詳情檢視 |
-| `/projects`         | 專案 — 可篩選的個人專案卡片，含 GitHub 專案資訊                                        |
-| `/links`            | 朋友 — 朋友與社群的連結卡片                                                            |
-| `/experience`       | 歷程 — 經歷與活動時間軸                                                                |
-| `/feed.xml`         | RSS Feed — 整合雜談、專案與更新的統一動態                                              |
-| (Cmd/Ctrl+K)        | 指令面板 — 快速導覽與搜尋頁面、專案                                                    |
+| 路由                | 說明                                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `/`                 | 首頁 — 個人檔案卡、Hero 區塊、技術磚牆、bento 導覽格、GitHub 貢獻圖                                                    |
+| `/about`            | 關於 — 簡介、統計數據、座右銘，以及兩張 Spotify/Likes 預覽卡（動畫、音樂）                                             |
+| `/writing`          | 文章與雜談 — 部落格文章（blog.itousouta.me）索引＋整合 Discord 斜線指令貼文、同步的 Threads 貼文與 GitHub 事件的動態牆 |
+| `/likes`            | Likes — 可搜尋、可依標籤篩選的小說、漫畫、動畫格狀清單；Spotify 常聽歌曲預覽列                                         |
+| `/likes/[category]` | 分類詳情 — 含輪播與篩選功能的完整清單                                                                                  |
+| `/likes/music`      | 音樂 — 可搜尋的 Spotify 常聽歌曲格狀清單（方形封面），與其他分類共用同一套模態詳情檢視                                 |
+| `/projects`         | 專案 — 可篩選的個人專案卡片，含 GitHub 專案資訊                                                                        |
+| `/links`            | 朋友 — 朋友與社群的連結卡片                                                                                            |
+| `/experience`       | 歷程 — 經歷與活動時間軸                                                                                                |
+| `/feed.xml`         | RSS Feed — 整合雜談、專案與更新的統一動態                                                                              |
+| (Cmd/Ctrl+K)        | 指令面板 — 快速導覽與搜尋頁面、專案                                                                                    |
 
 ## 功能特色
 
@@ -65,7 +65,7 @@ Logo 會在偵測到 `ChenYuLuoYan` 字型啟用（透過 `document.fonts.load`�
 
 ### 雜談 (Thoughts)
 
-獨立的 Discord 機器人（[itouBot](../itouBot)）提供 `/碎碎念` 斜線指令，內容直接寫入 Vercel KV；每次發文後會呼叫 `app/api/revalidate/route.ts`（以 `REVALIDATE_SECRET` 保護），讓頁面立即更新。`/thoughts` 頁面會將這些內容與從 Threads API（`app/lib/threads.ts`）取得的貼文合併，依時間戳由新到舊排序。若無遠端資料可用，則回退至 `app/data.ts` 中的靜態 `THOUGHTS` 陣列。
+獨立的 Discord 機器人（[itouBot](../itouBot)）提供 `/碎碎念` 斜線指令，內容直接寫入 Vercel KV；每次發文後會呼叫 `app/api/revalidate/route.ts`（以 `REVALIDATE_SECRET` 保護），讓頁面立即更新。`/writing` 頁面的雜談區會將這些內容與從 Threads API（`app/lib/threads.ts`）取得的貼文合併，依時間戳由新到舊排序。若無遠端資料可用，則回退至 `app/data.ts` 中的靜態 `THOUGHTS` 陣列。文章區來自 `app/lib/blogFeed.ts` 解析的部落格 atom feed（以 `<id>` 去重，避免 i18n 產生器重複輸出）。`/blog` 與 `/thoughts` 為永久轉址至 `/writing`。
 
 ### Likes
 
@@ -225,7 +225,7 @@ npm run lint
 
 ### 環境變數
 
-`/thoughts` 頁面所需（詳見 `.env.local`）：
+`/writing` 頁面所需（詳見 `.env.local`）：
 
 | 變數                                                                                         | 用途                                                                                |
 | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |

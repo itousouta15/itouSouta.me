@@ -26,11 +26,11 @@ export async function GET() {
           ? item.permalink
           : item.kind === "github"
             ? item.url
-            : SITE_URL + "/thoughts";
+            : SITE_URL + "/writing";
       const title = item.text ? item.text.slice(0, 60) : `雜談 ${item.date}`;
       return `<item>
   <title>${escapeXml(title)}</title>
-  <link>${escapeXml(link ?? SITE_URL + "/thoughts")}</link>
+  <link>${escapeXml(link ?? SITE_URL + "/writing")}</link>
   <guid isPermaLink="false">${escapeXml(item.id)}</guid>
   <pubDate>${new Date(item.timestamp).toUTCString()}</pubDate>
   ${item.text ? `<description>${escapeXml(item.text)}</description>` : ""}
@@ -42,7 +42,7 @@ export async function GET() {
 <rss version="2.0">
 <channel>
   <title>${escapeXml(TITLE)}</title>
-  <link>${SITE_URL}/thoughts</link>
+  <link>${SITE_URL}/writing</link>
   <description>${escapeXml(DESCRIPTION)}</description>
   <language>zh-TW</language>
   ${itemsXml}

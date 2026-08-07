@@ -25,7 +25,12 @@ const STATIC_PAGES: SearchItem[] = [
     category: "頁面",
   },
   { id: "page-likes", title: "喜歡的東西", href: "/likes", category: "頁面" },
-  { id: "page-blog", title: "一些文章", href: "/blog", category: "頁面" },
+  {
+    id: "page-writing",
+    title: "文章與雜談",
+    href: "/writing",
+    category: "頁面",
+  },
   { id: "page-stats", title: "數據", href: "/stats", category: "頁面" },
   { id: "page-links", title: "友鏈", href: "/links", category: "頁面" },
   {
@@ -34,7 +39,6 @@ const STATIC_PAGES: SearchItem[] = [
     href: "/experience",
     category: "頁面",
   },
-  { id: "page-thoughts", title: "雜談", href: "/thoughts", category: "頁面" },
 ];
 
 const PROJECT_ITEMS: SearchItem[] = PROJECTS.map((p) => ({
