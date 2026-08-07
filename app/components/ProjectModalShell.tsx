@@ -10,7 +10,6 @@ export default function ProjectModalShell({
   kickerColor,
   title,
   desc,
-  permalink,
   onClose,
   children,
 }: {
@@ -18,8 +17,6 @@ export default function ProjectModalShell({
   kickerColor: "blue" | "purple";
   title: string;
   desc: string;
-  /** 對應的站內詳情頁；有給就在標頭顯示一顆可分享的連結按鈕 */
-  permalink?: string;
   onClose: () => void;
   children: React.ReactNode;
 }) {
@@ -71,16 +68,6 @@ export default function ProjectModalShell({
             <div className="proj-modal-desc">{desc}</div>
           </div>
           <div className="proj-modal-actions">
-            {permalink && (
-              <a
-                className="proj-modal-permalink"
-                href={permalink}
-                aria-label={`${title} 的獨立頁面`}
-                title="開啟獨立頁面"
-              >
-                ↗
-              </a>
-            )}
             <button
               type="button"
               className="proj-modal-close"

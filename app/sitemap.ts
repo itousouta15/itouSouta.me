@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { LIKE_CATEGORIES, PROJECTS } from "./data";
+import { LIKE_CATEGORIES } from "./data";
 import { getMergedThoughts } from "./lib/mergedThoughts";
 import { getBlogPosts } from "./lib/blogFeed";
 
@@ -22,7 +22,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const likeCategoryRoutes = LIKE_CATEGORIES.map((cat) => `/likes/${cat.key}`);
-  const projectRoutes = PROJECTS.map((p) => `/projects/${p.slug}`);
 
   const [thoughts, posts] = await Promise.all([
     getMergedThoughts().catch(() => []),
@@ -34,11 +33,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const newestWriting = Math.max(newestThought ?? 0, newestPost);
 
   return [
-    ...[...staticRoutes, ...likeCategoryRoutes, ...projectRoutes].map(
-      (path) => ({
-        url: `${SITE_URL}${path}`,
-      })
-    ),
+    ...[...staticRoutes, ...likeCategoryRoutes].map((path) => ({
+      url: `${SITE_URL}${path}`,
+    })),
     {
       url: `${SITE_URL}/writing`,
       ...(newestWriting ? { lastModified: new Date(newestWriting) } : {}),
