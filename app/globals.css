@@ -3580,22 +3580,52 @@ body.site-revealed .header {
 .proj-detail-media {
   display: flex;
   gap: 24px;
-  align-items: flex-start;
+  /* stretch：統計卡上下緣對齊封面圖的高度 */
+  align-items: stretch;
 }
 .proj-detail-cover {
   display: block;
-  flex: none;
-  width: 100%;
-  max-width: 320px;
-  max-height: 300px;
+  /* 統計卡縮窄後封面吃滿剩餘空間（不再設寬度上限），高度上限略放開讓圖更有存在感；
+     與統計卡的間距（gap: 24px）刻意不動 */
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  max-width: none;
+  max-height: 360px;
   object-fit: cover;
   border: 1px solid var(--bd);
   border-radius: 8px;
   background: var(--inset);
 }
 .proj-detail-stats {
-  flex: 1;
+  flex: none;
+  width: 160px;
+  max-width: 100%;
   min-width: 0;
+  margin-left: auto;
+  /* modal 內統計列：直排三個（STARS / LANGUAGE / LAST PUSH 上下堆疊），靠右對齊；
+     三張卡平均鋪滿對齊圖片後的高度 */
+  grid-template-columns: 1fr;
+  gap: 20px;
+  /* stretch（預設）：三張卡平均拉長鋪滿對齊圖片後的高度 */
+  align-content: stretch;
+}
+.proj-detail-stats .stat {
+  padding: 10px;
+  /* 卡片被 stretch 拉高後，內容上下置中 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.proj-detail-stats .stat-k,
+.proj-detail-stats .stat-v {
+  text-align: right;
+}
+.proj-detail-stats .stat-v,
+.proj-detail-stats .stat-v.sans,
+.proj-detail-stats .stat-v.mono {
+  font-size: 13px;
+  margin-top: 4px;
 }
 @media (max-width: 600px) {
   .proj-detail-media {
@@ -3604,6 +3634,9 @@ body.site-revealed .header {
   }
   .proj-detail-cover {
     margin: 0 auto;
+  }
+  .proj-detail-stats {
+    width: 100%;
   }
 }
 .proj-detail-actions {
