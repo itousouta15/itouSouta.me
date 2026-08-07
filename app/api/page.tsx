@@ -69,6 +69,18 @@ const ENDPOINTS: Endpoint[] = [
   },
   {
     method: "GET",
+    path: "/api/guestbook",
+    desc: "留言板列表（最新在前）。",
+    curl: "curl https://itousouta.me/api/guestbook",
+  },
+  {
+    method: "POST",
+    path: "/api/guestbook",
+    desc: "送出留言，body {nick, text}。IP rate limit 5/hr，超過回 429。",
+    curl: 'curl -X POST https://itousouta.me/api/guestbook -H "Content-Type: application/json" -d \'{"nick":"某人","text":"嗨"}\'',
+  },
+  {
+    method: "GET",
     path: "/api/reactions?ids=a,b",
     desc: "雜談按讚計數，ids 用逗號分隔，回 {id: count}。",
     curl: 'curl "https://itousouta.me/api/reactions?ids=1,2"',
