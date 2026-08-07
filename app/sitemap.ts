@@ -7,7 +7,7 @@ const SITE_URL = "https://itousouta.me";
 
 /* 靜態路由刻意不給 lastModified：內容跟著 data.ts 走，只有重新部署才會變，
    填 new Date() 等於每次抓 sitemap 都宣稱「剛剛改過」——沒訊號還不如省略。
-   只有真的有時間戳可查的路由（/thoughts）才給。 */
+   只有真的有時間戳可查的路由（/writing，來源是部落格 feed 與雜談）才給。 */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     "",
@@ -30,6 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const newestThought = thoughts[0]?.timestamp;
   // 部落格列表刻意不排序（見 blogFeed.ts），所以這裡自己取最大值
   const newestPost = posts.reduce((max, p) => Math.max(max, p.timestamp), 0);
+  const newestWriting = Math.max(newestThought ?? 0, newestPost);
 
   return [
     ...[...staticRoutes, ...likeCategoryRoutes, ...projectRoutes].map(
@@ -38,12 +39,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     ),
     {
-      url: `${SITE_URL}/thoughts`,
-      ...(newestThought ? { lastModified: new Date(newestThought) } : {}),
-    },
-    {
-      url: `${SITE_URL}/blog`,
-      ...(newestPost ? { lastModified: new Date(newestPost) } : {}),
+      url: `${SITE_URL}/writing`,
+      ...(newestWriting ? { lastModified: new Date(newestWriting) } : {}),
     },
   ];
 }

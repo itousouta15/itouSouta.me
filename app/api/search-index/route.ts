@@ -9,12 +9,12 @@ import { getMergedThoughts } from "../../lib/mergedThoughts";
    代價，還會把三個不穩的外部 API 綁進根 layout 的渲染。
 
    改成獨立端點後，CommandPaletteInner 掛載時才抓（面板在按 Cmd+K 之前根本不會
-   渲染），而且 getBlogPosts / getMergedThoughts 都已經被 /blog 與 /thoughts 放進
+   渲染），而且 getBlogPosts / getMergedThoughts 都已經被 /writing 放進
    Next 的 Data Cache，這裡多半是 cache 讀取。 */
 
 export const revalidate = 3600;
 
-// 雜談沒有深層連結，全部指向 /thoughts；收太多只是把搜尋結果洗版
+// 雜談沒有深層連結，全部指向 /writing；收太多只是把搜尋結果洗版
 const MAX_THOUGHTS = 20;
 
 export interface RemoteSearchItem {
@@ -45,7 +45,7 @@ export async function GET() {
       id: `thought-${t.id}`,
       title: t.text ?? "",
       sub: t.date,
-      href: "/thoughts",
+      href: "/writing",
       category: "雜談",
     })),
   ].filter((item) => item.title.trim() !== "");

@@ -165,12 +165,12 @@ export default function HomePage() {
         <div className="bento">
           <Link
             className="bento-thoughts nav-card"
-            href="/thoughts"
+            href="/writing"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <div>
-              <div className="card-kicker">THOUGHTS</div>
-              <div className="nav-card-title">雜談</div>
+              <div className="card-kicker">WRITING</div>
+              <div className="nav-card-title">文章與雜談</div>
             </div>
             <span className="nav-card-ghost" aria-hidden>
               念

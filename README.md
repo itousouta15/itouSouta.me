@@ -36,7 +36,7 @@ No UI library, no CSS-in-JS, and no component framework.
 
 Most content lives in [app/data.ts](app/data.ts). The app keeps the public pages mostly static, then layers live data where it matters:
 
-- `/thoughts` combines KV entries, Threads posts, and GitHub activity.
+- `/writing` combines the blog index and KV entries, Threads posts, and GitHub activity.
 - `/likes/music` reads Spotify top tracks when credentials are available.
 - `/api/vtuber-live` checks VTuber live status and caches results for short intervals.
 - Project cards use GitHub API data when available and gracefully fall back otherwise.
