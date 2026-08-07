@@ -3192,18 +3192,6 @@ body.site-revealed .header {
   min-width: 0;
   flex: 1 1 auto;
 }
-.like-rating {
-  white-space: nowrap;
-  flex: none;
-}
-.like-rating .star-rating {
-  color: #ffc107;
-  font-size: 12px;
-}
-.like-rating .star-score {
-  font-size: 11px;
-  margin-left: 2px;
-}
 .like-sub {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;

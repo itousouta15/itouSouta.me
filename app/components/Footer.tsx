@@ -8,11 +8,9 @@ const NAV_LINKS = [
   { label: "關於", href: "/about" },
   { label: "收藏", href: "/likes" },
   { label: "專案", href: "/projects" },
-  { label: "文章", href: "/blog" },
+  { label: "文章", href: "/writing" },
   { label: "友鏈", href: "/links" },
   { label: "經歷", href: "/experience" },
-  { label: "雜談", href: "/thoughts" },
-  { label: "數據", href: "/stats" },
 ];
 
 const PROJECT_LINKS = [

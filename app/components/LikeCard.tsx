@@ -1,6 +1,5 @@
 import { Like } from "../data";
 import { likeThumb, likeCircleThumb } from "../lib/imageThumb";
-import { StarRating } from "../lib/ratingStars";
 import type { LiveInfo } from "../hooks/useVtuberLiveStatus";
 
 export default function LikeCard({
@@ -47,11 +46,6 @@ export default function LikeCard({
       <div className="like-body">
         <div className="like-title-row">
           <div className="like-title">{l.title}</div>
-          {l.personRating != null && (
-            <span className="like-rating">
-              <StarRating rating={l.personRating} />
-            </span>
-          )}
         </div>
         {layout !== "circle" && <div className="like-sub">{l.sub || " "}</div>}
       </div>
