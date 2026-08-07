@@ -22,7 +22,7 @@ The motion is intentionally lightweight and uses `requestAnimationFrame` throttl
 
 Component: `app/components/NameRotator.tsx`
 
-The display name cycles through multiple names. On hover, it pauses and runs a short text-decode animation into the currently visible name.
+The display name cycles through multiple names on an 8s CSS keyframe. The component ships no JavaScript at all — there is no hover interaction.
 
 ## Command Palette Inputs
 

@@ -25,6 +25,8 @@ const STATIC_PAGES: SearchItem[] = [
     category: "頁面",
   },
   { id: "page-likes", title: "喜歡的東西", href: "/likes", category: "頁面" },
+  { id: "page-blog", title: "一些文章", href: "/blog", category: "頁面" },
+  { id: "page-stats", title: "數據", href: "/stats", category: "頁面" },
   { id: "page-links", title: "友鏈", href: "/links", category: "頁面" },
   {
     id: "page-experience",
@@ -104,6 +106,7 @@ export default function CommandPaletteInner({
 }) {
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [remote, setRemote] = useState<SearchItem[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -115,6 +118,23 @@ export default function CommandPaletteInner({
       document.body.style.overflow = "";
     };
   }, []);
+
+  /* 部落格文章與雜談是非同步的，靜態索引拿不到。這個元件只有在使用者按下 Cmd+K
+     之後才會掛載，所以這次請求是真正的隨選——靜態結果先出來，這些晚一個 RTT 補上。 */
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/search-index")
+      .then((res) => (res.ok ? res.json() : { items: [] }))
+      .then((json) => {
+        if (!cancelled) setRemote(json.items ?? []);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const allItems = useMemo(() => [...ALL_ITEMS, ...remote], [remote]);
 
   // 彩蛋：輸入 "67" 按下 Enter，關閉搜尋回到首頁後讓整個頁面輕輕左右擺動幾下
   // （致敬 Google 搜尋列的 67 彩蛋）。搖晃動畫掛在 body 上，setTimeout 是原生
@@ -131,20 +151,27 @@ export default function CommandPaletteInner({
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return ALL_ITEMS.slice(0, MAX_RESULTS);
-    return ALL_ITEMS.filter(
-      (item) =>
-        item.title.toLowerCase().includes(q) ||
-        item.sub?.toLowerCase().includes(q) ||
-        item.category.toLowerCase().includes(q)
-    ).slice(0, MAX_RESULTS);
-  }, [query]);
+    if (!q) return allItems.slice(0, MAX_RESULTS);
+    return allItems
+      .filter(
+        (item) =>
+          item.title.toLowerCase().includes(q) ||
+          item.sub?.toLowerCase().includes(q) ||
+          item.category.toLowerCase().includes(q)
+      )
+      .slice(0, MAX_RESULTS);
+  }, [query, allItems]);
 
   const groups = useMemo(() => groupResults(results), [results]);
 
   useEffect(() => {
     setActiveIndex(0);
   }, [query]);
+
+  // 遠端項目補進來時結果會變長（都接在後面），保險起見夾住索引不要指到界外
+  useEffect(() => {
+    setActiveIndex((i) => Math.min(i, Math.max(0, results.length - 1)));
+  }, [results.length]);
 
   // 鍵盤上下移動時讓選中的項目保持在可視範圍內
   useEffect(() => {

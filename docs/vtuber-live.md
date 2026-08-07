@@ -41,4 +41,4 @@ When a channel is live:
 
 `sortLikesByRating` accepts an optional live predicate. When provided, live status is the primary sort key and rating breaks ties.
 
-Reordering is animated with a small FLIP helper so cards slide into place instead of snapping.
+Reordering is not animated — cards snap straight to their new position.

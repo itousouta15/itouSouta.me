@@ -1,30 +1,32 @@
 // 產生 Spotify 授權網址，取得 refresh token（一次性）。
 //
-// 預設走正式站回調：授權完會被導到 https://itousouta.me/callback，該頁會顯示
-// SPOTIFY_REFRESH_TOKEN 給你複製。用法:
+// 整個流程都在本機完成：這支 script 會起一個 localhost:8888 的小伺服器接授權結果，
+// 換到的 refresh token 直接印在終端機。用法:
 //   1. 到 https://developer.spotify.com/dashboard 建立 App，記下 Client ID / Client Secret
-//   2. 在 App 的 Edit Settings → Redirect URIs 加入 https://itousouta.me/callback 並儲存
-//      （本機開發的話也可以改用 http://localhost:8888/callback，見下方備註）
+//   2. 在 App 的 Edit Settings → Redirect URIs 加入 http://localhost:8888/callback 並儲存
 //   3. 把 SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET 填進 .env.local
 //   4. 跑 `node --env-file=.env.local scripts/spotify-refresh-token.mjs`
-//   5. 瀏覽器同意授權後，把 /callback 頁面上印出的 SPOTIFY_REFRESH_TOKEN 貼回
-//      .env.local（部署端貼到 Vercel 環境變數）
+//   5. 瀏覽器同意授權後，把終端機印出的 SPOTIFY_REFRESH_TOKEN 貼回 .env.local
+//      （部署端貼到 Vercel 環境變數）
 //   6. 整個流程只需要跑一次；refresh token 不會過期，之後都由伺服器端自動換新 access token
 //
-// 備註：若想在本機回調，可設定 SPOTIFY_REDIRECT_URI=http://localhost:8888/callback
-// （該 URI 也必須加進 Dashboard），此時 script 會自己起一個本機伺服器接授權結果。
+// 備註：正式站上曾經有一個 /callback 路由做同樣的事，但那是一次性工具卻長期留在
+// production，已移除。要換別的回調位址就設 SPOTIFY_REDIRECT_URI（非 localhost 時
+// 這支 script 只會印出授權網址，收 code 得自己來）。
 
 import http from "node:http";
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 if (!CLIENT_ID || !CLIENT_SECRET) {
-  console.error("請先把 SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET 填進 .env.local");
+  console.error(
+    "請先把 SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET 填進 .env.local"
+  );
   process.exit(1);
 }
 
 const REDIRECT_URI =
-  process.env.SPOTIFY_REDIRECT_URI ?? "https://itousouta.me/callback";
+  process.env.SPOTIFY_REDIRECT_URI ?? "http://localhost:8888/callback";
 const SCOPE = "user-top-read";
 
 const authUrl =
@@ -37,11 +39,11 @@ const authUrl =
     show_dialog: "true",
   });
 
-// 只有本機回調才需要起伺服器收 code；正式站回調由 /app/callback 路由接手
+// 只有本機回調才起伺服器收 code；指到別的位址就只印授權網址，code 自己接
 if (new URL(REDIRECT_URI).hostname !== "localhost") {
   console.log(`請在瀏覽器打開這個網址並同意授權：\n\n${authUrl}\n`);
   console.log(
-    `同意後會被導到 ${REDIRECT_URI}，把頁面上顯示的 SPOTIFY_REFRESH_TOKEN 存好即可。`
+    `同意後會被導到 ${REDIRECT_URI}，該位址得自己接住 ?code= 並換成 refresh token。`
   );
   process.exit(0);
 }
@@ -62,7 +64,7 @@ const server = http.createServer(async (req, res) => {
       method: "POST",
       headers: {
         Authorization: `Basic ${Buffer.from(
-          `${CLIENT_ID}:${CLIENT_SECRET}`,
+          `${CLIENT_ID}:${CLIENT_SECRET}`
         ).toString("base64")}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },

@@ -34,8 +34,13 @@ interface Body {
   dragging: boolean;
 }
 
-export default function GravityMode() {
-  const [active, setActive] = useState(false);
+export default function GravityMode({
+  autoStart = false,
+}: {
+  autoStart?: boolean;
+}) {
+  // autoStart：被 GravityModeLoader 動態載入時，觸發事件已經在載入前發生過了
+  const [active, setActive] = useState(autoStart);
   const bodiesRef = useRef<Body[]>([]);
   const exitRef = useRef<HTMLButtonElement>(null);
   const rafRef = useRef<number | null>(null);
