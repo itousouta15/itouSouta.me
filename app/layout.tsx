@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 import ThemeProvider from "./components/ThemeProvider";
@@ -10,7 +9,8 @@ import PageTransition from "./components/PageTransition";
 import BackToTopButton from "./components/BackToTopButton";
 import SiteLoader from "./components/SiteLoader";
 import CommandPalette from "./components/CommandPalette";
-import GravityMode from "./components/GravityMode";
+import GravityModeLoader from "./components/GravityModeLoader";
+import SmoothScroll from "./components/SmoothScroll";
 
 const SITE_URL = "https://itousouta.me";
 const SITE_TITLE = "itouSouta.me";
@@ -53,11 +53,14 @@ export const metadata: Metadata = {
       },
     ],
   },
+  /* 刻意不設 twitter.images：每條路由的 opengraph-image 檔案慣例只會產生
+     og:image，不會產生 twitter:image。這裡如果留著一張固定圖，X 上就永遠是那張
+     banner，per-route 分享圖等於白做。缺 twitter:image 時 X 會自己 fallback 到
+     og:image，正是我們要的。 */
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/assets/brand/banner.webp"],
   },
 };
 
@@ -168,16 +171,19 @@ export default function RootLayout({
           }}
         />
         <ThemeProvider>
+          <a className="skip-link" href="#main">
+            跳到主要內容
+          </a>
           <SiteLoader />
           <Header />
-          <main className="main">
+          <main className="main" id="main" tabIndex={-1}>
             <PageTransition>{children}</PageTransition>
           </main>
           <Footer />
           <BackToTopButton />
           <CommandPalette />
-          <GravityMode />
-          <ReactLenis root options={{ wheelMultiplier: 0.8, lerp: 0.1 }} />
+          <GravityModeLoader />
+          <SmoothScroll />
         </ThemeProvider>
         <Script
           src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"

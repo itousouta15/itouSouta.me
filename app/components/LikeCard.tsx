@@ -42,15 +42,14 @@ export default function LikeCard({
             <span>IMAGE</span>
           )}
         </div>
-        {l.status && <span className="like-status">{l.status}</span>}
         {live?.live && <span className="like-live-badge">LIVE</span>}
       </div>
       <div className="like-body">
         <div className="like-title-row">
           <div className="like-title">{l.title}</div>
-          {l.rating != null && (
+          {l.personRating != null && (
             <span className="like-rating">
-              <StarRating rating={l.rating} />
+              <StarRating rating={l.personRating} />
             </span>
           )}
         </div>

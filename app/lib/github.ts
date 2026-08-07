@@ -44,6 +44,28 @@ export async function getRepoInfo(
   };
 }
 
+/**
+ * Repo info for a whole batch of projects, keyed by slug.
+ *
+ * `getRepoInfo` carries `revalidate: 3600`, and Next's Data Cache dedupes by
+ * URL across routes — so /projects and /stats both calling this costs one set
+ * of requests, not two. Sharing it is about the code, not the request count.
+ */
+export async function getAllRepoInfo(
+  projects: { slug: string; href: string }[]
+): Promise<Record<string, GithubRepoInfo | null>> {
+  const entries = await Promise.all(
+    projects.map(async (p) => {
+      const ref = parseGithubRepo(p.href);
+      const info = ref
+        ? await getRepoInfo(ref.owner, ref.repo).catch(() => null)
+        : null;
+      return [p.slug, info] as const;
+    })
+  );
+  return Object.fromEntries(entries);
+}
+
 export interface GithubEvent {
   id: string;
   type: string;

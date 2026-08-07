@@ -5,8 +5,7 @@
 //   SPOTIFY_CLIENT_ID — https://developer.spotify.com/dashboard 建立 App 取得
 //   SPOTIFY_CLIENT_SECRET — 同上，Dashboard 內顯示
 //   SPOTIFY_REFRESH_TOKEN — 跑 `node scripts/spotify-refresh-token.mjs` 一次性取得；
-//     授權預設導向 https://itousouta.me/callback（app/callback/route.ts 換 token），
-//     或設 SPOTIFY_REDIRECT_URI=http://localhost:8888/callback 走本機流程
+//     授權導向 http://localhost:8888/callback，由該 script 自己起的本機伺服器接住
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const API_URL = "https://api.spotify.com/v1";
 
@@ -32,7 +31,7 @@ async function getAccessToken(): Promise<string | null> {
       method: "POST",
       headers: {
         Authorization: `Basic ${Buffer.from(
-          `${clientId}:${clientSecret}`,
+          `${clientId}:${clientSecret}`
         ).toString("base64")}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },

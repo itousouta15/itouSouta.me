@@ -39,9 +39,6 @@ export default function LikeModalShell({
     };
   }, [requestClose]);
 
-  const hasStats =
-    like.rating != null || like.personRating != null || like.status;
-
   return createPortal(
     <div
       className={`like-modal-overlay${closing ? " is-closing" : ""}`}
@@ -102,23 +99,12 @@ export default function LikeModalShell({
                 ))}
               </div>
             )}
-            {hasStats && (
+            {like.personRating != null && (
               <div className="like-modal-stats">
-                {like.rating != null && (
-                  <div className="like-modal-stat">
-                    <span className="like-modal-stat-label">評分</span>
-                    <StarRating rating={like.rating} />
-                  </div>
-                )}
-                {like.personRating != null && (
-                  <div className="like-modal-stat like-modal-stat--mine">
-                    <span className="like-modal-stat-label">我的評分</span>
-                    <StarRating rating={like.personRating} />
-                  </div>
-                )}
-                {like.status && (
-                  <span className="like-modal-status">{like.status}</span>
-                )}
+                <div className="like-modal-stat">
+                  <span className="like-modal-stat-label">評分</span>
+                  <StarRating rating={like.personRating} />
+                </div>
               </div>
             )}
           </div>

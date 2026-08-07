@@ -3,19 +3,13 @@ export interface Role {
   color: "blue" | "purple";
 }
 
-export interface Social {
-  label: string;
-  href: string;
-}
-
 export interface Like {
   title: string;
   sub?: string;
   cover?: string;
   href?: string;
-  rating?: number;
+  /** 我自己的評分，0–5，可到小數一位。全站只有這一種尺度。 */
   personRating?: number;
-  status?: string;
   tags?: string[];
   note?: string;
   /** YouTube channel ID, only needed when `href` is an @handle URL that doesn't already encode it (used to match VSPO's own live-schedule feed). */
@@ -60,13 +54,6 @@ export const ROLES: Role[] = [
   { label: "Dev.", color: "purple" },
   { label: "Vocalo-P", color: "purple" },
   { label: "Illust.", color: "purple" },
-];
-
-export const SOCIALS: Social[] = [
-  { label: "X", href: "#" },
-  { label: "YT", href: "#" },
-  { label: "px", href: "#" },
-  { label: "nc", href: "#" },
 ];
 
 export const TILE_COLS: string[][] = [
@@ -1479,219 +1466,69 @@ export const LIKE_CATEGORIES: LikeCategory[] = [
   },
 ];
 
-export interface MusicSong {
-  title: string;
-  cover?: string;
-  href?: string;
-}
-
 export interface MusicArtist {
   name: string;
   avatar?: string;
-  songs: MusicSong[];
 }
 
+/* 音樂資料的正本是 Spotify Web API（app/lib/spotify.ts）。這份清單只在缺
+   credentials 或 Spotify 掛掉時當 /about 音樂卡片的頭像 fallback，所以只留
+   名字跟頭像；原本的曲目清單已隨資料源轉移移除（要找的話在 git 歷史裡）。 */
 export const MUSIC_ARTISTS: MusicArtist[] = [
   {
     name: "Ayase",
     avatar:
       "https://image.joox.com/JOOXcover/0/3a9ab294-4805-4593-b8ce-bee6281a8c78/300",
-    songs: [
-      {
-        title: "フィクションブルー",
-        cover: "https://img.youtube.com/vi/tqR74vsc6Mc/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=tqR74vsc6Mc",
-      },
-      {
-        title: "泣いてない",
-        cover: "https://img.youtube.com/vi/_lmwvFgV_04/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=_lmwvFgV_04",
-      },
-      {
-        title: "夜撫でるメノウ",
-        cover: "https://img.youtube.com/vi/2sHKKjeKfVM/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=2sHKKjeKfVM",
-      },
-      {
-        title: "飽和",
-        cover: "https://img.youtube.com/vi/bP3OQzw_fvE/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=bP3OQzw_fvE",
-      },
-      {
-        title: "シネマ",
-        cover: "https://img.youtube.com/vi/8dywenCWPI0/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=8dywenCWPI0",
-      },
-    ],
   },
   {
     name: "YOASOBI",
     avatar:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIP5-tHAZcqvNaIYCKizVIZbtPQINkT8Lz4g&s",
-    songs: [
-      {
-        title: "たぶん",
-        cover: "https://img.youtube.com/vi/8iuLXODzL04/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=8iuLXODzL04",
-      },
-      {
-        title: "あの夢をなぞって",
-        cover: "https://img.youtube.com/vi/sAuEeM_6zpk/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=sAuEeM_6zpk",
-      },
-      {
-        title: "夜に駆ける",
-        cover: "https://img.youtube.com/vi/x8VYWazR5mE/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=x8VYWazR5mE",
-      },
-      {
-        title: "勇者",
-        cover: "https://img.youtube.com/vi/OIBODIPC_8Y/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=OIBODIPC_8Y",
-      },
-      {
-        title: "祝福",
-        cover: "https://img.youtube.com/vi/3eytpBOkOFA/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=3eytpBOkOFA",
-      },
-    ],
   },
   {
     name: "りりあ。",
     avatar:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRbzGiZAcjH6rUpc5Bxw4OMCq7RlmcZ1cTOtV7_XWdq0Q53FIGevjjssfs&s=10",
-    songs: [
-      {
-        title: "私じゃなかったんだね",
-        cover: "https://img.youtube.com/vi/sMSBAQ0tnBY/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=sMSBAQ0tnBY",
-      },
-      {
-        title: "貴方の側に",
-        cover: "https://img.youtube.com/vi/QCbPn0jpju8/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=QCbPn0jpju8",
-      },
-      {
-        title: "失恋ソング沢山聴いて 泣いてばかりの私はもう。",
-        cover: "https://img.youtube.com/vi/z9ocQhHVgLQ/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=z9ocQhHVgLQ",
-      },
-      {
-        title: "最後のバイバイ",
-        cover: "https://img.youtube.com/vi/dkqt-QZV1R8/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=dkqt-QZV1R8",
-      },
-      {
-        title: "君の隣で",
-        cover: "https://img.youtube.com/vi/c3TzuUeFnVk/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=c3TzuUeFnVk",
-      },
-    ],
   },
   {
     name: "椎名林檎",
     avatar:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Shiina_Ringo_2016.jpg/250px-Shiina_Ringo_2016.jpg",
-    songs: [
-      {
-        title: "丸ノ内サディスティック",
-        cover: "https://img.youtube.com/vi/Ej1fyNdnuFI/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=Ej1fyNdnuFI",
-      },
-      {
-        title: "１７",
-        cover: "https://i.ytimg.com/vi/8kpVAvMgUc4/mqdefault.jpg",
-      },
-    ],
   },
   {
     name: "supercell / ryo",
     avatar:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_69Gy4cp64byEI_K5SPnbRn-rOovQyS2_6PUPlwGrFldDKr1TS7SMWVk&s=10",
-    songs: [
-      {
-        title: "君の知らない物語",
-        cover: "https://img.youtube.com/vi/jpV5jeFlt_E/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=jpV5jeFlt_E",
-      },
-      {
-        title: "メルト",
-        cover:
-          "https://upload.wikimedia.org/wikipedia/zh/thumb/e/e3/Melt_Cover_by_ryo.jpg/250px-Melt_Cover_by_ryo.jpg",
-      },
-      {
-        title: "マイディアレスト",
-        cover: "https://img.youtube.com/vi/a6nmtJAC4NM/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=a6nmtJAC4NM",
-      },
-    ],
   },
   {
     name: "藤井風",
     avatar:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Fujii_Kaze_performing_during_Best_Of_Fujii_Kaze_2020-2024_Asia_Tour_in_Axiata_Arena_Kuala_Lumpur_%28cropped%29_%282%29.jpg/250px-Fujii_Kaze_performing_during_Best_Of_Fujii_Kaze_2020-2024_Asia_Tour_in_Axiata_Arena_Kuala_Lumpur_%28cropped%29_%282%29.jpg",
-    songs: [
-      {
-        title: "きらり",
-        cover: "https://img.youtube.com/vi/TcLLpZBWsck/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=TcLLpZBWsck",
-      },
-      {
-        title: "死ぬのがいいわ",
-        cover: "https://img.youtube.com/vi/dawrQnvwMTY/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=dawrQnvwMTY",
-      },
-      {
-        title: "まつり",
-        cover: "https://img.youtube.com/vi/NwOvu-j_WjY/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=NwOvu-j_WjY",
-      },
-      {
-        title: "満ちてゆく",
-        cover: "https://img.youtube.com/vi/ptiK8U4WlSc/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=ptiK8U4WlSc",
-      },
-      {
-        title: "ガーデン",
-        cover:
-          "https://p2.bahamut.com.tw/HOME/creationCover/19/0005771719_B.JPG",
-      },
-    ],
   },
   {
     name: "ヨルシカ",
     avatar:
       "https://yt3.googleusercontent.com/ytc/AIdro_kVKEa-EG-3DL3jnIwzZ13S4zo8G57by8Gq-nJLBOcuqg=s96-c-k-c0x00ffffff-no-rj",
-    songs: [
-      {
-        title: "あぶく",
-        cover: "https://img.youtube.com/vi/OHAjc-ayhus/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=OHAjc-ayhus",
-      },
-      {
-        title: "千鳥",
-        cover: "https://img.youtube.com/vi/t75qlQPXJGw/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=t75qlQPXJGw",
-      },
-      {
-        title: "左右盲",
-        cover: "https://img.youtube.com/vi/1IlTeOMCNJU/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=1IlTeOMCNJU",
-      },
-      {
-        title: "チノカテ",
-        cover: "https://img.youtube.com/vi/Fq55MMfHoJg/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=Fq55MMfHoJg",
-      },
-      {
-        title: "春泥棒",
-        cover: "https://img.youtube.com/vi/Sw1Flgub9s8/mqdefault.jpg",
-        href: "https://www.youtube.com/watch?v=Sw1Flgub9s8",
-      },
-    ],
   },
 ];
 
+/* 選填欄位的寫法（跑 npm run dev 開 /api/content-report 看誰還沒填）。
+   這四個欄位 ProjectDetailBody 已經全部有渲染路徑，填了就會出現在
+   /projects/<slug> 與 modal 裡，不需要動任何程式碼：
+
+     why          「為什麼做」。2–3 句，講當初的動機或要解決什麼問題。
+                   訪客決定要不要點進去看，讀的就是這一欄——優先填滿全部 16 個。
+     longDesc     「專案介紹」。一段，講它實際做什麼、怎麼運作。
+                   也會被 /projects/<slug> 拿去當 meta description。
+     difficulties 「遇到的困難」。一個具體的問題 + 你怎麼解的。
+                   沒有真的故事就別填，寫成通用感想反而扣分。
+     timeline      版本紀錄，[{ version, date, note? }]。
+                   只給真的有版本演進的專案，一次性的黑客松作品不用硬套。
+
+   例：
+     why: "學校附近的公車 App 都要點五層才看得到下一班，通勤時根本來不及。",
+     timeline: [{ version: "v1.0", date: "2025-08", note: "第一版上線" }],
+*/
 export const PROJECTS: Project[] = [
   {
     slug: "yetanotherbusapp",
@@ -1883,9 +1720,6 @@ export const PROJECTS: Project[] = [
     cover: "/assets/projects/cf.webp",
   },
 ];
-
-export const DISCORD_USER_ID = "942765194571055164";
-export const GITHUB_USERNAME = "itousouta15";
 
 export interface Thought {
   date: string;

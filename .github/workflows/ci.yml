@@ -1,0 +1,27 @@
+name: CI
+
+# snake.yml 每天會把貪食蛇 SVG 直接 push 到 main，那種 commit 不需要跑 CI
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "public/assets/social/**"
+  pull_request:
+    paths-ignore:
+      - "public/assets/social/**"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+      # 外部 API 缺 env 時各 lib 都會回 null/[]，所以 build 不需要任何 secret
+      - run: npm run build
