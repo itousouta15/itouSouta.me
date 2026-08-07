@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { label: "文章", href: "/writing" },
   { label: "友鏈", href: "/links" },
   { label: "經歷", href: "/experience" },
+  { label: "留言", href: "/guestbook" },
 ];
 
 const PROJECT_LINKS = [

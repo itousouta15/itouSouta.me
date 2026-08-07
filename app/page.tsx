@@ -249,6 +249,21 @@ export default async function HomePage() {
             </div>
             <span className="card-arrow-sm">↗</span>
           </Link>
+
+          <Link
+            className="bento-guestbook nav-card"
+            href="/guestbook"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <div>
+              <div className="card-kicker">GUESTBOOK</div>
+              <div className="nav-card-title">留言板</div>
+            </div>
+            <span className="nav-card-ghost" aria-hidden>
+              言
+            </span>
+            <span className="nav-card-arrow">↗</span>
+          </Link>
         </div>
 
         {/* 最新文章 */}
