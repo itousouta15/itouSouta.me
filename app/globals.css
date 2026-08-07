@@ -2255,7 +2255,8 @@ body.site-revealed .header {
   grid-template-areas:
     "likes     likes     thoughts   thoughts"
     "likes     likes     experience friends"
-    "projects  projects  experience friends";
+    "projects  projects  experience friends"
+    "guestbook guestbook guestbook   guestbook";
   gap: 18px;
 }
 .bento-thoughts {
@@ -2274,6 +2275,9 @@ body.site-revealed .header {
 }
 .bento-projects {
   grid-area: projects;
+}
+.bento-guestbook {
+  grid-area: guestbook;
 }
 .card-github {
   padding: 28px 30px;

@@ -13,3 +13,31 @@ export async function getThoughts(): Promise<KVThought[]> {
   const raw = await kv.lrange<string>(KEY, 0, 49);
   return raw.map((r) => (typeof r === "string" ? JSON.parse(r) : r));
 }
+
+/* ---- 雜談按讚 ----
+   單一 hash（key=thought id），/writing 頁 server 端一次 hgetall 就能讀全部，
+   不用每個 id 各打一筆。 */
+const REACTION_KEY = "reaction:counts";
+
+export async function getReactionCounts(): Promise<Record<string, number>> {
+  const all = await kv.hgetall<Record<string, number>>(REACTION_KEY);
+  return all ?? {};
+}
+
+export async function incrReaction(id: string): Promise<number> {
+  return kv.hincrby(REACTION_KEY, id, 1);
+}
+
+/* 簡易 IP rate limit：incr 後第一次設 TTL（沒有 TTL 的舊 key 永遠不會過期），
+   超過上限回 false。key 前綴分用途（react / 其他），避免互相擠壓額度。 */
+export async function rateLimit(
+  ip: string,
+  scope: string,
+  max: number,
+  ttlSec: number
+): Promise<boolean> {
+  const k = `rl:${scope}:${ip}`;
+  const n = await kv.incr(k);
+  if (n === 1) await kv.expire(k, ttlSec);
+  return n <= max;
+}
