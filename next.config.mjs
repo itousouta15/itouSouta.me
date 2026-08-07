@@ -1,6 +1,52 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              // layout.tsx 有 blocking inline script；React style prop 走 style attribute
+              "script-src 'self' 'unsafe-inline' https://busuanzi.ibruce.info https://va.vercel-scripts.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://font.emtech.cc",
+              "font-src 'self' data: https://fonts.gstatic.com https://font.emtech.cc",
+              // 站上圖片幾乎全走 wsrv.nl 代理；少數直接放行的網域（收藏封面、
+              // Threads 媒體、Waline 頭像）逐一列出
+              "img-src 'self' data: blob: https://wsrv.nl https://*.wsrv.nl https://acg.gamer.com.tw https://api.lanyard.rest https://avatars.githubusercontent.com https://bci.kinokuniya.com https://blog-lemontea.pages.dev https://blog.chummydns.com https://cdn.discordapp.com https://cdn.rafled.com https://*.cdninstagram.com https://*.fbcdn.net https://encrypted-tbn0.gstatic.com https://github.com https://gravatar.com https://*.gravatar.com https://home.gamer.com.tw https://im1.book.com.tw https://image.joox.com https://media.discordapp.net https://raw.githubusercontent.com https://s.eslite.com https://smallr-portfolio.vercel.app https://tw.linovelib.com https://upload.wikimedia.org https://wall.bahamut.com.tw https://wall.gamer.com.tw https://web-eight-weld-65.vercel.app https://www.books.com.tw https://www.youtube.com https://yt3.googleusercontent.com https://*.threads.net",
+              "connect-src 'self' https://api.lanyard.rest https://va.vercel-scripts.com https://web-eight-weld-65.vercel.app",
+              // Phase 6 的 service worker 註冊
+              "worker-src 'self'",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'self'",
+              "upgrade-insecure-requests",
+            ].join("; "),
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
