@@ -3819,7 +3819,7 @@ body.site-revealed .header {
 .thought-img {
   display: block;
   max-width: 100%;
-  width: 480px;
+  width: 360px;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   background: var(--inset);
