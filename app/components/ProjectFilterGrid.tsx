@@ -22,6 +22,7 @@ export default function ProjectFilterGrid({
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [sort, setSort] = useState<SortMode>("default");
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [truncatedDescs, setTruncatedDescs] = useState<Set<string>>(new Set());
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -63,6 +64,25 @@ export default function ProjectFilterGrid({
     const p = items.find((x) => x.slug === slug);
     if (p) setActiveProject(p);
   }, [searchParams, items]);
+
+  // 手機版 .proj-desc 用 line-clamp 截斷簡介，這裡量測實際渲染高度判斷有沒有
+  // 被截掉，只有真的截斷的卡片才需要顯示「底下還有」提示
+  useEffect(() => {
+    const measure = () => {
+      const next = new Set<string>();
+      document
+        .querySelectorAll<HTMLElement>("[data-proj-desc]")
+        .forEach((el) => {
+          if (el.scrollHeight > el.clientHeight + 1) {
+            next.add(el.dataset.projDesc!);
+          }
+        });
+      setTruncatedDescs(next);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [filtered]);
 
   const closeModal = () => {
     setActiveProject(null);
@@ -164,7 +184,12 @@ export default function ProjectFilterGrid({
                   />
                 </div>
                 <div className="proj-title">{p.title}</div>
-                <div className="proj-desc">{p.desc}</div>
+                <div className="proj-desc" data-proj-desc={p.slug}>
+                  {p.desc}
+                </div>
+                {truncatedDescs.has(p.slug) && (
+                  <div className="proj-desc-more">底下還有</div>
+                )}
                 <div className="proj-tags">
                   {p.tags.map((t) => (
                     <span className="proj-tag" key={t}>
