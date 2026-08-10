@@ -3556,6 +3556,10 @@ body.site-revealed .header {
   .proj-detail-stats {
     width: 100%;
   }
+  .proj-detail-stats .stat-k,
+  .proj-detail-stats .stat-v {
+    text-align: left;
+  }
 }
 .proj-detail-actions {
   display: flex;
@@ -4673,7 +4677,7 @@ a.guestbook-nick:hover {
   }
   .proj-desc {
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
