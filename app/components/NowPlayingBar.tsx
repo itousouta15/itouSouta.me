@@ -41,7 +41,7 @@ export default function NowPlayingBar() {
     <>
       <div className="now-playing-track">
         <CrossfadeImage
-          className="now-playing-art"
+          className={`now-playing-art${track.isPlaying ? "" : " is-paused"}`}
           src={discordArtThumb(track.albumArt)}
           alt=""
         />
