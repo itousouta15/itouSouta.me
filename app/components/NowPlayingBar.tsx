@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { discordArtThumb } from "../lib/imageThumb";
 import { useNowPlayingState } from "./LanyardCards";
+import CrossfadeImage from "./CrossfadeImage";
 
 /* 全站底部浮動膠囊：目前正在聽的 Spotify 曲目。資料跟首頁 profile 卡共用
    NowPlayingProvider 的同一份輪詢（provider 在 root layout），這裡只消費。
@@ -38,17 +39,19 @@ export default function NowPlayingBar() {
 
   const body = (
     <>
-      <img
-        className="now-playing-art"
-        src={discordArtThumb(track.albumArt)}
-        alt=""
-      />
-      <div className="now-playing-meta">
-        <div className="now-playing-song" title={track.song}>
-          {track.song}
-        </div>
-        <div className="now-playing-artist" title={track.artist}>
-          {track.artist}
+      <div className="now-playing-track">
+        <CrossfadeImage
+          className="now-playing-art"
+          src={discordArtThumb(track.albumArt)}
+          alt=""
+        />
+        <div className="now-playing-meta">
+          <div className="now-playing-song" title={track.song}>
+            {track.song}
+          </div>
+          <div className="now-playing-artist" title={track.artist}>
+            {track.artist}
+          </div>
         </div>
       </div>
       {track.durationMs > 0 && (
