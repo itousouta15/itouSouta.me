@@ -9,6 +9,7 @@ import {
 } from "react";
 import { DISCORD_USER_ID } from "../siteConfig";
 import { discordArtThumb } from "../lib/imageThumb";
+import CrossfadeImage from "./CrossfadeImage";
 
 /* ---------------------------------------------------------------------------
    Minimal Lanyard typings (only the fields we use)
@@ -304,8 +305,7 @@ export function ProfileStatus() {
     <div className="dc-status">
       {spotify ? (
         <div className="dc-act dc-act-spotify">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <CrossfadeImage
             className="dc-act-art"
             src={discordArtThumb(spotify.albumArt)}
             alt={spotify.album}
