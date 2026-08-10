@@ -27,11 +27,20 @@ export interface CurrentlyPlaying {
   durationMs: number;
 }
 
-async function getAccessToken(): Promise<string | null> {
+// 帶 reason 是為了讓 /api/now-playing?debug=1 能回報卡在哪一步（缺憑證／換
+// token 失敗／API 錯誤…），不然失敗一律回 null，遠端排查時完全看不出原因。
+interface AccessTokenResult {
+  token: string | null;
+  reason?: string;
+}
+
+async function getAccessToken(): Promise<AccessTokenResult> {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
   const refreshToken = process.env.SPOTIFY_REFRESH_TOKEN;
-  if (!clientId || !clientSecret || !refreshToken) return null;
+  if (!clientId || !clientSecret || !refreshToken) {
+    return { token: null, reason: "missing-credentials" };
+  }
 
   try {
     const body = new URLSearchParams({
@@ -48,11 +57,14 @@ async function getAccessToken(): Promise<string | null> {
       },
       body,
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      return { token: null, reason: `token-refresh-http-${res.status}` };
+    }
     const json = await res.json();
-    return (json.access_token as string) || null;
+    const token = (json.access_token as string) || null;
+    return token ? { token } : { token: null, reason: "token-refresh-empty" };
   } catch {
-    return null;
+    return { token: null, reason: "token-refresh-exception" };
   }
 }
 
@@ -60,7 +72,7 @@ export async function getTopTracks(options?: {
   limit?: number;
   timeRange?: "short_term" | "medium_term" | "long_term";
 }): Promise<TopTrack[] | null> {
-  const accessToken = await getAccessToken();
+  const { token: accessToken } = await getAccessToken();
   if (!accessToken) return null;
 
   try {
@@ -90,14 +102,21 @@ export async function getTopTracks(options?: {
   }
 }
 
+export interface CurrentlyPlayingResult {
+  track: CurrentlyPlaying | null;
+  // 失敗原因（missing-credentials／token-refresh-*／not-playing／api-http-*／
+  // no-track-item／fetch-exception），只給 /api/now-playing?debug=1 用。
+  reason?: string;
+}
+
 // 目前正在播放的曲目（`/me/player/currently-playing`）。這是直接問 Spotify 帳號
 // 本身在播什麼，不像 Lanyard 那樣得靠 Discord 用戶端轉發——手機沒開 Discord app
 // 時 Lanyard 抓不到 Spotify 活動的老問題，因此不會發生在這裡。
 // 需要 refresh token 授權時多帶 user-read-currently-playing scope（見
 // scripts/spotify-refresh-token.mjs），舊 token 沒有這個 scope 得重新授權一次。
-export async function getCurrentlyPlaying(): Promise<CurrentlyPlaying | null> {
-  const accessToken = await getAccessToken();
-  if (!accessToken) return null;
+export async function getCurrentlyPlayingDebug(): Promise<CurrentlyPlayingResult> {
+  const { token: accessToken, reason } = await getAccessToken();
+  if (!accessToken) return { track: null, reason };
 
   try {
     const res = await fetch(
@@ -108,21 +127,30 @@ export async function getCurrentlyPlaying(): Promise<CurrentlyPlaying | null> {
       }
     );
     // 204 = 帳號目前沒在播放任何東西
-    if (res.status === 204 || !res.ok) return null;
+    if (res.status === 204) return { track: null, reason: "not-playing" };
+    if (!res.ok) return { track: null, reason: `api-http-${res.status}` };
     const json = await res.json();
-    if (!json?.item || json.currently_playing_type !== "track") return null;
+    if (!json?.item || json.currently_playing_type !== "track") {
+      return { track: null, reason: "no-track-item" };
+    }
 
     return {
-      song: json.item.name ?? "",
-      artist: (json.item.artists ?? []).map((a: any) => a.name).join(", "),
-      album: json.item.album?.name ?? "",
-      albumArt: json.item.album?.images?.[0]?.url ?? "",
-      href: json.item.external_urls?.spotify ?? "",
-      isPlaying: !!json.is_playing,
-      progressMs: json.progress_ms ?? 0,
-      durationMs: json.item.duration_ms ?? 0,
+      track: {
+        song: json.item.name ?? "",
+        artist: (json.item.artists ?? []).map((a: any) => a.name).join(", "),
+        album: json.item.album?.name ?? "",
+        albumArt: json.item.album?.images?.[0]?.url ?? "",
+        href: json.item.external_urls?.spotify ?? "",
+        isPlaying: !!json.is_playing,
+        progressMs: json.progress_ms ?? 0,
+        durationMs: json.item.duration_ms ?? 0,
+      },
     };
   } catch {
-    return null;
+    return { track: null, reason: "fetch-exception" };
   }
+}
+
+export async function getCurrentlyPlaying(): Promise<CurrentlyPlaying | null> {
+  return (await getCurrentlyPlayingDebug()).track;
 }
