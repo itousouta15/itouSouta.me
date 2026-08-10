@@ -13,6 +13,10 @@
 // 備註：正式站上曾經有一個 /callback 路由做同樣的事，但那是一次性工具卻長期留在
 // production，已移除。要換別的回調位址就設 SPOTIFY_REDIRECT_URI（非 localhost 時
 // 這支 script 只會印出授權網址，收 code 得自己來）。
+//
+// SCOPE 含 user-read-currently-playing，是給「目前正在聽」功能用的（見
+// app/lib/spotify.ts 的 getCurrentlyPlaying）。舊的 refresh token 若是在加這個
+// scope 之前產生的，得重新跑一次這支 script 換新 token，否則會被 Spotify 拒絕。
 
 import http from "node:http";
 
@@ -27,7 +31,7 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
 
 const REDIRECT_URI =
   process.env.SPOTIFY_REDIRECT_URI ?? "http://localhost:8888/callback";
-const SCOPE = "user-top-read";
+const SCOPE = "user-top-read user-read-currently-playing";
 
 const authUrl =
   "https://accounts.spotify.com/authorize?" +

@@ -76,7 +76,13 @@ Logo 會在偵測到 `ChenYuLuoYan` 字型啟用（透過 `document.fonts.load`�
 
 ### Lanyard 整合
 
-Discord 狀態（上線狀態、活動、Spotify 播放）透過 Lanyard WebSocket API 即時取得並顯示於個人檔案卡中。此元件能妥善處理斷線情況。
+Discord 上線狀態與其他活動（遊戲、直播、觀看中…）透過 Lanyard API 即時取得並顯示於個人檔案卡中。此元件能妥善處理斷線情況。
+
+「正在聽 Spotify」不算在內：那部分改由 `app/lib/spotify.ts` 直接打 Spotify Web API 的 `/me/player/currently-playing`（見下方「目前播放」）。Lanyard 轉發的 Spotify 活動其實是 Discord 用戶端自己在轉發，手機上沒開 Discord app 時 Discord 就抓不到你在 Spotify 上播什麼，Lanyard 自然也拿不到——直接問 Spotify 帳號本身就不受這個限制。`app/api/now-playing/route.ts` 仍保留 Lanyard 當備援，只在沒設定 `SPOTIFY_*` 環境變數時才會用到。
+
+### 目前播放
+
+`app/lib/spotify.ts` 的 `getCurrentlyPlaying()` 用跟常聽歌曲一樣的 refresh token 授權（但多帶 `user-read-currently-playing` scope），呼叫 `/me/player/currently-playing`。`/api/now-playing` 路由把結果轉成前端要的格式；`app/components/LanyardCards.tsx` 裡的 `NowPlayingProvider` 在 root layout 輪詢這支路由一次，個人檔案卡（`ProfileStatus`）與全站底部浮動列（`NowPlayingBar`）共用同一份資料，不會各打各的。帳號目前沒在播放，或沒設定 Spotify 憑證時，`/api/now-playing` 回傳 `null`（或退回 Lanyard），對應元件就不顯示。
 
 ### GitHub 貢獻圖
 
@@ -224,12 +230,12 @@ npm run lint
 | `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL` | Vercel KV 連線設定                                                                  |
 | `THREADS_ACCESS_TOKEN`                                                                       | 擷取 Threads API 的同步貼文                                                         |
 | `GITHUB_TOKEN`                                                                               | 存取 GitHub API 以取得專案資訊（選填；未設定時無法取得專案詳情）                    |
-| `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 取得關於頁、`/likes` 與 `/likes/music` 的常聽歌曲資料（選填；未設定時請見下方說明） |
+| `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 取得常聽歌曲（關於頁、`/likes`、`/likes/music`）與目前正在播放的曲目（選填；未設定時請見下方說明） |
 | `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                | 留言板的「用 GitHub 登入」（選填；未設定時該按鈕會回報未設定，手動填暱稱仍可留言）  |
 
 留言板的 GitHub 登入需到 <https://github.com/settings/developers> 建立一個 OAuth App，Authorization callback URL 填 `https://<你的網域>/api/auth/github/callback`（本機開發另外填一組 `http://localhost:3000/api/auth/github/callback`），把取得的 Client ID／Secret 填進上表兩個變數；`GUESTBOOK_GH_SECRET` 則是自己隨機產生的一串字（例如 `openssl rand -hex 32`），用來簽署登入後回傳的短效身分 token。
 
-音樂整合透過 Spotify Web API 進行 — 需要 Premium 帳號才能註冊新的開發者應用程式，取得 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` 後，跑一次 `node --env-file=.env.local scripts/spotify-refresh-token.mjs` 產生 `SPOTIFY_REFRESH_TOKEN`：授權會導到 `http://localhost:8888/callback`，由該 script 自己起的本機伺服器接住並把 token 印在終端機（該位址要先加進 Spotify Dashboard 的 Redirect URIs，詳見 script 註解）。若未設定這三個變數，`getTopTracks()` 會回傳 `null`，各呼叫點也會相應地降級處理：關於頁卡片顯示靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 預覽列則直接省略。
+音樂整合透過 Spotify Web API 進行 — 需要 Premium 帳號才能註冊新的開發者應用程式，取得 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` 後，跑一次 `node --env-file=.env.local scripts/spotify-refresh-token.mjs` 產生 `SPOTIFY_REFRESH_TOKEN`：授權會導到 `http://localhost:8888/callback`，由該 script 自己起的本機伺服器接住並把 token 印在終端機（該位址要先加進 Spotify Dashboard 的 Redirect URIs，詳見 script 註解）。若未設定這三個變數，`getTopTracks()` 與 `getCurrentlyPlaying()` 都會回傳 `null`，各呼叫點也會相應地降級處理：關於頁卡片顯示靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 預覽列則直接省略，「正在聽」相關元件退回 Lanyard 或直接不顯示。授權的 scope 含 `user-read-currently-playing`；在這個 scope 加入之前產生的舊 `SPOTIFY_REFRESH_TOKEN` 需要重新跑一次 script 換新的，否則 `/me/player/currently-playing` 會被 Spotify 拒絕。
 
 ## 部署
 
