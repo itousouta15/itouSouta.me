@@ -224,14 +224,14 @@ npm run lint
 
 `/writing` 頁面所需（詳見 `.env.local`）：
 
-| 變數                                                                                         | 用途                                                                                |
-| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `REVALIDATE_SECRET`                                                                          | `app/api/revalidate/route.ts` 的共用密鑰（itouBot 使用同一組值）                    |
-| `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL` | Vercel KV 連線設定                                                                  |
-| `THREADS_ACCESS_TOKEN`                                                                       | 擷取 Threads API 的同步貼文                                                         |
-| `GITHUB_TOKEN`                                                                               | 存取 GitHub API 以取得專案資訊（選填；未設定時無法取得專案詳情）                    |
+| 變數                                                                                         | 用途                                                                                               |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `REVALIDATE_SECRET`                                                                          | `app/api/revalidate/route.ts` 的共用密鑰（itouBot 使用同一組值）                                   |
+| `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL` | Vercel KV 連線設定                                                                                 |
+| `THREADS_ACCESS_TOKEN`                                                                       | 擷取 Threads API 的同步貼文                                                                        |
+| `GITHUB_TOKEN`                                                                               | 存取 GitHub API 以取得專案資訊（選填；未設定時無法取得專案詳情）                                   |
 | `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 取得常聽歌曲（關於頁、`/likes`、`/likes/music`）與目前正在播放的曲目（選填；未設定時請見下方說明） |
-| `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                | 留言板的「用 GitHub 登入」（選填；未設定時該按鈕會回報未設定，手動填暱稱仍可留言）  |
+| `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                | 留言板的「用 GitHub 登入」（選填；未設定時該按鈕會回報未設定，手動填暱稱仍可留言）                 |
 
 留言板的 GitHub 登入需到 <https://github.com/settings/developers> 建立一個 OAuth App，Authorization callback URL 填 `https://<你的網域>/api/auth/github/callback`（本機開發另外填一組 `http://localhost:3000/api/auth/github/callback`），把取得的 Client ID／Secret 填進上表兩個變數；`GUESTBOOK_GH_SECRET` 則是自己隨機產生的一串字（例如 `openssl rand -hex 32`），用來簽署登入後回傳的短效身分 token。
 

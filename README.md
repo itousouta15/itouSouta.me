@@ -60,14 +60,14 @@ npm run lint
 
 Required or optional depending on which live surfaces you want enabled:
 
-| Variable                                                                                     | Purpose                                                                                                                                   |
-| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `REVALIDATE_SECRET`                                                                          | Shared secret for the revalidation endpoint used by itouBot                                                                               |
-| `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection                                                                                                                      |
-| `THREADS_ACCESS_TOKEN`                                                                       | Fetching synced Threads posts                                                                                                             |
-| `GITHUB_TOKEN`                                                                               | Fetching GitHub repository metadata and activity                                                                                          |
+| Variable                                                                                     | Purpose                                                                                                                                                                               |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `REVALIDATE_SECRET`                                                                          | Shared secret for the revalidation endpoint used by itouBot                                                                                                                           |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection                                                                                                                                                                  |
+| `THREADS_ACCESS_TOKEN`                                                                       | Fetching synced Threads posts                                                                                                                                                         |
+| `GITHUB_TOKEN`                                                                               | Fetching GitHub repository metadata and activity                                                                                                                                      |
 | `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`                        | Fetching Spotify top tracks and the currently-playing track (see `scripts/spotify-refresh-token.mjs`; scope includes `user-read-currently-playing`, older tokens need re-authorizing) |
-| `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `GUESTBOOK_GH_SECRET`                | "Sign in with GitHub" on the guestbook (OAuth App callback: `/api/auth/github/callback`; the secret signs the short-lived identity token) |
+| `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `GUESTBOOK_GH_SECRET`                | "Sign in with GitHub" on the guestbook (OAuth App callback: `/api/auth/github/callback`; the secret signs the short-lived identity token)                                             |
 
 Missing optional credentials are handled gracefully; affected sections fall back or disappear instead of breaking the site.
 
