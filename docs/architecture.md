@@ -33,8 +33,8 @@ The live content layers are:
 - Vercel KV for Discord-sourced thoughts.
 - Threads API for synced posts.
 - GitHub API for repository information and activity.
-- Spotify API for top tracks (OAuth refresh-token flow).
-- Lanyard API for Discord presence.
+- Spotify API for top tracks and the currently-playing track (OAuth refresh-token flow). Currently-playing is fetched directly rather than through Discord/Lanyard so it still works when the Discord client isn't running (e.g. mobile).
+- Lanyard API for Discord presence (online status and non-Spotify activities); also a fallback source for now-playing when Spotify credentials aren't configured.
 
 Call sites treat missing credentials or failed upstream requests as expected states. The UI should degrade rather than hard fail.
 
