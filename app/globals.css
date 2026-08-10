@@ -2447,6 +2447,35 @@ body.site-revealed .header {
   gap: 12px;
   align-items: center;
 }
+/* 換歌時只有封面做動畫（見下方 .crossfade-img），歌名／歌手直接換掉不做進場，
+   刻意的：兩邊各動各的會互相搶注意力。 */
+
+/* 封面隨曲目切換的漸變淡入淡出（CrossfadeImage 元件）：疊兩張圖，新圖淡入蓋掉
+   舊圖，寬高／圓角吃呼叫端傳進來的既有 class（如 now-playing-art / dc-act-art）。*/
+.crossfade-img {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.crossfade-img-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.crossfade-img-top {
+  animation: crossfade-img-in 0.4s ease;
+}
+@keyframes crossfade-img-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 .dc-act-idle .dc-act-title,
 .dc-act-idle .dc-act-sub {
   white-space: normal;
@@ -2571,6 +2600,13 @@ body.site-revealed .header {
   text-decoration: none;
   font-family: "Noto Sans TC", sans-serif;
 }
+.now-playing-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
 .now-playing-art {
   width: 40px;
   height: 40px;
@@ -2578,6 +2614,7 @@ body.site-revealed .header {
   object-fit: cover;
   flex: none;
 }
+/* 換歌時文字不做進場動畫，只有封面漸變（見 .crossfade-img）。 */
 .now-playing-meta {
   flex: 1;
   min-width: 0;
