@@ -46,7 +46,7 @@ const ENDPOINTS: Endpoint[] = [
   {
     method: "GET",
     path: "/api/now-playing",
-    desc: "正在聽的 Spotify 曲目（經 Lanyard）；沒有在聽時回 null。",
+    desc: "正在聽的 Spotify 曲目（直打 Spotify API，缺憑證時退回 Lanyard）；沒有在聽時回 null。",
     curl: "curl https://itousouta.me/api/now-playing",
   },
   {
