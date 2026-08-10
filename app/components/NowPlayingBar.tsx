@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { discordArtThumb } from "../lib/imageThumb";
 import { useLanyardState } from "./LanyardCards";
 
 /* 全站底部浮動膠囊：Discord 正在聽的 Spotify 曲目。資料跟首頁 profile 卡共用
-   LanyardProvider 的同一份 15 秒輪詢（provider 在 root layout），這裡只消費。 */
+   LanyardProvider 的同一份 15 秒輪詢（provider 在 root layout），這裡只消費。
+   首頁不顯示：profile 卡自己已經有一份一樣的正在聽資訊，兩個疊在一起會重複。 */
 export default function NowPlayingBar() {
+  const pathname = usePathname();
   const state = useLanyardState();
   const [now, setNow] = useState(() => Date.now());
 
@@ -21,7 +24,7 @@ export default function NowPlayingBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spotify?.timestamps?.start, spotify?.timestamps?.end]);
 
-  if (!spotify) return null;
+  if (!spotify || pathname === "/") return null;
 
   let progress = 0;
   if (spotify.timestamps) {
