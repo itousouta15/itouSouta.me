@@ -3546,6 +3546,12 @@ body.site-revealed .header {
   }
   .proj-detail-cover {
     margin: 0 auto;
+    /* 桌機版靠 max-height + 圖片原生比例撐寬（見上方註解），欄位變窄堆疊後
+       沒有統計卡分走空間，寬度會直接被比例撐爆容器——手機版改回固定寬高。 */
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+    max-height: none;
   }
   .proj-detail-stats {
     width: 100%;
@@ -4664,6 +4670,17 @@ a.guestbook-nick:hover {
   }
   .likes-search {
     max-width: none;
+  }
+  .proj-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .proj-desc-more {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--mute);
   }
   .like-body {
     padding: 10px 12px;
