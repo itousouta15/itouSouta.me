@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function OfflinePage() {
   return (
-    <section className="offline">
+    <section className="offline-page">
       <div className="card-kicker">OFFLINE</div>
       <h1 className="offline-title">你現在是離線狀態</h1>
       <p className="offline-sub">連上網路後重新整理就能繼續逛了 (´･ω･`)</p>
