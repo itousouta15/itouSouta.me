@@ -165,11 +165,7 @@ export function ProfileStatusDot() {
       ? STATUS_META[state.data.discord_status].label
       : placeholderText(state, "離線");
   return (
-    <span
-      className={`status-dot ${cls}`}
-      title={label}
-      aria-label={label}
-    />
+    <span className={`status-dot ${cls}`} title={label} aria-label={label} />
   );
 }
 
