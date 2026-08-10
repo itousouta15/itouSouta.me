@@ -12,7 +12,7 @@ import SiteLoader from "./components/SiteLoader";
 import CommandPalette from "./components/CommandPalette";
 import GravityModeLoader from "./components/GravityModeLoader";
 import SmoothScroll from "./components/SmoothScroll";
-import { LanyardProvider } from "./components/LanyardCards";
+import { LanyardProvider, NowPlayingProvider } from "./components/LanyardCards";
 import NowPlayingBar from "./components/NowPlayingBar";
 import SeasonTint from "./components/SeasonTint";
 import KonamiEasterEgg from "./components/KonamiEasterEgg";
@@ -168,26 +168,28 @@ export default function RootLayout({
         />
         <ThemeProvider>
           <LanyardProvider>
-            <a className="skip-link" href="#main">
-              跳到主要內容
-            </a>
-            <SiteLoader />
-            <Header />
-            <main className="main" id="main" tabIndex={-1}>
-              <PageTransition>{children}</PageTransition>
-              {/* 留言板：每一頁的內容底下都有，滾到頁底才載入 Waline */}
-              <GuestbookSection />
-            </main>
-            <Footer />
-            <BackToTopButton />
-            <CommandPalette />
-            <GravityModeLoader />
-            <SmoothScroll />
-            <SeasonTint />
-            <KonamiEasterEgg />
-            <ConfettiBurst />
-            <NowPlayingBar />
-            <ServiceWorkerRegistration />
+            <NowPlayingProvider>
+              <a className="skip-link" href="#main">
+                跳到主要內容
+              </a>
+              <SiteLoader />
+              <Header />
+              <main className="main" id="main" tabIndex={-1}>
+                <PageTransition>{children}</PageTransition>
+                {/* 留言板：每一頁的內容底下都有，滾到頁底才載入 Waline */}
+                <GuestbookSection />
+              </main>
+              <Footer />
+              <BackToTopButton />
+              <CommandPalette />
+              <GravityModeLoader />
+              <SmoothScroll />
+              <SeasonTint />
+              <KonamiEasterEgg />
+              <ConfettiBurst />
+              <NowPlayingBar />
+              <ServiceWorkerRegistration />
+            </NowPlayingProvider>
           </LanyardProvider>
         </ThemeProvider>
         <Script
