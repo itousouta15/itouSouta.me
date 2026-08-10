@@ -43,21 +43,30 @@ export async function rateLimit(
 }
 
 /* ---- 留言板（KV 自建，取代 waline）----
-   寫入端是站內的 /api/guestbook，資料存一條 list，最新的在最前面。 */
-const GUESTBOOK_KEY = "guestbook";
+   每個頁面各自一條 list（key 按 path 分），彼此獨立，不共用同一份留言。 */
+const guestbookKey = (path: string) => `guestbook:${path}`;
 
 export interface GuestbookEntry {
   id: string;
   nick: string;
   text: string;
   timestamp: string;
+  // 舊留言沒有這幾個欄位，JSON.parse 出來會是 undefined，渲染端當成沒有處理
+  avatar?: string | null;
+  link?: string | null;
+  source?: "manual" | "github";
 }
 
-export async function getGuestbookEntries(): Promise<GuestbookEntry[]> {
-  const raw = await kv.lrange<string>(GUESTBOOK_KEY, 0, 99);
+export async function getGuestbookEntries(
+  path: string
+): Promise<GuestbookEntry[]> {
+  const raw = await kv.lrange<string>(guestbookKey(path), 0, 99);
   return raw.map((r) => (typeof r === "string" ? JSON.parse(r) : r));
 }
 
-export async function addGuestbookEntry(entry: GuestbookEntry): Promise<void> {
-  await kv.lpush(GUESTBOOK_KEY, JSON.stringify(entry));
+export async function addGuestbookEntry(
+  entry: GuestbookEntry,
+  path: string
+): Promise<void> {
+  await kv.lpush(guestbookKey(path), JSON.stringify(entry));
 }

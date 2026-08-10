@@ -1450,10 +1450,8 @@ body.site-revealed .header {
 }
 .status-dot {
   position: absolute;
-  /* 跨在頭像的 7px 圓環上（圓點中心對齊圓環中心），一半在外一半在內——
-     跟 Discord 的 presence indicator 一樣「掛」在頭像邊緣，不是印在角落 */
-  right: -7px;
-  bottom: -7px;
+  right: 2px;
+  bottom: 4px;
   width: 22px;
   height: 22px;
   border-radius: 50%;
@@ -2555,9 +2553,8 @@ body.site-revealed .header {
    之下，不壓任何覆蓋層。 */
 .now-playing {
   position: fixed;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
+  left: 36px;
+  bottom: 36px;
   z-index: 45;
   display: flex;
   align-items: center;
@@ -2616,12 +2613,15 @@ body.site-revealed .header {
   border-radius: 2px;
   transition: width 1s linear;
 }
+@media (max-width: 760px) {
+  .now-playing {
+    left: 20px;
+    bottom: 20px;
+  }
+}
 @media (max-width: 640px) {
   .now-playing-progress {
     display: none;
-  }
-  .now-playing {
-    bottom: 12px;
   }
 }
 
@@ -3775,58 +3775,287 @@ body.site-revealed .header {
   margin-top: 48px;
 }
 
-/* 留言板（KV 自建） */
+/* 留言板（KV 自建）——版面照 waline 的骨架走：一塊帶框的 panel，最上面是
+   三欄身分輸入（label 貼在 input 左邊），中間是無框編輯區，底部是字數／登入／
+   送出的工具列；panel 之外再接留言數＋排序列與留言卡。 */
+.guestbook-title {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--tx);
+  margin: 0 0 18px;
+}
+.guestbook-placeholder {
+  min-height: 320px;
+}
+
+/* ---- 輸入面板 ---- */
+.guestbook-panel {
+  border: 1px solid var(--bd);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+}
+.guestbook-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--inset);
+  border-bottom: 1px solid var(--bd);
+}
+.guestbook-field {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.guestbook-field + .guestbook-field {
+  border-left: 1px solid var(--bd);
+}
+.guestbook-field label {
+  flex: none;
+  padding: 10px 8px 10px 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--mute);
+  white-space: nowrap;
+}
+/* input/textarea 是原生元素，沒有全站 reset 可繼承——邊框、圓角、背景都得自己
+   清乾淨，不然會透出瀏覽器預設的白底方框 */
+.guestbook-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 10px 12px 10px 0;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 13px;
+  color: var(--tx);
+}
+.guestbook-editor {
+  border: none;
+  outline: none;
+  background: none;
+  resize: vertical;
+  min-height: 110px;
+  padding: 14px 16px;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--tx);
+}
+.guestbook-field input::placeholder,
+.guestbook-editor::placeholder {
+  color: var(--mute);
+}
+.guestbook-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--bd);
+}
+.guestbook-counter {
+  margin-right: auto;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: 0.05em;
+}
+.guestbook-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: 1px solid var(--bd2);
+  color: var(--dim);
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 13px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+.guestbook-btn svg {
+  width: 14px;
+  height: 14px;
+}
+.guestbook-btn:hover {
+  border-color: var(--blue);
+  color: var(--tx);
+}
+.guestbook-btn--primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--bg);
+  font-weight: 700;
+}
+.guestbook-btn--primary:hover {
+  color: var(--bg);
+  filter: brightness(1.1);
+}
+.guestbook-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+  filter: none;
+}
+.guestbook-error {
+  margin: 0;
+  padding: 0 12px 12px;
+  font-size: 13px;
+  color: #ff8f8f;
+}
+
+/* GitHub 登入後，三欄輸入換成一條身分橫幅 */
+.guestbook-signed-in {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--inset);
+  border-bottom: 1px solid var(--bd);
+  font-size: 13px;
+  color: var(--dim);
+}
+.guestbook-signed-in img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex: none;
+}
+.guestbook-signed-in strong {
+  color: var(--tx);
+}
+.guestbook-signout {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--mute);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.guestbook-signout:hover {
+  color: var(--tx);
+}
+
+/* ---- 留言數 ＋ 排序 ---- */
+.guestbook-meta-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32px 0 6px;
+}
+.guestbook-total {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--mute);
+}
+.guestbook-sort {
+  display: flex;
+  gap: 14px;
+}
+.guestbook-sort button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--mute);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.guestbook-sort button:hover {
+  color: var(--dim);
+}
+.guestbook-sort button.is-active {
+  color: var(--blue);
+}
+
+/* ---- 留言列表 ---- */
 .guestbook-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 .guestbook-item {
+  display: flex;
+  gap: 14px;
+  padding: 18px 0;
+  border-bottom: 1px dashed var(--bd);
+}
+.guestbook-item:last-child {
+  border-bottom: none;
+}
+.guestbook-avatar {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
   background: var(--inset);
-  padding: 14px 18px;
-  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--mute);
+}
+.guestbook-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.guestbook-body {
+  flex: 1;
+  min-width: 0;
 }
 .guestbook-item-head {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
 }
 .guestbook-nick {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  color: var(--tx);
+  color: var(--blue);
+  text-decoration: none;
+}
+a.guestbook-nick:hover {
+  text-decoration: underline;
+}
+.guestbook-gh-badge {
+  width: 13px;
+  height: 13px;
+  color: var(--mute);
+  flex: none;
 }
 .guestbook-date {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   color: var(--mute);
+  letter-spacing: 0.05em;
+  margin-left: auto;
 }
 .guestbook-text {
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--dim);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 .guestbook-empty {
   margin: 0;
+  padding: 24px 0;
   font-size: 14px;
   color: var(--mute);
-}
-.guestbook-form {
-  margin-top: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: flex-start;
-}
-.guestbook-form .field {
-  width: 100%;
-  box-sizing: border-box;
+  text-align: center;
 }
 .guestbook-hp {
   position: absolute;
@@ -3835,13 +4064,15 @@ body.site-revealed .header {
   height: 1px;
   opacity: 0;
 }
-.guestbook-submit {
-  cursor: pointer;
-}
-.guestbook-error {
-  margin: 0;
-  font-size: 13px;
-  color: #ff8f8f;
+
+@media (max-width: 640px) {
+  .guestbook-fields {
+    grid-template-columns: 1fr;
+  }
+  .guestbook-field + .guestbook-field {
+    border-left: none;
+    border-top: 1px solid var(--bd);
+  }
 }
 
 /* /offline（PWA 離線頁） */

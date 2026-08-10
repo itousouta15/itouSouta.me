@@ -156,7 +156,6 @@ function activityImage(act: LanyardActivity): string | null {
    --------------------------------------------------------------------------- */
 export function ProfileStatusDot() {
   const state = useLanyardState();
-  const [open, setOpen] = useState(false);
   const cls =
     state.kind === "ready"
       ? STATUS_META[state.data.discord_status].cls
@@ -168,15 +167,9 @@ export function ProfileStatusDot() {
   return (
     <span
       className={`status-dot ${cls}`}
-      role="button"
-      tabIndex={0}
       title={label}
       aria-label={label}
-      onClick={() => setOpen((o) => !o)}
-      onBlur={() => setOpen(false)}
-    >
-      {open && <span className="status-bubble">{label}</span>}
-    </span>
+    />
   );
 }
 

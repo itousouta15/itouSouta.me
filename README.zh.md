@@ -225,6 +225,9 @@ npm run lint
 | `THREADS_ACCESS_TOKEN`                                                                       | 擷取 Threads API 的同步貼文                                                         |
 | `GITHUB_TOKEN`                                                                               | 存取 GitHub API 以取得專案資訊（選填；未設定時無法取得專案詳情）                    |
 | `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 取得關於頁、`/likes` 與 `/likes/music` 的常聽歌曲資料（選填；未設定時請見下方說明） |
+| `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                | 留言板的「用 GitHub 登入」（選填；未設定時該按鈕會回報未設定，手動填暱稱仍可留言） |
+
+留言板的 GitHub 登入需到 <https://github.com/settings/developers> 建立一個 OAuth App，Authorization callback URL 填 `https://<你的網域>/api/auth/github/callback`（本機開發另外填一組 `http://localhost:3000/api/auth/github/callback`），把取得的 Client ID／Secret 填進上表兩個變數；`GUESTBOOK_GH_SECRET` 則是自己隨機產生的一串字（例如 `openssl rand -hex 32`），用來簽署登入後回傳的短效身分 token。
 
 音樂整合透過 Spotify Web API 進行 — 需要 Premium 帳號才能註冊新的開發者應用程式，取得 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` 後，跑一次 `node --env-file=.env.local scripts/spotify-refresh-token.mjs` 產生 `SPOTIFY_REFRESH_TOKEN`：授權會導到 `http://localhost:8888/callback`，由該 script 自己起的本機伺服器接住並把 token 印在終端機（該位址要先加進 Spotify Dashboard 的 Redirect URIs，詳見 script 註解）。若未設定這三個變數，`getTopTracks()` 會回傳 `null`，各呼叫點也會相應地降級處理：關於頁卡片顯示靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 預覽列則直接省略。
 

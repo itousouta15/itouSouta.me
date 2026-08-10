@@ -38,7 +38,12 @@ export default function GuestbookSection() {
     <div ref={ref} className="guestbook-section">
       <div className="card-kicker">GUESTBOOK</div>
       <div className="divider" />
-      {shown && <Guestbook />}
+      {/* 還沒載入前先佔住高度，避免 Guestbook 進場時把頁尾往下推 */}
+      {shown ? (
+        <Guestbook path={pathname} />
+      ) : (
+        <div className="guestbook-placeholder" />
+      )}
     </div>
   );
 }
