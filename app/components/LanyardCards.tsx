@@ -13,14 +13,6 @@ import { discordArtThumb } from "../lib/imageThumb";
 /* ---------------------------------------------------------------------------
    Minimal Lanyard typings (only the fields we use)
    --------------------------------------------------------------------------- */
-interface LanyardSpotify {
-  song: string;
-  artist: string;
-  album: string;
-  album_art_url: string;
-  track_id?: string;
-  timestamps?: { start: number; end: number };
-}
 interface LanyardActivity {
   type: number;
   name: string;
@@ -37,8 +29,6 @@ interface LanyardUser {
 }
 interface LanyardData {
   discord_status: "online" | "idle" | "dnd" | "offline";
-  listening_to_spotify: boolean;
-  spotify: LanyardSpotify | null;
   discord_user: LanyardUser;
   activities: LanyardActivity[];
 }
@@ -113,6 +103,96 @@ export function useLanyardState(): State {
   );
 }
 
+/* ---------------------------------------------------------------------------
+   Now Playing：走 /api/now-playing，伺服器端直接打 Spotify Web API 拿目前播放
+   中的曲目，跟上面的 Lanyard 輪詢分開。Discord 的 Spotify 活動是靠 Discord 用
+   戶端轉發的，手機上沒開 app 就抓不到——這裡直接問 Spotify 帳號本身，不受這個
+   限制。ProfileStatus 跟 NowPlayingBar 共用同一份輪詢，避免兩邊各打一次。
+   --------------------------------------------------------------------------- */
+export interface NowPlayingTrack {
+  song: string;
+  artist: string;
+  album: string;
+  albumArt: string;
+  href: string | null;
+  isPlaying: boolean;
+  progressMs: number;
+  durationMs: number;
+  fetchedAt: number;
+}
+
+type NowPlayingState =
+  | { kind: "loading" }
+  | { kind: "error" }
+  | { kind: "idle" }
+  | { kind: "playing"; track: NowPlayingTrack };
+
+function useNowPlayingPoll(): NowPlayingState {
+  const [state, setState] = useState<NowPlayingState>({ kind: "loading" });
+
+  useEffect(() => {
+    let alive = true;
+
+    const load = async () => {
+      if (document.visibilityState !== "visible") return;
+      try {
+        const res = await fetch("/api/now-playing", { cache: "no-store" });
+        const json = await res.json();
+        if (!alive) return;
+        if (!json) {
+          setState({ kind: "idle" });
+          return;
+        }
+        setState({
+          kind: "playing",
+          track: {
+            song: json.song,
+            artist: json.artist,
+            album: json.album,
+            albumArt: json.album_art_url,
+            href: json.href ?? null,
+            isPlaying: !!json.is_playing,
+            progressMs: json.progress_ms ?? 0,
+            durationMs: json.duration_ms ?? 0,
+            fetchedAt: Date.now(),
+          },
+        });
+      } catch {
+        if (alive) setState({ kind: "error" });
+      }
+    };
+
+    load();
+    const id = setInterval(load, POLL_MS);
+    const onVisible = () => {
+      if (document.visibilityState === "visible") load();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      alive = false;
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, []);
+
+  return state;
+}
+
+const NowPlayingContext = createContext<NowPlayingState | null>(null);
+
+export function NowPlayingProvider({ children }: { children: ReactNode }) {
+  const state = useNowPlayingPoll();
+  return (
+    <NowPlayingContext.Provider value={state}>
+      {children}
+    </NowPlayingContext.Provider>
+  );
+}
+
+export function useNowPlayingState(): NowPlayingState {
+  return useContext(NowPlayingContext) ?? { kind: "loading" };
+}
+
 const STATUS_META: Record<
   LanyardData["discord_status"],
   { label: string; cls: string }
@@ -177,10 +257,11 @@ export function ProfileStatusDot() {
    --------------------------------------------------------------------------- */
 export function ProfileStatus() {
   const state = useLanyardState();
+  const npState = useNowPlayingState();
   const [now, setNow] = useState(() => Date.now());
 
   const ready = state.kind === "ready" ? state.data : null;
-  const spotify = ready && ready.listening_to_spotify ? ready.spotify : null;
+  const spotify = npState.kind === "playing" ? npState.track : null;
 
   // First non-custom-status activity (game / streaming / watching / …).
   const activity = !spotify
@@ -188,18 +269,21 @@ export function ProfileStatus() {
     : undefined;
 
   useEffect(() => {
-    if (!spotify?.timestamps) return;
+    if (!spotify?.isPlaying) return;
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
-    // 只跟著曲目的起訖時間走：依賴整個 timestamps 物件的話，每 15 秒輪詢回來的
-    // 新物件參照都會重建一次計時器，進度條就會每 15 秒抖一下
+    // 只跟著曲目本身走，不跟著整個 track 物件參照：每次輪詢回來的新物件參照都
+    // 重建一次計時器的話，進度條就會每次輪詢就抖一下
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spotify?.timestamps?.start, spotify?.timestamps?.end]);
+  }, [spotify?.isPlaying, spotify?.song, spotify?.artist]);
 
   let progress = 0;
-  if (spotify?.timestamps) {
-    const { start, end } = spotify.timestamps;
-    progress = Math.min(1, Math.max(0, (now - start) / (end - start)));
+  if (spotify && spotify.durationMs > 0) {
+    const elapsedSinceFetch = spotify.isPlaying ? now - spotify.fetchedAt : 0;
+    progress = Math.min(
+      1,
+      Math.max(0, (spotify.progressMs + elapsedSinceFetch) / spotify.durationMs)
+    );
   }
 
   // Rich activity layout: when `details` exists it is the main line and the
@@ -223,7 +307,7 @@ export function ProfileStatus() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="dc-act-art"
-            src={discordArtThumb(spotify.album_art_url)}
+            src={discordArtThumb(spotify.albumArt)}
             alt={spotify.album}
           />
           <div className="dc-act-meta">
@@ -237,7 +321,7 @@ export function ProfileStatus() {
             <div className="dc-act-sub" title={spotify.artist}>
               {spotify.artist}
             </div>
-            {spotify.timestamps && (
+            {spotify.durationMs > 0 && (
               <div className="spotify-bar">
                 <span style={{ width: `${progress * 100}%` }} />
               </div>
