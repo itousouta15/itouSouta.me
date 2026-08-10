@@ -971,13 +971,16 @@ body.site-revealed .header {
   animation: modal-overlay-fade-out 0.16s ease both;
 }
 .proj-modal {
+  /* 底部留白刻意不寫在 padding-bottom，而是由 .proj-modal-scroll-hint 的
+     height 提供（原因見該處註解）。這條變數是兩邊的唯一真相。 */
+  --modal-pad-b: 36px;
   width: 100%;
   max-width: 760px;
   max-height: 100%;
   overflow-y: auto;
   background: var(--panel);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
-  padding: 28px 32px 36px;
+  padding: 28px 32px 0;
   scrollbar-width: none;
   will-change: transform, opacity;
   animation: modal-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -1034,9 +1037,76 @@ body.site-revealed .header {
   transform: rotate(90deg);
   border-color: #8f9dc9;
 }
+/* 「下面還有」提示：modal 藏了捲軸（見 .proj-modal 的 scrollbar-width: none），
+   內容一頁塞不下時畫面上沒有任何線索。捲到底由 JS 拿掉 .is-visible 淡出
+   （見 ProjectModalShell）。
+
+   height 吃 --modal-pad-b，同時 .proj-modal 的 padding-bottom 是 0——modal 的
+   底部留白改由這個元素本體提供，是同一段空間換個寫法而已。理由：sticky 的容器
+   區塊是父層的「內容盒」，但 bottom: 0 想貼的是「padding 盒」底緣，中間差的正好
+   是 padding-bottom。留著那條 padding 的話，漸層會被卡在離 modal 底緣一個 padding
+   的高度上，底下露出一條沒遮到的原始內容——橫切過封面圖就是一條很明顯的硬邊。
+   改用等高的元素後兩個底緣重合，漸層才貼得到真正的底部；總捲動高度與底部留白
+   都沒變。 */
+.proj-modal-scroll-hint {
+  position: sticky;
+  bottom: 0;
+  height: var(--modal-pad-b);
+  z-index: 2;
+  /* 蓋在內容上但不能吃掉點擊 */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.proj-modal-scroll-hint.is-visible {
+  opacity: 1;
+}
+.proj-modal-scroll-hint::before {
+  content: "";
+  position: absolute;
+  /* 不往左右 padding 溢出：.proj-modal 的 overflow-y: auto 會讓 overflow-x
+     一起變成 auto，負的水平 inset 會生出一條可橫拉的捲動區 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 64px;
+  background: linear-gradient(to bottom, transparent, var(--panel));
+}
+.proj-modal-scroll-hint-arrow {
+  position: absolute;
+  left: 50%;
+  /* 圓鈕放大到 34px 後，原本的 8px 貼底看起來太擠 */
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--bd2);
+  background: var(--panel2);
+  color: var(--dim);
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: proj-scroll-hint-bob 1.6s ease-in-out infinite;
+}
+/* 關鍵影格要自己帶著 translateX(-50%)，不然置中會在動畫期間被蓋掉。
+   刻意不設 fill-mode：prefers-reduced-motion 把時長壓到 0.01ms 後，控制權
+   要能乾淨地交回上面那條靜態 transform。 */
+@keyframes proj-scroll-hint-bob {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 3px);
+  }
+}
 @media (max-width: 600px) {
   .proj-modal {
-    padding: 20px 18px 28px;
+    --modal-pad-b: 28px;
+    padding: 20px 18px 0;
   }
   .proj-modal-title {
     font-size: 22px;
@@ -2603,12 +2673,25 @@ body.site-revealed .header {
   flex: 1;
   min-width: 0;
 }
+/* 唱片感：整個封面繞著自己轉。轉的是 CrossfadeImage 的外層 wrapper，不是裡面
+   兩張疊圖——疊圖各自在跑換歌的淡入，轉的動畫掛在同一層會互相蓋掉 transform。
+   暫停時停轉：見 .is-paused（狀態由 NowPlayingBar 給）。 */
 .now-playing-art {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
   flex: none;
+  animation: now-playing-art-spin 8s linear infinite;
+}
+.now-playing-art.is-paused {
+  animation-play-state: paused;
+}
+/* 不寫 from：起點直接沿用元素當下的 transform（無），暫停再繼續才不會跳回原點 */
+@keyframes now-playing-art-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 /* 換歌時文字不做進場動畫，只有封面漸變（見 .crossfade-img）。 */
 .now-playing-meta {
@@ -3456,18 +3539,6 @@ body.site-revealed .header {
   align-items: center;
   gap: 4px;
 }
-.proj-sort-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.proj-sort-label {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--mute);
-}
 .proj-icon {
   position: relative;
   width: 30px;
@@ -3556,7 +3627,8 @@ body.site-revealed .header {
   align-content: stretch;
 }
 .proj-detail-stats .stat {
-  padding: 10px;
+  /* 左邊多留一點：文字改靠左後貼著卡片邊緣太擠 */
+  padding: 10px 10px 10px 16px;
   /* 卡片被 stretch 拉高後，內容上下置中 */
   display: flex;
   flex-direction: column;
@@ -3564,7 +3636,7 @@ body.site-revealed .header {
 }
 .proj-detail-stats .stat-k,
 .proj-detail-stats .stat-v {
-  text-align: right;
+  text-align: left;
 }
 .proj-detail-stats .stat-v,
 .proj-detail-stats .stat-v.sans,
@@ -3588,10 +3660,6 @@ body.site-revealed .header {
   }
   .proj-detail-stats {
     width: 100%;
-  }
-  .proj-detail-stats .stat-k,
-  .proj-detail-stats .stat-v {
-    text-align: left;
   }
 }
 .proj-detail-actions {

@@ -1539,6 +1539,43 @@ export const PROJECTS: Project[] = [
     longDesc:
       "用 Flutter 打造的公車動態查詢 App，支援 Android / iOS 跨平台，提供路線、站牌與到站動態查詢，介面以現代化為目標重新設計",
     tags: ["Flutter", "Dart"],
+    timeline: [
+      {
+      version: "v0.2.0",
+      date: "2026-05",
+      note: "初期版本：建立公車動態查詢與基礎介面",
+      },
+      {
+      version: "v0.2.2",
+      date: "2026-05",
+      note: "地圖功能修正與查詢體驗改善",
+      },
+      {
+      version: "v0.3.0",
+      date: "2026-05",
+      note: "功能迭代：完善公車資訊與跨平台支援",
+      },
+      {
+      version: "v0.3.3",
+      date: "2026-05",
+      note: "介面與內容持續優化",
+      },
+      {
+      version: "v0.3.4",
+      date: "2026-06",
+      note: "整理介面文字與使用體驗",
+      },
+      {
+      version: "v0.3.5",
+      date: "2026-06",
+      note: "穩定性修正與功能調整",
+      },
+      {
+      version: "v0.3.6",
+      date: "2026-07",
+      note: "更新機制優化，改善 Web 版本體驗",
+      },
+    ],
     icon: "flutter",
     href: "https://github.com/AvianJay/yetanotherbusapp",
     cover: "/assets/projects/YABus.webp",
@@ -2035,6 +2072,27 @@ export const EXPERIENCE: ExperienceItem[] = [
     category: "比賽",
   },
   {
+    period: "2026",
+    title: "Hackit Campfire",
+    org: "參賽",
+    color: "blue",
+    category: "比賽",
+  },
+  {
+    period: "2025",
+    title: "Hackit DayDream",
+    org: "參賽",
+    color: "blue",
+    category: "比賽",
+  },
+  {
+    period: "2025",
+    title: "Hackit ScropYard TW",
+    org: "參賽",
+    color: "blue",
+    category: "比賽",
+  },
+  {
     period: "2025",
     title: "FuStar 未來之星-科學創意挑戰賽",
     org: "參賽",
@@ -2107,7 +2165,7 @@ export const EXPERIENCE: ExperienceItem[] = [
   {
     period: "2026",
     title: "HiPAC 決賽",
-    org: "To Be Continued",
+    org: "佳作、Nvidia 特別獎、未來之星獎",
     color: "blue",
     category: "比賽",
   },
@@ -2162,6 +2220,20 @@ export const EXPERIENCE: ExperienceItem[] = [
   },
   {
     period: "2026",
+    title: "SITCON 2026",
+    org: "閃電講講者",
+    color: "purple",
+    category: "社群",
+  },
+  {
+    period: "2025",
+    title: "AIS3 中區資安體驗營",
+    org: "參與",
+    color: "purple",
+    category: "社群",
+  },
+  {
+    period: "2026",
     title: "g0v Summit",
     org: "場務組",
     color: "blue",
@@ -2191,7 +2263,7 @@ export const EXPERIENCE: ExperienceItem[] = [
   {
     period: "2026",
     title: "COSCUP",
-    org: "場務組",
+    org: "場務組機動股",
     color: "blue",
     category: "社群",
   },
@@ -2218,8 +2290,22 @@ export const EXPERIENCE: ExperienceItem[] = [
   },
   {
     period: "2026",
+    title: "AIS3 2026",
+    org: "社團之夜 中電會介紹講者",
+    color: "blue",
+    category: "社群",
+  },
+  {
+    period: "2027",
     title: "SITCON 2027",
-    org: "設計組",
+    org: "設計組組員",
+    color: "blue",
+    category: "社群",
+  },
+  {
+    period: "2027",
+    title: "SITCON 2027",
+    org: "場務組副組長",
     color: "blue",
     category: "社群",
   },
