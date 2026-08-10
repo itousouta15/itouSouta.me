@@ -3740,6 +3740,31 @@ body.site-revealed .header {
   border: 1px solid var(--bd);
 }
 
+/* 「顯示更多」：跟 .thought-item 同一張卡片語彙，滿寬、置中，hover 位移方向
+   跟卡片相反（往下）以呼應「展開」的動作。 */
+.thoughts-more {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  background: var(--panel);
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+.thoughts-more:hover {
+  transform: translateY(2px);
+  color: var(--blue);
+}
+
 /* 雜談卡片按讚鈕，靠 margin-left: auto 推到 meta 列最右 */
 .thought-react {
   margin-left: auto;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
-import ThoughtReaction from "../components/ThoughtReaction";
+import ThoughtsList from "../components/ThoughtsList";
 import { THOUGHTS } from "../data";
 import { getBlogPosts } from "../lib/blogFeed";
 import { getMergedThoughts } from "../lib/mergedThoughts";
@@ -31,7 +31,6 @@ export default async function WritingPage() {
     // KV 沒環境（本機 dev）時回 null，按讚鈕整批不渲染
     getReactionCounts().catch(() => null),
   ]);
-  const useRemote = items.length > 0;
 
   return (
     <section>
@@ -43,63 +42,11 @@ export default async function WritingPage() {
 
       <div className="card-kicker">THOUGHTS</div>
       <div className="divider" />
-      <div className="thoughts-list">
-        {useRemote
-          ? items.map((item) => (
-              <div className="thought-item" key={item.id}>
-                <div className="thought-meta">
-                  <span className="thought-date">{item.date}</span>
-                  {item.kind === "threads" && item.permalink && (
-                    <a
-                      className="thought-tag"
-                      href={item.permalink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Threads ↗
-                    </a>
-                  )}
-                  {item.kind === "discord" && (
-                    <span className="thought-tag">Discord</span>
-                  )}
-                  {item.kind === "github" && (
-                    <a
-                      className="thought-tag"
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      GitHub ↗
-                    </a>
-                  )}
-                  {reactionCounts && (
-                    <ThoughtReaction
-                      id={item.id}
-                      initial={reactionCounts[item.id] ?? 0}
-                    />
-                  )}
-                </div>
-                {item.text && <p className="thought-text">{item.text}</p>}
-                {item.kind === "threads" && item.media_url && (
-                  <img
-                    className="thought-img"
-                    src={item.media_url}
-                    alt=""
-                    loading="lazy"
-                  />
-                )}
-              </div>
-            ))
-          : [...THOUGHTS].reverse().map((t, i) => (
-              <div className="thought-item" key={i}>
-                <div className="thought-meta">
-                  <span className="thought-date">{t.date}</span>
-                  {t.tag && <span className="thought-tag">{t.tag}</span>}
-                </div>
-                <p className="thought-text">{t.text}</p>
-              </div>
-            ))}
-      </div>
+      <ThoughtsList
+        items={items}
+        reactionCounts={reactionCounts}
+        fallback={THOUGHTS}
+      />
 
       <div className="card-kicker" style={{ marginTop: 28 }}>
         BLOG
