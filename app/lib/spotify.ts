@@ -16,6 +16,17 @@ export interface TopTrack {
   href: string;
 }
 
+export interface CurrentlyPlaying {
+  song: string;
+  artist: string;
+  album: string;
+  albumArt: string;
+  href: string;
+  isPlaying: boolean;
+  progressMs: number;
+  durationMs: number;
+}
+
 async function getAccessToken(): Promise<string | null> {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -74,6 +85,43 @@ export async function getTopTracks(options?: {
       }))
       .filter((t: TopTrack) => t.title && t.cover);
     return tracks.length ? tracks : null;
+  } catch {
+    return null;
+  }
+}
+
+// 目前正在播放的曲目（`/me/player/currently-playing`）。這是直接問 Spotify 帳號
+// 本身在播什麼，不像 Lanyard 那樣得靠 Discord 用戶端轉發——手機沒開 Discord app
+// 時 Lanyard 抓不到 Spotify 活動的老問題，因此不會發生在這裡。
+// 需要 refresh token 授權時多帶 user-read-currently-playing scope（見
+// scripts/spotify-refresh-token.mjs），舊 token 沒有這個 scope 得重新授權一次。
+export async function getCurrentlyPlaying(): Promise<CurrentlyPlaying | null> {
+  const accessToken = await getAccessToken();
+  if (!accessToken) return null;
+
+  try {
+    const res = await fetch(
+      `${API_URL}/me/player/currently-playing?additional_types=track`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        cache: "no-store",
+      }
+    );
+    // 204 = 帳號目前沒在播放任何東西
+    if (res.status === 204 || !res.ok) return null;
+    const json = await res.json();
+    if (!json?.item || json.currently_playing_type !== "track") return null;
+
+    return {
+      song: json.item.name ?? "",
+      artist: (json.item.artists ?? []).map((a: any) => a.name).join(", "),
+      album: json.item.album?.name ?? "",
+      albumArt: json.item.album?.images?.[0]?.url ?? "",
+      href: json.item.external_urls?.spotify ?? "",
+      isPlaying: !!json.is_playing,
+      progressMs: json.progress_ms ?? 0,
+      durationMs: json.item.duration_ms ?? 0,
+    };
   } catch {
     return null;
   }

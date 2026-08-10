@@ -3,55 +3,55 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { discordArtThumb } from "../lib/imageThumb";
-import { useLanyardState } from "./LanyardCards";
+import { useNowPlayingState } from "./LanyardCards";
 
-/* 全站底部浮動膠囊：Discord 正在聽的 Spotify 曲目。資料跟首頁 profile 卡共用
-   LanyardProvider 的同一份 15 秒輪詢（provider 在 root layout），這裡只消費。
+/* 全站底部浮動膠囊：目前正在聽的 Spotify 曲目。資料跟首頁 profile 卡共用
+   NowPlayingProvider 的同一份輪詢（provider 在 root layout），這裡只消費。
    首頁不顯示：profile 卡自己已經有一份一樣的正在聽資訊，兩個疊在一起會重複。 */
 export default function NowPlayingBar() {
   const pathname = usePathname();
-  const state = useLanyardState();
+  const npState = useNowPlayingState();
   const [now, setNow] = useState(() => Date.now());
 
-  const ready = state.kind === "ready" ? state.data : null;
-  const spotify = ready && ready.listening_to_spotify ? ready.spotify : null;
+  const track = npState.kind === "playing" ? npState.track : null;
 
   useEffect(() => {
-    if (!spotify?.timestamps) return;
+    if (!track?.isPlaying) return;
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
-    // 只跟著曲目的起訖時間走，同 ProfileStatus 的理由
+    // 只跟著曲目本身走，同 ProfileStatus 的理由
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spotify?.timestamps?.start, spotify?.timestamps?.end]);
+  }, [track?.isPlaying, track?.song, track?.artist]);
 
-  if (!spotify || pathname === "/") return null;
+  if (!track || pathname === "/") return null;
 
   let progress = 0;
-  if (spotify.timestamps) {
-    const { start, end } = spotify.timestamps;
-    progress = Math.min(1, Math.max(0, (now - start) / (end - start)));
+  if (track.durationMs > 0) {
+    const elapsedSinceFetch = track.isPlaying ? now - track.fetchedAt : 0;
+    progress = Math.min(
+      1,
+      Math.max(0, (track.progressMs + elapsedSinceFetch) / track.durationMs)
+    );
   }
 
-  const href = spotify.track_id
-    ? `https://open.spotify.com/track/${spotify.track_id}`
-    : null;
+  const href = track.href;
 
   const body = (
     <>
       <img
         className="now-playing-art"
-        src={discordArtThumb(spotify.album_art_url)}
+        src={discordArtThumb(track.albumArt)}
         alt=""
       />
       <div className="now-playing-meta">
-        <div className="now-playing-song" title={spotify.song}>
-          {spotify.song}
+        <div className="now-playing-song" title={track.song}>
+          {track.song}
         </div>
-        <div className="now-playing-artist" title={spotify.artist}>
-          {spotify.artist}
+        <div className="now-playing-artist" title={track.artist}>
+          {track.artist}
         </div>
       </div>
-      {spotify.timestamps && (
+      {track.durationMs > 0 && (
         <div className="now-playing-progress">
           <span style={{ width: `${progress * 100}%` }} />
         </div>
@@ -65,12 +65,12 @@ export default function NowPlayingBar() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`正在聽 Spotify：${spotify.song} - ${spotify.artist}`}
+      aria-label={`正在聽 Spotify：${track.song} - ${track.artist}`}
     >
       {body}
     </a>
   ) : (
-    <div className="now-playing" aria-label={`正在聽 Spotify：${spotify.song}`}>
+    <div className="now-playing" aria-label={`正在聽 Spotify：${track.song}`}>
       {body}
     </div>
   );
