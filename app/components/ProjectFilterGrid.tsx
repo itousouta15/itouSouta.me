@@ -9,8 +9,6 @@ import ProjectModalShell from "./ProjectModalShell";
 import ProjectDetailBody from "./ProjectDetailBody";
 import { projectCoverThumb } from "../lib/imageThumb";
 
-type SortMode = "default" | "stars";
-
 export default function ProjectFilterGrid({
   items,
   repoInfoBySlug,
@@ -20,7 +18,6 @@ export default function ProjectFilterGrid({
 }) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [sort, setSort] = useState<SortMode>("default");
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [truncatedDescs, setTruncatedDescs] = useState<Set<string>>(new Set());
   const router = useRouter();
@@ -44,9 +41,9 @@ export default function ProjectFilterGrid({
         return false;
       return true;
     });
-    if (sort !== "stars") return result;
-    // 抓不到 repo 資料的（非 GitHub 連結、私有 repo、API 掛掉）一律沉底，
-    // 不要當成 0 star 跟真的 0 star 混在一起。同分維持 data.ts 原順序。
+    /* 一律照 star 數排，沒有其他排序模式可選。抓不到 repo 資料的（非 GitHub
+       連結、私有 repo、API 掛掉或被限流）一律沉底，不要當成 0 star 跟真的
+       0 star 混在一起。同分維持 data.ts 原順序。 */
     return [...result].sort((a, b) => {
       const sa = repoInfoBySlug[a.slug]?.stars;
       const sb = repoInfoBySlug[b.slug]?.stars;
@@ -55,7 +52,7 @@ export default function ProjectFilterGrid({
       if (sb == null) return -1;
       return sb - sa;
     });
-  }, [items, query, activeTag, sort, repoInfoBySlug]);
+  }, [items, query, activeTag, repoInfoBySlug]);
 
   // ?project=<slug>（例如從全站搜尋導過來）時自動打開對應 modal
   useEffect(() => {
@@ -122,23 +119,6 @@ export default function ProjectFilterGrid({
             ))}
           </div>
         )}
-        <div className="proj-sort-row">
-          <span className="proj-sort-label">SORT</span>
-          <button
-            type="button"
-            className={`likes-tag-chip ${sort === "default" ? "active" : ""}`}
-            onClick={() => setSort("default")}
-          >
-            預設
-          </button>
-          <button
-            type="button"
-            className={`likes-tag-chip ${sort === "stars" ? "active" : ""}`}
-            onClick={() => setSort("stars")}
-          >
-            ★ 最多
-          </button>
-        </div>
       </div>
       {filtered.length > 0 ? (
         <div className="proj-grid">
