@@ -145,7 +145,9 @@ export default function HomePage() {
             {tileIcons.map((icon) => (
               <div className="quote-tech-item" key={icon}>
                 <span className="quote-tech-icon">
-                  <TileIcon kind={icon} />
+                  {/* 尺寸走 prop：TileIcon 把寬高寫成 inline style，用 CSS 蓋
+                      得加 !important（手機版那條就是，見 globals.css） */}
+                  <TileIcon kind={icon} size={18} />
                 </span>
                 <span className="quote-tech-name">
                   {TILE_ICON_META[icon]?.label ?? icon}
