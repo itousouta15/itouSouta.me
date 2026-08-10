@@ -2122,10 +2122,6 @@ body.site-revealed .header {
   overflow: hidden;
   flex: none;
 }
-.quote-tech-icon img {
-  width: 18px !important;
-  height: 18px !important;
-}
 .quote-tech-name {
   min-width: 0;
   color: var(--tx);
@@ -4775,7 +4771,10 @@ a.guestbook-nick:hover {
     width: 22px;
     height: 22px;
   }
-  .quote-tech-icon img {
+  /* 方塊縮到 22px，圖示跟著縮一號。選擇器對的是 TileIcon 內層那顆 span
+     （它用 background-image，不是 <img>）；尺寸是 inline style，只有
+     !important 蓋得過。桌機版的 18px 直接由 page.tsx 的 size prop 給。 */
+  .quote-tech-icon span {
     width: 15px !important;
     height: 15px !important;
   }
