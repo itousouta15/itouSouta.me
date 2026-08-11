@@ -2036,6 +2036,14 @@ export const LINKS: LinkItem[] = [
     avatar:
       "https://gravatar.com/avatar/17e00664ef815abebb952dc4f449e1f1582d0fe0b94c6701e368d68349e151e6?&size=256",
   },
+  {
+    name: "LongTai",
+    handle: "longtai.me",
+    href: "https://longtai.me/",
+    desc: "太好了",
+    avatar:
+      "https://www.gravatar.com/avatar/64a851c812177321ca40d671ad3c014a?d=mp&s=240",
+  },
 ];
 
 export interface ExperienceItem {
