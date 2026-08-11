@@ -24,7 +24,7 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `/`                 | 首頁 — 個人檔案卡、Hero 區塊、技術磚牆、bento 導覽格、GitHub 貢獻圖                                                    |
 | `/about`            | 關於 — 簡介、統計數據、座右銘，以及兩張 Spotify/Likes 預覽卡（動畫、音樂）                                             |
-| `/writing`          | 文章與雜談 — 部落格文章（blog.itousouta.me）索引＋整合 Discord 斜線指令貼文、同步的 Threads 貼文與 GitHub 事件的動態牆 |
+| `/writing`          | 碎碎念 — 部落格文章（blog.itousouta.me）索引＋整合 Discord 斜線指令貼文、同步的 Threads 貼文與 GitHub 事件的動態牆 |
 | （每一頁）          | 留言板 — 每頁內容底部的留言區塊，資料存 Vercel KV（`/api/guestbook`）                                                  |
 | `/likes`            | Likes — 可搜尋、可依標籤篩選的小說、漫畫、動畫格狀清單；Spotify 常聽歌曲預覽列                                         |
 | `/likes/[category]` | 分類詳情 — 含輪播與篩選功能的完整清單                                                                                  |

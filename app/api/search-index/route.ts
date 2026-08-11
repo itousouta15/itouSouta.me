@@ -1,7 +1,7 @@
 import { getBlogPosts } from "../../lib/blogFeed";
 import { getMergedThoughts } from "../../lib/mergedThoughts";
 
-/* Cmd+K 搜尋索引裡「非靜態」的那一半：部落格文章與雜談。
+/* Cmd+K 搜尋索引裡「非靜態」的那一半：部落格碎碎念。
 
    為什麼不直接在 layout 裡 await：root layout 是 server component，await 編得過，
    但在那裡放一個帶 cache 的 fetch 會把 revalidate 傳染給每一條路由，把 /、/links、
