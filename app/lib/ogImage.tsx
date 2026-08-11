@@ -77,9 +77,15 @@ export async function renderOg({
   const avatar = loadBrandPng("avatar.webp");
 
   return new ImageResponse(
-    /* 三層堆疊。padding 一定要留在內容層、不能掛回根元素——絕對定位的子元素是
-       對著 padding box 排的，根元素一旦有 padding，top:0/left:0 的滿版底圖就會
-       被那 72/80px 內縮，鋪不滿整張。 */
+    /* 三層堆疊，靠 DOM 順序決定誰蓋誰——satori 沒有 z-index，畫的順序固定是
+       「自己的背景 → 子元素依序」，所以底圖、蓋板、內容層照這個順序排就對了。
+
+       padding 掛在內容層而不是根元素。理由**不是**「padding 會把絕對定位的子元素
+       往內推」——不會，CSS 裡 abs 子元素的 containing block 是 padding box，原點
+       在 border 內緣，padding 不參與；yoga 也只多加 leading border。真正的理由是
+       yoga 解 abs 子元素的**百分比**尺寸時，是拿父層的 content box（扣掉 padding）
+       當基準，這點跟 CSS 不合。根元素保持無 padding，就不用去繞這個坑，底下那兩層
+       也才敢直接寫 size.width / size.height。 */
     <div
       style={{
         position: "relative",
@@ -113,10 +119,22 @@ export async function renderOg({
           }}
         />
       )}
-      {/* 由左到右淡出的深色蓋板：左 40% 完全純色，文字整片壓在那上面才讀得清楚；
-          75% 之後完全不遮，讓右側頭像區看得到 banner 的紋理。最後那個 100% 的
-          重複停止點是刻意寫的，不去賭「最後一個 stop 會自己延伸到底」這種隱含
-          行為。覺得太重或太淡，調上面的 0.28 跟這裡的 40% 就好。 */}
+      {/* 由左到右淡出的深色蓋板：左 40%（x = 480）完全純色，75% 之後完全不遮，
+          讓右側頭像區看得到 banner 紋理。
+
+          停止點跟可讀性的關係我實際量過產出的 PNG（文字色 MUTE #6a7280）：
+            x ≤ 480  背景仍是純 #1b1e23，對比 3.45（改動前的基準值）
+            x = 640  對比 3.25   ← 最長的副標收在 x≈672，落在這附近
+            x = 720  對比 3.08
+            x = 880  對比 2.81   ← 這裡才會低於大字級 AA 的 3.0
+          副標是 30px，算大字級、門檻 3.0，所以現況通過。但文字欄右緣是 x=872，
+          等於只剩 200px 的餘裕——**如果哪天描述長到逼近文字欄尾端，就會掉到 3.0
+          以下**。真的變長就把這裡的 40% 往右推（推到 72% 可覆蓋整個文字欄）。
+
+          蓋板顏色跟 BG 完全一樣，alpha 1→0 中間才不會偏色；千萬別寫成 transparent，
+          那是 rgba(0,0,0,0)，會一路往黑色插值。最後那個 100% 的重複停止點是刻意
+          寫的，不去賭「最後一個 stop 會自己延伸到底」這種隱含行為。
+          想讓底圖更搶眼就加上面的 0.28，想讓文字區更乾淨就把 40% 往右推。 */}
       {banner && (
         <div
           style={{
@@ -125,7 +143,7 @@ export async function renderOg({
             left: 0,
             width: size.width,
             height: size.height,
-            backgroundImage: `linear-gradient(90deg, ${BG} 0%, ${BG} 40%, rgba(27,30,35,0) 75%, rgba(27,30,35,0) 100%)`,
+            backgroundImage: `linear-gradient(90deg, rgba(${BG_RGB}, 1) 0%, rgba(${BG_RGB}, 1) 40%, rgba(${BG_RGB}, 0) 75%, rgba(${BG_RGB}, 0) 100%)`,
           }}
         />
       )}
@@ -142,8 +160,12 @@ export async function renderOg({
           fontFamily: font ? "Noto Serif TC" : "sans-serif",
         }}
       >
-        {/* 上半列吃掉頁尾以上的所有高度，頭像才會落在整張卡的垂直中線；文字欄
-            另外用 alignSelf: flex-start 釘回頂端，維持原本靠上的排版不變。 */}
+        {/* 上半列用 flex: 1 吃掉頁尾以上的全部高度（486 − 頁尾 36 = 450px），
+            頭像才有東西可以置中。實測產出的 PNG：頭像落在 y 195–394、中心 294.5，
+            比整張卡的幾何中心 315 高 20px——**它是對著「頁尾以上的內容區」置中，
+            不是對著整張卡**，頁尾本來就是獨立的一條帶狀。20px 不到高度的 3.3%，
+            看起來就是置中。
+            文字欄另外用 alignSelf: flex-start 釘回頂端，維持原本靠上的排版不變。 */}
         <div
           style={{ display: "flex", flex: 1, alignItems: "center", gap: 48 }}
         >
@@ -230,6 +252,13 @@ export async function renderOg({
           )}
         </div>
 
+        {/* 實測：右邊那根 200px 橫槓落在 x 920–1119，跟頭像**完全同一欄**（頭像
+            也是 920–1119）。這是頭像寬度剛好等於橫槓寬度換來的，動任何一邊之前
+            先想一下會不會把這個對齊弄掉。
+            另外提醒：這根橫槓現在壓在 banner 上，量到的周圍背景是 rgb(38,43,50)，
+            比它自己的 #24262b 還亮——在純色底上它本來是「比背景亮一點」的細線，
+            現在變成暗一點點，等於看不見了。要救就把 background 換成半透明白，
+            例如 rgba(232,235,242,0.14)，純色區跟 banner 上都讀得到。 */}
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <div style={{ width: 64, height: 6, background: BLUE }} />
           <div
