@@ -106,11 +106,18 @@ export default function HeroFace() {
   //   兩個都會動 transform，疊在同一個元素上會互相打架（跟之前開台紅框被
   //   overflow 咬掉是同一類坑），所以分成兩層各管各的
   // - 最內層四種表情疊在同一格，純靠 opacity 交叉淡入淡出，同一時間只有一個可見
+  // 四個表情走 data-face + CSS ::before，不是真的文字節點。四個一直都在 DOM 裡
+  // （交叉淡入淡出要靠它們同時存在，只有一個 opacity 不是 0），對爬蟲來說卻是四段
+  // 一起算數的文字——Google 拼首頁 snippet 時就把「= ᗜ ω ᗜ.== > ω <.== > ω ᗜ.=
+  // = ᗜ ω <.=」整串接在描述後面。CSS 產生的內容不進 DOM 文字，畫面完全不受影響。
+  // 順便補 aria-hidden：這是純裝飾的顏文字，鍵盤本來就摸不到（沒有 tabIndex、
+  // 也不是 button），螢幕閱讀器卻會把四張臉一張一張唸出來。
   return (
     <div
       className="hero-face-mouse"
       ref={trackRef}
       style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
+      aria-hidden="true"
     >
       <div
         className={`hero-face-track${leaving ? " hero-face-track--wiggle" : ""}`}
@@ -120,9 +127,8 @@ export default function HeroFace() {
           <span
             key={key}
             className={`hero-face${activeFace === key ? "" : " hero-face--out"}`}
-          >
-            {FACES[key]}
-          </span>
+            data-face={FACES[key]}
+          />
         ))}
       </div>
     </div>

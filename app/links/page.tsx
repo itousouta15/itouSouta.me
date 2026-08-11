@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 import { LINKS } from "../data";
 import { avatarThumb } from "../lib/imageThumb";
+import { pageMetadata } from "../lib/seo";
 
-const description = "itouSouta的偷摸他基們 ∠( ᐛ 」∠)_";
+const description =
+  "itouSouta 的友情連結（偷摸他基）：一群同樣在寫程式、做創作的朋友們，他們的個人網站與部落格都在這裡 ∠( ᐛ 」∠)_";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "友鏈",
   description,
-  alternates: { canonical: "/links" },
-  openGraph: { title: "友鏈 | itousouta.me", description, url: "/links" },
-  twitter: { title: "友鏈 | itousouta.me", description },
-};
+  path: "/links",
+});
 
 export default function LinksPage() {
   return (

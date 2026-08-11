@@ -1932,6 +1932,10 @@ body.site-revealed .header {
   color: var(--blue);
   font-weight: 800;
 }
+/* 名字從 data-name 生出來，不放在 DOM 文字裡——理由見 NameRotator.tsx */
+.name-rotator-track b::before {
+  content: attr(data-name);
+}
 .hero-sub {
   font-size: 18px;
   color: var(--dim);
@@ -2044,6 +2048,10 @@ body.site-revealed .header {
   /* 兩個表情疊在同一個 grid cell，純靠 opacity 交叉淡入淡出切換，捲動來回
      跨過邊界也只是讓這個 transition 反向播放，不會卡住 */
   transition: opacity 0.35s ease;
+}
+/* 表情從 data-face 生出來，不放在 DOM 文字裡——理由見 HeroFace.tsx */
+.hero-face::before {
+  content: attr(data-face);
 }
 .hero-face--out {
   opacity: 0;
