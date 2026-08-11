@@ -1631,7 +1631,7 @@ export const PROJECTS: Project[] = [
     title: "itousouta.me",
     desc: "就是這裡 www",
     longDesc:
-      "高度客製化的個人網站：首頁有 Discord 即時狀態與主題切換，串了專案、文章與雜談、收藏清單、音樂、友鏈與一堆小彩蛋。雜談來自 Threads / Discord / GitHub 同步，音樂來自 Spotify",
+      "高度客製化的個人網站：首頁有 Discord 即時狀態與主題切換，串了專案、碎碎念、收藏清單、音樂、友鏈與一堆小彩蛋。雜談來自 Threads / Discord / GitHub 同步，音樂來自 Spotify",
     tags: ["Next.js", "TypeScript", "itou 系列"],
     icon: "nextjs",
     href: "https://github.com/itousouta15/itousouta.me",

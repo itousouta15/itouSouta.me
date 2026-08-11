@@ -1,0 +1,40 @@
+
+> itousouta-tw@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.6s
+ ○ Compiling /projects ...
+ ✓ Compiled /projects in 13.3s (669 modules)
+ GET /projects 200 in 16272ms
+ ○ Compiling /api/now-playing ...
+ ✓ Compiled /api/now-playing in 18.3s (383 modules)
+ ✓ Compiled (410 modules)
+ GET /api/now-playing 200 in 20941ms
+ GET /api/now-playing 200 in 20933ms
+ GET /projects 200 in 698ms
+ GET /api/now-playing 200 in 730ms
+ GET /api/now-playing 200 in 972ms
+ GET /projects 200 in 74ms
+ GET /api/now-playing 200 in 691ms
+ GET /api/now-playing 200 in 706ms
+ GET /icon.png?9b6aa9b9e6c2bf4d 200 in 17ms
+ GET /projects 200 in 64ms
+ GET /api/now-playing 200 in 605ms
+ GET /api/now-playing 200 in 608ms
+ GET /icon.png?9b6aa9b9e6c2bf4d 200 in 20ms
+ ✓ Compiled in 413ms (640 modules)
+ ✓ Compiled in 372ms (654 modules)
+ GET /projects 200 in 224ms
+ ✓ Compiled /api/now-playing in 116ms (381 modules)
+ GET /api/now-playing 200 in 1136ms
+ GET /api/now-playing 200 in 1269ms
+ ✓ Compiled /icon.png in 211ms (410 modules)
+ GET /icon.png?9b6aa9b9e6c2bf4d 200 in 356ms
+ ✓ Compiled in 5.7s (640 modules)
+ ✓ Compiled in 1236ms (654 modules)
+ ✓ Compiled in 603ms (654 modules)

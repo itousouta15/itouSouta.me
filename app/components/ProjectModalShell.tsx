@@ -23,6 +23,7 @@ export default function ProjectModalShell({
   const [closing, setClosing] = useState(false);
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const [moreBelow, setMoreBelow] = useState(false);
+  const [moreAbove, setMoreAbove] = useState(false);
 
   // 先播放關閉動畫，動畫結束後才真的通知外層卸載，避免「關掉沒動畫」
   const requestClose = useCallback(() => {
@@ -48,14 +49,15 @@ export default function ProjectModalShell({
   }, [requestClose]);
 
   /* modal 自己就是捲動容器，而且捲軸被藏起來（見 .proj-modal 的 scrollbar-width:
-     none），內容超過一頁時畫面上沒有任何線索。這裡算「底下還剩多少沒看到」，
-     交給 .proj-modal-scroll-hint 顯示漸層＋箭頭。 */
+     none），內容超過一頁時畫面上沒有任何線索。這裡算「底下還剩多少沒看到」和
+     「上面捲掉了多少」，交給 .proj-modal-scroll-hint(-top) 顯示漸層＋箭頭。 */
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
     const update = () => {
       // 8px 容差：捲到底時 scrollTop 常有次像素誤差，抓太死提示會在底部閃爍
       setMoreBelow(el.scrollHeight - el.clientHeight - el.scrollTop > 8);
+      setMoreAbove(el.scrollTop > 8);
     };
     update();
     el.addEventListener("scroll", update, { passive: true });
@@ -86,7 +88,7 @@ export default function ProjectModalShell({
         onMouseDown={(e) => e.stopPropagation()}
         data-lenis-prevent
       >
-        <div className="proj-modal-head">
+        <div className={`proj-modal-head${moreAbove ? " is-more-above" : ""}`}>
           <div>
             <div className={`proj-kicker ${kickerColor}`}>{kicker}</div>
             <div className="proj-modal-title">{title}</div>

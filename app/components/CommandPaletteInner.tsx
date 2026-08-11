@@ -27,7 +27,7 @@ const STATIC_PAGES: SearchItem[] = [
   { id: "page-likes", title: "喜歡的東西", href: "/likes", category: "頁面" },
   {
     id: "page-writing",
-    title: "文章與雜談",
+    title: "碎碎念",
     href: "/writing",
     category: "頁面",
   },
@@ -124,7 +124,7 @@ export default function CommandPaletteInner({
     };
   }, []);
 
-  /* 部落格文章與雜談是非同步的，靜態索引拿不到。這個元件只有在使用者按下 Cmd+K
+  /* 部落格碎碎念是非同步的，靜態索引拿不到。這個元件只有在使用者按下 Cmd+K
      之後才會掛載，所以這次請求是真正的隨選——靜態結果先出來，這些晚一個 RTT 補上。 */
   useEffect(() => {
     let cancelled = false;
