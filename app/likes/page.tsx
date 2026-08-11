@@ -8,7 +8,7 @@ import { getTopTracks } from "../lib/spotify";
 import { pageMetadata } from "../lib/seo";
 
 const description =
-  "itouSouta 喜歡的東西：輕小說、漫畫、動漫、VTuber 與 VOCALOID 音樂的收藏清單，每一部都有我自己的評分和一點心得 (╯✧∇✧)╯";
+  "itouSouta 喜歡的東西們 (╯✧∇✧)╯";
 
 export const revalidate = 3600;
 
