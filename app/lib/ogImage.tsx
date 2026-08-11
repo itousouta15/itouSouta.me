@@ -1,3 +1,20 @@
+/* 這個檔案的版面之後，**十個 opengraph-image.tsx 開頭那行日期也要一起改**。
+
+   踩過一次：底圖跟頭像都做好、也部署上去了，線上 /opengraph-image 抓下來確實是
+   新圖，但 Discord 貼連結出來還是舊的純色卡。原因是 HTML 裡的網址長這樣
+
+       <meta property="og:image" content="https://itousouta.me/opengraph-image?9c45…">
+
+   那串 ?9c45… 是 Next 的快取破壞參數，而它是對「**那個 opengraph-image.tsx 檔案
+   自己的原始碼**」算的 contenthash——不含它 import 進來的東西
+   （見 next/dist/build/webpack/loaders/next-metadata-image-loader.js 的
+   `interpolateName(this, "[contenthash]", { context, content })`，content 就是該
+   檔案的原始碼）。所以只動這裡的話，十個路由檔的雜湊一個都不會變，網址原封不動；
+   偏偏 OG 圖的回應標頭是 `immutable, max-age=31536000`，各平台與 CDN 就理所當然
+   地永遠不再重抓。
+
+   結論：版面改動不會自己傳播到網址上，得手動讓那十個檔案的位元組變一下。 */
+
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";

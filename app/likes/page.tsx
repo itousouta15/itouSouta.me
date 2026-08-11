@@ -7,8 +7,7 @@ import { LIKE_CATEGORIES } from "../data";
 import { getTopTracks } from "../lib/spotify";
 import { pageMetadata } from "../lib/seo";
 
-const description =
-  "itouSouta 喜歡的東西們 (╯✧∇✧)╯";
+const description = "itouSouta 喜歡的東西們 (╯✧∇✧)╯";
 
 export const revalidate = 3600;
 
