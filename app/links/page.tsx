@@ -5,7 +5,7 @@ import { avatarThumb } from "../lib/imageThumb";
 import { pageMetadata } from "../lib/seo";
 
 const description =
-  "itouSouta 的友情連結（偷摸他基）：一群同樣在寫程式、做創作的朋友們，他們的個人網站與部落格都在這裡 ∠( ᐛ 」∠)_";
+  "itouSouta 的偷摸他基 ∠( ᐛ 」∠)_";
 
 export const metadata: Metadata = pageMetadata({
   title: "友鏈",

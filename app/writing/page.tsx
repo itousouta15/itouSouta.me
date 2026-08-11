@@ -8,7 +8,7 @@ import { getReactionCounts } from "../lib/kv";
 import { pageMetadata } from "../lib/seo";
 
 const description =
-  "itouSouta 寫過的文章與雜談：itouBLoGa 部落格的技術與生活文章，加上 Threads、GitHub、Discord 同步過來的即時動態牆 φ(*￣0￣)";
+  "itouSouta 寫過的文章與雜談 φ(*￣0￣)";
 
 export const metadata: Metadata = pageMetadata({
   title: "文章與雜談",

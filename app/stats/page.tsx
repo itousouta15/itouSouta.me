@@ -11,7 +11,7 @@ import { pageMetadata } from "../lib/seo";
 const lead = "itousouta.me 的一些數字 (｡･ω･｡)";
 
 const description =
-  "itousouta.me 的統計數字：專案數與 GitHub 星數、收藏過的動漫與輕小說數量、經歷條目、部落格文章與雜談則數，全部即時算給你看 (｡･ω･｡)";
+  "itousouta.me 的統計數據 (｡･ω･｡)";
 
 export const metadata: Metadata = pageMetadata({
   title: "數據",
