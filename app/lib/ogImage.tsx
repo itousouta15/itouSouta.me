@@ -19,6 +19,11 @@ const TX = "#e8ebf2";
 const MUTE = "#6a7280";
 const BLUE = "#b0bdf7";
 
+/* 蓋板的漸層需要半透明的停止點，而 satori 的 gradient parser 只穩吃
+   hex / rgb() / rgba()，八碼 hex 不保險。所以 BG 的三個分量另外留一份給漸層。
+   這是全檔唯一的色票重複——改 BG 記得兩邊一起改，不然漸層會偏色。 */
+const BG_RGB = "27, 30, 35"; // === BG
+
 /* 底圖與頭像用 data URI 塞進 satori。三件事值得先講清楚：
 
    1. **檔名是 .webp，但 MIME 寫 image/png——這是對的，不是筆誤。** brand/ 底下
@@ -44,10 +49,14 @@ function loadBrandPng(file: string): string | null {
     const buf = readFileSync(join(process.cwd(), "public/assets/brand", file));
     src = `data:image/png;base64,${buf.toString("base64")}`;
   } catch {
-    src = null;
+    /* 這裡跟 ogFont.ts 不一樣，多印一行 warn：字型抓不到是網路飄，本來就會偶爾
+       發生；這兩張是 repo 裡的檔案，讀不到就是真的出事了。靜靜地少一層圖，會讓
+       十三張卡片全部悄悄變醜而沒人發現。 */
+    console.warn(`[ogImage] 讀不到 ${file}，這張分享圖會少掉那一層`);
   }
 
-  // 一次 build 會呼叫 renderOg 十次，快取讓每張圖只讀檔＋編碼一次
+  // satori 每次 render 都會清掉自己的圖片快取，跨圖重用只能靠這裡。
+  // 一次 build 會呼叫 renderOg 十三次，這個 Map 讓每張圖只讀檔＋base64 一次。
   brandCache.set(file, src);
   return src;
 }
