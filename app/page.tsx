@@ -19,7 +19,7 @@ import DecorativeImage from "./components/DecorativeImage";
    郭家睿」那串）。標題直接把大家真的會搜的三個名字寫進去，absolute 是因為模板
    會再黏一次站名，變成「…| itouSouta.me」太囉唆，站名 Google 本來就會另外顯示。 */
 export const metadata: Metadata = pageMetadata({
-  title: "itouSouta / 伊藤蒼太 / 郭家睿 — 個人網站",
+  title: "itouSouta 的個人網站 ε(*´･∀･｀)зﾞ",
   description: SITE_DESCRIPTION,
   path: "/",
   absolute: true,
