@@ -5,19 +5,16 @@ import { THOUGHTS } from "../data";
 import { getBlogPosts } from "../lib/blogFeed";
 import { getMergedThoughts } from "../lib/mergedThoughts";
 import { getReactionCounts } from "../lib/kv";
+import { pageMetadata } from "../lib/seo";
 
-const description = "itouSouta 寫過的文章與雜談 φ(*￣0￣)";
-export const metadata: Metadata = {
+const description =
+  "itouSouta 寫過的文章與雜談：itouBLoGa 部落格的技術與生活文章，加上 Threads、GitHub、Discord 同步過來的即時動態牆 φ(*￣0￣)";
+
+export const metadata: Metadata = pageMetadata({
   title: "文章與雜談",
   description,
-  alternates: { canonical: "/writing" },
-  openGraph: {
-    title: "文章與雜談 | itousouta.me",
-    description,
-    url: "/writing",
-  },
-  twitter: { title: "文章與雜談 | itousouta.me", description },
-};
+  path: "/writing",
+});
 
 export const revalidate = 3600;
 

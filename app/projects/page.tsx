@@ -4,20 +4,16 @@ import PageHead from "../components/PageHead";
 import ProjectFilterGrid from "../components/ProjectFilterGrid";
 import { PROJECTS } from "../data";
 import { getAllRepoInfo } from "../lib/github";
+import { pageMetadata } from "../lib/seo";
 
-const description = "itouSouta 的專案們 (◍•ᴗ•◍)ゝ";
+const description =
+  "itouSouta 做過的專案們：個人網站、Discord bot、線上評測與各種小工具，每個都有介紹、用到的技術、開發歷程與 GitHub 原始碼 (◍•ᴗ•◍)ゝ";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "一些專案們",
   description,
-  alternates: { canonical: "/projects" },
-  openGraph: {
-    title: "一些專案們 | itousouta.me",
-    description,
-    url: "/projects",
-  },
-  twitter: { title: "一些專案們 | itousouta.me", description },
-};
+  path: "/projects",
+});
 
 export const revalidate = 3600;
 

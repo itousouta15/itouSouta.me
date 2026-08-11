@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
 import { EXPERIENCE, ExperienceItem } from "../data";
+import { pageMetadata } from "../lib/seo";
 
 const description =
-  "郭家睿 / 伊藤蒼太的學習與活動經歷，包含校內資訊校隊、SCAICT 中電會等歷程。";
+  "itouSouta（伊藤蒼太 / 郭家睿）的學習與活動經歷：臺中市立大里高中資訊校隊、SCAICT 中電會、各種營隊與競賽的時間軸。";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "經歷",
   description,
-  alternates: { canonical: "/experience" },
-  openGraph: { title: "經歷 | itousouta.me", description, url: "/experience" },
-  twitter: { title: "經歷 | itousouta.me", description },
-};
+  path: "/experience",
+});
 
 function groupByCategory(items: ExperienceItem[]) {
   const groups = new Map<string, ExperienceItem[]>();

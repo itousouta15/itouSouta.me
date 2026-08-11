@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import PageHead from "../../components/PageHead";
 import LikeFilterGrid from "../../components/LikeFilterGrid";
 import { LIKE_CATEGORIES } from "../../data";
+import { pageMetadata } from "../../lib/seo";
 
 export function generateStaticParams() {
   return LIKE_CATEGORIES.map((cat) => ({ category: cat.key }));
@@ -17,16 +18,14 @@ export function generateMetadata({
   const cat = LIKE_CATEGORIES.find((c) => c.key === params.category);
   const title = cat ? cat.label : "喜歡的東西";
   const description = cat
-    ? `itouSouta 喜歡的${cat.label}們 (╯✧∇✧)╯`
-    : "itouSouta 喜歡的音樂、VOCALOID 、動漫 (╯✧∇✧)╯";
-  const url = `/likes/${params.category}`;
-  return {
+    ? `itouSouta 收藏的${cat.label}清單，共 ${cat.items.length} 部，每一部都有我自己的評分和一點心得 (╯✧∇✧)╯`
+    : "itouSouta 喜歡的輕小說、漫畫、動漫、VTuber 與 VOCALOID 音樂收藏 (╯✧∇✧)╯";
+
+  return pageMetadata({
     title,
     description,
-    alternates: { canonical: url },
-    openGraph: { title: `${title} | itousouta.me`, description, url },
-    twitter: { title: `${title} | itousouta.me`, description },
-  };
+    path: `/likes/${params.category}`,
+  });
 }
 
 export default function LikeCategoryPage({

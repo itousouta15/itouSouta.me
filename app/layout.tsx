@@ -19,10 +19,7 @@ import KonamiEasterEgg from "./components/KonamiEasterEgg";
 import ConfettiBurst from "./components/ConfettiBurst";
 import ServiceWorkerRegistration from "./components/ServiceWorkerRegistration";
 import GuestbookSection from "./components/GuestbookSection";
-
-const SITE_URL = "https://itousouta.me";
-const SITE_TITLE = "itouSouta.me";
-const SITE_DESCRIPTION = "itouSouta / 郭家睿 / 伊藤蒼太的個人網站 ε(*´･∀･｀)зﾞ";
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from "./lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -43,7 +40,10 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "郭家睿 / 伊藤蒼太", url: SITE_URL }],
   creator: "郭家睿 / 伊藤蒼太",
-  alternates: { canonical: "/" },
+  /* 這裡刻意不寫 alternates.canonical。metadata 最外層欄位會往下繼承，root 若
+     釘一個 canonical: "/"，任何忘記自己設的新頁面都會宣告「我的正規網址是首頁」
+     ——Google 看到就把那頁從索引裡丟掉。canonical 一律由各頁自己用
+     pageMetadata() 產生，忘了寫最多是沒有 canonical，不會指錯人。 */
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
@@ -52,19 +52,7 @@ export const metadata: Metadata = {
     siteName: SITE_TITLE,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: [
-      {
-        url: "/assets/brand/banner.webp",
-        width: 1200,
-        height: 630,
-        alt: SITE_TITLE,
-      },
-    ],
   },
-  /* 刻意不設 twitter.images：每條路由的 opengraph-image 檔案慣例只會產生
-     og:image，不會產生 twitter:image。這裡如果留著一張固定圖，X 上就永遠是那張
-     banner，per-route 分享圖等於白做。缺 twitter:image 時 X 會自己 fallback 到
-     og:image，正是我們要的。 */
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
@@ -147,22 +135,54 @@ export default function RootLayout({
         </noscript>
       </head>
       <body>
+        {/* 「郭家睿 / 伊藤蒼太 / itouSouta 是同一個人」這件事，Google 只能靠
+            sameAs 把散在各站的身分串起來——原本只掛了一個部落格，等於沒串。
+            拆成 @graph 兩個實體並用 @id 互指，是為了讓 WebSite 明確指向作者，
+            Google 判斷網站名稱時也優先看 WebSite.name（SERP 上顯示的站名）。 */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              name: "郭家睿",
-              alternateName: ["伊藤蒼太", "itouSouta", "itouSouta15"],
-              url: SITE_URL,
-              image: `${SITE_URL}/assets/brand/banner.webp`,
-              sameAs: ["https://blog.itousouta.me"],
-              affiliation: {
-                "@type": "Organization",
-                name: "臺中市立大里高中",
-              },
-              description: SITE_DESCRIPTION,
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": `${SITE_URL}/#website`,
+                  url: SITE_URL,
+                  name: SITE_TITLE,
+                  alternateName: ["itouSouta", "伊藤蒼太", "郭家睿"],
+                  inLanguage: "zh-Hant",
+                  description: SITE_DESCRIPTION,
+                  publisher: { "@id": `${SITE_URL}/#person` },
+                },
+                {
+                  "@type": "Person",
+                  "@id": `${SITE_URL}/#person`,
+                  name: "郭家睿",
+                  alternateName: ["伊藤蒼太", "itouSouta", "itouSouta15"],
+                  url: SITE_URL,
+                  image: `${SITE_URL}/assets/brand/avatar.webp`,
+                  description: SITE_DESCRIPTION,
+                  knowsAbout: [
+                    "軟體開發",
+                    "資訊安全",
+                    "VOCALOID",
+                    "插畫",
+                    "競技程式設計",
+                  ],
+                  affiliation: {
+                    "@type": "Organization",
+                    name: "臺中市立大里高中",
+                  },
+                  sameAs: [
+                    "https://github.com/itousouta15",
+                    "https://x.com/itou_souta15",
+                    "https://www.instagram.com/itou.souta15",
+                    "https://t.me/itousouta15",
+                    "https://blog.itousouta.me",
+                  ],
+                },
+              ],
             }),
           }}
         />
