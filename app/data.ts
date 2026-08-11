@@ -2014,6 +2014,13 @@ export const LINKS: LinkItem[] = [
     desc: "我不是電神",
     avatar: "https://avatars.githubusercontent.com/u/103299803",
   },
+  {
+    name: "淳",
+    handle: "chuen666666.com",
+    href: "https://www.chuen666666.com/",
+    desc: "群除我佬，我是肺霧",
+    avatar: "https://chuen666666.com/img/avatar.jpg",
+  },
 ];
 
 export interface ExperienceItem {
