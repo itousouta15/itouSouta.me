@@ -2,8 +2,7 @@ import type { MetadataRoute } from "next";
 import { LIKE_CATEGORIES } from "./data";
 import { getMergedThoughts } from "./lib/mergedThoughts";
 import { getBlogPosts } from "./lib/blogFeed";
-
-const SITE_URL = "https://itousouta.me";
+import { SITE_URL } from "./lib/seo";
 
 /* 靜態路由刻意不給 lastModified：內容跟著 data.ts 走，只有重新部署才會變，
    填 new Date() 等於每次抓 sitemap 都宣稱「剛剛改過」——沒訊號還不如省略。
@@ -12,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     "",
     "/about",
+    "/api",
     "/experience",
     "/likes",
     "/likes/music",

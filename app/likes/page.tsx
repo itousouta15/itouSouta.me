@@ -5,18 +5,18 @@ import MusicSection from "../components/MusicSection";
 import VtuberLiveWarmup from "../components/VtuberLiveWarmup";
 import { LIKE_CATEGORIES } from "../data";
 import { getTopTracks } from "../lib/spotify";
+import { pageMetadata } from "../lib/seo";
 
-const description = "itouSouta 喜歡的音樂、VOCALOID 、動漫 (╯✧∇✧)╯";
+const description =
+  "itouSouta 喜歡的東西：輕小說、漫畫、動漫、VTuber 與 VOCALOID 音樂的收藏清單，每一部都有我自己的評分和一點心得 (╯✧∇✧)╯";
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "喜歡的東西",
   description,
-  alternates: { canonical: "/likes" },
-  openGraph: { title: "喜歡的東西 | itousouta.me", description, url: "/likes" },
-  twitter: { title: "喜歡的東西 | itousouta.me", description },
-};
+  path: "/likes",
+});
 
 export default async function LikesPage() {
   const topAlbums = await getTopTracks({ limit: 12, timeRange: "long_term" });

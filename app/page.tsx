@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { pageMetadata, SITE_DESCRIPTION } from "./lib/seo";
 import { ROLES, TILE_COLS } from "./data";
 import TileIcon from "./components/TileIcon";
 import { TILE_ICON_META } from "./components/tileIconMeta";
@@ -10,6 +12,18 @@ import HeroFace from "./components/HeroFace";
 import BadgeShape from "./components/BadgeShape";
 import NameRotator from "./components/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
+
+/* 首頁之前沒有自己的 metadata，整頁靠繼承 layout 的 default title「itouSouta.me」
+   ——只有一個網域名、完全沒描述這頁是什麼，Google 判定它沒用，就自己拿 <h1> 的
+   文字改寫標題（SERP 上長出「itouSouta / 伊藤蒼太/ 郭家睿itouSouta伊藤蒼太-
+   郭家睿」那串）。標題直接把大家真的會搜的三個名字寫進去，absolute 是因為模板
+   會再黏一次站名，變成「…| itouSouta.me」太囉唆，站名 Google 本來就會另外顯示。 */
+export const metadata: Metadata = pageMetadata({
+  title: "itouSouta / 伊藤蒼太 / 郭家睿 — 個人網站",
+  description: SITE_DESCRIPTION,
+  path: "/",
+  absolute: true,
+});
 
 export default function HomePage() {
   const tileIcons = TILE_COLS.flat();

@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
+import { pageMetadata } from "../lib/seo";
 
-const description = "itousouta.me 的公開端點與徽章";
+// 頁面上那行小字，跟給搜尋引擎看的描述分開：前者要短，後者要塞得下關鍵字
+const lead = "itousouta.me 的公開端點與徽章";
 
-export const metadata: Metadata = {
+const description =
+  "itousouta.me 的公開 API：雜談 RSS feed、sitemap、站內搜尋索引，以及部落格文章數、GitHub 星數、Discord 狀態的動態徽章，全部可以直接 curl";
+
+export const metadata: Metadata = pageMetadata({
   title: "API",
   description,
-  alternates: { canonical: "/api" },
-  openGraph: { title: "API | itousouta.me", description, url: "/api" },
-  twitter: { title: "API | itousouta.me", description },
-};
+  path: "/api",
+});
 
 interface Endpoint {
   method: string;
@@ -102,7 +105,7 @@ const ENDPOINTS: Endpoint[] = [
 export default function ApiPage() {
   return (
     <section style={{ paddingBottom: 8 }}>
-      <PageHead kicker="API" title="公開端點" desc={description} />
+      <PageHead kicker="API" title="公開端點" desc={lead} />
 
       {ENDPOINTS.map((e) => (
         <div className="api-endpoint" key={`${e.method}-${e.path}`}>

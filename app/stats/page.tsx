@@ -5,16 +5,19 @@ import { getAllRepoInfo } from "../lib/github";
 import { getBlogPosts } from "../lib/blogFeed";
 import { getMergedThoughts } from "../lib/mergedThoughts";
 import { getTopTracks } from "../lib/spotify";
+import { pageMetadata } from "../lib/seo";
 
-const description = "itousouta.me 的一些數字 (｡･ω･｡)";
+// 頁面上那行小字，跟給搜尋引擎看的描述分開：前者要短，後者要塞得下關鍵字
+const lead = "itousouta.me 的一些數字 (｡･ω･｡)";
 
-export const metadata: Metadata = {
+const description =
+  "itousouta.me 的統計數字：專案數與 GitHub 星數、收藏過的動漫與輕小說數量、經歷條目、部落格文章與雜談則數，全部即時算給你看 (｡･ω･｡)";
+
+export const metadata: Metadata = pageMetadata({
   title: "數據",
   description,
-  alternates: { canonical: "/stats" },
-  openGraph: { title: "數據 | itousouta.me", description, url: "/stats" },
-  twitter: { title: "數據 | itousouta.me", description },
-};
+  path: "/stats",
+});
 
 export const revalidate = 3600;
 
@@ -78,7 +81,7 @@ export default async function StatsPage() {
 
   return (
     <section style={{ paddingBottom: 8 }}>
-      <PageHead kicker="STATS" title="一些數字" desc={description} />
+      <PageHead kicker="STATS" title="一些數字" desc={lead} />
 
       <Section kicker="PROJECTS">
         <Stat k="專案數" v={String(PROJECTS.length)} mono />

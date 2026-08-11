@@ -1910,8 +1910,8 @@ export const LINKS: LinkItem[] = [
   },
   {
     name: "Frank",
-    handle: "frankk.uk",
-    href: "https://frankk.uk/",
+    handle: "frk.tw",
+    href: "https://frk.tw/",
     desc: "AIS3隊友 | 資安大電神",
     avatar: "/assets/likes/frank.webp",
   },
@@ -2021,6 +2021,20 @@ export const LINKS: LinkItem[] = [
     desc: "群除我佬，我是肺霧",
     avatar: "https://chuen666666.com/img/avatar.jpg",
   },
+  {
+    name: "1awks",
+    handle: "hawks.tw",
+    href: "https://www.hawks.tw/",
+    desc: "夜鹿廚",
+    avatar: "https://hawks.tw/avatar.jpg",
+  },
+  {
+    name: "Each",
+    handle: "iach.cc",
+    href: "https://iach.cc/",
+    desc: "很有生活的人",
+    avatar: "https://gravatar.com/avatar/17e00664ef815abebb952dc4f449e1f1582d0fe0b94c6701e368d68349e151e6?&size=256",
+  }
 ];
 
 export interface ExperienceItem {

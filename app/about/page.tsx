@@ -4,11 +4,13 @@ import PageHead from "../components/PageHead";
 import { LIKE_CATEGORIES, MUSIC_ARTISTS } from "../data";
 import { likeThumb, cardBgThumb, artistAvatarThumb } from "../lib/imageThumb";
 import { getTopTracks } from "../lib/spotify";
+import { pageMetadata } from "../lib/seo";
 
 // Spotify「最近常聽」每小時重抓一次
 export const revalidate = 3600;
 
-const description = "itouSouta 的自我介紹 (*´з｀*)";
+const description =
+  "itouSouta（伊藤蒼太 / 郭家睿）的自我介紹：臺中市立大里高中學生、校內資訊校隊隊長、SCAICT 中電會第五屆會長，喜歡 VOCALOID、畫插畫和寫程式，對資安也有點興趣 (*´з｀*)";
 
 // ===== 卡片背景圖入口：想換背景改這兩行 =====
 // 可填外部圖片網址，或把圖片放進 public/assets 後填 "/assets/分類/檔名.webp"
@@ -24,13 +26,11 @@ const ANIME_PREVIEW = (
 
 const MUSIC_PREVIEW = MUSIC_ARTISTS.filter((a) => a.avatar).slice(0, 4);
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "關於我",
   description,
-  alternates: { canonical: "/about" },
-  openGraph: { title: "關於我 | itousouta.me", description, url: "/about" },
-  twitter: { title: "關於我 | itousouta.me", description },
-};
+  path: "/about",
+});
 
 export default async function AboutPage() {
   const topAlbums = await getTopTracks({ limit: 4, timeRange: "short_term" });
