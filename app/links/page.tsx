@@ -4,8 +4,7 @@ import { LINKS } from "../data";
 import { avatarThumb } from "../lib/imageThumb";
 import { pageMetadata } from "../lib/seo";
 
-const description =
-  "itouSouta 的偷摸他基 ∠( ᐛ 」∠)_";
+const description = "itouSouta 的偷摸他基 ∠( ᐛ 」∠)_";
 
 export const metadata: Metadata = pageMetadata({
   title: "友鏈",

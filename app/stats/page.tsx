@@ -10,8 +10,7 @@ import { pageMetadata } from "../lib/seo";
 // 頁面上那行小字，跟給搜尋引擎看的描述分開：前者要短，後者要塞得下關鍵字
 const lead = "itousouta.me 的一些數字 (｡･ω･｡)";
 
-const description =
-  "itousouta.me 的統計數據 (｡･ω･｡)";
+const description = "itousouta.me 的統計數據 (｡･ω･｡)";
 
 export const metadata: Metadata = pageMetadata({
   title: "數據",

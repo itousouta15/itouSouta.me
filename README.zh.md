@@ -134,6 +134,31 @@ Likes 支援詳情檢視，提供比格狀卡片更完整的說明與額外中�
 - 行動裝置導覽：按 Escape 鍵可關閉覆蓋層；隱藏控制項的 `tabIndex` 會被適當管理
 - 水平捲動容器右側顯示漸層以提示還有更多內容
 
+### SEO 與 metadata
+
+每一頁的 metadata 都由 `app/lib/seo.ts` 的 `pageMetadata({ title, description, path })` 統一產生，各頁只填自己不一樣的那三個欄位。
+
+這不是為了少打字，是因為 **Next.js 的 metadata 只有最外層欄位會沿著 layout → page 合併，`openGraph` 與 `twitter` 這種巢狀物件是整包覆蓋掉的**。先前每頁各自寫 `openGraph: { title, description, url }`，等於把 root layout 設好的 `type` / `locale` / `siteName` 全砍光，`twitter` 那邊更慘 — `card` 從 `summary_large_image` 掉回 `summary`，分享到 X 就變成右邊一小格縮圖，per-route 的分享圖等於白畫。
+
+同理，root layout **刻意不設 `alternates.canonical`**。最外層欄位會往下繼承，root 若釘一個 `canonical: "/"`，任何忘記自己設的新頁面都會宣告「我的正規網址是首頁」，Google 看到就把那頁丟出索引。canonical 一律由 `pageMetadata()` 產生，忘了寫最多是沒有 canonical，不會指錯人。
+
+描述請寫「前面放實話、顏文字擺句尾」：太短或整串只有顏文字的話，Google 會直接無視 meta description，改成自己從 DOM 撈文字拼一段。
+
+另外，首頁的裝飾性文字（`NameRotator` 的輪播名字、`HeroFace` 的顏文字）是用 `data-*` 屬性配 CSS `attr()` 生出來的，不是 DOM 文字節點。`aria-hidden` 擋得住螢幕閱讀器卻擋不住爬蟲，四張臉與七次名字都會被算進頁面文字裡；改用 CSS 生成內容後畫面完全一樣，但 `<h1>` 只剩乾淨的一份。
+
+### 分享圖（OG image）
+
+十條路由各有自己的 `opengraph-image.tsx`，全部呼叫 `app/lib/ogImage.tsx` 的 `renderOg({ kicker, title, desc })`。1200×630，`banner.webp` 當半透明底圖鋪滿、蓋一層由左到右淡出的深色漸層讓文字維持可讀，右側放 200px 的圓形頭像。
+
+這些路由**刻意不設 `runtime`**，所以會在 `next build` 期間靜態預產成 PNG 一起部署 — 沒有 function，1.38MB 的 `resvg.wasm` 也不必進 bundle；設 `runtime = "edge"` 反而會製造出那個問題。跑在 Node 也才能直接 `readFileSync` 讀 `public/` 底下的圖。
+
+幾個踩過的坑，細節都寫在 `app/lib/ogImage.tsx` 的註解裡：
+
+- **改版面後，十個 `opengraph-image.tsx` 開頭那行日期一定要一起改。** `og:image` 網址後面的 `?hash` 是對「那個路由檔自己的原始碼」算的 contenthash，**不含它 import 進來的 `ogImage.tsx`**。只改版面的話網址原封不動，而 OG 圖的回應標頭是 `immutable, max-age=31536000`，Discord、X 那些平台就會永遠餵舊圖給人看。
+- `public/assets/brand/` 底下那幾張副檔名雖然是 `.webp`，**其實是 PNG**。satori 認 magic bytes 不認副檔名，支援清單是 `[png, apng, jpeg, gif, svg]`，真的是 WebP 反而會丟 `Unsupported image type`。要換圖請先確認新檔案真的是 PNG 或 JPEG。
+- satori 只吃 CSS 的一個子集：沒有 CSS 變數（色票直接寫死）、沒有 Fragment（`<>…</>` 會被當成未知元素）、沒有 `filter: blur()`、`objectPosition` 也不生效（裁切一律置中）。
+- 中文字型由 `app/lib/ogFont.ts` 用 Google Fonts 的 `text=` 參數逐張子集化下載（一張約 3–6KB，而非把 5–10MB 的完整字型簽進 repo）。抓不到就回 `null`、退成只有 kicker 與網域的拉丁版面，不會讓 build 失敗。
+
 ## 專案結構
 
 ```
