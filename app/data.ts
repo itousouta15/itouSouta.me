@@ -2033,8 +2033,9 @@ export const LINKS: LinkItem[] = [
     handle: "iach.cc",
     href: "https://iach.cc/",
     desc: "很有生活的人",
-    avatar: "https://gravatar.com/avatar/17e00664ef815abebb952dc4f449e1f1582d0fe0b94c6701e368d68349e151e6?&size=256",
-  }
+    avatar:
+      "https://gravatar.com/avatar/17e00664ef815abebb952dc4f449e1f1582d0fe0b94c6701e368d68349e151e6?&size=256",
+  },
 ];
 
 export interface ExperienceItem {
