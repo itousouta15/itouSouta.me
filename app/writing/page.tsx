@@ -7,10 +7,10 @@ import { getMergedThoughts } from "../lib/mergedThoughts";
 import { getReactionCounts } from "../lib/kv";
 import { pageMetadata } from "../lib/seo";
 
-const description = "itouSouta 寫過的文章與雜談 φ(*￣0￣)";
+const description = "itouSouta 寫過的一些廢話 φ(*￣0￣)";
 
 export const metadata: Metadata = pageMetadata({
-  title: "文章與雜談",
+  title: "碎碎念",
   description,
   path: "/writing",
 });
@@ -32,7 +32,7 @@ export default async function WritingPage() {
     <section>
       <PageHead
         kicker="WRITING"
-        title="文章與雜談"
+        title="碎碎念"
         desc="itouBLoGa · Threads · GitHub · Discord"
       />
 

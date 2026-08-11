@@ -180,7 +180,7 @@ export default function HomePage() {
           >
             <div>
               <div className="card-kicker">WRITING</div>
-              <div className="nav-card-title">文章與雜談</div>
+              <div className="nav-card-title">碎碎念</div>
             </div>
             <span className="nav-card-ghost" aria-hidden>
               念

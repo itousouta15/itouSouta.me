@@ -972,7 +972,11 @@ body.site-revealed .header {
 }
 .proj-modal {
   /* 底部留白刻意不寫在 padding-bottom，而是由 .proj-modal-scroll-hint 的
-     height 提供（原因見該處註解）。這條變數是兩邊的唯一真相。 */
+     height 提供（原因見該處註解）。這條變數是兩邊的唯一真相。
+     頂部的 28px 留白也不寫在這裡，而是放進 .proj-modal-head 的 padding-top：
+     sticky 元素會被自己的 containing block 釘在 content box 頂緣，蓋不住父層
+     的 padding-top——留著那條 padding，貼頂時標題列上方會露出一條空隙，
+     捲動的內容（封面圖）會從那條縫露出來。 */
   --modal-pad-b: 36px;
   width: 100%;
   max-width: 760px;
@@ -980,7 +984,7 @@ body.site-revealed .header {
   overflow-y: auto;
   background: var(--panel);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
-  padding: 28px 32px 0;
+  padding: 0 32px;
   scrollbar-width: none;
   will-change: transform, opacity;
   animation: modal-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -992,11 +996,22 @@ body.site-revealed .header {
   display: none;
 }
 .proj-modal-head {
+  /* sticky：modal 自己就是捲動容器，把標題列釘在頂部，往下滑內容時標題與
+     關閉鈕仍然可見。 */
+  position: sticky;
+  top: 0;
+  z-index: 3;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
-  margin-bottom: 20px;
+  /* 頂部留白放這裡（原本在 .proj-modal 的 padding-top）：sticky 元素過不去
+     content box 的頂緣，父層的 padding-top 會變成釘住後的上方空隙，捲上來的
+     內容會從那條縫露出來。連同原本的 margin-bottom 一併改用 padding——
+     margin 在 sticky 盒子外圍，貼頂後捲上來的內容會從空隙露出來，背景要
+     涵蓋到底下才遮得住 */
+  padding: 28px 0 20px;
+  background: var(--panel);
 }
 .proj-modal-title {
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
@@ -1103,10 +1118,36 @@ body.site-revealed .header {
     transform: translate(-50%, 3px);
   }
 }
+/* 「上面還有」提示：跟底部的 .proj-modal-scroll-hint 對稱——捲動的內容從標題列
+   下方出現時先經過一層漸層淡出，跟底部內容融進背景的視覺對稱。JS 在有內容
+   捲到上方時（scrollTop > 8）才加 .is-more-above 亮出來（見 ProjectModalShell）。
+
+   刻意不另開一個 sticky 元素：兩個 sticky top: 0 會各自釘在捲動容器頂緣，
+   後者在 DOM 裡排在標題列後面，兩者會重疊、整個被標題列蓋住。所以漸層直接
+   長在標題列的 ::after 上，跟著釘住的標題列一起走，不會有錯位問題。 */
+.proj-modal-head::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 64px;
+  background: linear-gradient(to bottom, var(--panel), transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  /* 蓋在內容上但不能吃掉點擊 */
+  pointer-events: none;
+}
+.proj-modal-head.is-more-above::after {
+  opacity: 1;
+}
 @media (max-width: 600px) {
   .proj-modal {
     --modal-pad-b: 28px;
-    padding: 20px 18px 0;
+    padding: 0 18px;
+  }
+  .proj-modal-head {
+    padding-top: 20px;
   }
   .proj-modal-title {
     font-size: 22px;
