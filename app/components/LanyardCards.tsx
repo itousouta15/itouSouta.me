@@ -304,7 +304,10 @@ export function ProfileStatus() {
           <div className="dc-act-kicker">
             {activity.details ? `${verb} · ${activity.name}` : verb}
           </div>
-          <div className="dc-act-title" title={activity.details || activity.name}>
+          <div
+            className="dc-act-title"
+            title={activity.details || activity.name}
+          >
             {activity.details || activity.name}
           </div>
           {activity.state && (
