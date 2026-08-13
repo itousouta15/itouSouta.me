@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeProvider";
 
 /* 桌機版導覽列的寬度已經很滿了（961px 斷點 + html 的 zoom: 1.15，實際可用寬度
-   比想像中窄，.nav 靠 flex-wrap 兜著）。/stats 只放頁尾，不再往這裡塞。 */
+   比想像中窄，.nav 靠 flex-wrap 兜著）。 */
 const NAV_LINKS = [
   { label: "關於", href: "/about" },
   { label: "收藏", href: "/likes" },
