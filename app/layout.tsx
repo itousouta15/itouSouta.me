@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
-import "lenis/dist/lenis.css";
 import "./globals.css";
 import ThemeProvider from "./components/ThemeProvider";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
-import BackToTopButton from "./components/BackToTopButton";
+import DeferredMount from "./components/DeferredMount";
 import SiteLoader from "./components/SiteLoader";
 import CommandPalette from "./components/CommandPalette";
 import GravityModeLoader from "./components/GravityModeLoader";
@@ -15,8 +14,6 @@ import SmoothScroll from "./components/SmoothScroll";
 import { LanyardProvider, NowPlayingProvider } from "./components/LanyardCards";
 import NowPlayingBar from "./components/NowPlayingBar";
 import SeasonTint from "./components/SeasonTint";
-import KonamiEasterEgg from "./components/KonamiEasterEgg";
-import ConfettiBurst from "./components/ConfettiBurst";
 import ServiceWorkerRegistration from "./components/ServiceWorkerRegistration";
 import GuestbookSection from "./components/GuestbookSection";
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from "./lib/seo";
@@ -217,13 +214,13 @@ export default function RootLayout({
                 <GuestbookSection />
               </main>
               <Footer />
-              <BackToTopButton />
+              <DeferredMount name="backToTop" />
               <CommandPalette />
               <GravityModeLoader />
               <SmoothScroll />
               <SeasonTint />
-              <KonamiEasterEgg />
-              <ConfettiBurst />
+              <DeferredMount name="konami" />
+              <DeferredMount name="confetti" />
               <NowPlayingBar />
               <ServiceWorkerRegistration />
             </NowPlayingProvider>
