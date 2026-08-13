@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const READY_DELAY_MS = 150;
 const MAX_WAIT_MS = 2000;
-const SLIDE_MS = 600;
+const SLIDE_MS = 450;
 
 export default function SiteLoader() {
   const [hiding, setHiding] = useState(false);
@@ -24,7 +24,12 @@ export default function SiteLoader() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    // 揭幕的第一觸發點在 layout.tsx <head> 的 inline script（雙 rAF 上毛玻璃
+    // → DCL+300ms 遮罩上滑 → +450ms 後 header 進場）。這裡只留兜底路徑：
+    // script 若被擋掉，hydration 後一樣能把畫面讓開。
+    const inline =
+      document.body.classList.contains("site-revealing") ||
+      document.body.classList.contains("site-revealed");
 
     let hideTimer: ReturnType<typeof setTimeout>;
     let removeTimer: ReturnType<typeof setTimeout>;
@@ -42,11 +47,11 @@ export default function SiteLoader() {
       }, SLIDE_MS);
     };
 
-    // 這個 effect 是 hydration 之後才跑的，所以 DOM 幾乎一定 parse 完了
-    // （readyState 至少是 "interactive"）。以前這裡等的是 window 的 load 事件，
-    // 等於要整頁的圖片、wsrv 縮圖、busuanzi 全部回來才肯讓開——但遮罩的職責只是
-    // 遮 FOUC，不該押在最慢的那個第三方子資源上。
-    if (document.readyState !== "loading") {
+    if (inline) {
+      // inline script 已接手：不要重跑 hide 流程（會把兩段式節奏打亂），
+      // 等滑出動畫走完直接收掉節點。捲動鎖由 CSS（body overflow）統一處理。
+      removeTimer = setTimeout(() => setGone(true), SLIDE_MS + 400);
+    } else if (document.readyState !== "loading") {
       hideTimer = setTimeout(startHide, READY_DELAY_MS);
     } else {
       document.addEventListener("DOMContentLoaded", startHide);
@@ -61,22 +66,20 @@ export default function SiteLoader() {
     };
   }, []);
 
-  useEffect(() => {
-    if (gone) document.body.style.overflow = "";
-  }, [gone]);
-
   if (gone) return null;
 
   return (
     <>
       {/* 沒有 JS 就不會觸發滑出與 site-revealed，避免遮罩擋住整個網站、
-          header 也卡在進場動畫的起始幀 */}
+          header 也卡在進場動畫的起始幀；捲動鎖（body overflow:hidden）
+          也要一併解除。 */}
       <noscript>
         <style>{`
           .site-loader { display: none !important; }
           .header {
             animation: none !important;
           }
+          body { overflow: auto !important; }
         `}</style>
       </noscript>
       {/* 純視覺遮罩，內容是 CSS 畫的。掛 role="status" aria-live 只會讓螢幕
