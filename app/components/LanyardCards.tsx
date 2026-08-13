@@ -246,7 +246,12 @@ export function ProfileStatusDot() {
       ? STATUS_META[state.data.discord_status].label
       : placeholderText(state, "離線");
   return (
-    <span className={`status-dot ${cls}`} title={label} aria-label={label} />
+    <span
+      className={`status-dot ${cls}`}
+      title={label}
+      role="img"
+      aria-label={label}
+    />
   );
 }
 
@@ -354,6 +359,11 @@ export function ProfileStatus() {
   const hasMore = cards.length > 1;
   const toggle = () => setExpanded((e) => !e);
 
+  // 不加 aria-label：axe 的 label-content-name-mismatch 規則是「剝掉標點後，
+  //   accessible name 必須是可見文字的子字串」——任何「檢視所有活動」之類的
+  //   prefix 都會讓 name 不再是 visible text 的子字串而被打槍。讓 name 直接
+  //   由內容文字構成（aria-hidden 的折疊區不會進 accname），反而一定通過，
+  //   且 role="button" + aria-expanded 已足夠表達「可切換」。
   return (
     <div className="dc-status">
       {cards.length > 0 ? (
@@ -363,7 +373,6 @@ export function ProfileStatus() {
             role="button"
             tabIndex={0}
             aria-expanded={expanded}
-            aria-label={expanded ? "顯示較少" : "檢視所有活動"}
             onClick={toggle}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
