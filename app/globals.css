@@ -114,6 +114,7 @@ svg {
   --inset: #181b20;
   --bd: rgba(255, 255, 255, 0.07);
   --bd2: rgba(255, 255, 255, 0.14);
+  --dc-act-back: #111314;
   --tx: #e8ebf2;
   --dim: #9aa1ad;
   --mute: #6a7280;
@@ -150,6 +151,7 @@ svg {
   --inset: #eaedf4;
   --bd: rgba(6, 6, 7, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
+  --dc-act-back: rgba(13, 13, 15, 0.14);
   --tx: #22262d;
   --dim: #494f59; /* was #5b626d — darkened for WCAG AA contrast on panel bg */
   --mute: #6b7280; /* was #8a909b — darkened to improve readability */
@@ -2545,42 +2547,87 @@ body.site-revealed .header {
 .dc-status {
   margin-top: 14px;
 }
-.dc-status-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-}
-.dc-status-toggle {
-  border: 0;
-  background: none;
-  padding: 0;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
-  color: var(--blue);
-  cursor: pointer;
-  white-space: nowrap;
-}
-.dc-status-toggle:hover {
-  text-decoration: underline;
-}
 /* 收合時只留第一張卡，背後墊一張位移的卡模擬「還有更多」的堆疊感（同 Discord
-   的 backgroundCard），整塊可點擊展開。 */
-.dc-act-stack {
+   的 backgroundCard），整塊可點擊展開／收回。 */
+.dc-act-stack,
+.dc-act-list {
   position: relative;
+  isolation: isolate;
   cursor: pointer;
+  margin-top: 10px;
+  user-select: none;
 }
-.dc-act-stack::before {
+.dc-act-stack:focus-visible,
+.dc-act-list:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.dc-act-stack > .dc-act,
+.dc-act-list > .dc-act {
+  margin-top: 0;
+}
+/* 背卡（backgroundCard）在兩狀態都掛著，只用 transform/opacity 過渡：
+   展開時滑回第一張卡後方並淡出，收合時滑下淡入，跟高度動畫同步。 */
+.dc-act-stack::before,
+.dc-act-list::before {
   content: "";
   position: absolute;
-  inset: 0;
-  transform: translateY(6px);
-  background: var(--inset);
+  inset: 0 6px;
+  background: var(--dc-act-back);
   border-radius: 10px;
   z-index: -1;
+  transform: translateY(0);
+  opacity: 0;
+  transition:
+    transform 0.3s ease,
+    translate 0.3s ease,
+    opacity 0.25s ease;
 }
+.dc-act-stack::before {
+  transform: translateY(7px);
+  opacity: 1;
+  animation: dc-act-peek 6s ease-in-out infinite;
+}
+/* hover／按下用獨立的 translate 屬性，不會跟 transform 的 peek 動畫打架：
+   滑入時背卡再滑出 4px，按下時縮回（7px→3px），模擬壓下卡堆的手感。 */
 .dc-act-stack:hover::before {
-  background: var(--bd2);
+  translate: 0 4px;
+}
+.dc-act-stack:active::before {
+  translate: 0 -4px;
+}
+@keyframes dc-act-peek {
+  0%,
+  10% {
+    transform: translateY(7px);
+  }
+  5% {
+    transform: translateY(11px);
+  }
+  100% {
+    transform: translateY(7px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dc-act-stack::before,
+  .dc-act-list::before,
+  .dc-act-more {
+    animation: none;
+    transition: none;
+  }
+}
+/* 展開／收合的高度動畫：grid-template-rows 0fr↔1fr，不靠 JS 量測高度。 */
+.dc-act-more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+.dc-act-more-open {
+  grid-template-rows: 1fr;
+}
+.dc-act-more-inner {
+  overflow: hidden;
+  min-height: 0;
 }
 .status-glyph {
   flex: none;

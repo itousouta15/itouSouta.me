@@ -352,39 +352,33 @@ export function ProfileStatus() {
     (c) => c !== null
   );
   const hasMore = cards.length > 1;
-  const collapsed = hasMore && !expanded;
+  const toggle = () => setExpanded((e) => !e);
 
   return (
     <div className="dc-status">
-      <div className="dc-status-head">
-        <div className="label">目前活動</div>
-        {hasMore && (
-          <button
-            type="button"
-            className="dc-status-toggle"
-            aria-expanded={expanded}
-            onClick={() => setExpanded((e) => !e)}
-          >
-            {expanded ? "顯示較少" : `檢視所有活動（${cards.length - 1}）`}
-          </button>
-        )}
-      </div>
       {cards.length > 0 ? (
-        collapsed ? (
+        hasMore ? (
           <div
-            className="dc-act-stack"
+            className={expanded ? "dc-act-list" : "dc-act-stack"}
             role="button"
             tabIndex={0}
-            aria-label="檢視所有活動"
-            onClick={() => setExpanded(true)}
+            aria-expanded={expanded}
+            aria-label={expanded ? "顯示較少" : "檢視所有活動"}
+            onClick={toggle}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                setExpanded(true);
+                toggle();
               }
             }}
           >
             {cards[0]}
+            <div
+              className={`dc-act-more${expanded ? " dc-act-more-open" : ""}`}
+              aria-hidden={!expanded}
+            >
+              <div className="dc-act-more-inner">{cards.slice(1)}</div>
+            </div>
           </div>
         ) : (
           cards
