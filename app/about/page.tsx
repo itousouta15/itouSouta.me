@@ -70,7 +70,14 @@ export default async function AboutPage() {
           </div>
         </div>
         <div className="about-side">
-          <img src="/assets/brand/banner.webp" alt="" />
+          <img
+            src="/assets/brand/banner-400.webp"
+            srcSet="/assets/brand/banner.webp 768w, /assets/brand/banner-400.webp 400w"
+            sizes="400px"
+            width={400}
+            height={150}
+            alt=""
+          />
           <div className="about-side-body">
             <div className="label">座右銘</div>
             <div className="about-side-quote">
