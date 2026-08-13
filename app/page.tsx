@@ -38,7 +38,16 @@ export default function HomePage() {
       <aside className="profile">
         <div className="profile-card">
           <div className="profile-banner">
-            <img src="/assets/brand/banner.webp" alt="" />
+            <img
+              src="/assets/brand/banner-400.webp"
+              srcSet="/assets/brand/banner.webp 768w, /assets/brand/banner-400.webp 400w"
+              sizes="400px"
+              width={400}
+              height={150}
+              alt=""
+              fetchPriority="high"
+              decoding="async"
+            />
           </div>
           <div className="profile-body">
             <div className="avatar-row">
@@ -196,6 +205,8 @@ export default function HomePage() {
             <DecorativeImage
               className="card-likes-img"
               src="/assets/likes/art-miku.webp"
+              loading="eager"
+              fetchPriority="high"
             />
             <div className="card-body">
               <div className="card-kicker">LIKES</div>
