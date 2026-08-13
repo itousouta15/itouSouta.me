@@ -115,19 +115,16 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link rel="preconnect" href="https://font.emtech.cc" />
-        {/* These stylesheets are large (Google Fonts CJK weights + two custom webfont
-            services) and were render-blocking ~3.8s of first paint. They're fetched
-            eagerly but applied via JS once the browser is idle so initial paint isn't
-            gated on them; existing font-stacks already fall back to system fonts. */}
+        {/* These stylesheets are large (Google Fonts CJK weights + one custom
+            webfont service) and were render-blocking ~3.8s of first paint.
+            They're fetched eagerly but applied via JS once the browser is idle
+            so initial paint isn't gated on them; existing font-stacks already
+            fall back to system fonts. ChenYuLuoYan 已自架子集（見 globals.css
+            的 @font-face），不再走 emfont。 */}
         <link
           rel="preload"
           as="style"
-          href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;600;700;900&family=Shippori+Mincho:wght@500;600;700;800&display=swap"
-        />
-        <link
-          rel="preload"
-          as="style"
-          href="https://font.emtech.cc/css/ChenYuLuoYan"
+          href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=Shippori+Mincho:wght@500;600;700&display=swap"
         />
         <link
           rel="preload"
@@ -137,7 +134,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){
-  var hrefs=["https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;600;700;900&family=Shippori+Mincho:wght@500;600;700;800&display=swap","https://font.emtech.cc/css/ChenYuLuoYan","https://font.emtech.cc/css/LXGWHeartSerif"];
+  var hrefs=["https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=Shippori+Mincho:wght@500;600;700&display=swap","https://font.emtech.cc/css/LXGWHeartSerif"];
   function apply(){hrefs.forEach(function(href){var l=document.createElement('link');l.rel='stylesheet';l.href=href;document.head.appendChild(l);});}
   if('requestIdleCallback' in window) requestIdleCallback(apply); else setTimeout(apply,0);
 })();`,
@@ -146,11 +143,7 @@ export default function RootLayout({
         <noscript>
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;600;700;900&family=Shippori+Mincho:wght@500;600;700;800&display=swap"
-          />
-          <link
-            rel="stylesheet"
-            href="https://font.emtech.cc/css/ChenYuLuoYan"
+            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=Shippori+Mincho:wght@500;600;700&display=swap"
           />
           <link
             rel="stylesheet"
