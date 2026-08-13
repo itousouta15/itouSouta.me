@@ -251,10 +251,10 @@ export function ProfileStatusDot() {
 }
 
 /* ---------------------------------------------------------------------------
-   Discord-style activity card in the profile sidebar. Lanyard's Discord
-   presence already carries the Spotify "now playing", so this renders the
-   current activity (Spotify / game / watching / …). The online state itself
-   lives on the avatar dot above.
+   Discord-style activity cards in the profile sidebar. Renders the Spotify
+   "now playing" (from the Spotify Web API poll) alongside every non-custom
+   Lanyard activity (game / streaming / watching / …), so several can show at
+   once. The online state itself lives on the avatar dot above.
    --------------------------------------------------------------------------- */
 export function ProfileStatus() {
   const state = useLanyardState();
@@ -264,10 +264,12 @@ export function ProfileStatus() {
   const ready = state.kind === "ready" ? state.data : null;
   const spotify = npState.kind === "playing" ? npState.track : null;
 
-  // First non-custom-status activity (game / streaming / watching / …).
-  const activity = !spotify
-    ? ready?.activities.find((a) => a.type !== 4)
-    : undefined;
+  // All non-custom-status activities (game / streaming / watching / …). The
+  // Spotify activity is skipped: it is already covered by the dedicated card
+  // below, which polls Spotify directly instead of via the Discord client.
+  const activities = (ready?.activities ?? []).filter(
+    (a) => a.type !== 4 && a.name !== "Spotify"
+  );
 
   useEffect(() => {
     if (!spotify?.isPlaying) return;
@@ -289,21 +291,35 @@ export function ProfileStatus() {
 
   // Rich activity layout: when `details` exists it is the main line and the
   // app name moves into the kicker; otherwise the name is the main line.
-  let actImg: string | null = null;
-  let actKicker = "";
-  let actTitle = "";
-  let actSub: string | undefined;
-  if (activity) {
-    actImg = activityImage(activity);
+  function activityCard(activity: LanyardActivity) {
+    const actImg = activityImage(activity);
     const verb = ACT_VERB[activity.type] ?? "狀態";
-    actTitle = activity.details || activity.name;
-    actKicker = activity.details ? `${verb} · ${activity.name}` : verb;
-    actSub = activity.state || undefined;
+    return (
+      <div className="dc-act" key={activity.name}>
+        {actImg && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className="dc-act-art" src={discordArtThumb(actImg)} alt="" />
+        )}
+        <div className="dc-act-meta">
+          <div className="dc-act-kicker">
+            {activity.details ? `${verb} · ${activity.name}` : verb}
+          </div>
+          <div className="dc-act-title" title={activity.details || activity.name}>
+            {activity.details || activity.name}
+          </div>
+          {activity.state && (
+            <div className="dc-act-sub" title={activity.state}>
+              {activity.state}
+            </div>
+          )}
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="dc-status">
-      {spotify ? (
+      {spotify && (
         <div className="dc-act dc-act-spotify">
           <CrossfadeImage
             className="dc-act-art"
@@ -328,25 +344,9 @@ export function ProfileStatus() {
             )}
           </div>
         </div>
-      ) : activity ? (
-        <div className="dc-act">
-          {actImg && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className="dc-act-art" src={discordArtThumb(actImg)} alt="" />
-          )}
-          <div className="dc-act-meta">
-            <div className="dc-act-kicker">{actKicker}</div>
-            <div className="dc-act-title" title={actTitle}>
-              {actTitle}
-            </div>
-            {actSub && (
-              <div className="dc-act-sub" title={actSub}>
-                {actSub}
-              </div>
-            )}
-          </div>
-        </div>
-      ) : (
+      )}
+      {activities.map(activityCard)}
+      {!spotify && activities.length === 0 && (
         <div className="dc-act dc-act-idle">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="dc-act-art" src="/assets/brand/cat.webp" alt="" />
