@@ -260,6 +260,7 @@ export function ProfileStatus() {
   const state = useLanyardState();
   const npState = useNowPlayingState();
   const [now, setNow] = useState(() => Date.now());
+  const [expanded, setExpanded] = useState(false);
 
   const ready = state.kind === "ready" ? state.data : null;
   const spotify = npState.kind === "playing" ? npState.track : null;
@@ -320,36 +321,75 @@ export function ProfileStatus() {
     );
   }
 
+  const spotifyCard = spotify ? (
+    <div className="dc-act dc-act-spotify" key="spotify">
+      <CrossfadeImage
+        className="dc-act-art"
+        src={discordArtThumb(spotify.albumArt)}
+        alt={spotify.album}
+      />
+      <div className="dc-act-meta">
+        <div className="dc-act-kicker">
+          <SpotifyGlyph />
+          正在聽 Spotify
+        </div>
+        <div className="dc-act-title" title={spotify.song}>
+          {spotify.song}
+        </div>
+        <div className="dc-act-sub" title={spotify.artist}>
+          {spotify.artist}
+        </div>
+        {spotify.durationMs > 0 && (
+          <div className="spotify-bar">
+            <span style={{ width: `${progress * 100}%` }} />
+          </div>
+        )}
+      </div>
+    </div>
+  ) : null;
+
+  const cards = [spotifyCard, ...activities.map(activityCard)].filter(
+    (c) => c !== null
+  );
+  const hasMore = cards.length > 1;
+  const collapsed = hasMore && !expanded;
+
   return (
     <div className="dc-status">
-      {spotify && (
-        <div className="dc-act dc-act-spotify">
-          <CrossfadeImage
-            className="dc-act-art"
-            src={discordArtThumb(spotify.albumArt)}
-            alt={spotify.album}
-          />
-          <div className="dc-act-meta">
-            <div className="dc-act-kicker">
-              <SpotifyGlyph />
-              正在聽 Spotify
-            </div>
-            <div className="dc-act-title" title={spotify.song}>
-              {spotify.song}
-            </div>
-            <div className="dc-act-sub" title={spotify.artist}>
-              {spotify.artist}
-            </div>
-            {spotify.durationMs > 0 && (
-              <div className="spotify-bar">
-                <span style={{ width: `${progress * 100}%` }} />
-              </div>
-            )}
+      <div className="dc-status-head">
+        <div className="label">目前活動</div>
+        {hasMore && (
+          <button
+            type="button"
+            className="dc-status-toggle"
+            aria-expanded={expanded}
+            onClick={() => setExpanded((e) => !e)}
+          >
+            {expanded ? "顯示較少" : `檢視所有活動（${cards.length - 1}）`}
+          </button>
+        )}
+      </div>
+      {cards.length > 0 ? (
+        collapsed ? (
+          <div
+            className="dc-act-stack"
+            role="button"
+            tabIndex={0}
+            aria-label="檢視所有活動"
+            onClick={() => setExpanded(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setExpanded(true);
+              }
+            }}
+          >
+            {cards[0]}
           </div>
-        </div>
-      )}
-      {activities.map(activityCard)}
-      {!spotify && activities.length === 0 && (
+        ) : (
+          cards
+        )
+      ) : (
         <div className="dc-act dc-act-idle">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="dc-act-art" src="/assets/brand/cat.webp" alt="" />

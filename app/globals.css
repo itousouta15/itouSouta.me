@@ -2545,6 +2545,43 @@ body.site-revealed .header {
 .dc-status {
   margin-top: 14px;
 }
+.dc-status-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.dc-status-toggle {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--blue);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.dc-status-toggle:hover {
+  text-decoration: underline;
+}
+/* 收合時只留第一張卡，背後墊一張位移的卡模擬「還有更多」的堆疊感（同 Discord
+   的 backgroundCard），整塊可點擊展開。 */
+.dc-act-stack {
+  position: relative;
+  cursor: pointer;
+}
+.dc-act-stack::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateY(6px);
+  background: var(--inset);
+  border-radius: 10px;
+  z-index: -1;
+}
+.dc-act-stack:hover::before {
+  background: var(--bd2);
+}
 .status-glyph {
   flex: none;
 }
