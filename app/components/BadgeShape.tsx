@@ -24,8 +24,6 @@ export default function BadgeShape({
     <span
       className={`badge-shape badge-shape--${kind}${morphing ? ` badge-shape--morph-to-${nextKind}` : ""}`}
       style={{ background: color }}
-      role="button"
-      tabIndex={0}
       aria-hidden="true"
       onClick={() => {
         if (morphing) return;
