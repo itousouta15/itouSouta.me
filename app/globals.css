@@ -144,11 +144,11 @@ svg {
 }
 
 :root[data-theme="light"] {
-  --bg: #d2d3dcf1;
-  --panel: #e0e1eb;
-  --panel2: #e0e1eb;
+  --bg: #d6d7df;
+  --panel: #f0f0f5;
+  --panel2: #f0f0f5;
   --panel2-a: rgba(227, 228, 233, 0.82);
-  --inset: #eaedf4;
+--inset: #e1e3ec;
   --bd: rgba(6, 6, 7, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
   --dc-act-back: rgba(13, 13, 15, 0.14);
