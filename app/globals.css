@@ -200,7 +200,7 @@ svg {
   --panel2: #f0f0f5;
   --panel2-a: rgba(227, 228, 233, 0.82);
   --frost: rgba(224, 225, 235, 0.45);
---inset: #e1e3ec;
+  --inset: #e1e3ec;
   --bd: rgba(6, 6, 7, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
   --dc-act-back: rgba(13, 13, 15, 0.14);
