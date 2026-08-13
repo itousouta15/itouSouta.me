@@ -4740,24 +4740,24 @@ a.guestbook-nick:hover {
   -webkit-mask-size: contain;
 }
 .si-instagram .footer-si-icon {
-  mask-image: url("https://cdn.simpleicons.org/instagram");
-  -webkit-mask-image: url("https://cdn.simpleicons.org/instagram");
+  mask-image: url("/assets/icons/si-instagram.svg");
+  -webkit-mask-image: url("/assets/icons/si-instagram.svg");
 }
 .si-github .footer-si-icon {
-  mask-image: url("https://cdn.simpleicons.org/github");
-  -webkit-mask-image: url("https://cdn.simpleicons.org/github");
+  mask-image: url("/assets/icons/si-github.svg");
+  -webkit-mask-image: url("/assets/icons/si-github.svg");
 }
 .si-x .footer-si-icon {
-  mask-image: url("https://cdn.simpleicons.org/x");
-  -webkit-mask-image: url("https://cdn.simpleicons.org/x");
+  mask-image: url("/assets/icons/si-x.svg");
+  -webkit-mask-image: url("/assets/icons/si-x.svg");
 }
 .si-discord .footer-si-icon {
-  mask-image: url("https://cdn.simpleicons.org/discord");
-  -webkit-mask-image: url("https://cdn.simpleicons.org/discord");
+  mask-image: url("/assets/icons/si-discord.svg");
+  -webkit-mask-image: url("/assets/icons/si-discord.svg");
 }
 .si-telegram .footer-si-icon {
-  mask-image: url("https://cdn.simpleicons.org/telegram");
-  -webkit-mask-image: url("https://cdn.simpleicons.org/telegram");
+  mask-image: url("/assets/icons/si-telegram.svg");
+  -webkit-mask-image: url("/assets/icons/si-telegram.svg");
 }
 .icon-copyright::before {
   font-family: "JetBrains Mono", monospace;
