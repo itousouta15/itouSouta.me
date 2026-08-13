@@ -48,8 +48,9 @@ export async function getRepoInfo(
  * Repo info for a whole batch of projects, keyed by slug.
  *
  * `getRepoInfo` carries `revalidate: 3600`, and Next's Data Cache dedupes by
- * URL across routes — so /projects and /stats both calling this costs one set
- * of requests, not two. Sharing it is about the code, not the request count.
+ * URL across routes — so /projects and the command palette both calling this
+ * costs one set of requests, not two. Sharing it is about the code, not the
+ * request count.
  */
 export async function getAllRepoInfo(
   projects: { slug: string; href: string }[]
