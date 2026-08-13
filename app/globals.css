@@ -32,6 +32,15 @@ body {
   padding: 0;
 }
 
+/* splash 期間鎖住捲動，遮罩滑出後（inline script 加 site-revealed）解鎖。
+   no-JS 的解除寫在 SiteLoader.tsx 的 <noscript> 樣式裡。 */
+body {
+  overflow: hidden;
+}
+body.site-revealed {
+  overflow: auto;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -111,6 +120,7 @@ svg {
   --panel: #24262b;
   --panel2: #24262b;
   --panel2-a: rgba(39, 41, 46, 0.82);
+  --frost: rgba(36, 38, 43, 0.45);
   --inset: #181b20;
   --bd: rgba(255, 255, 255, 0.07);
   --bd2: rgba(255, 255, 255, 0.14);
@@ -148,6 +158,7 @@ svg {
   --panel: #f0f0f5;
   --panel2: #f0f0f5;
   --panel2-a: rgba(227, 228, 233, 0.82);
+  --frost: rgba(224, 225, 235, 0.45);
 --inset: #e1e3ec;
   --bd: rgba(6, 6, 7, 0.08);
   --bd2: rgba(20, 24, 40, 0.16);
@@ -349,7 +360,7 @@ body.shake-67 {
 }
 
 /* ===========================================================================
-   Site loader — full-page splash shown until the window "load" event fires
+   Site loader — full-page splash covering FOUC until DOMContentLoaded
    =========================================================================== */
 .site-loader {
   position: fixed;
@@ -358,20 +369,29 @@ body.shake-67 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--panel2-a);
-  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  /* 毛玻璃：半透明底（45%）配 backdrop-filter，背景太實（原 --panel2-a 是
+     82%）會讓 blur 完全看不出來。深淺主題各自用 theme token 覆寫，見
+     :root 的 --frost。 */
+  background: var(--frost);
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
   will-change: backdrop-filter, transform;
 }
 /* backdrop-filter 要等第一個畫面真的畫完後才加上去：瀏覽器算模糊用的是
    「上一個合成幀」的畫面，網站剛載入的第一幀根本沒有上一幀可以取樣，
    Chromium 這時候會直接當黑色處理——淺色模式下背景是亮的，就會看到
-   loading 遮罩先閃一下深色才變回正常顏色。用 rAF 延一拍再套用
-   backdrop-filter，確保套用時畫面已經有東西可以模糊。 */
+   loading 遮罩先閃一下深色才變回正常顏色。inline script 在雙 rAF 後對
+   body 加 site-loading（見 layout.tsx），確保套用時畫面已經有東西可以模糊；
+   .site-loader--blurred 是 React 端的兜底，效果相同。 */
+body.site-loading .site-loader,
 .site-loader--blurred {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
-.site-loader--hide {
+/* 滑出（site-revealing）：inline script 在 DCL+300ms 觸發，滑完 450ms 後才
+   對 body 加 site-revealed 讓 header 進場——兩段式的節奏是刻意的。 */
+.site-loader--hide,
+body.site-revealing .site-loader,
+body.site-revealed .site-loader {
   transform: translateY(-100%);
   pointer-events: none;
 }
