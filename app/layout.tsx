@@ -78,6 +78,30 @@ export default function RootLayout({
 }catch(e){}})();`,
           }}
         />
+        {/* Reveal the splash once the document is parsed. The loader only
+            covers FOUC and the theme is already applied above, so there is no
+            reason to wait for React hydration: the slide runs in parallel with
+            hydration (Lighthouse 量到的 LCP render delay 有 ~2s 都卡在這裡）。
+            時序分成三段，還原「遮罩先滑走、header 才掉下來」的進場節奏：
+              1. 雙 rAF   → site-loading（等首幀畫完才上毛玻璃 blur，避開黑閃）
+              2. DCL+300  → site-revealing（遮罩開始上滑，450ms）
+              3. DCL+750  → site-revealed（header 進場、捲動解鎖）
+            DOM 解析完後多停 300ms，讓遮罩不會閃一下就消失。 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){
+  function add(c){try{document.body.classList.add(c);}catch(e){}}
+  function has(c){try{return document.body.classList.contains(c);}catch(e){return false;}}
+  requestAnimationFrame(function(){requestAnimationFrame(function(){add('site-loading');});});
+  function schedule(){
+    if(document.readyState!=='loading'){setTimeout(function(){add('site-revealing');setTimeout(function(){add('site-revealed');},450);},300);}
+    else document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){add('site-revealing');setTimeout(function(){add('site-revealed');},450);},300);});
+  }
+  schedule();
+  setTimeout(function(){if(!has('site-revealing'))add('site-revealing');if(!has('site-revealed'))add('site-revealed');},2000);
+})();`,
+          }}
+        />
         <link
           rel="alternate"
           type="application/rss+xml"
