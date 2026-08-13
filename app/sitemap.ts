@@ -17,7 +17,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/likes/music",
     "/links",
     "/projects",
-    "/stats",
   ];
 
   const likeCategoryRoutes = LIKE_CATEGORIES.map((cat) => `/likes/${cat.key}`);
