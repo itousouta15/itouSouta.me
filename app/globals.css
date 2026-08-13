@@ -3,6 +3,21 @@
    Theme via [data-theme] on .root. All colors are CSS variables.
    =========================================================================== */
 
+/* ---- 自架字體：辰宇落雁體（logo / footer-logo / bento ghost 字）----
+   全量走 emfont 分片約 320KB，子集只收實際用到的字形（itouSouta.me、
+   念友歷、基本 ASCII），~28KB 且跟站上靜態檔共用快取。subset 來源：
+   github.com/Chenyu-otf/chenyuluoyan_thin（OFL 授權）。字重跟 emfont 一樣
+   宣告 100：.logo 的 font-weight: 700 會由瀏覽器在 thin 臉上合成加粗——
+   這正是以前 emfont 時代的渲染外觀，宣告成範圍（100 900）會讓 700 被當成
+   精確命中而不合成，筆畫反而變細、看起來跟原本不一樣。 */
+@font-face {
+  font-family: "ChenYuLuoYan";
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src: url("/assets/fonts/ChenYuLuoYan-subset.woff2") format("woff2");
+}
+
 *,
 *::before,
 *::after {
