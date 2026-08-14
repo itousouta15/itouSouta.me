@@ -2,236 +2,71 @@
 
 [English](README.md) | 繁體中文
 
-![示意圖](public/assets/projects/itousouta15.webp)
-itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itouSouta.me](https://itouSouta.me)。
+![itouSouta.me 網站截圖](public/assets/projects/itousouta15.webp)
 
-## 技術棧
+itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](https://itousouta.me)。
 
-| 層級     | 技術                                                                                                           |
-| -------- | -------------------------------------------------------------------------------------------------------------- |
-| 框架     | Next.js 14（App Router）                                                                                       |
-| 語言     | TypeScript                                                                                                     |
-| 樣式     | 純 CSS（單一全域樣式表，使用 CSS custom properties）                                                           |
-| 資料     | Vercel KV（Redis）— 來自 Discord 的貼文；Threads API — 同步貼文；GitHub API — 專案資訊；Spotify API — 常聽歌曲 |
-| 即時資料 | [Lanyard API](https://github.com/Phineas/lanyard) — Discord 狀態                                               |
-| 部署     | Vercel                                                                                                         |
-
-沒有使用 UI 函式庫、CSS-in-JS，也沒有使用元件框架。
-
-## 頁面
-
-| 路由                | 說明                                                                                                               |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `/`                 | 首頁 — 個人檔案卡、Hero 區塊、技術磚牆、bento 導覽格、GitHub 貢獻圖                                                |
-| `/about`            | 關於 — 簡介、統計數據、座右銘，以及兩張 Spotify/Likes 預覽卡（動畫、音樂）                                         |
-| `/writing`          | 碎碎念 — 部落格文章（blog.itousouta.me）索引＋整合 Discord 斜線指令貼文、同步的 Threads 貼文與 GitHub 事件的動態牆 |
-| （每一頁）          | 留言板 — 每頁內容底部的留言區塊，資料存 Vercel KV（`/api/guestbook`）                                              |
-| `/likes`            | Likes — 可搜尋、可依標籤篩選的小說、漫畫、動畫格狀清單；Spotify 常聽歌曲預覽列                                     |
-| `/likes/[category]` | 分類詳情 — 含輪播與篩選功能的完整清單                                                                              |
-| `/likes/music`      | 音樂 — 可搜尋的 Spotify 常聽歌曲格狀清單（方形封面），與其他分類共用同一套模態詳情檢視                             |
-| `/projects`         | 專案 — 可篩選的個人專案卡片，含 GitHub 專案資訊                                                                    |
-| `/links`            | 朋友 — 朋友與社群的連結卡片                                                                                        |
-| `/experience`       | 歷程 — 經歷與活動時間軸                                                                                            |
-| `/feed.xml`         | RSS Feed — 整合雜談、專案與更新的統一動態                                                                          |
-| (Cmd/Ctrl+K)        | 指令面板 — 快速導覽與搜尋頁面、專案                                                                                |
+這是一個高度客製化的個人網站，圍繞個人檔案、專案、雜談、喜好媒體、音樂、朋友連結，以及一些好玩的互動彩蛋展開。目標不是做成一套通用範本，而是一個帶著即時資料與強烈視覺個性的小型個人網路空間。
 
 ## 功能特色
 
-### 主題
+- 首頁採個人檔案風格，含 Discord 即時狀態、主題感知視覺效果與專案導覽。
+- 雜談動態牆整合 Discord 貼文、Threads 貼文與 GitHub 事件三種來源。
+- 小說、漫畫、動畫、VTuber 喜好清單，以及由 Spotify 驅動的音樂資料。
+- 專案展示牆，支援篩選、模態詳情與 GitHub 專案資訊。
+- 每一頁底部都有 KV 儲存的留言板，支援串接回覆、選填的「用 GitHub 登入」，以及有人回覆你的留言時透過 Resend 寄出的通知信。
+- `/writing` 文章的按讚計數。
+- 朋友連結、經歷時間軸、RSS Feed、sitemap 與 robots 路由。
+- 深色／淺色主題，動畫皆遵循 `prefers-reduced-motion`。
+- 透過 Cmd/Ctrl+K 快速導覽與搜尋。
+- 由 Service Worker 預先快取首頁的離線備援頁面。
+- 公開的 SVG 狀態徽章（最新文章標題、Discord 狀態、GitHub 星數總和），可以嵌到別的地方用。
+- 每個路由各自的 Open Graph 分享圖，於建置期間產生，將品牌橫幅與頭像合成進去。
 
-支援深色與淺色模式。所選主題會存於 `localStorage`，並在首次繪製前透過阻塞式的行內腳本套用，避免出現無樣式內容閃爍（FOUC）。
+## 技術棧
 
-### 字型
+| 層級     | 技術                                             |
+| -------- | ------------------------------------------------ |
+| 框架     | Next.js 14（App Router）                         |
+| 語言     | TypeScript                                       |
+| 樣式     | 純 CSS（CSS custom properties）                  |
+| 資料     | Vercel KV、Threads API、GitHub API、Spotify API  |
+| 即時資料 | Lanyard API                                      |
+| 郵件     | Resend（留言板回覆通知信）                       |
+| 離線支援 | Service Worker（`public/sw.js`）                 |
+| 部署     | Vercel                                           |
 
-多種字型分別載入自 Google Fonts 與 [emfont](https://font.emtech.cc) CDN：
+沒有使用 UI 函式庫、CSS-in-JS，也沒有使用元件框架。
 
-- `ChenYuLuoYan`（emfont）— 頁首 Logo
-- `LXGWHeartSerif`（emfont）— 引言顯示文字
-- `Shippori Mincho` / `Noto Serif TC`（Google Fonts）— 標題與襯線內容
-- `Dancing Script`（Google Fonts）— 裝飾性手寫字
-- `JetBrains Mono`（Google Fonts）— 等寬標籤、Kicker 文字、程式碼風格元素
-- `Noto Sans TC`（Google Fonts）— 內文文字
+## 架構
 
-Logo 會在偵測到 `ChenYuLuoYan` 字型啟用（透過 `document.fonts.load`）前保持隱藏，以避免備援字型以明顯偏大的視覺尺寸顯示所造成的 FOUT。
+大部分內容位於 [app/data.ts](app/data.ts)。網站頁面本身盡量維持靜態，再依需要疊上即時資料：
 
-### 雜談 (Thoughts)
+- `/writing` 整合部落格索引、KV 雜談、Threads 貼文與 GitHub 動態。
+- `/likes/music` 在有憑證時讀取 Spotify 常聽歌曲。
+- 「正在播放」指示器（`/api/now-playing`、個人檔案卡、底部浮動列）直接呼叫 Spotify API，而非依賴 Discord 轉發的狀態，因此手機上即使沒開 Discord app 也能顯示；只有在沒有設定 Spotify 憑證時才會退回 Lanyard。
+- `/api/vtuber-live` 檢查 VTuber 開台狀態，結果短時間快取。
+- 留言板（`/api/guestbook`，顯示在每一頁底部）直接讀寫 Vercel KV，取代了先前透過代理連到部落格留言伺服器的做法。回覆採串接式，若被回覆者留了 email（或用 GitHub 登入並授權了 `user:email` scope），會觸發一封 Resend 通知信。
+- `/api/reactions` 提供 `/writing` 文章的按讚計數。
+- `public/sw.js` 預先快取 `/` 與 `/offline`，做最基本的離線備援；只在正式環境註冊，因為開發模式下 Next 每次重建都會換 chunk 檔名，stale-while-revalidate 的 Service Worker 反而會讓頁面卡死。
+- `/api/badge/*` 產生 shields.io 風格的 SVG（最新文章標題、Discord 狀態、GitHub 星數總和），可以嵌到其他 README 或頁面。
+- 專案卡片在可取得時使用 GitHub API 資料，否則優雅降級。
+- 本機圖片依用途分類於 `public/assets/brand`、`public/assets/projects`、`public/assets/likes`、`public/assets/social`。
 
-獨立的 Discord 機器人（[itouBot](../itouBot)）提供 `/碎碎念` 斜線指令，內容直接寫入 Vercel KV；每次發文後會呼叫 `app/api/revalidate/route.ts`（以 `REVALIDATE_SECRET` 保護），讓頁面立即更新。`/writing` 頁面的雜談區會將這些內容與從 Threads API（`app/lib/threads.ts`）取得的貼文合併，依時間戳由新到舊排序。若無遠端資料可用，則回退至 `app/data.ts` 中的靜態 `THOUGHTS` 陣列。文章區來自 `app/lib/blogFeed.ts` 解析的部落格 atom feed（以 `<id>` 去重，避免 i18n 產生器重複輸出）。`/blog` 與 `/thoughts` 為永久轉址至 `/writing`。
+更深入的筆記見 [docs/architecture.md](docs/architecture.md)（英文）。
 
-### Likes
+## SEO 與分享圖
 
-小說、漫畫、動畫與 VTuber 條目皆靜態定義於 `app/data.ts`。Likes 頁面支援不依賴伺服器的客戶端全文搜尋與多標籤篩選。水平輪播使用自訂 Hook 處理滑鼠滾輪與捲動連動的平移。`LikeCard`/`LikeFilterGrid` 支援 `layout` 屬性（`"circle"` 用於 VTuber 頭像、`"square"` 用於專輯封面），會切換縮圖裁切方式，且在 `"circle"` 模式下隱藏副標行並跳過詳情模態，改為直接連結至外部頁面。
+每頁的 metadata 都由 [app/lib/seo.ts](app/lib/seo.ts) 的 `pageMetadata({ title, description, path })` 統一產生。這是刻意集中管理的：Next.js 的 metadata 只有最外層欄位會沿著 layout → page 合併，`openGraph`、`twitter` 這類巢狀物件則是**整包覆蓋**。若每頁各自宣告，會悄悄砍掉 root layout 設好的 `og:site_name`、`og:locale`，並讓 `twitter:card` 從 `summary_large_image` 掉回 `summary`。同理，root layout 刻意不設 `alternates.canonical`——那樣會被繼承下去，任何忘記自己覆蓋的頁面都會宣告首頁是自己的正規網址。
 
-### VTuber 開台狀態
+Open Graph 圖片由 [app/lib/ogImage.tsx](app/lib/ogImage.tsx) 的 `renderOg()` 產生——1200×630，以 `banner.webp` 當半透明底圖，蓋一層由左到右的漸層遮罩，右側放頭像。這些路由刻意不設 `runtime`，因此會在 `next build` 期間預先產成靜態 PNG（沒有 serverless function，`resvg.wasm` 也不會進 bundle）。
 
-`app/api/vtuber-live/route.ts` 用兩種來源判斷 VTuber 是否正在開台。VSPO 旗下成員（`app/data.ts` 中該筆 `Like` 有 `channelId` — 明確設定的，或從 `/channel/UC…` 的 `href` 解析出來的）會走 `vspo-schedule.com` 自己的開台排程頁：只請求這一個頁面一次，就能從該頁 Next.js RSC payload 裡內嵌的直播清單解析出全體 VSPO 成員的開台狀態。不在這份名單內的 VTuber 則回退為請求各自 YouTube 頻道的 `/live` 路徑，掃描回應內嵌的 `ytInitialPlayerResponse` 中是否有 `isLive: true`。兩種方式都不需要 YouTube Data API 金鑰或配額。結果會快取 60 秒（`revalidate = 60`）。`useVtuberLiveStatus` 會在掛載 `"circle"` 版面的區塊時，每 60 秒輪詢一次此端點；`VtuberLiveWarmup` 則會在 `/likes` 載入時就先發出一次不等待結果的請求，讓使用者點進 VTuber 分類前快取就已經熱好。開台中的頻道，其 `LikeCard` 會顯示脈動的紅色外框與「LIVE」徽章，點擊會直接連到直播間而非頻道頁。
+兩個踩過的坑：
 
-### 開台優先排序
+- **改了 `ogImage.tsx` 的版面後，記得把十個 `opengraph-image.tsx` 檔案開頭的日期註解一起 bump。** `og:image` 網址後面的 `?hash` 是對「該路由檔自己的原始碼」算的 content hash，不含它 import 的內容或渲染出的 PNG。只改共用的 renderer，網址會維持不變——而回應標頭是 `immutable, max-age=31536000`，Discord、X 會永遠顯示舊卡片。
+- `public/assets/brand/` 底下的檔案雖然副檔名是 `.webp`，**其實是 PNG**。satori 認 magic bytes 不認副檔名，只支援 `[png, apng, jpeg, gif, svg]`；真的丟 WebP 進去會丟出 `Unsupported image type`。
 
-`sortLikesByRating`（`app/lib/sortLikes.ts`）多接受一個選填的 `isLive` 判斷式；給了的話，開台中的項目一律排在最前面，rating 只用來在同一組（開台／未開台）內部排序。`LikeCategorySection`（`/likes` 首頁的輪播列）與 `LikeFilterGrid`（分類詳情頁的格狀清單）都會在 `useVtuberLiveStatus` 的資料更新時重新排序，所以一旦有人開台就會立刻跳到最前面。重排本身沒有動畫，卡片是直接跳位的。首頁輪播另外用 `overflow-anchor: none` 關掉瀏覽器對 DOM 重排的自動捲動補償，並用一個捲動位置釘選機制讓開台優先的排序結果保持在最前面可見——但只在使用者還沒自己手動滑動輪播之前才會這樣做，一旦使用者自己滑過就不再搶他的捲動位置。
-
-### 音樂 (Spotify)
-
-與其他 Likes 內容不同，音樂為即時資料：`app/lib/spotify.ts` 呼叫 Spotify Web API 的 `/me/top/tracks`（透過 refresh token 換取 access token）。此資料支援三個依範圍遞增的展示位置：關於頁的迷你卡片（short_term、前 4 名）、`/likes` 預覽列（long_term、前 12 名），以及完整的 `/likes/music` 格狀清單（long_term、前 50 名）。每個呼叫點都將 `null` 結果（缺少 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET`/`SPOTIFY_REFRESH_TOKEN`，或 API 呼叫失敗）視為「無資料」並優雅降級 — 關於頁卡片會回退至 `app/data.ts` 中靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 則直接省略預覽列。
-
-### Lanyard 整合
-
-Discord 上線狀態與其他活動（遊戲、直播、觀看中…）透過 Lanyard API 即時取得並顯示於個人檔案卡中。此元件能妥善處理斷線情況。
-
-「正在聽 Spotify」不算在內：那部分改由 `app/lib/spotify.ts` 直接打 Spotify Web API 的 `/me/player/currently-playing`（見下方「目前播放」）。Lanyard 轉發的 Spotify 活動其實是 Discord 用戶端自己在轉發，手機上沒開 Discord app 時 Discord 就抓不到你在 Spotify 上播什麼，Lanyard 自然也拿不到——直接問 Spotify 帳號本身就不受這個限制。`app/api/now-playing/route.ts` 仍保留 Lanyard 當備援，只在沒設定 `SPOTIFY_*` 環境變數時才會用到。
-
-### 目前播放
-
-`app/lib/spotify.ts` 的 `getCurrentlyPlaying()` 用跟常聽歌曲一樣的 refresh token 授權（但多帶 `user-read-currently-playing` scope），呼叫 `/me/player/currently-playing`。`/api/now-playing` 路由把結果轉成前端要的格式；`app/components/LanyardCards.tsx` 裡的 `NowPlayingProvider` 在 root layout 輪詢這支路由一次，個人檔案卡（`ProfileStatus`）與全站底部浮動列（`NowPlayingBar`）共用同一份資料，不會各打各的。帳號目前沒在播放，或沒設定 Spotify 憑證時，`/api/now-playing` 回傳 `null`（或退回 Lanyard），對應元件就不顯示。
-
-### GitHub 貢獻圖
-
-貢獻圖 SVG 為預先產生並提交的靜態資源，同時包含深色與淺色兩種版本，並由 `.github/workflows/snake.yml` GitHub Action（使用 `Platane/snk`）每日重新產生，若內容有變更則直接提交至 `main`。在行動裝置上，卡片可水平捲動；捲動位置透過 `useScrollLinkedHorizontalReveal` 與卡片在視窗中的捲動進度連動，因此使用者向下捲動頁面時貢獻圖會由左至右平移 — 該效果被重新對應至一段較窄的捲動距離視窗（Hook 中的 `TRIGGER_RANGE`），而非整個進入到離開視窗的過程，因此不需要捲動整個螢幕高度才能完成。
-
-### 圖片縮圖
-
-頭像、Likes 封面、音樂封面與專案截圖皆熱連結自數十個外部、不受控的網域 — 數量太多，無法逐一透過 `next/image` 的 `remotePatterns` 加入允許清單。`app/lib/imageThumb.ts` 會將任何 `http(s)` 來源導向 [wsrv.nl](https://wsrv.nl) 縮圖代理服務，並依實際顯示所需的尺寸縮放（`avatarThumb`、`likeThumb`、`likeCircleThumb`、`artistAvatarThumb`、`discordArtThumb`、`projectCoverThumb`、`cardBgThumb`），對本機 `/assets` 路徑、動態 `.gif`（代理服務的 webp 轉換會使動畫失效）以及 `PROXY_BLOCKED_HOSTS` 中少數會拒絕代理服務請求的網域，則回退使用原始網址。
-
-### Hero 互動效果
-
-Hero 區塊的 ASCII 表情（`HeroFace`）會微幅跟隨滑鼠游標（位移經過夾限並透過 `requestAnimationFrame` 節流），點擊時會眨靠近點擊側的那隻眼睛，捲動超過視窗頂端附近的門檻時（`IntersectionObserver` 搭配負值 `rootMargin`）會切換成「快消失」的表情並伴隨搖擺動畫。快速連續點擊個人頭像 5 次（`AvatarEasterEgg`）會讓頭像旋轉一圈並在新分頁開啟 Discord 邀請連結；連續點擊若中斷超過 1.5 秒則重新計數。輪播顯示的名字（`NameRotator`）會以純 CSS keyframe（8 秒一輪）在 `itouSouta` / `伊藤蒼太` / `郭家睿` 之間切換，元件本身完全沒有 JS；另外附一份 `.sr-only` 的完整名字串給螢幕閱讀器與搜尋引擎。
-
-### 動畫效果
-
-- 頁尾跑馬燈與技術磚牆列使用 CSS 關鍵影格
-- Hero 區塊中輪播顯示名稱的名稱輪播器（純 CSS，無 JS）
-- 透過 `PageTransition` 實現的頁面轉場
-- 卡片懸停效果（觸控裝置上透過 `@media (hover: none)` 停用）
-- 所有動畫皆遵循 `prefers-reduced-motion`
-
-### 指令面板
-
-透過 Cmd/Ctrl+K 快速導覽並搜尋網站內容，可即時存取所有頁面與專案，並支援模糊搜尋以加快查找速度。
-
-### 搜尋框彩蛋
-
-指令面板（`CommandPaletteInner`）藏了兩組輸入：
-
-- 輸入 `67` 按下 Enter 會關閉面板、回到首頁，並讓整個頁面做一段 `skewY` 剪切擺動後衰減回穩 — 致敬 Google 搜尋自己的「67」彩蛋。
-- 輸入 `114514` 按下 Enter 會讓整個網站進入自帶的 Google Gravity 模式（`GravityMode`）。一顆手刻的 2D 物理迴圈（`requestAnimationFrame`，不依賴函式庫）會走訪 DOM，把幾乎每個可見元素變成 `position: fixed` 的剛體，套用重力、地板／牆壁彈跳與 AABB 方塊堆疊，讓所有東西掉落並堆在底部。剛體可用滑鼠拖曳與甩動（拖曳中的剛體在碰撞計算時視為不可推動），連結點擊會被攔截以免誤導航，另有一顆會俏皮閃避游標的浮動「還原」按鈕，按下即重新載入頁面復原。
-
-### RSS Feed
-
-統一的 RSS Feed 位於 `/feed.xml`，整合來自 Discord（`/碎碎念` 斜線指令）、Threads 貼文與 GitHub 專案事件的雜談內容，並依時間戳排序。
-
-### 專案與詳情
-
-專案頁面支援依技術與分類篩選。專案卡片會從 GitHub API 即時取得專案資訊（星數、語言、描述）。點擊專案會開啟含詳細資訊與直接連結的模態視窗。
-
-### Likes 詳情
-
-Likes 支援詳情檢視，提供比格狀卡片更完整的說明與額外中繼資料。
-
-### 無障礙與使用者體驗
-
-- 觸控裝置：懸停變換效果會被重置；改用 `:active` 狀態提供點按回饋
-- 平滑捲動的回到頂部按鈕，捲動超過 400 px 後顯示
-- 行動裝置導覽：按 Escape 鍵可關閉覆蓋層；隱藏控制項的 `tabIndex` 會被適當管理
-- 水平捲動容器右側顯示漸層以提示還有更多內容
-
-### SEO 與 metadata
-
-每一頁的 metadata 都由 `app/lib/seo.ts` 的 `pageMetadata({ title, description, path })` 統一產生，各頁只填自己不一樣的那三個欄位。
-
-這不是為了少打字，是因為 **Next.js 的 metadata 只有最外層欄位會沿著 layout → page 合併，`openGraph` 與 `twitter` 這種巢狀物件是整包覆蓋掉的**。先前每頁各自寫 `openGraph: { title, description, url }`，等於把 root layout 設好的 `type` / `locale` / `siteName` 全砍光，`twitter` 那邊更慘 — `card` 從 `summary_large_image` 掉回 `summary`，分享到 X 就變成右邊一小格縮圖，per-route 的分享圖等於白畫。
-
-同理，root layout **刻意不設 `alternates.canonical`**。最外層欄位會往下繼承，root 若釘一個 `canonical: "/"`，任何忘記自己設的新頁面都會宣告「我的正規網址是首頁」，Google 看到就把那頁丟出索引。canonical 一律由 `pageMetadata()` 產生，忘了寫最多是沒有 canonical，不會指錯人。
-
-描述請寫「前面放實話、顏文字擺句尾」：太短或整串只有顏文字的話，Google 會直接無視 meta description，改成自己從 DOM 撈文字拼一段。
-
-另外，首頁的裝飾性文字（`NameRotator` 的輪播名字、`HeroFace` 的顏文字）是用 `data-*` 屬性配 CSS `attr()` 生出來的，不是 DOM 文字節點。`aria-hidden` 擋得住螢幕閱讀器卻擋不住爬蟲，四張臉與七次名字都會被算進頁面文字裡；改用 CSS 生成內容後畫面完全一樣，但 `<h1>` 只剩乾淨的一份。
-
-### 分享圖（OG image）
-
-十條路由各有自己的 `opengraph-image.tsx`，全部呼叫 `app/lib/ogImage.tsx` 的 `renderOg({ kicker, title, desc })`。1200×630，`banner.webp` 當半透明底圖鋪滿、蓋一層由左到右淡出的深色漸層讓文字維持可讀，右側放 200px 的圓形頭像。
-
-這些路由**刻意不設 `runtime`**，所以會在 `next build` 期間靜態預產成 PNG 一起部署 — 沒有 function，1.38MB 的 `resvg.wasm` 也不必進 bundle；設 `runtime = "edge"` 反而會製造出那個問題。跑在 Node 也才能直接 `readFileSync` 讀 `public/` 底下的圖。
-
-幾個踩過的坑，細節都寫在 `app/lib/ogImage.tsx` 的註解裡：
-
-- **改版面後，十個 `opengraph-image.tsx` 開頭那行日期一定要一起改。** `og:image` 網址後面的 `?hash` 是對「那個路由檔自己的原始碼」算的 contenthash，**不含它 import 進來的 `ogImage.tsx`**。只改版面的話網址原封不動，而 OG 圖的回應標頭是 `immutable, max-age=31536000`，Discord、X 那些平台就會永遠餵舊圖給人看。
-- `public/assets/brand/` 底下那幾張副檔名雖然是 `.webp`，**其實是 PNG**。satori 認 magic bytes 不認副檔名，支援清單是 `[png, apng, jpeg, gif, svg]`，真的是 WebP 反而會丟 `Unsupported image type`。要換圖請先確認新檔案真的是 PNG 或 JPEG。
-- satori 只吃 CSS 的一個子集：沒有 CSS 變數（色票直接寫死）、沒有 Fragment（`<>…</>` 會被當成未知元素）、沒有 `filter: blur()`、`objectPosition` 也不生效（裁切一律置中）。
-- 中文字型由 `app/lib/ogFont.ts` 用 Google Fonts 的 `text=` 參數逐張子集化下載（一張約 3–6KB，而非把 5–10MB 的完整字型簽進 repo）。抓不到就回 `null`、退成只有 kicker 與網域的拉丁版面，不會讓 build 失敗。
-
-## 專案結構
-
-```
-app/
-  api/
-    revalidate/route.ts              以密鑰保護的重新驗證掛鉤（itouBot 發文後呼叫）
-    vtuber-live/route.ts             VSPO 成員走 vspo-schedule.com 排程頁，其餘走 YouTube /live；60 秒重新驗證快取
-  components/
-    Header.tsx                       含行動裝置覆蓋層的固定導覽列
-    Footer.tsx                       含網站地圖、專案、社群連結的頁尾
-    CommandPalette.tsx               指令面板觸發器與狀態管理
-    CommandPaletteInner.tsx          指令面板 UI 與搜尋邏輯（客戶端）
-    TileIcon.tsx                     具主題感知能力的技術圖示磚（客戶端元件）
-    tileIconMeta.ts                  圖示中繼資料（來源、深色背景、淺色背景）— 伺服器端安全
-    LanyardCards.tsx                 Discord 狀態元件
-    GithubContributionCard.tsx
-    GithubGlyph.tsx                  行內 GitHub 標誌（透傳 SVGProps）
-    HeroFace.tsx                     互動式 ASCII Hero 表情 — 跟隨游標、眨眼、消失時搖擺
-    NameRotator.tsx                  Hero 名字輪播（純 CSS keyframe，無 JS）
-    AvatarEasterEgg.tsx              連點頭像 5 下的彩蛋 — 旋轉並開啟 Discord
-    GravityMode.tsx                  「114514」搜尋彩蛋 — 整頁 DOM 重力物理，可拖曳／甩動
-    BadgeShape.tsx                   點擊後變形（clip-path）的個人名片徽章
-    LikeCard.tsx                     支援預設 / "circle"（VTuber）/ "square"（專輯）版面，含開台徽章
-    LikeCategorySection.tsx          含延遲載入觀察器的分類區塊
-    LikeFilterGrid.tsx               搜尋 + 標籤篩選 + 格狀清單 + 模態視窗的整合
-    LikeModalShell.tsx               以 Portal 實作的 Like 詳情模態外殼
-    VtuberLiveWarmup.tsx             /likes 載入時預先熱好 /api/vtuber-live 的快取
-    MusicSection.tsx                 Spotify 常聽歌曲預覽列（渲染 LikeCard，layout="square"）
-    ProjectDetailBody.tsx            含 GitHub 專案資訊的詳細專案檢視
-    ProjectFilterGrid.tsx            支援模態視窗的可篩選專案格狀清單
-    ProjectModalShell.tsx            以 Portal 實作的專案詳情模態外殼
-    PageHead.tsx
-    PageTransition.tsx
-    BackToTopButton.tsx
-    ThemeProvider.tsx
-    SiteLoader.tsx                   含模糊與轉場效果的全頁載入畫面
-  hooks/
-    useHorizontalWheelScroll.ts          滑鼠滾輪水平平移
-    useScrollLinkedHorizontalReveal.ts   與捲動位置連動的水平平移
-    useVtuberLiveStatus.ts               掛載 circle 版面區塊時，每 60 秒輪詢 /api/vtuber-live
-  lib/
-    kv.ts                             讀寫 Vercel KV 中來自 Discord 的雜談內容
-    threads.ts                        擷取 Threads API 的同步貼文
-    github.ts                         擷取 GitHub API 的專案資訊與事件
-    spotify.ts                        擷取 Spotify API 的常聽歌曲（關於頁／Likes／音樂）
-    imageThumb.ts                     外部圖片的 wsrv.nl 縮圖代理輔助函式
-    sortLikes.ts                      以評分為基準的排序（rating → personRating，未評分項目沉底）
-    ratingStars.tsx                   五星評分渲染器（暗色底 + 裁切填色疊層）
-    mergedThoughts.ts                 合併並去除多來源雜談內容的重複項
-  about/page.tsx
-  experience/page.tsx
-  likes/page.tsx
-  likes/[category]/page.tsx
-  likes/music/page.tsx
-  links/page.tsx
-  projects/page.tsx
-  thoughts/page.tsx
-  feed.xml/route.ts                 RSS Feed 路由（合併雜談與專案）
-  robots.ts           robots.txt 路由
-  sitemap.ts          Sitemap 路由（包含各分類 Likes 網址）
-  page.tsx            首頁
-  layout.tsx          根版面 — 字型、主題腳本、頁首、頁尾、指令面板
-  globals.css         所有樣式
-  data.ts             所有內容 — 身分角色、Likes、專案、音樂備援資料、連結、備援雜談
-public/
-  assets/             圖片與 GitHub 貢獻圖 SVG
-  icon/               自訂 SVG 圖示
-scripts/
-  cleanup-thoughts.mjs     移除符合指定文字的 KV 雜談項目
-.github/
-  workflows/
-    snake.yml              每日排程重新產生 GitHub 貢獻圖 SVG 並自動提交
-```
+中文字型透過 Google Fonts 逐張子集化（見 [app/lib/ogFont.ts](app/lib/ogFont.ts)）；抓取失敗時會降級為純拉丁字的卡片，不會讓 build 失敗。
 
 ## 開發
 
@@ -247,34 +82,32 @@ npm run lint
 
 ### 環境變數
 
-`/writing` 頁面所需（詳見 `.env.local`）：
+依你想啟用哪些即時功能，以下變數為必要或選填：
 
-| 變數                                                                                         | 用途                                                                                               |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `REVALIDATE_SECRET`                                                                          | `app/api/revalidate/route.ts` 的共用密鑰（itouBot 使用同一組值）                                   |
-| `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL` | Vercel KV 連線設定                                                                                 |
-| `THREADS_ACCESS_TOKEN`                                                                       | 擷取 Threads API 的同步貼文                                                                        |
-| `GITHUB_TOKEN`                                                                               | 存取 GitHub API 以取得專案資訊（選填；未設定時無法取得專案詳情）                                   |
-| `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 取得常聽歌曲（關於頁、`/likes`、`/likes/music`）與目前正在播放的曲目（選填；未設定時請見下方說明） |
-| `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                | 留言板的「用 GitHub 登入」（選填；未設定時該按鈕會回報未設定，手動填暱稱仍可留言）                 |
-| `RESEND_API_KEY`、`RESEND_FROM`                                                              | 留言板回覆通知信（Resend；需在 Resend 後台驗證寄件網域，例如 `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`，未設定時回覆照常運作只是不寄信） |
+| 變數                                                                                          | 用途                                                                                                                                                                     |
+| ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `REVALIDATE_SECRET`                                                                            | itouBot 呼叫的重新驗證端點所使用的共用密鑰                                                                                                                             |
+| `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL`  | Vercel KV 連線設定                                                                                                                                                     |
+| `THREADS_ACCESS_TOKEN`                                                                         | 擷取同步的 Threads 貼文                                                                                                                                                |
+| `GITHUB_TOKEN`                                                                                 | 擷取 GitHub 專案資訊與動態                                                                                                                                             |
+| `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                         | 擷取 Spotify 常聽歌曲與目前播放曲目（見 `scripts/spotify-refresh-token.mjs`；scope 含 `user-read-currently-playing`，較舊的 token 需要重新授權）                       |
+| `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                 | 留言板的「用 GitHub 登入」（OAuth App callback：`/api/auth/github/callback`；`GUESTBOOK_GH_SECRET` 用來簽署短效身分 token）                                              |
+| `RESEND_API_KEY`、`RESEND_FROM`                                                                | 留言板回覆通知信（Resend；需在 Resend 後台驗證寄件網域，例如 `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`）                                                    |
 
-留言板的 GitHub 登入需到 <https://github.com/settings/developers> 建立一個 OAuth App，Authorization callback URL 填 `https://<你的網域>/api/auth/github/callback`（本機開發另外填一組 `http://localhost:3000/api/auth/github/callback`），把取得的 Client ID／Secret 填進上表兩個變數；`GUESTBOOK_GH_SECRET` 則是自己隨機產生的一串字（例如 `openssl rand -hex 32`），用來簽署登入後回傳的短效身分 token。登入時會向 GitHub 請求 `read:user user:email` 兩個 scope，其中 `user:email` 用來取得使用者的主信箱（primary + verified），讓 GitHub 登入的留言在被回覆時也能收到通知信；使用者沒授權 email 就只收不到通知，不影響留言。
+缺少選填憑證時網站會優雅降級，對應區塊會退回備援資料或直接不顯示，而不會整個壞掉。
 
-音樂整合透過 Spotify Web API 進行 — 需要 Premium 帳號才能註冊新的開發者應用程式，取得 `SPOTIFY_CLIENT_ID`/`SPOTIFY_CLIENT_SECRET` 後，跑一次 `node --env-file=.env.local scripts/spotify-refresh-token.mjs` 產生 `SPOTIFY_REFRESH_TOKEN`：授權會導到 `http://localhost:8888/callback`，由該 script 自己起的本機伺服器接住並把 token 印在終端機（該位址要先加進 Spotify Dashboard 的 Redirect URIs，詳見 script 註解）。若未設定這三個變數，`getTopTracks()` 與 `getCurrentlyPlaying()` 都會回傳 `null`，各呼叫點也會相應地降級處理：關於頁卡片顯示靜態的 `MUSIC_ARTISTS` 頭像，`/likes` 預覽列則直接省略，「正在聽」相關元件退回 Lanyard 或直接不顯示。授權的 scope 含 `user-read-currently-playing`；在這個 scope 加入之前產生的舊 `SPOTIFY_REFRESH_TOKEN` 需要重新跑一次 script 換新的，否則 `/me/player/currently-playing` 會被 Spotify 拒絕。
+## 文件
+
+- [Architecture](docs/architecture.md)（英文）
+- [VTuber Live Status](docs/vtuber-live.md)（英文）
+- [Easter Eggs](docs/easter-eggs.md)（英文）
 
 ## 部署
 
-部署於 Vercel；推送至 `main` 分支會觸發新的正式環境部署。自訂網域設定於 Vercel 專案中（`CNAME` 檔案是先前 GitHub Pages 設定所留下的遺留產物）。Discord 斜線指令由獨立的 [itouBot](../itouBot) 常駐程式處理，與網站共用同一組 Vercel KV，並在每次發文後呼叫 `/api/revalidate`。
+網站部署於 Vercel；推送至 `main` 分支會觸發正式環境部署。
 
-另有一個獨立的排程工作 `.github/workflows/snake.yml`，每日（cron，亦支援手動觸發 `workflow_dispatch`）透過 `Platane/snk` 重新產生 GitHub 貢獻圖 SVG，並直接推送至 `main` — 若圖表有變更，這也會觸發 Vercel 重新部署。
+GitHub 貢獻圖 SVG 由 [.github/workflows/snake.yml](.github/workflows/snake.yml) 每日重新產生並寫入 `public/assets/social/`。
 
-## 內容
+## 授權條款
 
-大部分頁面內容位於 `app/data.ts`。若要新增或更新 Like、專案或朋友連結，編輯對應的匯出陣列並推送即可，無需修改任何設定。
-
-雜談內容則改由兩個即時來源提供：Discord（`/碎碎念` 斜線指令 → KV）與 Threads（自動同步）。`app/data.ts` 中的 `THOUGHTS` 陣列僅在兩個遠端來源皆無資料時作為備援顯示。
-
-音樂資料同樣為即時資料（Spotify 常聽歌曲，詳見[環境變數](#環境變數)）；`app/data.ts` 中的 `MUSIC_ARTISTS` 陣列僅在 Spotify 未設定或無回傳資料時，作為關於頁卡片的備援。若要變更關於頁迷你卡片所使用的專輯／背景圖片，編輯 `app/about/page.tsx` 頂部附近的 `INTEREST_BG` / `MUSIC_BG` 常數。
-
-技術圖示定義於 `app/components/tileIconMeta.ts`。每個項目包含標籤、Devicons CDN 網址、深色模式背景色與淺色模式背景色。
+本專案採用 Apache License 2.0 授權，詳見 [LICENSE](LICENSE)。
