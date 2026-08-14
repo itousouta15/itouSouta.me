@@ -118,7 +118,7 @@ function buildReplyEmail({
     SANS,
     ";font-size:14px;line-height:1.75;color:",
     C.tx,
-    ";white-space:pre-wrap;overflow-wrap:anywhere\">",
+    ';white-space:pre-wrap;overflow-wrap:anywhere">',
     escapeHtml(replyText),
     "</p></div>",
     // 原留言摘錄
