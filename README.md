@@ -14,9 +14,13 @@ This is a highly customized portfolio site built around profile, projects, thoug
 - Thoughts feed that merges Discord-sourced posts, Threads posts, and GitHub events.
 - Likes pages for novels, manga, anime, VTubers, and Spotify-powered music data.
 - Project gallery with filters, modal details, and GitHub repository metadata.
+- KV-backed guestbook on every page, with threaded replies, optional "Sign in with GitHub", and Resend email notifications when someone replies to your comment.
+- Reaction counts on `/writing` posts.
 - Friend links, experience timeline, RSS feed, sitemap, and robots routes.
 - Dark/light theme support with reduced-motion-aware animations.
 - Search and quick navigation through Cmd/Ctrl+K.
+- Offline fallback page backed by a service worker that precaches the home page.
+- Public SVG status badges (latest blog post, Discord presence, total GitHub stars) for embedding elsewhere.
 - Per-route Open Graph images rendered at build time, with the brand banner and avatar composited in.
 
 ## Tech Stack
@@ -28,6 +32,8 @@ This is a highly customized portfolio site built around profile, projects, thoug
 | Styling    | Plain CSS with custom properties                |
 | Data       | Vercel KV, Threads API, GitHub API, Spotify API |
 | Real-time  | Lanyard API                                     |
+| Email      | Resend (guestbook reply notifications)          |
+| Offline    | Service worker (`public/sw.js`)                 |
 | Deployment | Vercel                                          |
 
 No UI library, no CSS-in-JS, and no component framework.
@@ -40,6 +46,10 @@ Most content lives in [app/data.ts](app/data.ts). The app keeps the public pages
 - `/likes/music` reads Spotify top tracks when credentials are available.
 - The "now playing" indicator (`/api/now-playing`, profile card, floating bar) calls the Spotify API directly instead of relying on Discord's relayed presence, so it works on mobile even when the Discord app isn't open; it falls back to Lanyard only when Spotify credentials aren't configured.
 - `/api/vtuber-live` checks VTuber live status and caches results for short intervals.
+- The guestbook (`/api/guestbook`, rendered at the bottom of every page) reads and writes Vercel KV directly, replacing an earlier setup that proxied a blog-only comment server. Replies are threaded and, when the person being replied to left an email (or signed in with GitHub and granted the `user:email` scope), trigger a Resend notification.
+- `/api/reactions` powers per-post like counts on `/writing`.
+- `public/sw.js` precaches `/` and `/offline` for a minimal offline fallback; it only registers in production, since Next dev's changing chunk hashes make a stale-while-revalidate service worker actively harmful during development.
+- `/api/badge/*` renders shields.io-style SVGs (latest blog post title, Discord presence, total GitHub stars) for embedding in other READMEs or pages.
 - Project cards use GitHub API data when available and gracefully fall back otherwise.
 - Local images are grouped under `public/assets/brand`, `public/assets/projects`, `public/assets/likes`, and `public/assets/social`.
 
