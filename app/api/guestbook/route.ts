@@ -81,8 +81,7 @@ function resolveIdentity(body: {
       avatar: gh.avatarUrl,
       link: gh.profileUrl,
       source: "github",
-      email:
-        gh.email && isValidEmail(gh.email) ? gh.email.toLowerCase() : null,
+      email: gh.email && isValidEmail(gh.email) ? gh.email.toLowerCase() : null,
     };
   }
 

@@ -209,7 +209,11 @@ export default function Guestbook({ path }: { path: string }) {
     }
   };
 
-  const openReply = (commentId: string, parentId: string, replyToNick: string) => {
+  const openReply = (
+    commentId: string,
+    parentId: string,
+    replyToNick: string
+  ) => {
     setReplyTarget({ commentId, parentId, replyToNick });
     setReplyForm((f) => ({ ...f, nick: f.nick || nick, text: "", hp: "" }));
     setError(null);
@@ -328,11 +332,7 @@ export default function Guestbook({ path }: { path: string }) {
           <span className="guestbook-counter">
             {replyForm.text.length}/{TEXT_MAX} 字
           </span>
-          <button
-            type="button"
-            className="guestbook-btn"
-            onClick={cancelReply}
-          >
+          <button type="button" className="guestbook-btn" onClick={cancelReply}>
             取消
           </button>
           <button
@@ -357,7 +357,11 @@ export default function Guestbook({ path }: { path: string }) {
   ): React.ReactNode => {
     const children = rootReplies.filter((r) => r.parentId === reply.id);
     return (
-      <div key={reply.id} id={`gb-${reply.id}`} className="guestbook-reply-item">
+      <div
+        key={reply.id}
+        id={`gb-${reply.id}`}
+        className="guestbook-reply-item"
+      >
         <div className="guestbook-reply-body">
           <ItemAvatar nick={reply.nick} avatar={reply.avatar} />
           <div className="guestbook-body">
@@ -377,9 +381,7 @@ export default function Guestbook({ path }: { path: string }) {
               {reply.source === "github" && (
                 <GithubGlyph className="guestbook-gh-badge" />
               )}
-              <span className="guestbook-date">
-                {fmtDate(reply.timestamp)}
-              </span>
+              <span className="guestbook-date">{fmtDate(reply.timestamp)}</span>
               <button
                 type="button"
                 className="guestbook-reply-btn"
@@ -389,13 +391,17 @@ export default function Guestbook({ path }: { path: string }) {
               </button>
             </div>
             <p className="guestbook-text">
-              <span className="guestbook-reply-to">回覆 @{reply.replyToNick}</span>{" "}
+              <span className="guestbook-reply-to">
+                回覆 @{reply.replyToNick}
+              </span>{" "}
               {reply.text}
             </p>
             {replyTarget?.parentId === reply.id && renderReplyForm()}
             {children.length > 0 && (
               <div className="guestbook-replies">
-                {children.map((child) => renderReply(child, rootReplies, commentId))}
+                {children.map((child) =>
+                  renderReply(child, rootReplies, commentId)
+                )}
               </div>
             )}
           </div>
@@ -496,10 +502,7 @@ export default function Guestbook({ path }: { path: string }) {
               />
             </div>
             <div className="guestbook-field">
-              <label
-                htmlFor="gb-mail"
-                title="有新的回覆時會寄信通知你"
-              >
+              <label htmlFor="gb-mail" title="有新的回覆時會寄信通知你">
                 郵箱(可選)
               </label>
               <input
@@ -564,9 +567,7 @@ export default function Guestbook({ path }: { path: string }) {
             {sending ? "送出中…" : "送出"}
           </button>
         </div>
-        {error && !replyTarget && (
-          <p className="guestbook-error">{error}</p>
-        )}
+        {error && !replyTarget && <p className="guestbook-error">{error}</p>}
       </form>
 
       <div className="guestbook-meta-head">

@@ -33,9 +33,7 @@ export default function ExperienceTimeline({ groups }: Props) {
 
       for (const el of timelines) {
         const rect = el.getBoundingClientRect();
-        const progress = rect.height
-          ? (triggerY - rect.top) / rect.height
-          : 0;
+        const progress = rect.height ? (triggerY - rect.top) / rect.height : 0;
         el.style.setProperty(
           "--exp-fill",
           String(Math.min(1, Math.max(0, progress)))
@@ -106,7 +104,9 @@ export default function ExperienceTimeline({ groups }: Props) {
                   <div className="tl-title">{e.title}</div>
                   {e.org && <div className="tl-org">{e.org}</div>}
                   {e.desc && <div className="tl-desc">{e.desc}</div>}
-                  {(e.longDesc || e.href || (e.images && e.images.length > 0)) && (
+                  {(e.longDesc ||
+                    e.href ||
+                    (e.images && e.images.length > 0)) && (
                     <button
                       type="button"
                       className="btn-ghost exp-detail-btn"

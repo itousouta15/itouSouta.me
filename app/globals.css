@@ -4467,7 +4467,11 @@ a.guestbook-nick:hover {
   color: var(--blue);
 }
 /* 樓中樓最多加深 4 層縮排，再深整片攤平，避免手機上被推成一根細線 */
-.guestbook-replies .guestbook-replies .guestbook-replies .guestbook-replies .guestbook-replies {
+.guestbook-replies
+  .guestbook-replies
+  .guestbook-replies
+  .guestbook-replies
+  .guestbook-replies {
   margin-left: 0;
   padding-left: 0;
   border-left: none;
