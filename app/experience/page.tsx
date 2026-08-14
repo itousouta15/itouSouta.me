@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
+import ExperienceTimeline from "../components/ExperienceTimeline";
 import { EXPERIENCE, ExperienceItem } from "../data";
 import { pageMetadata } from "../lib/seo";
 
@@ -28,26 +29,7 @@ export default function ExperiencePage() {
   return (
     <section style={{ paddingBottom: 8 }}>
       <PageHead kicker="JOURNEY" title="沒有路!!!" desc="持續追求自身所愛" />
-      {groups.map(([category, items]) => (
-        <div className="timeline-group" key={category || "default"}>
-          {category && <div className="timeline-group-head">{category}</div>}
-          <div className="exp-timeline">
-            {items.map((e, i) => (
-              <div className="exp-row" key={i}>
-                <div className="exp-node-col">
-                  <span className={`exp-dot ${e.color ?? "blue"}`} />
-                </div>
-                <div className={`tl-card ${e.color ?? "blue"}`}>
-                  <div className="tl-period">{e.period}</div>
-                  <div className="tl-title">{e.title}</div>
-                  {e.org && <div className="tl-org">{e.org}</div>}
-                  {e.desc && <div className="tl-desc">{e.desc}</div>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+      <ExperienceTimeline groups={groups} />
     </section>
   );
 }

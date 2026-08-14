@@ -60,3 +60,8 @@ export function projectCoverThumb(src: string) {
 export function cardBgThumb(src: string) {
   return wsrvThumb(src, 960, 720);
 }
+
+// 經歷詳細資訊彈窗裡的圖片區縮圖，格狀排列、4:3
+export function experienceImageThumb(src: string) {
+  return wsrvThumb(src, 400, 300);
+}
