@@ -3867,6 +3867,32 @@ body.site-revealed .header {
   display: block;
 }
 
+/* Experience detail modal: image grid (event photos, certs, screenshots).
+   Each thumbnail links out to the original full-size image. */
+.exp-detail-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.exp-detail-gallery-item {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: var(--inset);
+}
+.exp-detail-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s ease;
+}
+.exp-detail-gallery-item:hover img {
+  transform: scale(1.05);
+}
+
 /* Blog */
 .blog-empty {
   background: var(--panel);
@@ -4632,6 +4658,19 @@ a.guestbook-nick:hover {
   line-height: 1.9;
   margin-top: 10px;
 }
+/* Scaled-down .btn-ghost for the "詳細資訊" trigger inside a compact
+   timeline card — same pill/ghost/arrow-rotate language, smaller footprint. */
+.exp-detail-btn {
+  margin-top: 14px;
+  padding: 6px 8px 6px 14px;
+  font-size: 13px;
+  gap: 6px;
+}
+.exp-detail-btn .btn-arrow {
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+}
 
 /* Experience page: vertical timeline with a connecting line + dots.
    (Distinct from .timeline-grid/.tl-card-wrap/.tl-year-ghost, which the
@@ -4680,10 +4719,55 @@ a.guestbook-nick:hover {
   height: 12px;
   border-radius: 50%;
   background: var(--blue);
+  color: var(--blue);
   box-shadow: 0 0 0 4px var(--bg);
+  transition: background-color 0.4s ease;
 }
 .exp-dot.purple {
   background: var(--purple);
+  color: var(--purple);
+}
+.exp-dot::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0;
+}
+
+/* Scroll-linked "now" indicator (see ExperienceTimeline.tsx): rows the
+   viewport has scrolled past get .is-passed, the row currently crossing the
+   trigger line gets .is-active. Scoped under [data-scroll-progress="on"],
+   which JS only sets when it's actually driving the effect — no JS or
+   prefers-reduced-motion means the timeline looks exactly as it always has. */
+[data-scroll-progress="on"] .exp-row:not(.is-passed):not(.is-active) .exp-dot {
+  background: var(--bd2);
+}
+/* Continuous fill driven every scroll frame by --row-fill (0 to 1), rather
+   than snapping to solid once .is-passed toggles — the segment visibly
+   draws itself in as the trigger line moves through it. */
+[data-scroll-progress="on"] .exp-node-col::before {
+  background: linear-gradient(
+    to bottom,
+    var(--blue) 0%,
+    var(--blue) calc(var(--row-fill, 0) * 100%),
+    var(--bd2) calc(var(--row-fill, 0) * 100%),
+    var(--bd2) 100%
+  );
+}
+.exp-row.is-active .exp-dot::after {
+  animation: exp-dot-ring 1.6s ease-out infinite;
+}
+@keyframes exp-dot-ring {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
 }
 
 /* Desktop: alternate cards left/right of a centered spine instead of one
@@ -4698,6 +4782,18 @@ a.guestbook-nick:hover {
     width: 2px;
     background: var(--bd2);
     transform: translateX(-50%);
+  }
+  /* JS (ExperienceTimeline.tsx) keeps --exp-fill in sync with how far the
+     scroll trigger line has travelled through this group; the spine fills
+     in blue from the top as you scroll, gray below. */
+  [data-scroll-progress="on"] .exp-timeline::before {
+    background: linear-gradient(
+      to bottom,
+      var(--blue) 0%,
+      var(--blue) calc(var(--exp-fill, 0) * 100%),
+      var(--bd2) calc(var(--exp-fill, 0) * 100%),
+      var(--bd2) 100%
+    );
   }
   .exp-row {
     display: grid;

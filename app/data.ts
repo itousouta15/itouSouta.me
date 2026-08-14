@@ -3,51 +3,6 @@ export interface Role {
   color: "blue" | "purple";
 }
 
-export interface Like {
-  title: string;
-  sub?: string;
-  cover?: string;
-  href?: string;
-  /** 我自己的評分，0–5，可到小數一位。全站只有這一種尺度。 */
-  personRating?: number;
-  tags?: string[];
-  note?: string;
-  /** YouTube channel ID, only needed when `href` is an @handle URL that doesn't already encode it (used to match VSPO's own live-schedule feed). */
-  channelId?: string;
-}
-
-export interface LikeCategory {
-  key: string;
-  label: string;
-  en: string;
-  layout?: "circle";
-  items: Like[];
-}
-
-export interface ProjectTimelineEntry {
-  version: string;
-  date: string;
-  note?: string;
-}
-
-export interface Project {
-  slug: string;
-  kicker: string;
-  color: "blue" | "purple";
-  title: string;
-  desc: string;
-  tags: string[];
-  icon: string;
-  href: string;
-  cover: string;
-  siteUrl?: string;
-  longDesc?: string;
-  why?: string;
-  difficulties?: string;
-  demoUrl?: string;
-  timeline?: ProjectTimelineEntry[];
-}
-
 export const ROLES: Role[] = [
   { label: "A Student", color: "blue" },
   { label: "Mankind", color: "blue" },
@@ -72,6 +27,27 @@ export const MARQUEE: string[] = [
   "情熱を失っては、何もできない。",
   "Zzzz",
 ];
+
+export interface Like {
+  title: string;
+  sub?: string;
+  cover?: string;
+  href?: string;
+  /** 我自己的評分，0–5，可到小數一位。全站只有這一種尺度。 */
+  personRating?: number;
+  tags?: string[];
+  note?: string;
+  /** YouTube channel ID, only needed when `href` is an @handle URL that doesn't already encode it (used to match VSPO's own live-schedule feed). */
+  channelId?: string;
+}
+
+export interface LikeCategory {
+  key: string;
+  label: string;
+  en: string;
+  layout?: "circle";
+  items: Like[];
+}
 
 export const LIKE_CATEGORIES: LikeCategory[] = [
   {
@@ -1512,6 +1488,30 @@ export const MUSIC_ARTISTS: MusicArtist[] = [
   },
 ];
 
+export interface ProjectTimelineEntry {
+  version: string;
+  date: string;
+  note?: string;
+}
+
+export interface Project {
+  slug: string;
+  kicker: string;
+  color: "blue" | "purple";
+  title: string;
+  desc: string;
+  tags: string[];
+  icon: string;
+  href: string;
+  cover: string;
+  siteUrl?: string;
+  longDesc?: string;
+  why?: string;
+  difficulties?: string;
+  demoUrl?: string;
+  timeline?: ProjectTimelineEntry[];
+}
+
 /* 選填欄位的寫法（跑 npm run dev 開 /api/content-report 看誰還沒填）。
    這四個欄位 ProjectDetailBody 已經全部有渲染路徑，填了就會出現在專案的
    modal 裡，不需要動任何程式碼：
@@ -2053,6 +2053,13 @@ export interface ExperienceItem {
   desc?: string;
   color?: "blue" | "purple";
   category?: string;
+  /** 有填其中一個，「經歷」時間軸卡片就會多顯示「詳細資訊」按鈕開彈窗；
+   *  三個都沒填就不顯示按鈕。longDesc 是彈窗裡的完整內容。 */
+  longDesc?: string;
+  /** 彈窗裡的外部連結（官網、成果連結、心得文…）。 */
+  href?: string;
+  /** 彈窗裡的圖片區（現場照片、獎狀、成果截圖…），格狀排列，點圖開原圖。 */
+  images?: string[];
 }
 
 export const EXPERIENCE: ExperienceItem[] = [
@@ -2219,6 +2226,8 @@ export const EXPERIENCE: ExperienceItem[] = [
     org: "會長、資訊組組長",
     color: "purple",
     category: "社群",
+    longDesc: "中文全名為中部電資聯合會議，簡稱「中電會」。成立於 2022 年 2 月，由文華高中電腦研究社第 29 屆社長周佑康與臺中一中數位創作社第 16 屆社長蔡承希，在 AIS3 新型態資安實務主題課程講師——台科大鄭欣明教授與陽交大黃俊穎教授——的啟發下共同創立。我們的目標是結合中部電資資源，打造一個跨校交流、合作學習的資訊教育平台，以積極辦理資訊教育活動、促進資源共享與永續傳承為宗旨",
+    href: "https://scaitc.org/"
   },
   {
     period: "2025",
