@@ -25,16 +25,16 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 
 ## 技術棧
 
-| 層級     | 技術                                             |
-| -------- | ------------------------------------------------ |
-| 框架     | Next.js 14（App Router）                         |
-| 語言     | TypeScript                                       |
-| 樣式     | 純 CSS（CSS custom properties）                  |
-| 資料     | Vercel KV、Threads API、GitHub API、Spotify API  |
-| 即時資料 | Lanyard API                                      |
-| 郵件     | Resend（留言板回覆通知信）                       |
-| 離線支援 | Service Worker（`public/sw.js`）                 |
-| 部署     | Vercel                                           |
+| 層級     | 技術                                            |
+| -------- | ----------------------------------------------- |
+| 框架     | Next.js 14（App Router）                        |
+| 語言     | TypeScript                                      |
+| 樣式     | 純 CSS（CSS custom properties）                 |
+| 資料     | Vercel KV、Threads API、GitHub API、Spotify API |
+| 即時資料 | Lanyard API                                     |
+| 郵件     | Resend（留言板回覆通知信）                      |
+| 離線支援 | Service Worker（`public/sw.js`）                |
+| 部署     | Vercel                                          |
 
 沒有使用 UI 函式庫、CSS-in-JS，也沒有使用元件框架。
 
@@ -84,15 +84,15 @@ npm run lint
 
 依你想啟用哪些即時功能，以下變數為必要或選填：
 
-| 變數                                                                                          | 用途                                                                                                                                                                     |
-| ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `REVALIDATE_SECRET`                                                                            | itouBot 呼叫的重新驗證端點所使用的共用密鑰                                                                                                                             |
-| `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL`  | Vercel KV 連線設定                                                                                                                                                     |
-| `THREADS_ACCESS_TOKEN`                                                                         | 擷取同步的 Threads 貼文                                                                                                                                                |
-| `GITHUB_TOKEN`                                                                                 | 擷取 GitHub 專案資訊與動態                                                                                                                                             |
-| `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                         | 擷取 Spotify 常聽歌曲與目前播放曲目（見 `scripts/spotify-refresh-token.mjs`；scope 含 `user-read-currently-playing`，較舊的 token 需要重新授權）                       |
-| `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                 | 留言板的「用 GitHub 登入」（OAuth App callback：`/api/auth/github/callback`；`GUESTBOOK_GH_SECRET` 用來簽署短效身分 token）                                              |
-| `RESEND_API_KEY`、`RESEND_FROM`                                                                | 留言板回覆通知信（Resend；需在 Resend 後台驗證寄件網域，例如 `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`）                                                    |
+| 變數                                                                                         | 用途                                                                                                                                             |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `REVALIDATE_SECRET`                                                                          | itouBot 呼叫的重新驗證端點所使用的共用密鑰                                                                                                       |
+| `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL` | Vercel KV 連線設定                                                                                                                               |
+| `THREADS_ACCESS_TOKEN`                                                                       | 擷取同步的 Threads 貼文                                                                                                                          |
+| `GITHUB_TOKEN`                                                                               | 擷取 GitHub 專案資訊與動態                                                                                                                       |
+| `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 擷取 Spotify 常聽歌曲與目前播放曲目（見 `scripts/spotify-refresh-token.mjs`；scope 含 `user-read-currently-playing`，較舊的 token 需要重新授權） |
+| `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                | 留言板的「用 GitHub 登入」（OAuth App callback：`/api/auth/github/callback`；`GUESTBOOK_GH_SECRET` 用來簽署短效身分 token）                      |
+| `RESEND_API_KEY`、`RESEND_FROM`                                                              | 留言板回覆通知信（Resend；需在 Resend 後台驗證寄件網域，例如 `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`）                              |
 
 缺少選填憑證時網站會優雅降級，對應區塊會退回備援資料或直接不顯示，而不會整個壞掉。
 

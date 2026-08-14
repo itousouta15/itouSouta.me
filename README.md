@@ -92,7 +92,7 @@ Required or optional depending on which live surfaces you want enabled:
 | `GITHUB_TOKEN`                                                                               | Fetching GitHub repository metadata and activity                                                                                                                                      |
 | `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`                        | Fetching Spotify top tracks and the currently-playing track (see `scripts/spotify-refresh-token.mjs`; scope includes `user-read-currently-playing`, older tokens need re-authorizing) |
 | `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `GUESTBOOK_GH_SECRET`                | "Sign in with GitHub" on the guestbook (OAuth App callback: `/api/auth/github/callback`; the secret signs the short-lived identity token)                                             |
-| `RESEND_API_KEY`, `RESEND_FROM`                                                              | Reply-notification emails for the guestbook (Resend; verify the sending domain in the Resend dashboard, e.g. `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`)                  |
+| `RESEND_API_KEY`, `RESEND_FROM`                                                              | Reply-notification emails for the guestbook (Resend; verify the sending domain in the Resend dashboard, e.g. `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`)                    |
 
 Missing optional credentials are handled gracefully; affected sections fall back or disappear instead of breaking the site.
 
