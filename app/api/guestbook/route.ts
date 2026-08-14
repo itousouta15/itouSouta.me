@@ -203,8 +203,14 @@ export async function POST(req: NextRequest) {
       };
       await addGuestbookReply(path, root.id, reply);
 
+      const recipients = collectRecipients(root, parent, email);
+      if (recipients.length === 0) {
+        console.warn(
+          "[guestbook] reply notification skipped: 對方沒留 email，或回覆對象是自己"
+        );
+      }
       await sendReplyNotification({
-        to: collectRecipients(root, parent, email),
+        to: recipients,
         replyNick: nick,
         replyText: text,
         parentText: parent.text.slice(0, 200),
