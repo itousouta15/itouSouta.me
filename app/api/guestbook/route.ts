@@ -101,17 +101,17 @@ function resolveIdentity(body: {
 }
 
 /** 回覆通知要寄給誰：被回覆者（留言或回覆的作者）；回覆的是「回覆」時，頂層
- *  留言的作者也想知道有人繼續接話。去重、過濾不合法格式、跳過回覆自己。 */
+ *  留言的作者也想知道有人繼續接話。去重、過濾不合法格式。
+ *  （回覆自己也會寄——使用者常這樣補內容，有封信比較踏實。） */
 function collectRecipients(
   root: { email?: string | null },
-  parent: { email?: string | null } | null,
-  ownEmail: string | null
+  parent: { email?: string | null } | null
 ): string[] {
   const list: string[] = [];
   for (const email of [parent?.email, root.email]) {
     if (email && isValidEmail(email)) {
       const key = email.toLowerCase();
-      if (key !== ownEmail && !list.includes(key)) list.push(key);
+      if (!list.includes(key)) list.push(key);
     }
   }
   return list;
@@ -202,11 +202,9 @@ export async function POST(req: NextRequest) {
       };
       await addGuestbookReply(path, root.id, reply);
 
-      const recipients = collectRecipients(root, parent, email);
+      const recipients = collectRecipients(root, parent);
       if (recipients.length === 0) {
-        console.warn(
-          "[guestbook] reply notification skipped: 對方沒留 email，或回覆對象是自己"
-        );
+        console.warn("[guestbook] reply notification skipped: 對方沒留 email");
       }
       await sendReplyNotification({
         to: recipients,
