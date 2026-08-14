@@ -4254,6 +4254,11 @@ body.site-revealed .header {
 .guestbook-signed-in strong {
   color: var(--tx);
 }
+.guestbook-signed-in-note {
+  font-style: normal;
+  color: var(--mute);
+  font-size: 12px;
+}
 .guestbook-signout {
   margin-left: auto;
   background: none;
@@ -4392,6 +4397,81 @@ a.guestbook-nick:hover {
   opacity: 0;
 }
 
+/* ---- 回覆（樓中樓）---- */
+.guestbook-item,
+.guestbook-reply-item {
+  scroll-margin-top: 96px;
+}
+.guestbook-reply-count {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--blue);
+}
+.guestbook-reply-btn {
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 12px;
+  color: var(--mute);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.guestbook-reply-btn:hover {
+  color: var(--blue);
+}
+.guestbook-replies {
+  margin: 12px 0 0 12px;
+  padding-left: 12px;
+  border-left: 2px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.guestbook-reply-body {
+  display: flex;
+  gap: 10px;
+}
+.guestbook-reply-item .guestbook-avatar {
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+}
+.guestbook-reply-to {
+  color: var(--blue);
+}
+/* 樓中樓最多加深 4 層縮排，再深整片攤平，避免手機上被推成一根細線 */
+.guestbook-replies .guestbook-replies .guestbook-replies .guestbook-replies .guestbook-replies {
+  margin-left: 0;
+  padding-left: 0;
+  border-left: none;
+}
+/* 回覆表單：插在被回覆的那一則底下 */
+.guestbook-reply-form {
+  margin-top: 12px;
+  border: 1px solid var(--bd);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+}
+.guestbook-reply-form .guestbook-fields {
+  grid-template-columns: repeat(2, 1fr);
+}
+.guestbook-reply-form-title {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--dim);
+  border-bottom: 1px solid var(--bd);
+  background: var(--inset);
+}
+.guestbook-reply-form-title strong {
+  color: var(--blue);
+}
+.guestbook-reply-form .guestbook-editor {
+  min-height: 72px;
+}
+
 @media (max-width: 640px) {
   .guestbook-fields {
     grid-template-columns: 1fr;
@@ -4399,6 +4479,9 @@ a.guestbook-nick:hover {
   .guestbook-field + .guestbook-field {
     border-left: none;
     border-top: 1px solid var(--bd);
+  }
+  .guestbook-reply-form .guestbook-fields {
+    grid-template-columns: 1fr;
   }
 }
 

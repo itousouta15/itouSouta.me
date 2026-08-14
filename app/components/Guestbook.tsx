@@ -7,7 +7,23 @@ import GithubGlyph from "./GithubGlyph";
 /* 留言板：KV 自建（/api/guestbook）。原本連部落格共用的 waline 伺服器——那台
    鎖了部落格網域（errno 1001），只能讀不能寫，加上 waline client 在 Next/React
    下自身 fetch 會被內部 watcher abort，所以整個換掉。版面沿用 waline 的骨架：
-   標題 → 三欄身分輸入 → 編輯區 → 底部工具列 → 留言數／排序 → 留言列表。 */
+   標題 → 三欄身分輸入 → 編輯區 → 底部工具列 → 留言數／排序 → 留言列表。
+
+   回覆：每則留言／回覆都有「回覆」按鈕，點開在該則底下插入小表單；資料存同
+   一頁的 replies hash，回覆可再被回覆（巢狀樓中樓）。有留郵箱的，被回覆時
+   由後端寄 Resend 通知。 */
+
+interface Reply {
+  id: string;
+  nick: string;
+  text: string;
+  timestamp: string;
+  parentId: string;
+  replyToNick: string;
+  avatar?: string | null;
+  link?: string | null;
+  source?: "manual" | "github";
+}
 
 interface Entry {
   id: string;
@@ -17,12 +33,20 @@ interface Entry {
   avatar?: string | null;
   link?: string | null;
   source?: "manual" | "github";
+  replies?: Reply[];
 }
 
 interface GithubProfile {
   login: string;
   avatarUrl: string;
   exp: number;
+  email?: string | null;
+}
+
+interface ReplyTarget {
+  commentId: string;
+  parentId: string;
+  replyToNick: string;
 }
 
 const TEXT_MAX = 500;
@@ -54,10 +78,33 @@ function decodeGithubToken(token: string): GithubProfile | null {
     if (typeof json.login !== "string" || typeof json.avatarUrl !== "string")
       return null;
     if (typeof json.exp !== "number" || json.exp < Date.now()) return null;
-    return { login: json.login, avatarUrl: json.avatarUrl, exp: json.exp };
+    return {
+      login: json.login,
+      avatarUrl: json.avatarUrl,
+      exp: json.exp,
+      email: typeof json.email === "string" ? json.email : null,
+    };
   } catch {
     return null;
   }
+}
+
+function ItemAvatar({
+  nick,
+  avatar,
+}: {
+  nick: string;
+  avatar?: string | null;
+}) {
+  return (
+    <div className="guestbook-avatar" aria-hidden="true">
+      {avatar ? (
+        <img src={avatar} alt="" loading="lazy" />
+      ) : (
+        <span>{nick.slice(0, 1).toUpperCase()}</span>
+      )}
+    </div>
+  );
 }
 
 export default function Guestbook({ path }: { path: string }) {
@@ -75,6 +122,14 @@ export default function Guestbook({ path }: { path: string }) {
   const [githubProfile, setGithubProfile] = useState<GithubProfile | null>(
     null
   );
+  const [replyTarget, setReplyTarget] = useState<ReplyTarget | null>(null);
+  const [replyForm, setReplyForm] = useState({
+    nick: "",
+    email: "",
+    text: "",
+    hp: "",
+  });
+  const [sendingReply, setSendingReply] = useState(false);
 
   const load = useCallback(() => {
     fetch(`/api/guestbook?path=${encodeURIComponent(path)}`)
@@ -154,6 +209,253 @@ export default function Guestbook({ path }: { path: string }) {
     }
   };
 
+  const openReply = (commentId: string, parentId: string, replyToNick: string) => {
+    setReplyTarget({ commentId, parentId, replyToNick });
+    setReplyForm((f) => ({ ...f, nick: f.nick || nick, text: "", hp: "" }));
+    setError(null);
+  };
+
+  const cancelReply = () => {
+    setReplyTarget(null);
+    setReplyForm({ nick: "", email: "", text: "", hp: "" });
+    setError(null);
+  };
+
+  const submitReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!replyTarget || sendingReply) return;
+    setSendingReply(true);
+    setError(null);
+    try {
+      const { nick: rNick, email: rEmail, text: rText, hp: rHp } = replyForm;
+      const res = await fetch("/api/guestbook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          githubToken
+            ? {
+                text: rText,
+                hp: rHp,
+                path,
+                githubToken,
+                commentId: replyTarget.commentId,
+                parentId: replyTarget.parentId,
+              }
+            : {
+                nick: rNick,
+                email: rEmail,
+                text: rText,
+                hp: rHp,
+                path,
+                commentId: replyTarget.commentId,
+                parentId: replyTarget.parentId,
+              }
+        ),
+      });
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(j.error ?? "送出失敗");
+        return;
+      }
+      setReplyTarget(null);
+      setReplyForm({ nick: "", email: "", text: "", hp: "" });
+      load();
+    } catch {
+      setError("送出失敗");
+    } finally {
+      setSendingReply(false);
+    }
+  };
+
+  /* ---- 回覆表單：插在被回覆的那一則底下 ---- */
+  const renderReplyForm = () => {
+    if (!replyTarget) return null;
+    return (
+      <form className="guestbook-reply-form" onSubmit={submitReply}>
+        <p className="guestbook-reply-form-title">
+          回覆 <strong>@{replyTarget.replyToNick}</strong>
+        </p>
+        {!githubProfile && (
+          <div className="guestbook-fields">
+            <div className="guestbook-field">
+              <label htmlFor="gb-r-nick">暱稱</label>
+              <input
+                id="gb-r-nick"
+                value={replyForm.nick}
+                onChange={(e) =>
+                  setReplyForm((f) => ({ ...f, nick: e.target.value }))
+                }
+                maxLength={20}
+                required
+              />
+            </div>
+            <div className="guestbook-field">
+              <label htmlFor="gb-r-mail" title="有新的回覆時會寄信通知你">
+                郵箱(可選)
+              </label>
+              <input
+                id="gb-r-mail"
+                type="email"
+                value={replyForm.email}
+                onChange={(e) =>
+                  setReplyForm((f) => ({ ...f, email: e.target.value }))
+                }
+                maxLength={254}
+              />
+            </div>
+          </div>
+        )}
+        <textarea
+          className="guestbook-editor"
+          placeholder={`回覆 @${replyTarget.replyToNick}…`}
+          value={replyForm.text}
+          onChange={(e) =>
+            setReplyForm((f) => ({ ...f, text: e.target.value }))
+          }
+          maxLength={TEXT_MAX}
+          required
+        />
+        {/* honeypot：真人看不見，機器人填了就假裝成功 */}
+        <input
+          className="guestbook-hp"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={replyForm.hp}
+          onChange={(e) => setReplyForm((f) => ({ ...f, hp: e.target.value }))}
+        />
+        <div className="guestbook-actions">
+          <span className="guestbook-counter">
+            {replyForm.text.length}/{TEXT_MAX} 字
+          </span>
+          <button
+            type="button"
+            className="guestbook-btn"
+            onClick={cancelReply}
+          >
+            取消
+          </button>
+          <button
+            type="submit"
+            className="guestbook-btn guestbook-btn--primary"
+            disabled={sendingReply}
+          >
+            {sendingReply ? "送出中…" : "送出回覆"}
+          </button>
+        </div>
+        {error && <p className="guestbook-error">{error}</p>}
+      </form>
+    );
+  };
+
+  /* ---- 回覆列表：parentId 指到誰就掛在誰底下，可無限樓中樓 ----
+     縮排由 CSS 處理（巢狀超過 4 層後不再加深），這裡只負責遞迴。 */
+  const renderReply = (
+    reply: Reply,
+    rootReplies: Reply[],
+    commentId: string
+  ): React.ReactNode => {
+    const children = rootReplies.filter((r) => r.parentId === reply.id);
+    return (
+      <div key={reply.id} id={`gb-${reply.id}`} className="guestbook-reply-item">
+        <div className="guestbook-reply-body">
+          <ItemAvatar nick={reply.nick} avatar={reply.avatar} />
+          <div className="guestbook-body">
+            <div className="guestbook-item-head">
+              {reply.link ? (
+                <a
+                  className="guestbook-nick"
+                  href={reply.link}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                >
+                  {reply.nick}
+                </a>
+              ) : (
+                <span className="guestbook-nick">{reply.nick}</span>
+              )}
+              {reply.source === "github" && (
+                <GithubGlyph className="guestbook-gh-badge" />
+              )}
+              <span className="guestbook-date">
+                {fmtDate(reply.timestamp)}
+              </span>
+              <button
+                type="button"
+                className="guestbook-reply-btn"
+                onClick={() => openReply(commentId, reply.id, reply.nick)}
+              >
+                回覆
+              </button>
+            </div>
+            <p className="guestbook-text">
+              <span className="guestbook-reply-to">回覆 @{reply.replyToNick}</span>{" "}
+              {reply.text}
+            </p>
+            {replyTarget?.parentId === reply.id && renderReplyForm()}
+            {children.length > 0 && (
+              <div className="guestbook-replies">
+                {children.map((child) => renderReply(child, rootReplies, commentId))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderComment = (en: Entry): React.ReactNode => {
+    const rootReplies = en.replies ?? [];
+    const ids = new Set([en.id, ...rootReplies.map((r) => r.id)]);
+    const direct = rootReplies.filter(
+      (r) => r.parentId === en.id || !ids.has(r.parentId)
+    );
+    return (
+      <li key={en.id} id={`gb-${en.id}`} className="guestbook-item">
+        <ItemAvatar nick={en.nick} avatar={en.avatar} />
+        <div className="guestbook-body">
+          <div className="guestbook-item-head">
+            {en.link ? (
+              <a
+                className="guestbook-nick"
+                href={en.link}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+              >
+                {en.nick}
+              </a>
+            ) : (
+              <span className="guestbook-nick">{en.nick}</span>
+            )}
+            {en.source === "github" && (
+              <GithubGlyph className="guestbook-gh-badge" />
+            )}
+            <span className="guestbook-date">{fmtDate(en.timestamp)}</span>
+            {rootReplies.length > 0 && (
+              <span className="guestbook-reply-count">
+                {rootReplies.length} 回覆
+              </span>
+            )}
+            <button
+              type="button"
+              className="guestbook-reply-btn"
+              onClick={() => openReply(en.id, en.id, en.nick)}
+            >
+              回覆
+            </button>
+          </div>
+          <p className="guestbook-text">{en.text}</p>
+          {replyTarget?.parentId === en.id && renderReplyForm()}
+          {direct.length > 0 && (
+            <div className="guestbook-replies">
+              {direct.map((reply) => renderReply(reply, rootReplies, en.id))}
+            </div>
+          )}
+        </div>
+      </li>
+    );
+  };
+
   return (
     <div className="guestbook">
       <h2 className="guestbook-title">說些什麼吧！</h2>
@@ -164,6 +466,11 @@ export default function Guestbook({ path }: { path: string }) {
             <img src={githubProfile.avatarUrl} alt="" />
             <span>
               以 <strong>{githubProfile.login}</strong> 的身分留言
+              {githubProfile.email && (
+                <em className="guestbook-signed-in-note">
+                  （有回覆會通知你的 GitHub 郵箱）
+                </em>
+              )}
             </span>
             <button
               type="button"
@@ -189,7 +496,12 @@ export default function Guestbook({ path }: { path: string }) {
               />
             </div>
             <div className="guestbook-field">
-              <label htmlFor="gb-mail">郵箱(可選)</label>
+              <label
+                htmlFor="gb-mail"
+                title="有新的回覆時會寄信通知你"
+              >
+                郵箱(可選)
+              </label>
               <input
                 id="gb-mail"
                 type="email"
@@ -252,7 +564,9 @@ export default function Guestbook({ path }: { path: string }) {
             {sending ? "送出中…" : "送出"}
           </button>
         </div>
-        {error && <p className="guestbook-error">{error}</p>}
+        {error && !replyTarget && (
+          <p className="guestbook-error">{error}</p>
+        )}
       </form>
 
       <div className="guestbook-meta-head">
@@ -276,42 +590,7 @@ export default function Guestbook({ path }: { path: string }) {
       </div>
 
       {sorted && sorted.length > 0 ? (
-        <ul className="guestbook-list">
-          {sorted.map((en) => (
-            <li key={en.id} className="guestbook-item">
-              <div className="guestbook-avatar" aria-hidden="true">
-                {en.avatar ? (
-                  <img src={en.avatar} alt="" loading="lazy" />
-                ) : (
-                  <span>{en.nick.slice(0, 1).toUpperCase()}</span>
-                )}
-              </div>
-              <div className="guestbook-body">
-                <div className="guestbook-item-head">
-                  {en.link ? (
-                    <a
-                      className="guestbook-nick"
-                      href={en.link}
-                      target="_blank"
-                      rel="noopener noreferrer nofollow"
-                    >
-                      {en.nick}
-                    </a>
-                  ) : (
-                    <span className="guestbook-nick">{en.nick}</span>
-                  )}
-                  {en.source === "github" && (
-                    <GithubGlyph className="guestbook-gh-badge" />
-                  )}
-                  <span className="guestbook-date">
-                    {fmtDate(en.timestamp)}
-                  </span>
-                </div>
-                <p className="guestbook-text">{en.text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <ul className="guestbook-list">{sorted.map(renderComment)}</ul>
       ) : sorted ? (
         <p className="guestbook-empty">來發留言吧~</p>
       ) : null}

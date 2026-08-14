@@ -15,7 +15,7 @@ The project intentionally avoids UI libraries and CSS-in-JS. Most visual behavio
 | `/`                 | Home profile, hero, navigation cards, GitHub contribution graph                                        |
 | `/about`            | Bio, stats, interests, and music preview                                                               |
 | `/writing`          | Articles (blog.itousouta.me index) + unified thoughts feed from Discord/KV, Threads, and GitHub events |
-| (every page)        | KV-backed guestbook section at the bottom of every page (`/api/guestbook`)                             |
+| (every page)        | KV-backed guestbook section at the bottom of every page (`/api/guestbook`); threaded replies, with Resend reply notifications when the author left an email |
 | `/likes`            | Hub for liked novels, manga, anime, VTubers, and music                                                 |
 | `/likes/[category]` | Category-specific likes grid                                                                           |
 | `/likes/music`      | Spotify top tracks                                                                                     |
