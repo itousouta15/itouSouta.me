@@ -65,10 +65,33 @@ export async function GET(req: NextRequest) {
     };
     if (!user.login || !user.avatar_url) return fail("profile");
 
+    // 回覆通知用的 email（scope 有 user:email 才拿得到）。拿不到不擋登入，
+    // 只是沒留 email 就收不到通知；抓到 primary+verified 的那個地址才用。
+    let email: string | null = null;
+    const emailsRes = await fetch("https://api.github.com/user/emails", {
+      headers: {
+        Authorization: `Bearer ${tokenJson.access_token}`,
+        "User-Agent": "itouSouta.me-guestbook",
+        Accept: "application/vnd.github+json",
+      },
+    });
+    if (emailsRes.ok) {
+      const emails = (await emailsRes.json().catch(() => [])) as {
+        email?: string;
+        primary?: boolean;
+        verified?: boolean;
+      }[];
+      email =
+        emails.find(
+          (e) => e.primary && e.verified && typeof e.email === "string"
+        )?.email ?? null;
+    }
+
     const token = signGithubIdentity({
       login: user.login,
       avatarUrl: user.avatar_url,
       profileUrl: user.html_url ?? `https://github.com/${user.login}`,
+      email,
     });
 
     const res = NextResponse.redirect(

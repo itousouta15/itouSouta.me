@@ -79,7 +79,7 @@ const ENDPOINTS: Endpoint[] = [
   {
     method: "POST",
     path: "/api/guestbook",
-    desc: "送出留言，body {nick, text}。IP rate limit 5/hr，超過回 429。",
+    desc: "送出留言，body {nick, text}。回覆另帶 commentId（頂層留言 id）＋parentId（被回覆者 id）；被回覆者有留 email 會寄通知。IP rate limit 5/hr，超過回 429。",
     curl: 'curl -X POST https://itousouta.me/api/guestbook -H "Content-Type: application/json" -d \'{"nick":"某人","text":"嗨"}\'',
   },
   {
