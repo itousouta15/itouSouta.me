@@ -11,6 +11,8 @@ export interface GithubIdentity {
   login: string;
   avatarUrl: string;
   profileUrl: string;
+  /** 回覆通知用的 email（登入時抓 GitHub 主信箱；沒授權 scope 就沒有）。 */
+  email?: string | null;
 }
 
 function sign(payload: string): string {
@@ -43,6 +45,7 @@ export function verifyGithubIdentity(token: string): GithubIdentity | null {
         typeof data.profileUrl === "string"
           ? data.profileUrl
           : `https://github.com/${data.login}`,
+      email: typeof data.email === "string" ? data.email : null,
     };
   } catch {
     return null;
