@@ -30,8 +30,8 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 | 框架     | Next.js 14（App Router）                        |
 | 語言     | TypeScript                                      |
 | 樣式     | 純 CSS（CSS custom properties）                 |
-| 資料     | Vercel KV、Threads API、GitHub API、Spotify API |
-| 即時資料 | Lanyard API                                     |
+| 資料     | Vercel KV、Threads API、GitHub API              |
+| 即時資料 | Lanyard API、Spotify API                        |
 | 郵件     | Resend（留言板回覆通知信）                      |
 | 離線支援 | Service Worker（`public/sw.js`）                |
 | 部署     | Vercel                                          |
