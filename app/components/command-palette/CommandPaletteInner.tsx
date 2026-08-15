@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { PROJECTS, LIKE_CATEGORIES, LINKS, EXPERIENCE } from "../data";
+import { PROJECTS, LIKE_CATEGORIES, LINKS, EXPERIENCE } from "../../data";
 
 interface SearchItem {
   id: string;

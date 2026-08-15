@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import type { TopTrack } from "../lib/spotify";
-import { useHorizontalWheelScroll } from "../hooks/useHorizontalWheelScroll";
+import type { TopTrack } from "../../lib/spotify";
+import { useHorizontalWheelScroll } from "../../hooks/useHorizontalWheelScroll";
 import LikeCard from "./LikeCard";
 
 export default function MusicSection({ albums }: { albums: TopTrack[] }) {

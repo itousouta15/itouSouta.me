@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { useTheme } from "./ThemeProvider";
-import { useScrollLinkedHorizontalReveal } from "../hooks/useScrollLinkedHorizontalReveal";
-import DecorativeImage from "./DecorativeImage";
+import { useTheme } from "../ThemeProvider";
+import { useScrollLinkedHorizontalReveal } from "../../hooks/useScrollLinkedHorizontalReveal";
+import DecorativeImage from "../DecorativeImage";
 
 export default function GithubContributionCard() {
   const { theme } = useTheme();

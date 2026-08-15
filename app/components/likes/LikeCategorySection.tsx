@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { LikeCategory, Like } from "../data";
-import { useHorizontalWheelScroll } from "../hooks/useHorizontalWheelScroll";
-import { useVtuberLiveStatus } from "../hooks/useVtuberLiveStatus";
-import { sortLikesByRating } from "../lib/sortLikes";
+import { LikeCategory, Like } from "../../data";
+import { useHorizontalWheelScroll } from "../../hooks/useHorizontalWheelScroll";
+import { useVtuberLiveStatus } from "../../hooks/useVtuberLiveStatus";
+import { sortLikesByRating } from "../../lib/sortLikes";
 import LikeCard from "./LikeCard";
 import LikeModalShell from "./LikeModalShell";
 

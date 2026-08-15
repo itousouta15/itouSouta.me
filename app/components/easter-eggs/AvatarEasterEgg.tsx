@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import DecorativeImage from "./DecorativeImage";
+import DecorativeImage from "../DecorativeImage";
 
 const CLICKS_NEEDED = 5;
 const SPIN_MS = 600;

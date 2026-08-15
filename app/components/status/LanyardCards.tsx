@@ -7,8 +7,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { DISCORD_USER_ID } from "../siteConfig";
-import { discordArtThumb } from "../lib/imageThumb";
+import { DISCORD_USER_ID } from "../../siteConfig";
+import { discordArtThumb } from "../../lib/imageThumb";
 import CrossfadeImage from "./CrossfadeImage";
 
 /* ---------------------------------------------------------------------------

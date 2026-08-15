@@ -3,19 +3,22 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import ThemeProvider from "./components/ThemeProvider";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import PageTransition from "./components/PageTransition";
-import DeferredMount from "./components/DeferredMount";
-import SiteLoader from "./components/SiteLoader";
-import CommandPalette from "./components/CommandPalette";
-import GravityModeLoader from "./components/GravityModeLoader";
-import SmoothScroll from "./components/SmoothScroll";
-import { LanyardProvider, NowPlayingProvider } from "./components/LanyardCards";
-import NowPlayingBar from "./components/NowPlayingBar";
-import SeasonTint from "./components/SeasonTint";
-import ServiceWorkerRegistration from "./components/ServiceWorkerRegistration";
-import GuestbookSection from "./components/GuestbookSection";
+import Header from "./components/chrome/Header";
+import Footer from "./components/chrome/Footer";
+import PageTransition from "./components/chrome/PageTransition";
+import DeferredMount from "./components/chrome/DeferredMount";
+import SiteLoader from "./components/chrome/SiteLoader";
+import CommandPalette from "./components/command-palette/CommandPalette";
+import GravityModeLoader from "./components/easter-eggs/GravityModeLoader";
+import SmoothScroll from "./components/chrome/SmoothScroll";
+import {
+  LanyardProvider,
+  NowPlayingProvider,
+} from "./components/status/LanyardCards";
+import NowPlayingBar from "./components/status/NowPlayingBar";
+import SeasonTint from "./components/chrome/SeasonTint";
+import ServiceWorkerRegistration from "./components/chrome/ServiceWorkerRegistration";
+import GuestbookSection from "./components/guestbook/GuestbookSection";
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from "./lib/seo";
 
 export const metadata: Metadata = {

@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Like } from "../data";
-import { StarRating } from "../lib/ratingStars";
+import { Like } from "../../data";
+import { StarRating } from "../../lib/ratingStars";
 
 const CLOSE_MS = 160; // 需與 CSS .is-closing 動畫時長一致
 

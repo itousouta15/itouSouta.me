@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { discordArtThumb } from "../lib/imageThumb";
+import { discordArtThumb } from "../../lib/imageThumb";
 import { useNowPlayingState } from "./LanyardCards";
 import CrossfadeImage from "./CrossfadeImage";
 
