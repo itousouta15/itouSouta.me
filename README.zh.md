@@ -40,7 +40,7 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 
 ## 架構
 
-大部分內容位於 [app/data.ts](app/data.ts)。網站頁面本身盡量維持靜態，再依需要疊上即時資料：
+大部分內容位於 [app/data/](app/data/)，按內容領域拆成多個檔案（`likes.ts`、`projects.ts`、`experience.ts` 等），由 `index.ts` 統一 re-export。網站頁面本身盡量維持靜態，再依需要疊上即時資料：
 
 - `/writing` 整合部落格索引、KV 雜談、Threads 貼文與 GitHub 動態。
 - `/likes/music` 在有憑證時讀取 Spotify 常聽歌曲。

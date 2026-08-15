@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import { MARQUEE } from "../data";
+import { MARQUEE } from "../../data";
 import VisitorCounter from "./VisitorCounter";
 
 const NAV_LINKS = [

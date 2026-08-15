@@ -6,12 +6,12 @@ The VTuber live-status feature powers the live badges and live-first sorting in 
 
 - API route: `app/api/vtuber-live/route.ts`
 - Client hook: `app/hooks/useVtuberLiveStatus.ts`
-- Warmup component: `app/components/VtuberLiveWarmup.tsx`
+- Warmup component: `app/components/likes/VtuberLiveWarmup.tsx`
 - Sorting helper: `app/lib/sortLikes.ts`
 
 ## Data Flow
 
-1. VTuber entries are defined in `app/data.ts`.
+1. VTuber entries are defined in `app/data/likes.ts`.
 2. The client calls `/api/vtuber-live`.
 3. The API checks whether each tracked VTuber is currently streaming.
 4. The response is cached briefly.

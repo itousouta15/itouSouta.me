@@ -11,8 +11,8 @@ import type { ComponentType } from "react";
    prop 傳進 Client Component（build 會直接報錯）。 */
 const loaders = {
   backToTop: () => import("./BackToTopButton"),
-  konami: () => import("./KonamiEasterEgg"),
-  confetti: () => import("./ConfettiBurst"),
+  konami: () => import("../easter-eggs/KonamiEasterEgg"),
+  confetti: () => import("../easter-eggs/ConfettiBurst"),
 } as const;
 
 export default function DeferredMount({

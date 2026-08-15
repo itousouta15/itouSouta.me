@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
-import LikeCategorySection from "../components/LikeCategorySection";
-import MusicSection from "../components/MusicSection";
-import VtuberLiveWarmup from "../components/VtuberLiveWarmup";
+import LikeCategorySection from "../components/likes/LikeCategorySection";
+import MusicSection from "../components/likes/MusicSection";
+import VtuberLiveWarmup from "../components/likes/VtuberLiveWarmup";
 import { LIKE_CATEGORIES } from "../data";
 import { getTopTracks } from "../lib/spotify";
 import { pageMetadata } from "../lib/seo";

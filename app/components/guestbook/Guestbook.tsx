@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import GithubGlyph from "./GithubGlyph";
+import GithubGlyph from "../GithubGlyph";
 
 /* 留言板：KV 自建（/api/guestbook）。原本連部落格共用的 waline 伺服器——那台
    鎖了部落格網域（errno 1001），只能讀不能寫，加上 waline client 在 Next/React

@@ -4,7 +4,7 @@ This document collects implementation notes that are useful when maintaining the
 
 ## App Shape
 
-itouSouta.me is a Next.js 14 App Router project. Public routes live under `app/`, shared UI lives under `app/components/`, data-fetching helpers live under `app/lib/`, and most hand-authored content lives in `app/data.ts`.
+itouSouta.me is a Next.js 14 App Router project. Public routes live under `app/`, shared UI lives under `app/components/` (grouped into feature subfolders — `likes/`, `projects/`, `experience/`, `guestbook/`, `chrome/`, etc. — with genuinely cross-feature components like `ThemeProvider.tsx`, `PageHead.tsx`, and `TileIcon.tsx` staying at the top level), data-fetching helpers live under `app/lib/`, and most hand-authored content lives in `app/data/` (split by domain, re-exported from `app/data/index.ts`).
 
 The project intentionally avoids UI libraries and CSS-in-JS. Most visual behavior is implemented through plain CSS in `app/globals.css`, small client components, and focused hooks.
 
@@ -26,7 +26,7 @@ The project intentionally avoids UI libraries and CSS-in-JS. Most visual behavio
 
 ## Content
 
-Most static content is declared in `app/data.ts`, including roles, liked items, projects, friend links, and fallback thoughts.
+Most static content is declared in `app/data/`, including roles, liked items, projects, friend links, and fallback thoughts.
 
 The live content layers are:
 

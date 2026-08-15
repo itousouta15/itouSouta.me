@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
-import ThoughtsList from "../components/ThoughtsList";
+import ThoughtsList from "../components/thoughts/ThoughtsList";
 import { THOUGHTS } from "../data";
 import { getBlogPosts } from "../lib/blogFeed";
 import { getMergedThoughts } from "../lib/mergedThoughts";

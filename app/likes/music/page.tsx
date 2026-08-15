@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import PageHead from "../../components/PageHead";
-import LikeFilterGrid from "../../components/LikeFilterGrid";
+import LikeFilterGrid from "../../components/likes/LikeFilterGrid";
 import { getTopTracks } from "../../lib/spotify";
 import type { Like } from "../../data";
 import { pageMetadata } from "../../lib/seo";

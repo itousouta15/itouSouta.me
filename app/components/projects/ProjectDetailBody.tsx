@@ -1,6 +1,6 @@
-import type { Project } from "../data";
-import type { GithubRepoInfo } from "../lib/github";
-import { projectCoverThumb } from "../lib/imageThumb";
+import type { Project } from "../../data";
+import type { GithubRepoInfo } from "../../lib/github";
+import { projectCoverThumb } from "../../lib/imageThumb";
 
 export default function ProjectDetailBody({
   project,

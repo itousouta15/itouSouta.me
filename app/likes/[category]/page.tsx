@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import PageHead from "../../components/PageHead";
-import LikeFilterGrid from "../../components/LikeFilterGrid";
+import LikeFilterGrid from "../../components/likes/LikeFilterGrid";
 import { LIKE_CATEGORIES } from "../../data";
 import { pageMetadata } from "../../lib/seo";
 
