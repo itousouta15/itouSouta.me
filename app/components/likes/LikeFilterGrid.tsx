@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { Like } from "../data";
-import { sortLikesByRating } from "../lib/sortLikes";
-import { useVtuberLiveStatus } from "../hooks/useVtuberLiveStatus";
+import type { Like } from "../../data";
+import { sortLikesByRating } from "../../lib/sortLikes";
+import { useVtuberLiveStatus } from "../../hooks/useVtuberLiveStatus";
 import LikeCard from "./LikeCard";
 import LikeModalShell from "./LikeModalShell";
 

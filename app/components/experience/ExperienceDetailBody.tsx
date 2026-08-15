@@ -1,5 +1,5 @@
-import type { ExperienceItem } from "../data";
-import { experienceImageThumb } from "../lib/imageThumb";
+import type { ExperienceItem } from "../../data";
+import { experienceImageThumb } from "../../lib/imageThumb";
 
 export default function ExperienceDetailBody({
   item,

@@ -5,12 +5,15 @@ import { ROLES, TILE_COLS } from "./data";
 import TileIcon from "./components/TileIcon";
 import { TILE_ICON_META } from "./components/tileIconMeta";
 import GithubGlyph from "./components/GithubGlyph";
-import GithubContributionCard from "./components/GithubContributionCard";
-import { ProfileStatus, ProfileStatusDot } from "./components/LanyardCards";
-import AvatarEasterEgg from "./components/AvatarEasterEgg";
-import HeroFace from "./components/HeroFace";
-import BadgeShape from "./components/BadgeShape";
-import NameRotator from "./components/NameRotator";
+import GithubContributionCard from "./components/home/GithubContributionCard";
+import {
+  ProfileStatus,
+  ProfileStatusDot,
+} from "./components/status/LanyardCards";
+import AvatarEasterEgg from "./components/easter-eggs/AvatarEasterEgg";
+import HeroFace from "./components/home/HeroFace";
+import BadgeShape from "./components/home/BadgeShape";
+import NameRotator from "./components/home/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
 
 /* 首頁之前沒有自己的 metadata，整頁靠繼承 layout 的 default title「itouSouta.me」

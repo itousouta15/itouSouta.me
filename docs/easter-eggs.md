@@ -4,7 +4,7 @@ The site has a few small interactions that are intentionally playful but isolate
 
 ## Avatar Click
 
-Component: `app/components/AvatarEasterEgg.tsx`
+Component: `app/components/easter-eggs/AvatarEasterEgg.tsx`
 
 Clicking the profile avatar five times in a short window spins it and opens the Discord invite in a new tab.
 
@@ -12,7 +12,7 @@ The click streak resets after a short timeout, so normal profile-card interactio
 
 ## Hero Face
 
-Component: `app/components/HeroFace.tsx`
+Component: `app/components/home/HeroFace.tsx`
 
 The ASCII hero face reacts to pointer movement, can wink on click, and changes expression when it scrolls past the top threshold.
 
@@ -20,13 +20,13 @@ The motion is intentionally lightweight and uses `requestAnimationFrame` throttl
 
 ## Name Decode
 
-Component: `app/components/NameRotator.tsx`
+Component: `app/components/home/NameRotator.tsx`
 
 The display name cycles through multiple names on an 8s CSS keyframe. The component ships no JavaScript at all — there is no hover interaction.
 
 ## Command Palette Inputs
 
-Component: `app/components/CommandPaletteInner.tsx`
+Component: `app/components/command-palette/CommandPaletteInner.tsx`
 
 The command palette supports normal page/project search, plus hidden inputs:
 
@@ -35,7 +35,7 @@ The command palette supports normal page/project search, plus hidden inputs:
 
 ## Gravity Mode
 
-Component: `app/components/GravityMode.tsx`
+Component: `app/components/easter-eggs/GravityMode.tsx`
 
 Gravity Mode turns visible page elements into simple 2D bodies. They fall, collide with the viewport, stack against each other, and can be dragged and thrown.
 

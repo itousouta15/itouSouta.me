@@ -1,6 +1,6 @@
-import { Like } from "../data";
-import { likeThumb, likeCircleThumb } from "../lib/imageThumb";
-import type { LiveInfo } from "../hooks/useVtuberLiveStatus";
+import { Like } from "../../data";
+import { likeThumb, likeCircleThumb } from "../../lib/imageThumb";
+import type { LiveInfo } from "../../hooks/useVtuberLiveStatus";
 
 export default function LikeCard({
   l,

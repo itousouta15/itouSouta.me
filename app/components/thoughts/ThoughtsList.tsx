@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import ThoughtReaction from "./ThoughtReaction";
-import type { MergedThoughtItem } from "../lib/mergedThoughts";
-import type { Thought } from "../data";
+import type { MergedThoughtItem } from "../../lib/mergedThoughts";
+import type { Thought } from "../../data";
 
 const PAGE_SIZE = 8;
 

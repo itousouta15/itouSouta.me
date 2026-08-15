@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { Project } from "../data";
-import type { GithubRepoInfo } from "../lib/github";
-import TileIcon from "./TileIcon";
+import type { Project } from "../../data";
+import type { GithubRepoInfo } from "../../lib/github";
+import TileIcon from "../TileIcon";
 import ProjectModalShell from "./ProjectModalShell";
 import ProjectDetailBody from "./ProjectDetailBody";
-import { projectCoverThumb } from "../lib/imageThumb";
+import { projectCoverThumb } from "../../lib/imageThumb";
 
 export default function ProjectFilterGrid({
   items,

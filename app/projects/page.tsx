@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import PageHead from "../components/PageHead";
-import ProjectFilterGrid from "../components/ProjectFilterGrid";
+import ProjectFilterGrid from "../components/projects/ProjectFilterGrid";
 import { PROJECTS } from "../data";
 import { getAllRepoInfo } from "../lib/github";
 import { pageMetadata } from "../lib/seo";

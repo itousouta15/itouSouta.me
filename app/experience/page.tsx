@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import PageHead from "../components/PageHead";
-import ExperienceTimeline from "../components/ExperienceTimeline";
+import ExperienceTimeline from "../components/experience/ExperienceTimeline";
 import { EXPERIENCE, ExperienceItem } from "../data";
 import { pageMetadata } from "../lib/seo";
 

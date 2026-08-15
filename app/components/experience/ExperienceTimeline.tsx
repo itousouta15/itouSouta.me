@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ExperienceItem } from "../data";
-import ProjectModalShell from "./ProjectModalShell";
+import { ExperienceItem } from "../../data";
+import ProjectModalShell from "../projects/ProjectModalShell";
 import ExperienceDetailBody from "./ExperienceDetailBody";
 
 interface Props {

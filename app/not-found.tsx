@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import NotFoundCode from "./components/NotFoundCode";
+import NotFoundCode from "./components/chrome/NotFoundCode";
 
 const description = "這個頁面不知道飛去哪裡了 (´；ω；`)";
 
