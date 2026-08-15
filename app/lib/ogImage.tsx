@@ -1,4 +1,4 @@
-/* 這個檔案的版面之後，**十個 opengraph-image.tsx 開頭那行日期也要一起改**。
+/* 這個檔案的版面之後，**九個 opengraph-image.tsx 開頭那行日期也要一起改**。
 
    踩過一次：底圖跟頭像都做好、也部署上去了，線上 /opengraph-image 抓下來確實是
    新圖，但 Discord 貼連結出來還是舊的純色卡。原因是 HTML 裡的網址長這樣
@@ -9,11 +9,11 @@
    自己的原始碼**」算的 contenthash——不含它 import 進來的東西
    （見 next/dist/build/webpack/loaders/next-metadata-image-loader.js 的
    `interpolateName(this, "[contenthash]", { context, content })`，content 就是該
-   檔案的原始碼）。所以只動這裡的話，十個路由檔的雜湊一個都不會變，網址原封不動；
+   檔案的原始碼）。所以只動這裡的話，九個路由檔的雜湊一個都不會變，網址原封不動；
    偏偏 OG 圖的回應標頭是 `immutable, max-age=31536000`，各平台與 CDN 就理所當然
    地永遠不再重抓。
 
-   結論：版面改動不會自己傳播到網址上，得手動讓那十個檔案的位元組變一下。 */
+   結論：版面改動不會自己傳播到網址上，得手動讓那九個檔案的位元組變一下。 */
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -41,20 +41,30 @@ const BLUE = "#b0bdf7";
    這是全檔唯一的色票重複——改 BG 記得兩邊一起改，不然漸層會偏色。 */
 const BG_RGB = "27, 30, 35"; // === BG
 
-/* 底圖與頭像用 data URI 塞進 satori。三件事值得先講清楚：
+/* 底圖與頭像用 data URI 塞進 satori。幾件事值得先講清楚：
 
-   1. **檔名是 .webp，但 MIME 寫 image/png——這是對的，不是筆誤。** brand/ 底下
-      那幾張其實是不折不扣的 PNG（開頭就是 89 50 4E 47），只是副檔名寫錯了。
-      satori 判斷格式看的是 magic bytes 不是副檔名，而它支援的清單是
+   1. **avatar.webp 檔名是 .webp，但 MIME 寫 image/png——這是對的，不是筆誤。**
+      brand/ 底下這張其實是不折不扣的 PNG（開頭就是 89 50 4E 47），只是副檔名寫
+      錯了。satori 判斷格式看的是 magic bytes 不是副檔名，而它支援的清單是
       [png, apng, jpeg, gif, svg]——真的是 WebP 反而會丟 Unsupported image type。
-      所以宣告成 image/png 才是誠實的。想換圖的話請先確認新檔案真的是 PNG/JPEG。
 
-   2. **不能用 "/assets/brand/banner.webp" 這種相對路徑。** satori 在沒有 window
-      的環境會直接丟 "Image source must be an absolute URL"，只吃 data URI、
-      絕對網址或 buffer。而 build 當下站台還沒起來，也沒有 http 可以抓自己。
+   2. **banner-og.png 是獨立於 banner.webp 的專用檔，不要共用。** 首頁等處的
+      banner.webp 被「首頁圖片最佳化」那次 commit 真的重壓成 WebP 了（不再是
+      (1) 那種偽裝），satori 完全解不了，此檔案曾經因此整個背景消失、圖層跟著
+      一起不見（見下方 renderOg 裡兩個 `{banner && …}` 都靠同一個 loadBrandPng
+      結果判斷）。banner-og.png 是從重壓縮之前的版本救回來的，誠實的 PNG，
+      專門給這支 renderer 用；網站其他地方要換圖不會動到它，但如果連這張都要
+      換，記得先用 `file` 確認新檔案真的是 PNG/JPEG，不是 WebP。
 
-   3. **讀不到就回 null、不 throw。** 這段在 next build 期間執行，throw 會直接讓
-      部署失敗——為了一張分享圖不值得，跟 ogFont.ts 是同一套哲學。 */
+   3. **不能用 "/assets/brand/banner-og.png" 這種相對路徑。** satori 在沒有
+      window 的環境會直接丟 "Image source must be an absolute URL"，只吃
+      data URI、絕對網址或 buffer。而 build 當下站台還沒起來，也沒有 http 可以
+      抓自己。
+
+   4. **讀不到就回 null、不 throw。** 這段在 next build 期間執行，throw 會直接
+      讓部署失敗——為了一張分享圖不值得，跟 ogFont.ts 是同一套哲學。但這只擋得住
+      「檔案讀不到」，擋不住「檔案讀得到但 satori 解不了格式」——那種情況目前只能
+      靠人肉盯著產出的圖看，這正是 (2) 那次事故的成因。 */
 const brandCache = new Map<string, string | null>();
 
 function loadBrandPng(file: string): string | null {
@@ -90,7 +100,7 @@ export async function renderOg({
   const font = await loadNotoSerifTC(`${title}${desc ?? ""}`);
   /* 圖層刻意放在 font 守衛之外：banner 跟頭像不需要任何字符，字型抓失敗那種
      只剩 kicker 的退化版面反而最需要靠圖像撐住識別度。 */
-  const banner = loadBrandPng("banner.webp");
+  const banner = loadBrandPng("banner-og.png");
   const avatar = loadBrandPng("avatar.webp");
 
   return new ImageResponse(
@@ -177,76 +187,90 @@ export async function renderOg({
           fontFamily: font ? "Noto Serif TC" : "sans-serif",
         }}
       >
-        {/* 上半列用 flex: 1 吃掉頁尾以上的全部高度（486 − 頁尾 36 = 450px），
-            頭像才有東西可以置中。實測產出的 PNG：頭像落在 y 195–394、中心 294.5，
-            比整張卡的幾何中心 315 高 20px——**它是對著「頁尾以上的內容區」置中，
-            不是對著整張卡**，頁尾本來就是獨立的一條帶狀。20px 不到高度的 3.3%，
-            看起來就是置中。
-            文字欄另外用 alignSelf: flex-start 釘回頂端，維持原本靠上的排版不變。 */}
+        {/* 文字欄現在自己佔滿整列寬度——頭像挪到頁尾那排的右側後，這裡不用再
+            讓出右邊的空間給它，長標題也因此有更多寬度可以撐，斷行機會變少。 */}
         <div
-          style={{ display: "flex", flex: 1, alignItems: "center", gap: 48 }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            minWidth: 0,
+          }}
         >
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              flex: 1,
-              // 讓文字欄該縮就縮，而不是把頭像擠出畫面外
-              minWidth: 0,
-              alignSelf: "flex-start",
+              fontSize: 26,
+              letterSpacing: "0.22em",
+              color: BLUE,
+              fontFamily: "sans-serif",
             }}
           >
+            {kicker}
+          </div>
+          {/* 字型抓失敗時中文會變豆腐，寧可只留 kicker 與網域 */}
+          {font && (
             <div
               style={{
-                fontSize: 26,
-                letterSpacing: "0.22em",
-                color: BLUE,
+                fontSize: 76,
+                lineHeight: 1.3,
+                color: TX,
+                marginTop: 28,
+                // satori 沒有多行截斷，長標題自己斷行即可
+                display: "flex",
+              }}
+            >
+              {title}
+            </div>
+          )}
+          {font && desc && (
+            <div
+              style={{
+                fontSize: 30,
+                lineHeight: 1.6,
+                color: MUTE,
+                marginTop: 24,
+                display: "flex",
+              }}
+            >
+              {desc}
+            </div>
+          )}
+        </div>
+
+        {/* 頁尾這排改用 justifyContent: space-between 把左邊的 bar/站名跟右邊的
+            頭像推開，alignItems: flex-end 讓兩邊底線切齊——頭像因此貼著右下角，
+            底邊跟站名文字的底線同高，而不是卡在行高中央。這排原本右側另外配了
+            一根寬度跟頭像同步的裝飾橫槓補位，現在頭像自己就在這裡了，橫槓拿掉。 */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <div style={{ width: 64, height: 6, background: BLUE }} />
+            <div
+              style={{
+                fontSize: 30,
+                color: TX,
                 fontFamily: "sans-serif",
               }}
             >
-              {kicker}
+              itousouta.me
             </div>
-            {/* 字型抓失敗時中文會變豆腐，寧可只留 kicker 與網域 */}
-            {font && (
-              <div
-                style={{
-                  fontSize: 76,
-                  lineHeight: 1.3,
-                  color: TX,
-                  marginTop: 28,
-                  // satori 沒有多行截斷，長標題自己斷行即可
-                  display: "flex",
-                }}
-              >
-                {title}
-              </div>
-            )}
-            {font && desc && (
-              <div
-                style={{
-                  fontSize: 30,
-                  lineHeight: 1.6,
-                  color: MUTE,
-                  marginTop: 24,
-                  display: "flex",
-                }}
-              >
-                {desc}
-              </div>
-            )}
           </div>
 
           {/* 外框用 padding ring（外層 div 上底色）而不是 border，免得去賭 satori
-              的 box-sizing 預設值。順帶一個好處：內圈 176px 幾乎等於頭像原生的
-              173px，等於不用上採樣，不會糊。站上的 .avatar 是 98px 配 7px 邊框，
-              這裡等比放大成 200px 配 12px 環。 */}
+              的 box-sizing 預設值。248px 配 14px 環，內圈 220px 會比頭像原生的
+              173px 略為上採樣，但換來的存在感划算。 */}
           {avatar && (
             <div
               style={{
                 display: "flex",
-                width: 200,
-                height: 200,
-                borderRadius: 100,
+                width: 248,
+                height: 248,
+                borderRadius: 124,
                 background: PANEL,
                 alignItems: "center",
                 justifyContent: "center",
@@ -256,39 +280,20 @@ export async function renderOg({
               <img
                 src={avatar}
                 alt=""
-                width={176}
-                height={176}
+                width={220}
+                height={220}
                 style={{
-                  width: 176,
-                  height: 176,
-                  borderRadius: 88,
+                  width: 220,
+                  height: 220,
+                  borderRadius: 110,
                   objectFit: "cover",
+                  // 原圖飽和度偏高，跟卡片其餘色票（都偏灰調）擺一起太搶眼；
+                  // satori 有實作 filter 的 saturate()，壓到 70% 讓它融進去一點
+                  filter: "saturate(0.7)",
                 }}
               />
             </div>
           )}
-        </div>
-
-        {/* 實測：右邊那根 200px 橫槓落在 x 920–1119，跟頭像**完全同一欄**（頭像
-            也是 920–1119）。這是頭像寬度剛好等於橫槓寬度換來的，動任何一邊之前
-            先想一下會不會把這個對齊弄掉。
-            另外提醒：這根橫槓現在壓在 banner 上，量到的周圍背景是 rgb(38,43,50)，
-            比它自己的 #24262b 還亮——在純色底上它本來是「比背景亮一點」的細線，
-            現在變成暗一點點，等於看不見了。要救就把 background 換成半透明白，
-            例如 rgba(232,235,242,0.14)，純色區跟 banner 上都讀得到。 */}
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div style={{ width: 64, height: 6, background: BLUE }} />
-          <div
-            style={{
-              fontSize: 30,
-              color: TX,
-              fontFamily: "sans-serif",
-            }}
-          >
-            itousouta.me
-          </div>
-          <div style={{ flex: 1 }} />
-          <div style={{ width: 200, height: 6, background: PANEL }} />
         </div>
       </div>
     </div>,
