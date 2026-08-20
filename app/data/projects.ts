@@ -41,7 +41,7 @@ export const PROJECTS: Project[] = [
     desc: "中電喵：中電會 Discord Bot",
     longDesc:
       "用 Python + flask 打造的中電會 Discord Bot「中電喵」，負責會務自動化：把 GitHub issues 同步到 Notion、串接會內各項服務的入口，是 dc.scaict.org 社群日常運作的基礎設施。",
-    tags: ["Python", "flask"],
+    tags: ["Python", "flask", "SCAICT"],
     icon: "scaict",
     href: "https://github.com/SCAICT/SCAICT-uwu",
     cover:
@@ -70,11 +70,25 @@ export const PROJECTS: Project[] = [
     desc: "中電會官方網站",
     longDesc:
       "中電會官方網站，由第三屆成員共同建立。純 HTML / CSS / JavaScript 手刻、零框架、可直接靜態部署；資料與前端分離（內容放獨立的 website-data repo），靠 CI 自動部屬，改資料不用碰程式。",
-    tags: ["HTML", "CSS", "JavaScript"],
+    tags: ["HTML", "CSS", "JavaScript", "SCAICT"],
     icon: "scaict",
     href: "https://github.com/SCAICT/SCAICT.github.io",
     cover: "/assets/projects/SCAICT.webp",
     siteUrl: "https://scaict.github.io",
+  },
+  {
+    slug: "https://west.nchusdsc.org/",
+    kicker: "WEB",
+    color: "blue",
+    title: "興大二村 | 宿舍服務快速入口",
+    desc: "興大二村宿舍服務快速入口",
+    longDesc:
+      "興大二村宿舍服務快速入口網站，提供宿舍公告、報修、借用、繳費等服務的快速連結，方便學生使用。",
+    tags: ["Astro", "TypeScript"],
+    icon: "astro",
+    href: "https://gitlab.com/nchu-sdsc/west-link-tree",
+    cover: "/assets/projects/NCHU.webp",
+    siteUrl: "https://west.nchusdsc.org/",
   },
   {
     slug: "itousouta.me",
@@ -166,6 +180,21 @@ export const PROJECTS: Project[] = [
     cover: "/assets/projects/OJ.webp",
   },
   {
+    slug: "itouOJ 收件程式",
+    kicker: "TOOL",
+    color: "blue",
+    title: "itouOJ 收件程式",
+    desc: "itouOJ 的收件程式，負責在離線測試環境接收使用者提交的程式碼並送到評測引擎",
+    why: "判題系統的評測引擎通常跑在隔離的環境裡，無法直接接收使用者提交的程式碼。收件程式負責把使用者提交的程式碼從網路傳到評測引擎所在的隔離環境，確保評測流程順暢。",
+    longDesc:
+      "itouOJ 的收件程式，負責在離線測試環境接收使用者提交的程式碼並送到評測引擎。此程式是判題系統的重要組成部分，確保使用者的程式碼能在安全的環境中被評估。",
+    releaseTimeline: true,
+    tags: ["C#", "TypeScript", "itou 系列"],
+    icon: "C#",
+    href: "https://github.com/itousouta15/itouOJ",
+    cover: "/assets/projects/itouOJ.webp",
+  },
+  {
     slug: "itouMD",
     kicker: "APP",
     color: "blue",
@@ -197,6 +226,19 @@ export const PROJECTS: Project[] = [
     cover: "/assets/projects/itouQR.webp",
   },
   {
+    slug: "SCAICT 證書查驗系統",
+    kicker: "WEB",
+    color: "blue",
+    title: "SCAICT 證書查驗系統",
+    desc: "一個用於驗證 SCAICT 所核發證書真偽的網頁系統",
+    why: "為使 SCIACT 所核發之各類證書、證明具備唯一性、可追溯性與可查驗性，特別開發一套證書查驗系統，讓使用者能夠透過網頁輸入證書編號或掃描 QR Code 來驗證證書的真偽。",
+    tags: ["Vite", "React","SCAICT"],
+    icon: "scaict",
+    href: "https://github.com/SCAICT",
+    cover: "/assets/projects/SCAICTLG.webp",
+    siteUrl: "https://scaict.org",
+  },
+  {
     slug: "115-summer-camp",
     kicker: "WEB",
     color: "blue",
@@ -205,7 +247,7 @@ export const PROJECTS: Project[] = [
     why: "暑訓是 SCAICT 每年的大事，報名資訊、課程表、場地資訊都需要一個能直接丟給大家的入口。",
     longDesc:
       "SCAICT 115 年暑訓的官方活動網站，用 Vite + React 打造的 landing page，部署在 sc.scaict.org，repo 內含 GitLab CI / 部署設定。",
-    tags: ["Vite", "React"],
+    tags: ["Vite", "React","SCAICT"],
     icon: "scaict",
     href: "https://github.com/SCAICT/115-summer-camp",
     cover: "/assets/projects/SCAICTsc.webp",
@@ -219,7 +261,7 @@ export const PROJECTS: Project[] = [
     desc: "SCIST x SCAICT 2026 寒訓官網",
     longDesc:
       "SCIST x SCAICT 2026 聯合寒訓官方網站，Next.js + React 打造，部署在 scist.camp，與 SCIST 夥伴協作的專案。",
-    tags: ["Next.js", "React"],
+    tags: ["Next.js", "React","SCAICT"],
     icon: "scaict",
     href: "https://github.com/scist-tw/WinterCamp2026",
     cover: "/assets/projects/SCIST.webp",
