@@ -1,6 +1,7 @@
 import type { Project } from "../../data";
 import type { GithubReleaseEntry, GithubRepoInfo } from "../../lib/github";
 import { projectCoverThumb } from "../../lib/imageThumb";
+import { sourceHostLabel } from "../../lib/repoHost";
 
 export default function ProjectDetailBody({
   project,
@@ -60,7 +61,8 @@ export default function ProjectDetailBody({
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}
         >
-          GitHub <span className="btn-arrow dark">→</span>
+          {sourceHostLabel(project.href)}{" "}
+          <span className="btn-arrow dark">→</span>
         </a>
         {project.siteUrl && (
           <a
