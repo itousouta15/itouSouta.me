@@ -1,9 +1,3 @@
-export interface ProjectTimelineEntry {
-  version: string;
-  date: string;
-  note?: string;
-}
-
 export interface Project {
   slug: string;
   kicker: string;
@@ -19,25 +13,9 @@ export interface Project {
   why?: string;
   difficulties?: string;
   demoUrl?: string;
-  timeline?: ProjectTimelineEntry[];
+  releaseTimeline?: boolean;
 }
 
-/* 選填欄位的寫法（跑 npm run dev 開 /api/content-report 看誰還沒填）。
-   這四個欄位 ProjectDetailBody 已經全部有渲染路徑，填了就會出現在專案的
-   modal 裡，不需要動任何程式碼：
-
-     why          「為什麼做」。2–3 句，講當初的動機或要解決什麼問題。
-                  訪客決定要不要點進去看，讀的就是這一欄——優先填滿全部 16 個。
-     longDesc     「專案介紹」。一段，講它實際做什麼、怎麼運作。
-     difficulties 「遇到的困難」。一個具體的問題 + 你怎麼解的。
-                  沒有真的故事就別填，寫成通用感想反而扣分。
-     timeline      版本紀錄，[{ version, date, note? }]。
-                  只給真的有版本演進的專案，一次性的黑客松作品不用硬套。
-
-   例：
-     why: "學校附近的公車 App 都要點五層才看得到下一班，通勤時根本來不及。",
-     timeline: [{ version: "v1.0", date: "2025-08", note: "第一版上線" }],
-*/
 export const PROJECTS: Project[] = [
   {
     slug: "yetanotherbusapp",
@@ -49,43 +27,7 @@ export const PROJECTS: Project[] = [
     longDesc:
       "用 Flutter 打造的公車動態查詢 App，支援 Android / iOS 跨平台，提供路線、站牌與到站動態查詢，介面以現代化為目標重新設計",
     tags: ["Flutter", "Dart"],
-    timeline: [
-      {
-        version: "v0.2.0",
-        date: "2026-05",
-        note: "初期版本：建立公車動態查詢與基礎介面",
-      },
-      {
-        version: "v0.2.2",
-        date: "2026-05",
-        note: "地圖功能修正與查詢體驗改善",
-      },
-      {
-        version: "v0.3.0",
-        date: "2026-05",
-        note: "功能迭代：完善公車資訊與跨平台支援",
-      },
-      {
-        version: "v0.3.3",
-        date: "2026-05",
-        note: "介面與內容持續優化",
-      },
-      {
-        version: "v0.3.4",
-        date: "2026-06",
-        note: "整理介面文字與使用體驗",
-      },
-      {
-        version: "v0.3.5",
-        date: "2026-06",
-        note: "穩定性修正與功能調整",
-      },
-      {
-        version: "v0.3.6",
-        date: "2026-07",
-        note: "更新機制優化，改善 Web 版本體驗",
-      },
-    ],
+    releaseTimeline: true,
     icon: "flutter",
     href: "https://github.com/AvianJay/yetanotherbusapp",
     cover: "/assets/projects/YABus.webp",
@@ -201,28 +143,6 @@ export const PROJECTS: Project[] = [
       "前後端用 Next.js 一體開發的線上判題系統（oj.itousouta.me）。評測引擎依語言分兩條路：C / C++ / Python / JavaScript 走自架的 sandbox-runner（Linux namespaces + cgroup v2 + seccomp-bpf 從零刻的沙箱），Java 暫時繼續走 Piston。",
     difficulties:
       "判題系統最難的不是題目與前端，是「安全地把不可信的使用者程式碼關起來跑」。原本用的 Piston 沙箱只管 CPU / 記憶體 / 時間與檔案系統範圍，使用者程式碼還是能呼叫子程序——所以決定自己刻一套 sandbox-runner，把 namespace 隔離、cgroup v2 資源限制跟 seccomp-bpf syscall 白名單全部自己掌控。",
-    timeline: [
-      {
-        version: "v1.0.0",
-        date: "2026-07-28",
-        note: "首版上線",
-      },
-      {
-        version: "v1.1.0",
-        date: "2026-07-28",
-        note: "功能迭代",
-      },
-      {
-        version: "v1.2.0",
-        date: "2026-07-28",
-        note: "評測引擎調整",
-      },
-      {
-        version: "v1.2.13",
-        date: "2026-07-29",
-        note: "沙箱正式取代 Piston 成為主力",
-      },
-    ],
     tags: ["Next.js", "TypeScript", "itou 系列"],
     icon: "nextjs",
     href: "https://github.com/itousouta15/itouOJ",
@@ -255,28 +175,7 @@ export const PROJECTS: Project[] = [
       "用 Flutter 打造的行動裝置 Markdown 檢視器與編輯器，深度整合 HackMD，含完整的 CI 與 Release 發布流程，是 itou 系列裡少數有正式版本號演進的專案。",
     difficulties:
       "行動裝置上要同時顧好渲染效能與編輯體驗：Markdown 的即時渲染、長文件捲動的順暢度、跟 HackMD 的內容整合，每一塊都要在手機硬體上重新驗證。",
-    timeline: [
-      {
-        version: "v1.0.1",
-        date: "2026-08",
-        note: "初版：Markdown 檢視器",
-      },
-      {
-        version: "v1.1.0",
-        date: "2026-08",
-        note: "功能迭代",
-      },
-      {
-        version: "v1.2.0",
-        date: "2026-08",
-        note: "整合 HackMD",
-      },
-      {
-        version: "v1.2.2",
-        date: "2026-08",
-        note: "編輯體驗強化",
-      },
-    ],
+    releaseTimeline: true,
     tags: ["Flutter", "Dart", "itou 系列"],
     icon: "flutter",
     href: "https://github.com/itousouta15/itouMD",

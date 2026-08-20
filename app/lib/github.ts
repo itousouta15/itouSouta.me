@@ -67,6 +67,120 @@ export async function getAllRepoInfo(
   return Object.fromEntries(entries);
 }
 
+export interface GithubReleaseEntry {
+  version: string;
+  date: string;
+  note?: string;
+}
+
+// Release name 裡版本號後面常接 "— 說明文字"（em dash／en dash／連字號皆可），
+// 例如 "itouOJ 收件程式 v1.2.0 — 瀏覽器登入、精靈式流程、登出"，把後半段拆出來當 note。
+const RELEASE_NOTE_SEPARATOR = /\s+[—–-]\s+/;
+
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // [text](url) -> text
+    .replace(/[*_`]{1,3}([^*_`]+)[*_`]{1,3}/g, "$1") // **bold** / *em* / `code`
+    .trim();
+}
+
+/**
+ * 抓 release body 標題／條列前的第一段當候選摘要——很多 release 習慣先寫一句
+ * 「這一版修正了什麼」再接 "## 重點" 的細節條列，那句話本身就是現成的摘要。
+ * 如果 body 一開頭就是標題或條列（沒有這種引言），代表沒東西可摘要，回傳 undefined。
+ */
+function extractIntroParagraph(
+  body: string | null | undefined
+): string | undefined {
+  if (!body) return undefined;
+  const trimmed = body.trimStart();
+  if (/^(#{1,6}\s|[-*]\s)/.test(trimmed)) return undefined;
+
+  // 只取第一段：碰到空行或標題／條列就停，避免把後面不相干的段落黏在一起
+  const para = trimmed.split(/\r?\n\s*\r?\n|\r?\n\s*(?:#{1,6}\s|[-*]\s)/)[0];
+  const cleaned = stripMarkdown(para).replace(/\s+/g, " ").trim();
+  return cleaned || undefined;
+}
+
+/** 優先切在第一個句尾標點，其次逗號類標點，讓摘要維持一句話而不是硬切斷字。 */
+function shortenSummary(text: string, maxLength = 40): string {
+  const sentenceEnd = text.search(/[。！？]/);
+  if (sentenceEnd !== -1 && sentenceEnd <= maxLength) {
+    return text.slice(0, sentenceEnd + 1);
+  }
+  const clauseEnd = text.search(/[，、：；]/);
+  if (clauseEnd !== -1 && clauseEnd <= maxLength) {
+    return text.slice(0, clauseEnd);
+  }
+  return text.length > maxLength ? `${text.slice(0, maxLength - 1)}...` : text;
+}
+
+export async function getReleases(
+  owner: string,
+  repo: string
+): Promise<GithubReleaseEntry[]> {
+  const res = await fetch(
+    `${API_BASE}/repos/${owner}/${repo}/releases?per_page=100`,
+    {
+      headers: authHeaders(),
+      next: { revalidate: 3600 },
+    }
+  );
+  if (!res.ok) return [];
+  const json: any[] = await res.json();
+  const published = json.filter((r) => !r.draft && r.published_at);
+
+  // 有些 repo 的每篇 release 都固定貼一段專案簡介再接當次改動——那段簡介逐字重複，
+  // 不是「這一版做了什麼」。抓出所有候選引言，出現一次以上的視為樣板，不當摘要用。
+  const intros = published.map((r) => extractIntroParagraph(r.body));
+  const introCounts = new Map<string, number>();
+  for (const intro of intros) {
+    if (intro) introCounts.set(intro, (introCounts.get(intro) ?? 0) + 1);
+  }
+
+  const entries = published.map((r, i): GithubReleaseEntry => {
+    const name: string = r.name?.trim() || r.tag_name;
+    const [, ...rest] = name.split(RELEASE_NOTE_SEPARATOR);
+    const intro = intros[i];
+    const note =
+      rest.length > 0
+        ? rest.join(" — ")
+        : intro && introCounts.get(intro) === 1
+          ? shortenSummary(intro)
+          : undefined;
+    return {
+      version: r.tag_name,
+      date: r.published_at.slice(0, 10),
+      note,
+    };
+  });
+
+  // GitHub 回傳新到舊，timeline 要照時間正序（舊到新）顯示
+  return entries.reverse();
+}
+
+/**
+ * Release timeline for a whole batch of projects, keyed by slug. 只查
+ * `releaseTimeline: true` 的專案——同一個 repo 可能掛著好幾個子專案的
+ * href，沒有明確 opt-in 就抓全部的話，release 會誤植到不相干的卡片上。
+ */
+export async function getAllReleases(
+  projects: { slug: string; href: string; releaseTimeline?: boolean }[]
+): Promise<Record<string, GithubReleaseEntry[]>> {
+  const entries = await Promise.all(
+    projects
+      .filter((p) => p.releaseTimeline)
+      .map(async (p) => {
+        const ref = parseGithubRepo(p.href);
+        const releases = ref
+          ? await getReleases(ref.owner, ref.repo).catch(() => [])
+          : [];
+        return [p.slug, releases] as const;
+      })
+  );
+  return Object.fromEntries(entries);
+}
+
 export interface GithubEvent {
   id: string;
   type: string;

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Project } from "../../data";
-import type { GithubRepoInfo } from "../../lib/github";
+import type { GithubReleaseEntry, GithubRepoInfo } from "../../lib/github";
 import TileIcon from "../TileIcon";
 import ProjectModalShell from "./ProjectModalShell";
 import ProjectDetailBody from "./ProjectDetailBody";
@@ -12,9 +12,11 @@ import { projectCoverThumb } from "../../lib/imageThumb";
 export default function ProjectFilterGrid({
   items,
   repoInfoBySlug,
+  releasesBySlug,
 }: {
   items: Project[];
   repoInfoBySlug: Record<string, GithubRepoInfo | null>;
+  releasesBySlug: Record<string, GithubReleaseEntry[]>;
 }) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -195,6 +197,7 @@ export default function ProjectFilterGrid({
           <ProjectDetailBody
             project={activeProject}
             repoInfo={repoInfoBySlug[activeProject.slug] ?? null}
+            releases={releasesBySlug[activeProject.slug] ?? []}
           />
         </ProjectModalShell>
       )}
