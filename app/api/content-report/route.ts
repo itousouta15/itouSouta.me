@@ -1,6 +1,6 @@
 import { LIKE_CATEGORIES, PROJECTS, type Project } from "../../data";
 
-/* 開發用的填寫進度表：哪些專案還沒寫 why / longDesc / difficulties / timeline，
+/* 開發用的填寫進度表：哪些專案還沒寫 why / longDesc / difficulties / releaseTimeline，
    哪些分類的 note 還是空的。跑 `npm run dev` 開 /api/content-report 就看得到。
 
    做成 route 而不是 scripts/*.mjs 的原因：data.ts 是 TypeScript，純 Node 腳本要嘛
@@ -15,12 +15,14 @@ const PROJECT_FIELDS = [
   "why",
   "longDesc",
   "difficulties",
-  "timeline",
+  "releaseTimeline",
 ] as const;
 
 function filled(p: Project, key: (typeof PROJECT_FIELDS)[number]): boolean {
   const v = p[key];
-  return Array.isArray(v) ? v.length > 0 : v != null && v !== "";
+  if (Array.isArray(v)) return v.length > 0;
+  if (typeof v === "boolean") return v;
+  return v != null && v !== "";
 }
 
 function pad(s: string, width: number) {

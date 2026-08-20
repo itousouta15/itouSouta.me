@@ -1,13 +1,15 @@
 import type { Project } from "../../data";
-import type { GithubRepoInfo } from "../../lib/github";
+import type { GithubReleaseEntry, GithubRepoInfo } from "../../lib/github";
 import { projectCoverThumb } from "../../lib/imageThumb";
 
 export default function ProjectDetailBody({
   project,
   repoInfo,
+  releases,
 }: {
   project: Project;
   repoInfo: GithubRepoInfo | null;
+  releases: GithubReleaseEntry[];
 }) {
   return (
     <>
@@ -105,11 +107,11 @@ export default function ProjectDetailBody({
         </div>
       )}
 
-      {project.timeline && project.timeline.length > 0 && (
+      {releases.length > 0 && (
         <div className="proj-detail-section">
           <div className="card-kicker">TIMELINE</div>
           <div className="timeline-grid">
-            {project.timeline.map((t, i) => (
+            {releases.map((t, i) => (
               <div className="tl-card-wrap" key={i}>
                 <div className="tl-year-ghost" aria-hidden="true">
                   {t.version}
