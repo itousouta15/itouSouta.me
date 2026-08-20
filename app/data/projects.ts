@@ -232,7 +232,7 @@ export const PROJECTS: Project[] = [
     title: "SCAICT 證書查驗系統",
     desc: "一個用於驗證 SCAICT 所核發證書真偽的網頁系統",
     why: "為使 SCIACT 所核發之各類證書、證明具備唯一性、可追溯性與可查驗性，特別開發一套證書查驗系統，讓使用者能夠透過網頁輸入證書編號或掃描 QR Code 來驗證證書的真偽。",
-    tags: ["Vite", "React","SCAICT"],
+    tags: ["Vite", "React", "SCAICT"],
     icon: "scaict",
     href: "https://github.com/SCAICT",
     cover: "/assets/projects/SCAICTLG.webp",
@@ -247,7 +247,7 @@ export const PROJECTS: Project[] = [
     why: "暑訓是 SCAICT 每年的大事，報名資訊、課程表、場地資訊都需要一個能直接丟給大家的入口。",
     longDesc:
       "SCAICT 115 年暑訓的官方活動網站，用 Vite + React 打造的 landing page，部署在 sc.scaict.org，repo 內含 GitLab CI / 部署設定。",
-    tags: ["Vite", "React","SCAICT"],
+    tags: ["Vite", "React", "SCAICT"],
     icon: "scaict",
     href: "https://github.com/SCAICT/115-summer-camp",
     cover: "/assets/projects/SCAICTsc.webp",
@@ -261,7 +261,7 @@ export const PROJECTS: Project[] = [
     desc: "SCIST x SCAICT 2026 寒訓官網",
     longDesc:
       "SCIST x SCAICT 2026 聯合寒訓官方網站，Next.js + React 打造，部署在 scist.camp，與 SCIST 夥伴協作的專案。",
-    tags: ["Next.js", "React","SCAICT"],
+    tags: ["Next.js", "React", "SCAICT"],
     icon: "scaict",
     href: "https://github.com/scist-tw/WinterCamp2026",
     cover: "/assets/projects/SCIST.webp",

@@ -25,16 +25,16 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 
 ## 技術棧
 
-| 層級     | 技術                                            |
-| -------- | ----------------------------------------------- |
-| 框架     | Next.js 14（App Router）                        |
-| 語言     | TypeScript                                      |
-| 樣式     | 純 CSS（CSS custom properties）                 |
-| 資料     | Vercel KV、Threads API、GitHub API              |
-| 即時資料 | Lanyard API、Spotify API                        |
-| 郵件     | Resend（留言板回覆通知信）                      |
-| 離線支援 | Service Worker（`public/sw.js`）                |
-| 部署     | Vercel                                          |
+| 層級     | 技術                               |
+| -------- | ---------------------------------- |
+| 框架     | Next.js 14（App Router）           |
+| 語言     | TypeScript                         |
+| 樣式     | 純 CSS（CSS custom properties）    |
+| 資料     | Vercel KV、Threads API、GitHub API |
+| 即時資料 | Lanyard API、Spotify API           |
+| 郵件     | Resend（留言板回覆通知信）         |
+| 離線支援 | Service Worker（`public/sw.js`）   |
+| 部署     | Vercel                             |
 
 沒有使用 UI 函式庫、CSS-in-JS，也沒有使用元件框架。
 
