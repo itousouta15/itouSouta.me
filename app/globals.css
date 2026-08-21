@@ -3365,7 +3365,7 @@ body.site-revealed .header {
 .likes-tag-chip {
   background: var(--panel2);
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   padding: 9px 14px;
   min-height: 40px;
   display: inline-flex;
