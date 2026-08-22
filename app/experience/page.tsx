@@ -5,7 +5,7 @@ import { EXPERIENCE, ExperienceItem } from "../data";
 import { pageMetadata } from "../lib/seo";
 
 const description =
-  "itouSouta（伊藤蒼太 / 郭家睿）的學習與活動經歷：臺中市立大里高中資訊校隊、SCAICT 中電會、各種營隊與競賽的時間軸。";
+  "itouSouta（伊藤蒼太 / 郭家睿）的學習與活動經歷：臺中市立大里高中資訊校隊、SCAICT 中部高中電資社團聯合會議、各種營隊與競賽的時間軸。";
 
 export const metadata: Metadata = pageMetadata({
   title: "經歷",
