@@ -20,6 +20,8 @@ export const TILE_COLS: string[][] = [
 export const MARQUEE: string[] = [
   "ciallo (∠·ω )⌒★",
   "I'm itouSouta",
+  "郭家睿",
+  "伊藤蒼太",
   "人間になりたい",
   "DEVELOPER",
   "VOCALO-P",

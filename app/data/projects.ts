@@ -260,7 +260,7 @@ export const PROJECTS: Project[] = [
     title: "WinterCamp2026",
     desc: "SCIST x SCAICT 2026 寒訓官網",
     longDesc:
-      "SCIST x SCAICT 2026 聯合寒訓官方網站，Next.js + React 打造，部署在 scist.camp，與 SCIST 夥伴協作的專案。",
+      "SCIST x SCAICT 2026 聯合寒訓官方網站，Next.js + React 打造",
     tags: ["Next.js", "React", "SCAICT"],
     icon: "scaict",
     href: "https://github.com/scist-tw/WinterCamp2026",
@@ -273,7 +273,6 @@ export const PROJECTS: Project[] = [
     color: "blue",
     title: "itouCards",
     desc: "一個用純 HTML / CSS / JavaScript 製作的名片展示頁",
-    why: "itou 系列練功之作：用最樸素的技術棧做一個有質感的名片頁，順便驗證純前端能做到什麼程度。",
     longDesc:
       "用純 HTML / CSS / JavaScript 製作的名片展示頁（cards.itousouta.me）：零依賴、可直接靜態部署，是 itou 系列工具裡最輕的一隻。",
     tags: ["HTML", "CSS", "JavaScript", "itou 系列"],
@@ -295,6 +294,6 @@ export const PROJECTS: Project[] = [
     icon: "flutter",
     href: "https://github.com/TESIIS/TESIIS",
     cover: "/assets/projects/tcf.webp",
-    siteUrl: "https://tcf.itousouta.me",
+    siteUrl: "https://tesiis.itousouta.me",
   },
 ];
