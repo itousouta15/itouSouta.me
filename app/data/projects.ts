@@ -120,20 +120,6 @@ export const PROJECTS: Project[] = [
     siteUrl: "https://blog.itousouta.me",
   },
   {
-    slug: "itoubloldga",
-    kicker: "ARCHIVE",
-    color: "blue",
-    title: "itouBLoldGa",
-    desc: "一個基於 Hexo 及 anzhiyu 主題的舊部落格",
-    why: "最早是從 itousouta15.github.io 起家的部落格，記錄了剛開始寫東西那陣子的自己；現在內容都已搬到 itouBLoGa",
-    longDesc:
-      "早期的 Hexo 部落格，使用 AnZhiYu 主題，架在 GitHub Pages（itousouta15.github.io）上，是 itou 系列最早的作品之一，現已封存。",
-    tags: ["Hexo", "Node.js", "itou 系列"],
-    icon: "hexo",
-    href: "https://github.com/itousouta15/itouBLoldGa",
-    cover: "/assets/projects/Newweb.webp",
-  },
-  {
     slug: "itouslides",
     kicker: "TOOL",
     color: "blue",
@@ -208,6 +194,7 @@ export const PROJECTS: Project[] = [
     tags: ["Flutter", "Dart", "itou 系列"],
     icon: "flutter",
     href: "https://github.com/itousouta15/itouMD",
+    siteUrl: "https://md.itousouta.me",
     cover: "/assets/projects/itouMD.webp",
   },
   {
@@ -259,8 +246,7 @@ export const PROJECTS: Project[] = [
     color: "blue",
     title: "WinterCamp2026",
     desc: "SCIST x SCAICT 2026 寒訓官網",
-    longDesc:
-      "SCIST x SCAICT 2026 聯合寒訓官方網站，Next.js + React 打造",
+    longDesc: "SCIST x SCAICT 2026 聯合寒訓官方網站，Next.js + React 打造",
     tags: ["Next.js", "React", "SCAICT"],
     icon: "scaict",
     href: "https://github.com/scist-tw/WinterCamp2026",
