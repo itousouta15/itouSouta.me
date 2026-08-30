@@ -206,7 +206,7 @@ export const EXPERIENCE: ExperienceItem[] = [
   {
     period: "2026",
     title: "第三屆 THJCC 臺灣高中聯合資安競賽",
-    org: "網管",
+    org: "網管、美宣",
     color: "purple",
     category: "社群",
   },
@@ -297,7 +297,14 @@ export const EXPERIENCE: ExperienceItem[] = [
   {
     period: "2027",
     title: "SITCON 2027",
-    org: "場務組副組長",
+    org: "場務組副組長/餐飲股長",
+    color: "blue",
+    category: "社群",
+  },
+  {
+    period: "2027",
+    title: "第四屆 THJCC 臺灣高中聯合資安競賽",
+    org: "美宣組組長",
     color: "blue",
     category: "社群",
   },
