@@ -17,6 +17,7 @@ import {
 } from "./components/status/LanyardCards";
 import NowPlayingBar from "./components/status/NowPlayingBar";
 import SeasonTint from "./components/chrome/SeasonTint";
+import NoiseOverlay from "./components/chrome/NoiseOverlay";
 import ServiceWorkerRegistration from "./components/chrome/ServiceWorkerRegistration";
 import GuestbookSection from "./components/guestbook/GuestbookSection";
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from "./lib/seo";
@@ -222,6 +223,7 @@ export default function RootLayout({
               <GravityModeLoader />
               <SmoothScroll />
               <SeasonTint />
+              <NoiseOverlay />
               <DeferredMount name="konami" />
               <DeferredMount name="confetti" />
               <NowPlayingBar />

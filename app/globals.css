@@ -28,14 +28,6 @@ html.lenis body {
   transition-duration: 1ms;
   transition-behavior: allow-discrete;
 }
-
-/* ---- 自架字體：辰宇落雁體（logo / footer-logo / bento ghost 字）----
-   全量走 emfont 分片約 320KB，子集只收實際用到的字形（itouSouta.me、
-   念友歷、基本 ASCII），~28KB 且跟站上靜態檔共用快取。subset 來源：
-   github.com/Chenyu-otf/chenyuluoyan_thin（OFL 授權）。字重跟 emfont 一樣
-   宣告 100：.logo 的 font-weight: 700 會由瀏覽器在 thin 臉上合成加粗——
-   這正是以前 emfont 時代的渲染外觀，宣告成範圍（100 900）會讓 700 被當成
-   精確命中而不合成，筆畫反而變細、看起來跟原本不一樣。 */
 @font-face {
   font-family: "ChenYuLuoYan";
   font-style: normal;
@@ -157,22 +149,22 @@ svg {
    [data-theme] before first paint — no dark→light flash. The .root wrapper only
    consumes the inherited tokens for its background/sizing. */
 :root {
-  --bg: #1b1e23;
-  --panel: #24262b;
-  --panel2: #24262b;
-  --panel2-a: rgba(39, 41, 46, 0.82);
-  --frost: rgba(36, 38, 43, 0.45);
-  --inset: #181b20;
+  --bg: #18191c;
+  --panel: #232426;
+  --panel2: #232426;
+  --panel2-a: rgba(36, 37, 41, 0.82);
+  --frost: #23242b73;
+  --inset: #1b1d20;
   --bd: rgba(255, 255, 255, 0.07);
   --bd2: rgba(255, 255, 255, 0.14);
   --dc-act-back: #131618;
   --tx: #e8ebf2;
   --dim: #9aa1ad;
   --mute: #6a7280;
-  --blue: #b0bdf7;
+  --blue: #b8c4f8;
   --purple: #a1ade0;
   --btn: #94a6cc;
-  --btntx: #21252b;
+  --btntx: #24272c;
   --shadow: rgba(0, 0, 0, 0.45);
 
   background: var(--bg);
@@ -195,7 +187,7 @@ svg {
 }
 
 :root[data-theme="light"] {
-  --bg: #d6d7df;
+  --bg: #dadadd;
   --panel: #f0f0f5;
   --panel2: #f0f0f5;
   --panel2-a: rgba(227, 228, 233, 0.82);
@@ -437,6 +429,34 @@ body.site-revealed .site-loader {
   pointer-events: none;
 }
 /* ===========================================================================
+   Noise overlay — 全站背景噪點（film grain）
+   =========================================================================== */
+/* 固定蓋在畫面上的一層顆粒（NoiseOverlay.tsx 掛載）。刻意放在最上層
+   （z-index 9999，只輸給 gravity 彩蛋的還原鈕 10000）：modals、cmdk、header
+   全都罩在同一層質感裡，卡片與文字不會突兀地「太乾淨」。pointer-events: none
+   不擋任何互動。
+
+   紋理用 inline SVG feTurbulence（fractalNoise，stitchTiles 讓 tile 接縫連續）
+   當 background-image，data-URI 整段不到 400 bytes，零額外 request。
+
+   靜態顆粒：固定不動，零動畫成本。mix-blend-mode: overlay 讓同一份灰階顆粒在
+   深淺兩主題都有「疊上去」的效果而不是一層灰霧；light 主題底下透明度再降一點，
+   避免淺底看起來髒。 */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+/* 深淺主題的顆粒輪廓是同一份灰階紋理，blend 過後 light 底子反差較大，降一點 */
+:root[data-theme="light"] .noise-overlay {
+  opacity: 0.22;
+}
+/* ===========================================================================
    Header
    =========================================================================== */
 @keyframes itHeaderDrop {
@@ -454,7 +474,6 @@ body.site-revealed .site-loader {
   top: 0;
   z-index: 60;
   background: var(--panel2-a);
-  border-bottom: 1px solid var(--bd2);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   /* Held at the itHeaderDrop 0% frame (via "both") until the loader clears
