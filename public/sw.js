@@ -1,5 +1,5 @@
 /* itousouta.me service worker — 更新快取策略時記得 bump CACHE 版本 */
-const CACHE = "itousouta-v1";
+const CACHE = "itousouta-v2";
 const PRECACHE = ["/", "/offline"];
 
 self.addEventListener("install", (event) => {
@@ -33,6 +33,10 @@ self.addEventListener("fetch", (event) => {
 
   // API 永不快取
   if (url.pathname.startsWith("/api/") || url.pathname === "/feed.xml") return;
+
+  // Next.js 的 RSC 回應包含目前部署版本的元件資料；不能從舊快取回傳給新版本的程式。
+  if (url.searchParams.has("_rsc") || request.headers.get("RSC") === "1")
+    return;
 
   // 頁面導覽：network-first，失敗回快取或 /offline
   if (request.mode === "navigate") {

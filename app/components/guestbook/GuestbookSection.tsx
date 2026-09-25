@@ -38,6 +38,10 @@ export default function GuestbookSection() {
     if (!GUESTBOOK_PATHS.has(pathname)) return;
     const el = ref.current;
     if (!el) return;
+    if (!("IntersectionObserver" in window)) {
+      setShown(true);
+      return;
+    }
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {

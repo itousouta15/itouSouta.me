@@ -28,8 +28,12 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   const ready = useRef(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === "light" || saved === "dark") setTheme(saved);
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === "light" || saved === "dark") setTheme(saved);
+    } catch {
+      // Private browsing or embedded browsers may deny access to storage.
+    }
   }, []);
 
   // Apply + persist on change. Skip the very first run so we don't overwrite
@@ -40,7 +44,11 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       return;
     }
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_KEY, theme);
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch {
+      // The theme still works for this visit when storage is unavailable.
+    }
   }, [theme]);
 
   return (

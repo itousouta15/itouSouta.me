@@ -60,7 +60,7 @@ export default function HeroFace() {
 
   useEffect(() => {
     const el = trackRef.current;
-    if (!el) return;
+    if (!el || !("IntersectionObserver" in window)) return;
     // rootMargin 把觀察範圍縮成只剩畫面最上面那一小條，臉滑到那個區間裡
     // 才算「快要消失」，不是隨便滾一下就切換
     const observer = new IntersectionObserver(

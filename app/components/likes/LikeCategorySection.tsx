@@ -62,6 +62,10 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
     const track = trackRef.current;
     const sentinel = sentinelRef.current;
     if (!track || !sentinel) return;
+    if (!("IntersectionObserver" in window)) {
+      setVisibleCount(sortedItems.length);
+      return;
+    }
 
     // Observed against the horizontally-scrolling track itself (not the
     // viewport): the default root only tracks vertical page scroll, so it

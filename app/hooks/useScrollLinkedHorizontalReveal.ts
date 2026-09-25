@@ -12,7 +12,7 @@ export function useScrollLinkedHorizontalReveal(
 ) {
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !window.matchMedia) return;
 
     const mobileQuery = window.matchMedia("(max-width: 760px)");
     const reduceMotionQuery = window.matchMedia(

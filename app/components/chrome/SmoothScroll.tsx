@@ -13,11 +13,16 @@ export default function SmoothScroll() {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
+    if (!window.matchMedia) return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const apply = () => setEnabled(!mq.matches);
     apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
+    if (mq.addEventListener) {
+      mq.addEventListener("change", apply);
+      return () => mq.removeEventListener("change", apply);
+    }
+    mq.addListener(apply);
+    return () => mq.removeListener(apply);
   }, []);
 
   if (!enabled) return null;

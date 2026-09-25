@@ -54,7 +54,7 @@ export default function Header() {
   // 等該字體就緒後才加上 .fonts-ready 讓 logo 淡入，避免「先變大再縮小」的跳動。
   useEffect(() => {
     const reveal = () => document.documentElement.classList.add("fonts-ready");
-    if (!("fonts" in document)) {
+    if (!document.fonts?.load) {
       reveal();
       return;
     }
