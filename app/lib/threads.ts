@@ -19,11 +19,20 @@ export async function fetchThreadsPosts(): Promise<ThreadsPost[]> {
   if (!token) return [];
 
   const res = await fetch(
-    `https://graph.threads.net/v1.0/me/threads?fields=id,text,timestamp,media_type,permalink,media_url&limit=30&access_token=${token}`,
-    { next: { revalidate: 3600 } }
+    "https://graph.threads.net/v1.0/me/threads?fields=id,text,timestamp,media_type,permalink,media_url&limit=30",
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      next: { revalidate: 3600 },
+    }
   );
 
-  if (!res.ok) return [];
+  if (!res.ok) {
+    const error = await res.json().catch(() => null);
+    const code = error?.error?.code;
+    throw new Error(
+      `Threads API returned HTTP ${res.status}${typeof code === "number" ? ` (code ${code})` : ""}`
+    );
+  }
 
   const json = await res.json();
   return (json.data ?? []).filter(

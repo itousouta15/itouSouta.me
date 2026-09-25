@@ -39,7 +39,10 @@ function formatDate(ts: number) {
 
 export async function getMergedThoughts(): Promise<MergedThoughtItem[]> {
   const [threadsPosts, kvThoughts, githubEvents] = await Promise.all([
-    fetchThreadsPosts().catch(() => []),
+    fetchThreadsPosts().catch((error) => {
+      console.error("Failed to fetch Threads posts:", error);
+      return [];
+    }),
     getThoughts().catch(() => []),
     getUserEvents(GITHUB_USERNAME).catch(() => []),
   ]);
