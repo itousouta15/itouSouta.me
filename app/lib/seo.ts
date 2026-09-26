@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 
 export const SITE_URL = "https://itousouta.me";
 export const SITE_TITLE = "itouSouta.me";
+export const SHARE_IMAGE = {
+  url: "/assets/brand/banner-og.png",
+  width: 768,
+  height: 432,
+  alt: "伊藤蒼太的網站背景插畫",
+};
 
 /* 描述是給 Google 抓 snippet 用的，不是給我自顧自賣萌用的。太短或整串只有顏文字
    的話，Google 會直接無視 meta description、改成自己從 DOM 撈文字拼一段——首頁
@@ -24,9 +30,8 @@ interface PageMetaInput {
 /* Next.js 的 metadata 只有「最外層欄位」會沿著 layout → page 合併，openGraph 與
    twitter 這種巢狀物件是整包覆蓋掉的。先前每一頁各自寫 `openGraph: { title,
    description, url }`，等於把 layout 設好的 type / locale / siteName 全砍光，
-   twitter 那邊更慘——card 從 summary_large_image 掉回 summary，分享出去變成右邊
-   一小格縮圖，per-route 的 opengraph-image 等於白畫。
-   所以統一從這裡產生，每頁只填自己不一樣的那三個欄位。 */
+    twitter 那邊更慘——card 從 summary_large_image 掉回 summary，分享出去變成右邊
+    一小格縮圖。所以統一從這裡產生，每頁只填自己不一樣的那三個欄位。 */
 export function pageMetadata({
   title,
   description,
@@ -46,17 +51,13 @@ export function pageMetadata({
       url: path,
       title: shareTitle,
       description,
-      /* 這裡刻意不設 images。實測過：同一層自己寫的 metadata.images 會蓋過該路由
-         的 opengraph-image.tsx（只有從 layout 繼承下來的才會輸給檔案慣例），所以
-         一旦在這裡放後備圖，九條路由精心畫的 per-route 分享圖會全部變成同一張
-         banner。缺圖的路由（目前只有 /api）請自己補 opengraph-image.tsx。 */
+      images: [SHARE_IMAGE],
     },
-    /* 刻意不設 twitter.images：每條路由的 opengraph-image 檔案慣例會自己補上
-       twitter:image，這裡若釘死一張圖，X 上就永遠是那張，per-route 分享圖白做。 */
     twitter: {
       card: "summary_large_image",
       title: shareTitle,
       description,
+      images: [SHARE_IMAGE],
     },
   };
 }

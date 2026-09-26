@@ -59,14 +59,7 @@ Deeper notes live in [docs/architecture.md](docs/architecture.md).
 
 Page metadata is produced by `pageMetadata({ title, description, path })` in [app/lib/seo.ts](app/lib/seo.ts). This is centralized on purpose: in Next.js only top-level metadata fields merge from layout to page — nested objects like `openGraph` and `twitter` are **replaced wholesale**. Declaring them per page silently drops the root layout's `og:site_name`, `og:locale`, and downgrades `twitter:card` from `summary_large_image` to `summary`. For the same reason the root layout deliberately sets no `alternates.canonical`: it would be inherited, and any page that forgot to override it would declare the home page as its canonical URL.
 
-Open Graph images are rendered by `renderOg()` in [app/lib/ogImage.tsx](app/lib/ogImage.tsx) — 1200×630, with `banner.webp` as a translucent background under a left-to-right scrim and the avatar on the right. These routes intentionally export no `runtime`, so they are prerendered to static PNGs during `next build` (no serverless function, and `resvg.wasm` never enters a bundle).
-
-Two traps worth knowing before you touch this:
-
-- **After changing the layout in `ogImage.tsx`, bump the date comment at the top of all ten `opengraph-image.tsx` files.** The `?hash` on the `og:image` URL is a content hash of _that route file's own source_, not of its imports or of the rendered PNG. Change only the shared renderer and the URL stays identical — and since the response is served `immutable, max-age=31536000`, Discord and X will keep showing the old card forever.
-- The files in `public/assets/brand/` are **PNGs despite the `.webp` extension**. satori sniffs magic bytes and supports `[png, apng, jpeg, gif, svg]` only; an actual WebP throws `Unsupported image type`.
-
-CJK text uses a per-image Google Fonts subset (see [app/lib/ogFont.ts](app/lib/ogFont.ts)); if the fetch fails it degrades to a Latin-only card rather than failing the build.
+Every page uses the original 768×432 [banner-og.png](public/assets/brand/banner-og.png) for Open Graph and X previews. `SHARE_IMAGE` in [app/lib/seo.ts](app/lib/seo.ts) is included in both the root layout and `pageMetadata()` because page-level `openGraph` and `twitter` objects replace their parent values instead of merging with them.
 
 ## Development
 

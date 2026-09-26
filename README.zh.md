@@ -59,14 +59,7 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 
 每頁的 metadata 都由 [app/lib/seo.ts](app/lib/seo.ts) 的 `pageMetadata({ title, description, path })` 統一產生。這是刻意集中管理的：Next.js 的 metadata 只有最外層欄位會沿著 layout → page 合併，`openGraph`、`twitter` 這類巢狀物件則是**整包覆蓋**。若每頁各自宣告，會悄悄砍掉 root layout 設好的 `og:site_name`、`og:locale`，並讓 `twitter:card` 從 `summary_large_image` 掉回 `summary`。同理，root layout 刻意不設 `alternates.canonical`——那樣會被繼承下去，任何忘記自己覆蓋的頁面都會宣告首頁是自己的正規網址。
 
-Open Graph 圖片由 [app/lib/ogImage.tsx](app/lib/ogImage.tsx) 的 `renderOg()` 產生——1200×630，以 `banner.webp` 當半透明底圖，蓋一層由左到右的漸層遮罩，右側放頭像。這些路由刻意不設 `runtime`，因此會在 `next build` 期間預先產成靜態 PNG（沒有 serverless function，`resvg.wasm` 也不會進 bundle）。
-
-兩個踩過的坑：
-
-- **改了 `ogImage.tsx` 的版面後，記得把十個 `opengraph-image.tsx` 檔案開頭的日期註解一起 bump。** `og:image` 網址後面的 `?hash` 是對「該路由檔自己的原始碼」算的 content hash，不含它 import 的內容或渲染出的 PNG。只改共用的 renderer，網址會維持不變——而回應標頭是 `immutable, max-age=31536000`，Discord、X 會永遠顯示舊卡片。
-- `public/assets/brand/` 底下的檔案雖然副檔名是 `.webp`，**其實是 PNG**。satori 認 magic bytes 不認副檔名，只支援 `[png, apng, jpeg, gif, svg]`；真的丟 WebP 進去會丟出 `Unsupported image type`。
-
-中文字型透過 Google Fonts 逐張子集化（見 [app/lib/ogFont.ts](app/lib/ogFont.ts)）；抓取失敗時會降級為純拉丁字的卡片，不會讓 build 失敗。
+所有頁面的 Open Graph 與 X 分享圖都使用原始 768×432 的 [banner-og.png](public/assets/brand/banner-og.png)。圖片設定集中於 [app/lib/seo.ts](app/lib/seo.ts) 的 `SHARE_IMAGE`，並同時放進 root layout 與 `pageMetadata()`：因為各頁的 `openGraph`、`twitter` 物件會整包覆蓋上層設定，不能只在 layout 設定圖片。
 
 ## 開發
 

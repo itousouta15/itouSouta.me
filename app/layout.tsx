@@ -20,7 +20,7 @@ import SeasonTint from "./components/chrome/SeasonTint";
 import NoiseOverlay from "./components/chrome/NoiseOverlay";
 import ServiceWorkerRegistration from "./components/chrome/ServiceWorkerRegistration";
 import GuestbookSection from "./components/guestbook/GuestbookSection";
-import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from "./lib/seo";
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, SHARE_IMAGE } from "./lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -53,11 +53,13 @@ export const metadata: Metadata = {
     siteName: SITE_TITLE,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
+    images: [SHARE_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
+    images: [SHARE_IMAGE],
   },
 };
 
