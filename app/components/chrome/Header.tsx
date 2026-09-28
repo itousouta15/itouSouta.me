@@ -162,9 +162,9 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Sibling of <header>, not nested inside it — .header has backdrop-filter,
-          which creates a containing block for position:fixed and would trap this
-          overlay inside the header's box instead of covering the viewport.
+      {/* Sibling of <header>, not nested inside it — .header has backdrop-filter
+          on desktop and an animated transform on both layouts. These create a
+          containing block for position:fixed and would trap the overlay.
           Only mounted while open: it used to render unconditionally (just
           CSS-hidden), which meant its decorative faces and numbered nav links
           shipped in the initial HTML and got indexed as page content. */}

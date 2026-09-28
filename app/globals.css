@@ -3,9 +3,7 @@
    Theme via [data-theme] on .root. All colors are CSS variables.
    =========================================================================== */
 
-/* ---- Lenis smooth-scroll base styles ----
-   原本從 lenis/dist/lenis.css import，會額外產生一個 render-blocking 的 CSS
-   檔（多一次 RTT）。這段不到 1KB 又極少變動，直接併進 globals.css。 */
+/* Lenis 只在電腦版啟用；內層捲動容器的 prevent 標記由它的 class 控制。 */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -28,6 +26,7 @@ html.lenis body {
   transition-duration: 1ms;
   transition-behavior: allow-discrete;
 }
+
 @font-face {
   font-family: "ChenYuLuoYan";
   font-style: normal;
@@ -45,7 +44,7 @@ html.lenis body {
 html {
   zoom: 1.15;
   -webkit-tap-highlight-color: transparent;
-  /* 隱藏全站原生捲軸（滾動仍可用，另有 Lenis 平滑滾動）*/
+  /* 隱藏全站捲軸：電腦版用 Lenis，手機版用瀏覽器原生捲動。 */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* 舊版 Edge/IE */
 }
@@ -402,8 +401,8 @@ body.shake-67 {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* 毛玻璃：半透明底（45%）配 backdrop-filter，背景太實（原 --panel2-a 是
-     82%）會讓 blur 完全看不出來。深淺主題各自用 theme token 覆寫，見
+  /* 毛玻璃：半透明底（45%）配 backdrop-filter，不透明背景會讓 blur
+     完全看不出來。深淺主題各自用 theme token 覆寫，見
      :root 的 --frost。 */
   background: var(--frost);
   transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
@@ -452,6 +451,12 @@ body.site-revealed .site-loader {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 240px 240px;
 }
+/* 手機的全螢幕 blend layer 會讓捲動時每幀都要重算合成；小螢幕優先保留跟手感。 */
+@media (max-width: 760px) {
+  .noise-overlay {
+    display: none;
+  }
+}
 /* 深淺主題的顆粒輪廓是同一份灰階紋理，blend 過後 light 底子反差較大，降一點 */
 :root[data-theme="light"] .noise-overlay {
   opacity: 0.22;
@@ -483,6 +488,13 @@ body.site-revealed .site-loader {
 }
 body.site-revealed .header {
   animation-play-state: running;
+}
+@media (max-width: 760px) {
+  .header {
+    background: var(--panel2);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 .header-inner {
   max-width: 1180px;
@@ -2854,7 +2866,7 @@ body.site-revealed .header {
 
 /* ---------------------------------------------------------------------------
    Now-playing floating pill（全站固定）
-   fixed 元素自己掛 backdrop-filter。z-index 45：header 60 / site-loader 200
+   z-index 45：header 60 / site-loader 200
    之下，不壓任何覆蓋層。 */
 .now-playing {
   position: fixed;
@@ -2943,6 +2955,8 @@ body.site-revealed .header {
   .now-playing {
     left: 20px;
     bottom: 20px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 @media (max-width: 640px) {
@@ -3448,15 +3462,8 @@ body.site-revealed .header {
     transparent 100%
   );
 }
-/* 真正的根因在這裡：lenis/dist/lenis.css 只要看到 data-lenis-prevent-wheel
-   就自動幫該元素套用 overscroll-behavior: contain（見
-   `.lenis [data-lenis-prevent-wheel] { overscroll-behavior: contain; }`）。
-   這個元素本身沒有垂直方向的可捲內容，遇到垂直手勢時本該把捲動「鏈」給
-   外層頁面，但 contain 恰恰是用來擋掉這個鏈接的——結果垂直滑動整個被吞掉、
-   什麼反應都沒有，跟這裡任何 JS／touch-action 寫法都無關，之前怎麼調都
-   沒用就是因為問題根本不在 JS 或 touch-action 裡。用相同的特異度
-   （class + 屬性選擇器）在 lenis.css 之後覆蓋回 auto，讓垂直手勢照樣能
-   鏈給頁面；橫向仍然完全交給 useHorizontalWheelScroll 自己處理，不受影響。 */
+/* Lenis 在電腦版把 prevent-wheel 的 overscroll 設成 contain；
+   垂直滾輪仍要能鏈到外層頁面，手機版也維持原生鏈接。 */
 .likes-track[data-lenis-prevent-wheel] {
   overscroll-behavior: auto;
 }
@@ -3681,8 +3688,6 @@ body.site-revealed .header {
     transparent 100%
   );
 }
-/* 同 .likes-track：蓋掉 lenis.css 自動加的 overscroll-behavior: contain，
-   否則垂直滑動手勢沒地方去、又被 contain 擋住鏈到頁面，整個被吞掉 */
 .music-artist-row[data-lenis-prevent-wheel] {
   overscroll-behavior: auto;
 }

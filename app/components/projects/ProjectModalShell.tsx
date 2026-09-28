@@ -81,7 +81,7 @@ export default function ProjectModalShell({
       aria-modal="true"
       aria-label={title}
     >
-      {/* data-lenis-prevent：Lenis 會攔截整頁滾輪事件，沒有這個屬性內層容器滾不動 */}
+      {/* 電腦版 Lenis 不攔截彈窗內部的捲動。 */}
       <div
         ref={scrollerRef}
         className={`proj-modal${closing ? " is-closing" : ""}`}

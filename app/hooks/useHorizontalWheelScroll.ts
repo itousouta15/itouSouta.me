@@ -10,7 +10,7 @@ import { RefObject, useEffect } from "react";
 // 硬跳感。（0.1~0.3 的殘餘距離拖得夠久，會被感知成輸入延遲。）
 // delta 不做上限截斷 —— 之前把單齒夾在 ±160 會讓快速滾動被限速。
 const LERP = 0.5;
-const WHEEL_MULTIPLIER = 1; // 橫向距離感不用跟 Lenis 的 0.8 一致，1:1 比較直觀
+const WHEEL_MULTIPLIER = 1; // 橫向距離維持 1:1，跟手較直觀
 const FRAME_MS = 1000 / 60;
 
 export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
@@ -77,6 +77,19 @@ export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
         node = node.parentElement;
       }
 
+      // 動畫沒在跑時，位置可能被觸控拖動或程式捲動改過，先從真實位置同步。
+      if (raf == null) {
+        current = el.scrollLeft;
+        target = current;
+      }
+
+      const nextTarget = Math.max(
+        0,
+        Math.min(maxScroll(), target + e.deltaY * WHEEL_MULTIPLIER)
+      );
+      // 到達左右邊界後讓垂直滾輪繼續捲動頁面，避免卡在橫向卡片上。
+      if (nextTarget === target && raf == null) return;
+
       e.preventDefault();
       el.style.scrollSnapType = "none";
       // 防禦性覆蓋：若元素被（重新）設了 scroll-behavior: smooth，每影格的
@@ -84,26 +97,13 @@ export function useHorizontalWheelScroll(ref: RefObject<HTMLElement | null>) {
       // 造成嚴重延遲。程式驅動期間強制即時賦值。
       el.style.scrollBehavior = "auto";
 
-      // 動畫沒在跑時，位置可能被外力（觸控拖動、程式捲動）改過，current
-      // 和 target 都從真實位置重新同步，避免從舊位置大跳。
-      if (raf == null) {
-        current = el.scrollLeft;
-        target = current;
-      }
-
-      target = Math.max(
-        0,
-        Math.min(maxScroll(), target + e.deltaY * WHEEL_MULTIPLIER)
-      );
+      target = nextTarget;
       if (raf == null) raf = requestAnimationFrame(step);
     };
 
     // 只處理 wheel。真正的觸控螢幕滑動手勢不會發出 wheel 事件（那是滑鼠／
     // 觸控板專屬），所以這個 hook 對觸控完全不插手，交給瀏覽器原生處理——
     // 水平拖曳這排卡片、垂直手勢照樣鏈給頁面捲動，兩者都不需要自訂 JS。
-    // 手機版之前滑不動是 lenis.css 幫 data-lenis-prevent-wheel 元素自動加了
-    // overscroll-behavior: contain 擋住了垂直鏈接，跟這裡的邏輯無關，修法見
-    // globals.css 的 .likes-track[data-lenis-prevent-wheel] 規則。
     el.addEventListener("wheel", onWheel, { passive: false });
 
     return () => {

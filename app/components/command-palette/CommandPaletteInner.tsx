@@ -254,7 +254,7 @@ export default function CommandPaletteInner({
           onKeyDown={onKeyDown}
         />
         <div className="cmdk-hint">↑↓ 選擇 · ↵ 前往 · ESC 關閉</div>
-        {/* data-lenis-prevent：Lenis 會攔截整頁滾輪事件，沒有這個屬性內層容器滾不動 */}
+        {/* 電腦版 Lenis 不攔截搜尋結果內部的捲動。 */}
         <div className="cmdk-results" ref={listRef} data-lenis-prevent>
           {results.length === 0 && (
             <div className="cmdk-empty">沒有符合的結果</div>

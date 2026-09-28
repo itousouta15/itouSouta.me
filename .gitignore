@@ -1,6 +1,7 @@
 /node_modules
 /.claude
 /.next
+/.next-dev
 /out
 /build
 .DS_Store

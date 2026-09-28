@@ -8,7 +8,10 @@ export default function BackToTopButton() {
   const lenis = useLenis();
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 400);
+    const onScroll = () => {
+      const next = window.scrollY > 400;
+      setVisible((current) => (current === next ? current : next));
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -21,14 +24,17 @@ export default function BackToTopButton() {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    if (reduceMotion || !lenis) {
-      window.scrollTo(0, 0);
-    } else {
-      // `lock` keeps residual wheel velocity from the scroll that revealed
-      // this button from overriding/cancelling the fly-to-top animation
-      // right as it starts (which otherwise made the first click look like
-      // a no-op, requiring a second click once things settled).
+    if (!reduceMotion && lenis) {
+      // 電腦版保留原本的飛回頂端動畫；鎖定滾輪避免殘餘慣性覆蓋動畫。
       lenis.scrollTo(0, { lock: true });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior:
+          reduceMotion || window.matchMedia("(max-width: 760px)").matches
+            ? "auto"
+            : "smooth",
+      });
     }
   };
 
