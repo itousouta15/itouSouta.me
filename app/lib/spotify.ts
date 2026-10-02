@@ -34,6 +34,11 @@ interface AccessTokenResult {
   reason?: string;
 }
 
+// Token 只在伺服器實例內共用；同時到來的請求也共用同一次 refresh。
+// 過期前一分鐘就重新取得，避免 Spotify API 收到快過期的 token。
+let cachedToken: { value: string; expiresAt: number } | null = null;
+let pendingToken: Promise<AccessTokenResult> | null = null;
+
 async function getAccessToken(): Promise<AccessTokenResult> {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -42,30 +47,51 @@ async function getAccessToken(): Promise<AccessTokenResult> {
     return { token: null, reason: "missing-credentials" };
   }
 
-  try {
-    const body = new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-    });
-    const res = await fetch(TOKEN_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${Buffer.from(
-          `${clientId}:${clientSecret}`
-        ).toString("base64")}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body,
-    });
-    if (!res.ok) {
-      return { token: null, reason: `token-refresh-http-${res.status}` };
-    }
-    const json = await res.json();
-    const token = (json.access_token as string) || null;
-    return token ? { token } : { token: null, reason: "token-refresh-empty" };
-  } catch {
-    return { token: null, reason: "token-refresh-exception" };
+  if (cachedToken && cachedToken.expiresAt > Date.now()) {
+    return { token: cachedToken.value };
   }
+  if (pendingToken) return pendingToken;
+
+  pendingToken = (async (): Promise<AccessTokenResult> => {
+    try {
+      const body = new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+      });
+      const res = await fetch(TOKEN_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${Buffer.from(
+            `${clientId}:${clientSecret}`
+          ).toString("base64")}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body,
+      });
+      if (!res.ok) {
+        return { token: null, reason: `token-refresh-http-${res.status}` };
+      }
+      const json = await res.json();
+      const token = (json.access_token as string) || null;
+      const expiresIn = Number(json.expires_in);
+      if (token && Number.isFinite(expiresIn) && expiresIn > 60) {
+        cachedToken = {
+          value: token,
+          expiresAt: Date.now() + (expiresIn - 60) * 1000,
+        };
+      }
+      return token ? { token } : { token: null, reason: "token-refresh-empty" };
+    } catch {
+      return { token: null, reason: "token-refresh-exception" };
+    }
+  })().finally(() => {
+    pendingToken = null;
+  });
+  return pendingToken;
+}
+
+function invalidateToken(token: string) {
+  if (cachedToken?.value === token) cachedToken = null;
 }
 
 export async function getTopTracks(options?: {
@@ -84,6 +110,7 @@ export async function getTopTracks(options?: {
       headers: { Authorization: `Bearer ${accessToken}` },
       next: { revalidate: 3600 },
     });
+    if (res.status === 401) invalidateToken(accessToken);
     if (!res.ok) return null;
     const json = await res.json();
 
@@ -128,6 +155,7 @@ export async function getCurrentlyPlayingDebug(): Promise<CurrentlyPlayingResult
     );
     // 204 = 帳號目前沒在播放任何東西
     if (res.status === 204) return { track: null, reason: "not-playing" };
+    if (res.status === 401) invalidateToken(accessToken);
     if (!res.ok) return { track: null, reason: `api-http-${res.status}` };
     const json = await res.json();
     if (!json?.item || json.currently_playing_type !== "track") {

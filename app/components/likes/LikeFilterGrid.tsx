@@ -100,10 +100,11 @@ export default function LikeFilterGrid({
         <div
           className={`likes-grid ${layout === "circle" ? "likes-grid--circle" : ""}`}
         >
-          {filtered.map((l) => (
+          {filtered.map((l, i) => (
             <LikeCard
               l={l}
               layout={layout}
+              priority={i < 2}
               key={l.href ?? l.title}
               onClick={useModal ? () => setSelectedLike(l) : undefined}
               live={l.href ? liveMap[l.href] : undefined}

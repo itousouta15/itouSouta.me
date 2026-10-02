@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ReactLenis } from "lenis/react";
+import dynamic from "next/dynamic";
+
+// 手機與 reduced-motion 不會掛載 Lenis，也不需要下載其實作。
+const ReactLenis = dynamic(
+  () => import("lenis/react").then((mod) => mod.ReactLenis),
+  { ssr: false }
+);
 
 /* 電腦版保留 Lenis；手機版用原生捲動，避免滾輪動畫和畫面合成拖慢滑動。
    偏好減少動態效果時也停用，並監聽斷點／系統設定變更。 */

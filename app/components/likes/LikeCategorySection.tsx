@@ -9,10 +9,17 @@ import { sortLikesByRating } from "../../lib/sortLikes";
 import LikeCard from "./LikeCard";
 import LikeModalShell from "./LikeModalShell";
 
-const INITIAL_COUNT = 14;
+// 首屏最多只能看到約 6 張卡片，先留 3 張預備捲動；其餘封面與字型等靠近時再載入。
+const INITIAL_COUNT = 9;
 const BATCH_SIZE = 14;
 
-export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
+export default function LikeCategorySection({
+  cat,
+  priorityImages = false,
+}: {
+  cat: LikeCategory;
+  priorityImages?: boolean;
+}) {
   const trackRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   useHorizontalWheelScroll(trackRef);
@@ -76,7 +83,7 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
           setVisibleCount((c) => Math.min(c + BATCH_SIZE, sortedItems.length));
         }
       },
-      { root: track, rootMargin: "0px 600px 0px 0px" }
+      { root: track, rootMargin: "0px 400px 0px 0px" }
     );
     observer.observe(sentinel);
     return () => observer.disconnect();
@@ -97,11 +104,12 @@ export default function LikeCategorySection({ cat }: { cat: LikeCategory }) {
         </Link>
       </div>
       <div className="likes-track" ref={trackRef} data-lenis-prevent-wheel>
-        {preview.map((l) => (
+        {preview.map((l, i) => (
           <LikeCard
             l={l}
             carousel
             layout={cat.layout}
+            priority={priorityImages && i < 2}
             key={`${cat.key}-${l.href ?? l.title}`}
             onClick={useModal ? () => setSelectedLike(l) : undefined}
             live={l.href ? liveMap[l.href] : undefined}

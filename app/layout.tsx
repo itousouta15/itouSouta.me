@@ -11,10 +11,7 @@ import SiteLoader from "./components/chrome/SiteLoader";
 import CommandPalette from "./components/command-palette/CommandPalette";
 import GravityModeLoader from "./components/easter-eggs/GravityModeLoader";
 import SmoothScroll from "./components/chrome/SmoothScroll";
-import {
-  LanyardProvider,
-  NowPlayingProvider,
-} from "./components/status/LanyardCards";
+import { NowPlayingProvider } from "./components/status/LanyardCards";
 import NowPlayingBar from "./components/status/NowPlayingBar";
 import SeasonTint from "./components/chrome/SeasonTint";
 import NoiseOverlay from "./components/chrome/NoiseOverlay";
@@ -117,8 +114,7 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        <link rel="preconnect" href="https://font.emtech.cc" />
-        {/* These stylesheets are large (Google Fonts CJK weights + one custom
+        {/* These stylesheets are large (Google Fonts CJK weights + a homepage-only
             webfont service) and were render-blocking ~3.8s of first paint.
             They're fetched eagerly but applied via JS once the browser is idle
             so initial paint isn't gated on them; existing font-stacks already
@@ -129,16 +125,17 @@ export default function RootLayout({
           as="style"
           href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=Shippori+Mincho:wght@500;600;700&display=swap"
         />
-        <link
-          rel="preload"
-          as="style"
-          href="https://font.emtech.cc/css/LXGWHeartSerif"
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){
-  var hrefs=["https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=Shippori+Mincho:wght@500;600;700&display=swap","https://font.emtech.cc/css/LXGWHeartSerif"];
-  function apply(){hrefs.forEach(function(href){var l=document.createElement('link');l.rel='stylesheet';l.href=href;document.head.appendChild(l);});}
+  var hrefs=["https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&family=Shippori+Mincho:wght@500;600;700&display=swap"];
+  var homeFont="https://font.emtech.cc/css/LXGWHeartSerif";
+  if(location.pathname==="/"){
+    var connect=document.createElement('link');connect.rel='preconnect';connect.href='https://font.emtech.cc';document.head.appendChild(connect);
+    var preload=document.createElement('link');preload.rel='preload';preload.as='style';preload.href=homeFont;preload.setAttribute('data-home-quote-font','');document.head.appendChild(preload);
+    hrefs.push(homeFont);
+  }
+  function apply(){hrefs.forEach(function(href){var l=document.createElement('link');l.rel='stylesheet';l.href=href;if(href===homeFont)l.setAttribute('data-home-quote-font','');document.head.appendChild(l);});}
   if('requestIdleCallback' in window) requestIdleCallback(apply); else setTimeout(apply,0);
 })();`,
           }}
@@ -207,35 +204,33 @@ export default function RootLayout({
           }}
         />
         <ThemeProvider>
-          <LanyardProvider>
-            <NowPlayingProvider>
-              <a className="skip-link" href="#main">
-                跳到主要內容
-              </a>
-              <SiteLoader />
-              <Header />
-              <main className="main" id="main" tabIndex={-1}>
-                <PageTransition>{children}</PageTransition>
-                {/* 留言板：每一頁的內容底下都有，滾到頁底才載入 Waline */}
-                <GuestbookSection />
-              </main>
-              <Footer />
-              <DeferredMount name="backToTop" />
-              <CommandPalette />
-              <GravityModeLoader />
-              <SmoothScroll />
-              <SeasonTint />
-              <NoiseOverlay />
-              <DeferredMount name="konami" />
-              <DeferredMount name="confetti" />
-              <NowPlayingBar />
-              <ServiceWorkerRegistration />
-            </NowPlayingProvider>
-          </LanyardProvider>
+          <NowPlayingProvider>
+            <a className="skip-link" href="#main">
+              跳到主要內容
+            </a>
+            <SiteLoader />
+            <Header />
+            <main className="main" id="main" tabIndex={-1}>
+              <PageTransition>{children}</PageTransition>
+              {/* 留言板：每一頁的內容底下都有，滾到頁底才載入 Waline */}
+              <GuestbookSection />
+            </main>
+            <Footer />
+            <DeferredMount name="backToTop" />
+            <CommandPalette />
+            <GravityModeLoader />
+            <SmoothScroll />
+            <SeasonTint />
+            <NoiseOverlay />
+            <DeferredMount name="konami" />
+            <DeferredMount name="confetti" />
+            <NowPlayingBar />
+            <ServiceWorkerRegistration />
+          </NowPlayingProvider>
         </ThemeProvider>
         <Script
           src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <Analytics />
       </body>

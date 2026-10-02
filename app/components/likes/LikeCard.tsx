@@ -8,12 +8,14 @@ export default function LikeCard({
   layout,
   onClick,
   live,
+  priority,
 }: {
   l: Like;
   carousel?: boolean;
   layout?: "circle" | "square";
   onClick?: () => void;
   live?: LiveInfo;
+  priority?: boolean;
 }) {
   const className = [
     "like-card",
@@ -34,7 +36,8 @@ export default function LikeCard({
               className="like-thumb-img"
               src={layout ? likeCircleThumb(l.cover) : likeThumb(l.cover)}
               alt={l.title}
-              loading="lazy"
+              loading={priority ? "eager" : "lazy"}
+              fetchPriority={priority ? "high" : undefined}
               decoding="async"
             />
           ) : (

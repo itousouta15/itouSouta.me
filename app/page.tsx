@@ -7,11 +7,13 @@ import { TILE_ICON_META } from "./components/tileIconMeta";
 import GithubGlyph from "./components/GithubGlyph";
 import GithubContributionCard from "./components/home/GithubContributionCard";
 import {
+  LanyardProvider,
   ProfileStatus,
   ProfileStatusDot,
 } from "./components/status/LanyardCards";
 import AvatarEasterEgg from "./components/easter-eggs/AvatarEasterEgg";
 import HeroFace from "./components/home/HeroFace";
+import HomeQuoteFont from "./components/home/HomeQuoteFont";
 import BadgeShape from "./components/home/BadgeShape";
 import NameRotator from "./components/home/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
@@ -29,6 +31,15 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function HomePage() {
+  return (
+    <LanyardProvider>
+      <HomeQuoteFont />
+      <HomeContent />
+    </LanyardProvider>
+  );
+}
+
+function HomeContent() {
   const tileIcons = TILE_COLS.flat();
   const tileRows = {
     upper: tileIcons.filter((_, i) => i % 2 === 0),
