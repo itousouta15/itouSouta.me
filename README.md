@@ -11,6 +11,7 @@ This is a highly customized portfolio site built around profile, projects, thoug
 ## Features
 
 - Profile-style home page with Discord presence, theme-aware visuals, and project navigation.
+- Visitor impressions wall on the home page: submit a short impression to a randomly arranged word cloud; hover to enlarge words and reveal counts stored in Vercel KV.
 - Thoughts feed that merges Discord-sourced posts, Threads posts, and GitHub events.
 - Likes pages for novels, manga, anime, VTubers, and Spotify-powered music data.
 - Project gallery with filters, modal details, and GitHub repository metadata.
@@ -48,6 +49,7 @@ Most content lives in [app/data/](app/data/), split by domain (`likes.ts`, `proj
 - `/api/vtuber-live` checks VTuber live status and caches results for short intervals.
 - The guestbook (`/api/guestbook`, rendered at the bottom of every page) reads and writes Vercel KV directly, replacing an earlier setup that proxied a blog-only comment server. Replies are threaded and, when the person being replied to left an email (or signed in with GitHub and granted the `user:email` scope), trigger a Resend notification.
 - `/api/reactions` powers per-post like counts on `/writing`.
+- `/api/impressions` serves the shared home-page wall using the existing KV credentials, enforcing a 30-second cooldown and one contribution per word per IP every 24 hours.
 - `public/sw.js` precaches `/` and `/offline` for a minimal offline fallback; it only registers in production, since Next dev's changing chunk hashes make a stale-while-revalidate service worker actively harmful during development.
 - `/api/badge/*` renders shields.io-style SVGs (latest blog post title, Discord presence, total GitHub stars) for embedding in other READMEs or pages.
 - Project cards use GitHub API data when available and gracefully fall back otherwise.

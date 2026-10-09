@@ -68,6 +68,16 @@ The workflow writes:
 
 `GithubContributionCard` selects the matching SVG for the current theme. On small screens, the graph can scroll horizontally and is moved by `useScrollLinkedHorizontalReveal` as the card enters the viewport.
 
+## Visitor Impressions
+
+The home page places `VisitorImpressionsCard` below the quote card. Visitors submit a word or phrase of up to 20 characters through the form; cloud words are display-only. Hovering or focusing a word enlarges it and reveals its count. The feature was inspired by [nnic52136-hash/.github.io](https://github.com/nnic52136-hash/.github.io); this implementation uses plain DOM text rather than a charting library.
+
+- `GET /api/impressions` reads the shared wall; `POST /api/impressions` adds one impression and returns the canonical tag and updated count.
+- The Redis hash is `visitor-impressions:counts`, with `tag:`-prefixed fields. A Lua script atomically checks a 30-second cooldown and 24-hour per-word duplicate record before incrementing, so concurrent submissions cannot bypass detection. Visitor and word keys are SHA-256 hashed. It uses the same KV credentials as the guestbook.
+- Input is normalized with Unicode NFKC, trimmed, and whitespace-collapsed before validation. The existing five-attempts-per-IP-per-minute limiter also bounds repeated rejected submissions.
+- The browser reads the wall once it approaches the viewport. A seeded random spiral places up to 60 words without overlapping their rotated bounding boxes; font measurements only run on data, font readiness, or container resize. No scroll listeners, continuous animations, or additional dependencies are needed.
+- GET responses are uncached. Successful writes update the word from the server's count; failed writes preserve the draft and show an error. An unavailable KV connection displays a retry state rather than fake local-only impressions.
+
 ## Animations and UX
 
 Animations are mostly CSS keyframes and small client-side effects:

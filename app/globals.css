@@ -2347,6 +2347,163 @@ body.site-revealed .header {
 }
 
 /* ===========================================================================
+   Visitor impressions — 首頁輕量文字雲
+   =========================================================================== */
+.impressions-card {
+  padding: 28px 30px 22px;
+  min-width: 0;
+}
+.impressions-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 8px;
+}
+.impressions-heading h2 {
+  margin: 0;
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: 27px;
+  font-weight: 700;
+}
+.impressions-total {
+  color: var(--dim);
+  font-size: 11px;
+}
+.impressions-description {
+  margin: 8px 0 0;
+  color: var(--dim);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.impressions-cloud {
+  position: relative;
+  height: 240px;
+  margin-block: 12px;
+}
+.impressions-word {
+  position: absolute;
+  display: block;
+  font-family: "Noto Sans TC", system-ui, sans-serif;
+  font-size: var(--impression-size);
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: default;
+  transform: translate(-50%, -50%) rotate(var(--impression-tilt));
+  transition: transform 0.18s ease;
+}
+.impressions-word:hover,
+.impressions-word:focus {
+  z-index: 2;
+  transform: translate(-50%, -50%) rotate(var(--impression-tilt)) scale(1.15);
+}
+.impressions-count {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  color: var(--dim);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity 0.18s ease;
+}
+.impressions-word:hover .impressions-count,
+.impressions-word:focus .impressions-count {
+  opacity: 1;
+}
+.impressions-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  color: var(--dim);
+  font-size: 13px;
+  text-align: center;
+}
+.impressions-overflow-note {
+  margin: 0;
+  color: var(--dim);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.impressions-form {
+  display: flex;
+  gap: 10px;
+}
+.impressions-form input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: 11px 16px;
+  border: 1px solid var(--bd2);
+  border-radius: 999px;
+  background: var(--inset);
+  color: var(--tx);
+  font: inherit;
+  font-size: 14px;
+}
+.impressions-form input::placeholder {
+  color: var(--dim);
+}
+.impressions-form input:focus-visible {
+  border-color: var(--blue);
+}
+.impressions-form button,
+.impressions-retry {
+  flex: none;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--btn);
+  color: var(--btntx);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.impressions-retry {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.impressions-form button:disabled,
+.impressions-form input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.impressions-message {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.impressions-message--success {
+  color: var(--blue);
+}
+.impressions-message--error {
+  color: #ee8d8d;
+}
+:root[data-theme="light"] .impressions-message--error {
+  color: #a12e3c;
+}
+@media (max-width: 760px) {
+  .impressions-card {
+    padding: 24px 22px 18px;
+  }
+  .impressions-form button {
+    padding-inline: 16px;
+  }
+}
+
+/* ===========================================================================
    Bento (live status + nav cards)
    =========================================================================== */
 .bento {

@@ -1,4 +1,10 @@
 import { kv } from "@vercel/kv";
+import { createHash } from "node:crypto";
+import {
+  IMPRESSION_COOLDOWN_SECONDS,
+  IMPRESSION_DUPLICATE_SECONDS,
+} from "./impressions";
+import type { VisitorImpression } from "./impressions";
 
 export interface KVThought {
   id: string;
@@ -26,6 +32,75 @@ export async function getReactionCounts(): Promise<Record<string, number>> {
 
 export async function incrReaction(id: string): Promise<number> {
   return kv.hincrby(REACTION_KEY, id, 1);
+}
+
+/* ---- 首頁訪客留印牆 ----
+   所有訪客共用一個 hash；HINCRBY 原子累加，不會在同時送出時遺失計數。
+   field 加前綴，使用者輸入的 __proto__ 等文字也只是一般的 Redis 欄位。 */
+const IMPRESSIONS_KEY = "visitor-impressions:counts";
+const IMPRESSION_FIELD_PREFIX = "tag:";
+
+export async function getVisitorImpressions(): Promise<VisitorImpression[]> {
+  const all = await kv.hgetall<Record<string, number>>(IMPRESSIONS_KEY);
+  return Object.entries(all ?? {})
+    .filter(
+      ([field, count]) =>
+        field.startsWith(IMPRESSION_FIELD_PREFIX) &&
+        Number.isSafeInteger(count) &&
+        count > 0
+    )
+    .map(([field, count]) => ({
+      tag: field.slice(IMPRESSION_FIELD_PREFIX.length),
+      count,
+    }));
+}
+
+/* 重複偵測、冷卻與累加在 Redis 內一次完成，同時送來多筆也只接受一筆。
+   只有成功留印才建立冷卻與重複紀錄，儲存失敗時不會先消耗這兩項額度。 */
+const LEAVE_IMPRESSION_SCRIPT = `
+if redis.call('EXISTS', KEYS[3]) == 1 then
+  return {2, redis.call('TTL', KEYS[3])}
+end
+if redis.call('EXISTS', KEYS[2]) == 1 then
+  return {1, redis.call('TTL', KEYS[2])}
+end
+local count = redis.call('HINCRBY', KEYS[1], ARGV[1], 1)
+redis.call('SET', KEYS[2], '1', 'EX', ARGV[2])
+redis.call('SET', KEYS[3], '1', 'EX', ARGV[3])
+return {0, count}
+`;
+
+type ImpressionResult =
+  | { kind: "created"; count: number }
+  | { kind: "cooldown" | "duplicate"; retryAfter: number };
+
+export async function leaveVisitorImpression(
+  tag: string,
+  ip: string
+): Promise<ImpressionResult> {
+  const visitor = createHash("sha256").update(ip).digest("hex");
+  const word = createHash("sha256").update(tag).digest("hex");
+  const [result, value] = await kv.eval<
+    [string, number, number],
+    [number, number]
+  >(
+    LEAVE_IMPRESSION_SCRIPT,
+    [
+      IMPRESSIONS_KEY,
+      `impressions:cooldown:${visitor}`,
+      `impressions:seen:${visitor}:${word}`,
+    ],
+    [
+      `${IMPRESSION_FIELD_PREFIX}${tag}`,
+      IMPRESSION_COOLDOWN_SECONDS,
+      IMPRESSION_DUPLICATE_SECONDS,
+    ]
+  );
+  if (result === 0) return { kind: "created", count: value };
+  return {
+    kind: result === 2 ? "duplicate" : "cooldown",
+    retryAfter: Math.max(1, value),
+  };
 }
 
 /* 簡易 IP rate limit：incr 後第一次設 TTL（沒有 TTL 的舊 key 永遠不會過期），

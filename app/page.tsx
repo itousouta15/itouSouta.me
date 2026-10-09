@@ -18,6 +18,7 @@ import BadgeShape from "./components/home/BadgeShape";
 import NameRotator from "./components/home/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
 import ViewportAnimations from "./components/home/ViewportAnimations";
+import VisitorImpressionsCard from "./components/home/VisitorImpressionsCard";
 
 /* 首頁之前沒有自己的 metadata，整頁靠繼承 layout 的 default title「itouSouta.me」
    ——只有一個網域名、完全沒描述這頁是什麼，Google 判定它沒用，就自己拿 <h1> 的
@@ -194,6 +195,9 @@ function HomeContent() {
             ))}
           </div>
         </ViewportAnimations>
+
+        {/* Visitor impressions */}
+        <VisitorImpressionsCard />
 
         {/* Bento: nav cards */}
         <div className="bento">

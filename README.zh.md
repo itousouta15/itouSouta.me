@@ -11,6 +11,7 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 ## 功能特色
 
 - 首頁採個人檔案風格，含 Discord 即時狀態、主題感知視覺效果與專案導覽。
+- 首頁訪客留印牆：輸入印象詞，文字雲隨機排列；hover 放大並顯示次數，資料儲存在 Vercel KV。
 - 雜談動態牆整合 Discord 貼文、Threads 貼文與 GitHub 事件三種來源。
 - 小說、漫畫、動畫、VTuber 喜好清單，以及由 Spotify 驅動的音樂資料。
 - 專案展示牆，支援篩選、模態詳情與 GitHub 專案資訊。
@@ -48,6 +49,7 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 - `/api/vtuber-live` 檢查 VTuber 開台狀態，結果短時間快取。
 - 留言板（`/api/guestbook`，顯示在每一頁底部）直接讀寫 Vercel KV，取代了先前透過代理連到部落格留言伺服器的做法。回覆採串接式，若被回覆者留了 email（或用 GitHub 登入並授權了 `user:email` scope），會觸發一封 Resend 通知信。
 - `/api/reactions` 提供 `/writing` 文章的按讚計數。
+- `/api/impressions` 提供首頁留印牆的共用印象與計數，沿用既有 KV 憑證；同 IP 需間隔 30 秒，同詞 24 小時內只計數一次。
 - `public/sw.js` 預先快取 `/` 與 `/offline`，做最基本的離線備援；只在正式環境註冊，因為開發模式下 Next 每次重建都會換 chunk 檔名，stale-while-revalidate 的 Service Worker 反而會讓頁面卡死。
 - `/api/badge/*` 產生 shields.io 風格的 SVG（最新文章標題、Discord 狀態、GitHub 星數總和），可以嵌到其他 README 或頁面。
 - 專案卡片在可取得時使用 GitHub API 資料，否則優雅降級。
