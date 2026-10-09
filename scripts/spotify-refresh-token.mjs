@@ -16,9 +16,8 @@
 // production，已移除。要換別的回調位址就設 SPOTIFY_REDIRECT_URI（非本機回環位址時
 // 這支 script 只會印出授權網址，收 code 得自己來）。
 //
-// SCOPE 含 user-read-currently-playing，是給「目前正在聽」功能用的（見
-// app/lib/spotify.ts 的 getCurrentlyPlaying）。舊的 refresh token 若是在加這個
-// scope 之前產生的，得重新跑一次這支 script 換新 token，否則會被 Spotify 拒絕。
+// user-read-currently-playing 給目前播放狀態使用；user-read-recently-played
+// 給歌曲卡片的播放紀錄累計使用。舊 token 不會自動取得新增權限，需重新授權。
 
 import http from "node:http";
 
@@ -33,7 +32,8 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
 
 const REDIRECT_URI =
   process.env.SPOTIFY_REDIRECT_URI ?? "http://127.0.0.1:8888/callback";
-const SCOPE = "user-top-read user-read-currently-playing";
+const SCOPE =
+  "user-top-read user-read-currently-playing user-read-recently-played";
 
 const authUrl =
   "https://accounts.spotify.com/authorize?" +

@@ -15,9 +15,8 @@ const NAV_LINKS = [
 ];
 
 const PROJECT_LINKS = [
-  { label: "itouLinks", href: "https://links.itousouta.me" },
+  { label: "itouMD", href: "https://md.itousouta.me" },
   { label: "itouSlides", href: "https://slides.itousouta.me/" },
-  { label: "itouCards", href: "https://cards.itousouta.me/" },
   { label: "itouBLoGa", href: "https://blog.itousouta.me/" },
   { label: "itouOJ", href: "https://oj.itousouta.me/" },
 ];
@@ -35,7 +34,6 @@ const SOCIAL_LINKS = [
     href: "https://linkedin.itousouta.me",
   },
   { icon: "x", label: "X", href: "https://x.com/itou_souta15" },
-  { icon: "discord", label: "Discord", href: "https://dc.itousouta.me" },
   { icon: "telegram", label: "Telegram", href: "https://t.me/itousouta15" },
 ];
 

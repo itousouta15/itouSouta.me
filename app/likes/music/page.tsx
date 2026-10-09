@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import PageHead from "../../components/PageHead";
-import LikeFilterGrid from "../../components/likes/LikeFilterGrid";
-import { getTopTracks } from "../../lib/spotify";
-import type { Like } from "../../data";
+import MusicGrid from "../../components/likes/MusicGrid";
+import MusicRecordingNote from "../../components/likes/MusicRecordingNote";
+import { getMusicSnapshot } from "../../lib/music";
 import { pageMetadata } from "../../lib/seo";
 
 const description =
@@ -18,20 +17,13 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function MusicDetailPage() {
-  const topAlbums = await getTopTracks({ limit: 50, timeRange: "long_term" });
-  const items: Like[] = (topAlbums ?? []).map((a) => ({
-    title: a.title,
-    sub: a.artist,
-    cover: a.cover,
-    href: a.href,
-  }));
+  const music = await getMusicSnapshot({ limit: 50, timeRange: "long_term" });
 
   return (
     <section style={{ paddingBottom: 8 }}>
       <PageHead kicker="MUSIC" title="音樂" back="/likes" />
-      <Suspense fallback={null}>
-        <LikeFilterGrid items={items} layout="square" />
-      </Suspense>
+      <MusicRecordingNote recording={music.recording} />
+      <MusicGrid tracks={music.tracks} />
     </section>
   );
 }

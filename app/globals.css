@@ -3830,7 +3830,81 @@ body.site-revealed .header {
 .like-card--square .like-sub {
   font-size: 12px;
 }
-/* Music: horizontally scrolling row of like-card carousels (Spotify top tracks) */
+/* Music: 專用歌曲卡片，封面／排行／已同步的個人播放紀錄 */
+.music-card .like-title {
+  margin: 0;
+  font-weight: 700;
+}
+.music-card .like-sub {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  min-height: 2.8em;
+  overflow: hidden;
+  color: var(--dim);
+}
+.music-card .music-rank {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 8px;
+  background: var(--panel);
+  color: var(--tx);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.music-play-count {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--bd);
+  color: var(--dim);
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.music-play-count svg {
+  flex: none;
+  align-self: center;
+  color: var(--blue);
+}
+.music-play-count strong {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--blue);
+}
+.music-count-pending {
+  font-size: 12px;
+}
+.music-recording-note {
+  margin: 0 0 18px;
+  color: var(--dim);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.music-sort {
+  padding: 10px 12px;
+  max-width: 100%;
+  border: 1px solid var(--bd2);
+  background: var(--inset);
+  color: var(--tx);
+  font: inherit;
+  font-size: 13px;
+}
+.music-toolbar {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.music-toolbar .likes-search {
+  flex: 1;
+  min-width: min(200px, 100%);
+  max-width: 380px;
+}
 .music-artist-row {
   display: flex;
   gap: 20px;

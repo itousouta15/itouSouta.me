@@ -4,7 +4,7 @@ import LikeCategorySection from "../components/likes/LikeCategorySection";
 import MusicSection from "../components/likes/MusicSection";
 import VtuberLiveWarmup from "../components/likes/VtuberLiveWarmup";
 import { LIKE_CATEGORIES } from "../data";
-import { getTopTracks } from "../lib/spotify";
+import { getMusicSnapshot } from "../lib/music";
 import { pageMetadata } from "../lib/seo";
 
 const description = "itouSouta 喜歡的東西們 (╯✧∇✧)╯";
@@ -18,7 +18,7 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function LikesPage() {
-  const topAlbums = await getTopTracks({ limit: 12, timeRange: "long_term" });
+  const music = await getMusicSnapshot({ limit: 12, timeRange: "long_term" });
 
   return (
     <section style={{ paddingBottom: 8 }}>
@@ -27,7 +27,7 @@ export default async function LikesPage() {
       {LIKE_CATEGORIES.map((cat, i) => (
         <LikeCategorySection cat={cat} key={cat.key} priorityImages={i === 0} />
       ))}
-      {topAlbums && topAlbums.length > 0 && <MusicSection albums={topAlbums} />}
+      {music.tracks.length > 0 && <MusicSection {...music} />}
     </section>
   );
 }

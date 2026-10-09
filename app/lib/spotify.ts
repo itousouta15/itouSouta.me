@@ -10,6 +10,7 @@ const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const API_URL = "https://api.spotify.com/v1";
 
 export interface TopTrack {
+  id: string;
   title: string;
   artist: string;
   cover: string;
@@ -67,6 +68,7 @@ async function getAccessToken(): Promise<AccessTokenResult> {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body,
+        signal: AbortSignal.timeout(10000),
       });
       if (!res.ok) {
         return { token: null, reason: `token-refresh-http-${res.status}` };
@@ -116,16 +118,70 @@ export async function getTopTracks(options?: {
 
     const tracks: TopTrack[] = (json.items ?? [])
       .map((t: any) => ({
+        id: t.id ?? "",
         title: t.name ?? "",
         artist: (t.artists ?? []).map((a: any) => a.name).join(", "),
         // album.images 依序由大到小，第一張是最大（通常 640px）
         cover: t.album?.images?.[0]?.url ?? "",
         href: t.external_urls?.spotify ?? "",
       }))
-      .filter((t: TopTrack) => t.title && t.cover);
+      .filter((t: TopTrack) => t.id && t.title && t.cover);
     return tracks.length ? tracks : null;
   } catch {
     return null;
+  }
+}
+
+export interface RecentPlay {
+  trackId: string;
+  playedAt: string;
+}
+
+export interface RecentPlaysResult {
+  plays: RecentPlay[] | null;
+  reason?: string;
+}
+
+// Spotify 沒有個人累計次數；只使用官方回傳的 played_at 紀錄來累加。
+// 需 user-read-recently-played，舊 token 的授權不會因修改程式自動增加。
+export async function getRecentlyPlayedTracks(): Promise<RecentPlaysResult> {
+  const { token, reason } = await getAccessToken();
+  if (!token) return { plays: null, reason };
+  try {
+    const response = await fetch(
+      `${API_URL}/me/player/recently-played?limit=50`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+        signal: AbortSignal.timeout(10000),
+      }
+    );
+    if (response.status === 401) invalidateToken(token);
+    if (!response.ok)
+      return { plays: null, reason: `history-http-${response.status}` };
+    const data = await response.json();
+    if (!Array.isArray(data.items))
+      return { plays: null, reason: "invalid-history" };
+    const plays: RecentPlay[] = [];
+    for (const item of data.items) {
+      if (
+        item?.track?.is_local ||
+        (item?.track?.type && item.track.type !== "track") ||
+        typeof item?.track?.id !== "string" ||
+        !/^[a-zA-Z0-9]{22}$/.test(item.track.id) ||
+        typeof item.played_at !== "string"
+      )
+        continue;
+      const timestamp = Date.parse(item.played_at);
+      if (!Number.isFinite(timestamp)) continue;
+      plays.push({
+        trackId: item.track.id,
+        playedAt: new Date(timestamp).toISOString(),
+      });
+    }
+    return { plays };
+  } catch {
+    return { plays: null, reason: "history-fetch-exception" };
   }
 }
 

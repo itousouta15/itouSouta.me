@@ -1,0 +1,29 @@
+name: Sync Spotify play history
+
+on:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: spotify-play-history
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Collect recently played tracks
+        env:
+          SYNC_SECRET: ${{ secrets.SPOTIFY_SYNC_SECRET }}
+        run: |
+          if [ -z "$SYNC_SECRET" ]; then
+            echo "Set the SPOTIFY_SYNC_SECRET repository secret to enable scheduled collection."
+            exit 0
+          fi
+          curl --fail --silent --show-error --max-time 60 \
+            --header "Authorization: Bearer $SYNC_SECRET" \
+            "https://itousouta.me/api/spotify/sync"

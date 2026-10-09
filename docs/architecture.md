@@ -68,6 +68,14 @@ The workflow writes:
 
 `GithubContributionCard` selects the matching SVG for the current theme. On small screens, the graph can scroll horizontally and is moved by `useScrollLinkedHorizontalReveal` as the card enters the viewport.
 
+## Spotify Play History
+
+`MusicCard` is shared by the `/likes` music carousel and the searchable `/likes/music` grid. Spotify top-track rankings remain separate from recorded play counts. `getMusicSnapshot` combines the playlist with counts from KV, preserving `null` for unavailable statistics.
+
+`spotifyHistory.ts` fetches the latest 50 official history entries and atomically records each `(track ID, played_at)` once. A five-minute KV lease throttles collection across instances. The authenticated `/api/spotify/sync` endpoint is called every 15 minutes by `.github/workflows/spotify-history.yml`, so collection doesn't depend on visitors. Successful syncs revalidate both music surfaces.
+
+Counts are explicitly labeled as recorded history, not lifetime totals. Setup requires reauthorizing `user-read-recently-played` and configuring `SPOTIFY_SYNC_SECRET`; see [Spotify play history](spotify-play-history.md).
+
 ## Visitor Impressions
 
 The home page places `VisitorImpressionsCard` below the quote card. Visitors submit a word or phrase of up to 20 characters through the form; cloud words are display-only. Hovering or focusing a word enlarges it and reveals its count. The feature was inspired by [nnic52136-hash/.github.io](https://github.com/nnic52136-hash/.github.io); this implementation uses plain DOM text rather than a charting library.

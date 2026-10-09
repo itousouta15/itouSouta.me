@@ -2,11 +2,12 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import type { TopTrack } from "../../lib/spotify";
+import type { MusicSnapshot } from "../../lib/music";
 import { useHorizontalWheelScroll } from "../../hooks/useHorizontalWheelScroll";
-import LikeCard from "./LikeCard";
+import MusicCard from "./MusicCard";
+import MusicRecordingNote from "./MusicRecordingNote";
 
-export default function MusicSection({ albums }: { albums: TopTrack[] }) {
+export default function MusicSection({ tracks, recording }: MusicSnapshot) {
   const rowRef = useRef<HTMLDivElement>(null);
   useHorizontalWheelScroll(rowRef);
 
@@ -21,13 +22,14 @@ export default function MusicSection({ albums }: { albums: TopTrack[] }) {
           查看更多 →
         </Link>
       </div>
+      <MusicRecordingNote recording={recording} />
       <div className="music-artist-row" ref={rowRef} data-lenis-prevent-wheel>
-        {albums.map((a, i) => (
-          <LikeCard
-            l={{ title: a.title, sub: a.artist, cover: a.cover, href: a.href }}
+        {tracks.map((track, index) => (
+          <MusicCard
+            track={track}
             carousel
-            layout="square"
-            key={`${a.title}-${i}`}
+            priority={index < 2}
+            key={track.id}
           />
         ))}
       </div>

@@ -14,6 +14,7 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 - 首頁訪客留印牆：輸入印象詞，文字雲隨機排列；hover 放大並顯示次數，資料儲存在 Vercel KV。
 - 雜談動態牆整合 Discord 貼文、Threads 貼文與 GitHub 事件三種來源。
 - 小說、漫畫、動畫、VTuber 喜好清單，以及由 Spotify 驅動的音樂資料。
+- 音樂卡片顯示由 Spotify 最近播放紀錄累積的「已記錄次數」，支援搜尋與依次數排序；啟用方式見 [播放紀錄設定](docs/spotify-play-history.md)。
 - 專案展示牆，支援篩選、模態詳情與 GitHub 專案資訊。
 - 每一頁底部都有 KV 儲存的留言板，支援串接回覆、選填的「用 GitHub 登入」，以及有人回覆你的留言時透過 Resend 寄出的通知信。
 - `/writing` 文章的按讚計數。
@@ -91,11 +92,14 @@ npm run lint
 
 缺少選填憑證時網站會優雅降級，對應區塊會退回備援資料或直接不顯示，而不會整個壞掉。
 
+播放紀錄累計需新增 `user-read-recently-played` 授權；排程另需在 Vercel 與 GitHub Actions 設定相同的 `SPOTIFY_SYNC_SECRET`，詳見 [設定步驟](docs/spotify-play-history.md)。
+
 ## 文件
 
 - [Architecture](docs/architecture.md)（英文）
 - [VTuber Live Status](docs/vtuber-live.md)（英文）
 - [Easter Eggs](docs/easter-eggs.md)（英文）
+- [Spotify 播放紀錄設定](docs/spotify-play-history.md)
 
 ## 部署
 
