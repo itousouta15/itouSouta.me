@@ -435,31 +435,26 @@ body.site-revealed .site-loader {
    全都罩在同一層質感裡，卡片與文字不會突兀地「太乾淨」。pointer-events: none
    不擋任何互動。
 
-   紋理用 inline SVG feTurbulence（fractalNoise，stitchTiles 讓 tile 接縫連續）
-   當 background-image，data-URI 整段不到 400 bytes，零額外 request。
-
-   靜態顆粒：固定不動，零動畫成本。mix-blend-mode: overlay 讓同一份灰階顆粒在
-   深淺兩主題都有「疊上去」的效果而不是一層灰霧；light 主題底下透明度再降一點，
-   避免淺底看起來髒。 */
+   紋理的 SVG 在光柵化時把灰階轉成帶 alpha 的黑／白顆粒，深淺主題分別校準
+   強度。一般透明合成取代全螢幕 mix-blend-mode，不需要隨捲動讀取背景混色。
+   240px 的靜態 tile 用 stitchTiles 保持接縫連續。 */
 .noise-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.3;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("/assets/brand/noise-dark.svg");
   background-size: 240px 240px;
 }
-/* 手機的全螢幕 blend layer 會讓捲動時每幀都要重算合成；小螢幕優先保留跟手感。 */
+/* 手機維持省略噪點層，減少全螢幕透明合成。 */
 @media (max-width: 760px) {
   .noise-overlay {
     display: none;
   }
 }
-/* 深淺主題的顆粒輪廓是同一份灰階紋理，blend 過後 light 底子反差較大，降一點 */
+/* 相同的紋理，淺色主題降低黑色顆粒、提高白色顆粒的 alpha。 */
 :root[data-theme="light"] .noise-overlay {
-  opacity: 0.22;
+  background-image: url("/assets/brand/noise-light.svg");
 }
 /* ===========================================================================
    Header
@@ -2193,6 +2188,13 @@ body.site-revealed .header {
 .hero-face:hover {
   animation: itWiggle 0.75s ease-in-out;
 }
+/* 只暫停這兩張首頁卡片的裝飾動畫，不影響任何捲動連動或進場動畫。 */
+[data-animations-paused] .name-rotator-track,
+[data-animations-paused] .tiles-row,
+[data-animations-paused] .hero-face-track,
+[data-animations-paused] .hero-face {
+  animation-play-state: paused;
+}
 .socials {
   display: flex;
   gap: 8px;
@@ -2824,10 +2826,12 @@ body.site-revealed .header {
 }
 .spotify-bar span {
   display: block;
+  width: 100%;
   height: 100%;
   background: #1db954;
   border-radius: 2px;
-  transition: width 1s linear;
+  transform-origin: left;
+  transition: transform 1s linear;
 }
 
 /* Konami 彩蛋：五彩紙屑（全站 fixed overlay） */
@@ -2946,10 +2950,12 @@ body.site-revealed .header {
 }
 .now-playing-progress span {
   display: block;
+  width: 100%;
   height: 100%;
   background: #1db954;
   border-radius: 2px;
-  transition: width 1s linear;
+  transform-origin: left;
+  transition: transform 1s linear;
 }
 @media (max-width: 760px) {
   .now-playing {

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 // 只是「稍微」跟著滑鼠瞄過去的感覺，不是真的貼著游標——位移量夾在極小範圍內，
-// 用 requestAnimationFrame 節流，避免 mousemove 高頻率觸發把 React state 灌爆
+// 座標量測與 DOM 位移都放在同一個 rAF，mousemove 不觸發 React render。
 const MAX_OFFSET = 6;
 const FOLLOW_STRENGTH = 0.04;
 
@@ -25,29 +25,45 @@ function clamp(v: number, min: number, max: number) {
 
 export default function HeroFace() {
   const trackRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [leaving, setLeaving] = useState(false);
   const [wink, setWink] = useState<"left" | "right" | null>(null);
   const winkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
     let raf = 0;
     let pending: { x: number; y: number } | null = null;
+    let lastX = 0;
+    let lastY = 0;
 
     const apply = () => {
-      if (pending) setOffset(pending);
       raf = 0;
+      if (!pending || document.visibilityState !== "visible") return;
+      const rect = el.getBoundingClientRect();
+      // 隱藏的手機側欄、已離開畫面的臉都不需要更新位移。
+      if (!rect.width || rect.bottom <= 0 || rect.top >= window.innerHeight)
+        return;
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const x = clamp(
+        (pending.x - cx) * FOLLOW_STRENGTH,
+        -MAX_OFFSET,
+        MAX_OFFSET
+      );
+      const y = clamp(
+        (pending.y - cy) * FOLLOW_STRENGTH,
+        -MAX_OFFSET,
+        MAX_OFFSET
+      );
+      if (x === lastX && y === lastY) return;
+      el.style.transform = `translate(${x}px, ${y}px)`;
+      lastX = x;
+      lastY = y;
     };
 
     const handleMove = (e: MouseEvent) => {
-      const rect = trackRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      pending = {
-        x: clamp((e.clientX - cx) * FOLLOW_STRENGTH, -MAX_OFFSET, MAX_OFFSET),
-        y: clamp((e.clientY - cy) * FOLLOW_STRENGTH, -MAX_OFFSET, MAX_OFFSET),
-      };
+      pending = { x: e.clientX, y: e.clientY };
       if (!raf) raf = requestAnimationFrame(apply);
     };
 
@@ -100,7 +116,7 @@ export default function HeroFace() {
           : "normal";
 
   // 三層結構是刻意分開的：
-  // - 最外層只管跟著滑鼠位移（JS 算出來的 inline transform）
+  // - 最外層只管跟著滑鼠位移（rAF 直接更新 transform）
   // - 中間層只管快消失時持續搖擺（CSS animation 控制 transform，直接綁 leaving，
   //   不是切換瞬間搖一下就停——只要還在快消失的區間就一直搖）
   //   兩個都會動 transform，疊在同一個元素上會互相打架（跟之前開台紅框被
@@ -113,12 +129,7 @@ export default function HeroFace() {
   // 順便補 aria-hidden：這是純裝飾的顏文字，鍵盤本來就摸不到（沒有 tabIndex、
   // 也不是 button），螢幕閱讀器卻會把四張臉一張一張唸出來。
   return (
-    <div
-      className="hero-face-mouse"
-      ref={trackRef}
-      style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
-      aria-hidden="true"
-    >
+    <div className="hero-face-mouse" ref={trackRef} aria-hidden="true">
       <div
         className={`hero-face-track${leaving ? " hero-face-track--wiggle" : ""}`}
         onClick={handleClick}

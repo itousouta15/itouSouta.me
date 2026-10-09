@@ -17,6 +17,7 @@ import HomeQuoteFont from "./components/home/HomeQuoteFont";
 import BadgeShape from "./components/home/BadgeShape";
 import NameRotator from "./components/home/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
+import ViewportAnimations from "./components/home/ViewportAnimations";
 
 /* 首頁之前沒有自己的 metadata，整頁靠繼承 layout 的 default title「itouSouta.me」
    ——只有一個網域名、完全沒描述這頁是什麼，Google 判定它沒用，就自己拿 <h1> 的
@@ -119,7 +120,7 @@ function HomeContent() {
       {/* Right column */}
       <div className="right-col">
         {/* Hero card */}
-        <div className="card hero">
+        <ViewportAnimations className="card hero">
           <div className="hero-main">
             <div className="hero-greet">ciallo (∠·ω )⌒★</div>
             <h1 className="hero-title">
@@ -148,10 +149,10 @@ function HomeContent() {
           <div className="hero-side">
             <HeroFace />
           </div>
-        </div>
+        </ViewportAnimations>
 
         {/* Quote + tiles strip */}
-        <div className="card quote-card">
+        <ViewportAnimations className="card quote-card">
           <div className="quote-main">
             <div className="quote-text">
               情熱を失っては、
@@ -192,7 +193,7 @@ function HomeContent() {
               </div>
             ))}
           </div>
-        </div>
+        </ViewportAnimations>
 
         {/* Bento: nav cards */}
         <div className="bento">

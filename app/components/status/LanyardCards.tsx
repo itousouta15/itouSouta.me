@@ -10,6 +10,7 @@ import {
 import { DISCORD_USER_ID } from "../../siteConfig";
 import { discordArtThumb } from "../../lib/imageThumb";
 import CrossfadeImage from "./CrossfadeImage";
+import SpotifyProgress from "./SpotifyProgress";
 
 /* ---------------------------------------------------------------------------
    Minimal Lanyard typings (only the fields we use)
@@ -264,7 +265,6 @@ export function ProfileStatusDot() {
 export function ProfileStatus() {
   const state = useLanyardState();
   const npState = useNowPlayingState();
-  const [now, setNow] = useState(() => Date.now());
   const [expanded, setExpanded] = useState(false);
 
   const ready = state.kind === "ready" ? state.data : null;
@@ -276,24 +276,6 @@ export function ProfileStatus() {
   const activities = (ready?.activities ?? []).filter(
     (a) => a.type !== 4 && a.name !== "Spotify"
   );
-
-  useEffect(() => {
-    if (!spotify?.isPlaying) return;
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-    // 只跟著曲目本身走，不跟著整個 track 物件參照：每次輪詢回來的新物件參照都
-    // 重建一次計時器的話，進度條就會每次輪詢就抖一下
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spotify?.isPlaying, spotify?.song, spotify?.artist]);
-
-  let progress = 0;
-  if (spotify && spotify.durationMs > 0) {
-    const elapsedSinceFetch = spotify.isPlaying ? now - spotify.fetchedAt : 0;
-    progress = Math.min(
-      1,
-      Math.max(0, (spotify.progressMs + elapsedSinceFetch) / spotify.durationMs)
-    );
-  }
 
   // Rich activity layout: when `details` exists it is the main line and the
   // app name moves into the kicker; otherwise the name is the main line.
@@ -345,9 +327,7 @@ export function ProfileStatus() {
           {spotify.artist}
         </div>
         {spotify.durationMs > 0 && (
-          <div className="spotify-bar">
-            <span style={{ width: `${progress * 100}%` }} />
-          </div>
+          <SpotifyProgress track={spotify} className="spotify-bar" />
         )}
       </div>
     </div>
