@@ -29,6 +29,11 @@ const SOCIAL_LINKS = [
     href: "https://www.instagram.com/itou.souta15",
   },
   { icon: "github", label: "GitHub", href: "https://github.com/itousouta15" },
+  {
+    icon: "linkedin",
+    label: "LinkedIn",
+    href: "https://linkedin.itousouta.me",
+  },
   { icon: "x", label: "X", href: "https://x.com/itou_souta15" },
   { icon: "discord", label: "Discord", href: "https://dc.itousouta.me" },
   { icon: "telegram", label: "Telegram", href: "https://t.me/itousouta15" },

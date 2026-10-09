@@ -5158,6 +5158,10 @@ a.guestbook-nick:hover {
   mask-image: url("/assets/icons/si-github.svg");
   -webkit-mask-image: url("/assets/icons/si-github.svg");
 }
+.si-linkedin .footer-si-icon {
+  mask-image: url("/assets/icons/si-linkedin.svg");
+  -webkit-mask-image: url("/assets/icons/si-linkedin.svg");
+}
 .si-x .footer-si-icon {
   mask-image: url("/assets/icons/si-x.svg");
   -webkit-mask-image: url("/assets/icons/si-x.svg");
