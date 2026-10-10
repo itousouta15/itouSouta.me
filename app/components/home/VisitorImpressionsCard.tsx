@@ -284,7 +284,7 @@ export default function VisitorImpressionsCard() {
               >
                 <span>{tag}</span>
                 <span className="impressions-count" aria-hidden="true">
-                   {count} 次
+                  {count} 次
                 </span>
                 <span className="sr-only"> {count} 次</span>
               </span>
