@@ -1,6 +1,5 @@
-import { Fragment } from "react";
 import Link from "next/link";
-import { MARQUEE } from "../../data";
+import FooterMarquee from "./FooterMarquee";
 import VisitorCounter from "./VisitorCounter";
 
 const NAV_LINKS = [
@@ -40,22 +39,7 @@ const SOCIAL_LINKS = [
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="marquee">
-        {[0, 1].map((g) => (
-          <div
-            className="marquee-group"
-            key={g}
-            aria-hidden={g === 1 ? true : undefined}
-          >
-            {MARQUEE.map((m, i) => (
-              <Fragment key={i}>
-                <span>{m}</span>
-                <span className="star">★</span>
-              </Fragment>
-            ))}
-          </div>
-        ))}
-      </div>
+      <FooterMarquee />
 
       <div className="footer-inner">
         <div className="footer-grid">
