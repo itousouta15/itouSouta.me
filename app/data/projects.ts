@@ -105,6 +105,20 @@ export const PROJECTS: Project[] = [
     siteUrl: "https://itousouta.me",
   },
   {
+    slug: "THJCC Website",
+    kicker: "WEB",
+    color: "blue",
+    title: "THJCC 官方網站",
+    desc: "THJCC 第四屆臺灣高中職聯合資安競賽 官方網站",
+    longDesc:
+      "臺灣高中職聯合資安競賽（THJCC）的常駐官網，網站以 Next.js App Router、React 與 TypeScript 建置",
+    tags: ["Next.js", "TypeScript", "React"],
+    icon: "nextjs",
+    href: "https://github.com/official-scint/thjcc.org",
+    cover: "/assets/projects/THJCC.webp",
+    siteUrl: "https://thjcc.itousouta.me",
+  },
+  {
     slug: "itoubloga",
     kicker: "BLOG",
     color: "blue",
@@ -164,6 +178,32 @@ export const PROJECTS: Project[] = [
     icon: "nextjs",
     href: "https://github.com/itousouta15/itouSandBox",
     cover: "/assets/projects/OJ.webp",
+  },
+  {
+    slug: "meow-plus-plus",
+    kicker: "LANGUAGE",
+    color: "blue",
+    title: "喵++（Meow-plus-plus）",
+    desc: "支援中文語法的程式語言，附 WebAssembly 遊樂場與單步除錯器",
+    longDesc:
+      "喵++（原名 itouLang）是一個採用 C++ 風格結構、可用中文撰寫的小型程式語言。以 C++17 實作詞法與語法分析、名稱解析、漸進式型別檢查、語法樹直譯器及位元組碼虛擬機，支援閉包、遞迴與串流輸入輸出。同一份核心可編譯為原生 CLI 或 WebAssembly，在瀏覽器 Worker 中執行，遊樂場提供中斷點、單步執行、呼叫堆疊與變數檢視。",
+    tags: ["C++", "WebAssembly", "JavaScript", "itou 系列"],
+    icon: "cpp",
+    href: "https://github.com/itousouta15/Meow-plus-plus",
+    cover: "/assets/projects/Meow-plus-plus.svg",
+  },
+  {
+    slug: "itoukv",
+    kicker: "DATABASE",
+    color: "blue",
+    title: "itouKV",
+    desc: "從零實作的 C++20 持久化鍵值儲存引擎",
+    longDesc:
+      "以 C++20 從零打造的嵌入式 key-value 儲存引擎，提供函式庫與 CLI，沒有外部 C++ 套件依賴。支援同步 WAL、重啟恢復、MemTable、不可變 SSTable、稀疏索引、Bloom filter、範圍查詢與原子 WriteBatch；手動 compaction 透過串流合併資料及原子 manifest 切換世代，並以模型比對、資料損毀與程序故障測試驗證恢復行為。",
+    tags: ["C++", "Database", "itou 系列"],
+    icon: "cpp",
+    href: "https://github.com/itousouta15/itouKV",
+    cover: "/assets/projects/itouKV.svg",
   },
   {
     slug: "itouOJ 收件程式",

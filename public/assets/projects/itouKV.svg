@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">itouKV</title>
+  <desc id="desc">A durable embedded key-value store in C++20 with WAL, SSTables and atomic WriteBatch.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1">
+      <stop stop-color="#162d36"/>
+      <stop offset="1" stop-color="#141820"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1050" cy="100" r="260" fill="#80d6c4" opacity=".05"/>
+  <g font-family="system-ui, sans-serif">
+    <text x="100" y="165" fill="#80d6c4" font-size="22" letter-spacing="5">DATABASE / C++20 / EMBEDDED</text>
+    <text x="94" y="280" fill="#f0fff9" font-size="82" font-weight="700">itouKV</text>
+    <text x="100" y="345" fill="#b3cec9" font-size="28">A durable key-value store, built from scratch.</text>
+    <g fill="#1b373c" stroke="#3b6768">
+      <rect x="100" y="405" width="260" height="80" rx="16"/>
+      <rect x="470" y="405" width="260" height="80" rx="16"/>
+      <rect x="840" y="405" width="260" height="80" rx="16"/>
+    </g>
+    <path d="M380 445h70m-12-10 12 10-12 10m312-10h70m-12-10 12 10-12 10" fill="none" stroke="#80d6c4" stroke-width="3"/>
+    <g fill="#d7f7ee" font-size="26" text-anchor="middle">
+      <text x="230" y="454">Write-Ahead Log</text>
+      <text x="600" y="454">MemTable</text>
+      <text x="970" y="454">SSTable</text>
+    </g>
+  </g>
+</svg>
