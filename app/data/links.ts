@@ -185,4 +185,10 @@ export const LINKS: LinkItem[] = [
     avatar:
       "https://www.gravatar.com/avatar/64a851c812177321ca40d671ad3c014a?d=mp&s=240",
   },
+  {
+    name: "原阿",
+    handle: "來世所及，皆為體驗",
+    href: "https://github-io-sigma-ten.vercel.app/",
+    avatar: "https://github-io-sigma-ten.vercel.app/assets/brand/avatar.webp",
+  },
 ];
