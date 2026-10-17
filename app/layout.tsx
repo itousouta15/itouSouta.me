@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+import "katex/dist/katex.min.css";
+import "./components/writing/writing.css";
 import ThemeProvider from "./components/ThemeProvider";
 import Header from "./components/chrome/Header";
 import Footer from "./components/chrome/Footer";
@@ -107,6 +109,12 @@ export default function RootLayout({
           type="application/rss+xml"
           title={`${SITE_TITLE} 雜談`}
           href="/feed.xml"
+        />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="itouBLoGa 文章"
+          href="/writing/feed.xml"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

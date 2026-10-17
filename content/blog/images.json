@@ -1,0 +1,2090 @@
+{
+  "/assets/blog/originals/67.jpg": {
+    "width": 567,
+    "height": 352,
+    "variants": [
+      {
+        "src": "/assets/blog/images/ce7f0193ce0d9b-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/ce7f0193ce0d9b-567.webp",
+        "width": 567
+      }
+    ]
+  },
+  "/assets/blog/originals/FB/hexo.webp": {
+    "width": 1889,
+    "height": 723,
+    "variants": [
+      {
+        "src": "/assets/blog/images/3d2436f494cf6d-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/3d2436f494cf6d-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/3d2436f494cf6d-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FB/主頁.webp": {
+    "width": 1919,
+    "height": 968,
+    "variants": [
+      {
+        "src": "/assets/blog/images/1e6a02c2702ace-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/1e6a02c2702ace-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/1e6a02c2702ace-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/1.webp": {
+    "width": 489,
+    "height": 947,
+    "variants": [
+      {
+        "src": "/assets/blog/images/6f4a767a2e8d2b-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/6f4a767a2e8d2b-489.webp",
+        "width": 489
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF.png": {
+    "width": 673,
+    "height": 466,
+    "variants": [
+      {
+        "src": "/assets/blog/images/18d5eb576f9c84-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/18d5eb576f9c84-673.webp",
+        "width": 673
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/10.webp": {
+    "width": 1755,
+    "height": 888,
+    "variants": [
+      {
+        "src": "/assets/blog/images/78a25da65d10e8-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/78a25da65d10e8-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/78a25da65d10e8-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/11.webp": {
+    "width": 256,
+    "height": 88,
+    "variants": [
+      {
+        "src": "/assets/blog/images/a0b9692f0ded95-256.webp",
+        "width": 256
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/13.webp": {
+    "width": 642,
+    "height": 725,
+    "variants": [
+      {
+        "src": "/assets/blog/images/024cbec42fda0e-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/024cbec42fda0e-642.webp",
+        "width": 642
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/12.webp": {
+    "width": 1126,
+    "height": 903,
+    "variants": [
+      {
+        "src": "/assets/blog/images/b015b5c06ab25d-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/b015b5c06ab25d-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/b015b5c06ab25d-1126.webp",
+        "width": 1126
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/14.webp": {
+    "width": 790,
+    "height": 474,
+    "variants": [
+      {
+        "src": "/assets/blog/images/c322c106bbb114-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/c322c106bbb114-790.webp",
+        "width": 790
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/15.webp": {
+    "width": 897,
+    "height": 348,
+    "variants": [
+      {
+        "src": "/assets/blog/images/b167c6e733bd9b-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/b167c6e733bd9b-897.webp",
+        "width": 897
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/16.webp": {
+    "width": 779,
+    "height": 254,
+    "variants": [
+      {
+        "src": "/assets/blog/images/6b0588339dc150-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/6b0588339dc150-779.webp",
+        "width": 779
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/17.webp": {
+    "width": 488,
+    "height": 483,
+    "variants": [
+      {
+        "src": "/assets/blog/images/7f04104a56956c-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/7f04104a56956c-488.webp",
+        "width": 488
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/18.webp": {
+    "width": 1069,
+    "height": 424,
+    "variants": [
+      {
+        "src": "/assets/blog/images/32b4c62385bafe-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/32b4c62385bafe-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/32b4c62385bafe-1069.webp",
+        "width": 1069
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/19.webp": {
+    "width": 1916,
+    "height": 310,
+    "variants": [
+      {
+        "src": "/assets/blog/images/af873c5530da8f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/af873c5530da8f-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/af873c5530da8f-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/21.webp": {
+    "width": 800,
+    "height": 447,
+    "variants": [
+      {
+        "src": "/assets/blog/images/6adaea070cd21f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/6adaea070cd21f-800.webp",
+        "width": 800
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/2.webp": {
+    "width": 972,
+    "height": 656,
+    "variants": [
+      {
+        "src": "/assets/blog/images/14185425f9401f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/14185425f9401f-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/14185425f9401f-972.webp",
+        "width": 972
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/20.webp": {
+    "width": 1910,
+    "height": 657,
+    "variants": [
+      {
+        "src": "/assets/blog/images/25f4466dc56ace-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/25f4466dc56ace-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/25f4466dc56ace-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/24.webp": {
+    "width": 555,
+    "height": 194,
+    "variants": [
+      {
+        "src": "/assets/blog/images/be197e037f89c9-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/be197e037f89c9-555.webp",
+        "width": 555
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/23.webp": {
+    "width": 523,
+    "height": 562,
+    "variants": [
+      {
+        "src": "/assets/blog/images/a1ad9439b95e8e-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/a1ad9439b95e8e-523.webp",
+        "width": 523
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/22.webp": {
+    "width": 1907,
+    "height": 937,
+    "variants": [
+      {
+        "src": "/assets/blog/images/538f281ac33da1-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/538f281ac33da1-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/538f281ac33da1-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/26.webp": {
+    "width": 279,
+    "height": 109,
+    "variants": [
+      {
+        "src": "/assets/blog/images/4cf6571aae2761-279.webp",
+        "width": 279
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/27.webp": {
+    "width": 489,
+    "height": 182,
+    "variants": [
+      {
+        "src": "/assets/blog/images/73253b8ea9ac62-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/73253b8ea9ac62-489.webp",
+        "width": 489
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/25.webp": {
+    "width": 489,
+    "height": 201,
+    "variants": [
+      {
+        "src": "/assets/blog/images/54e21eb1ed7b2a-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/54e21eb1ed7b2a-489.webp",
+        "width": 489
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/29.webp": {
+    "width": 1200,
+    "height": 184,
+    "variants": [
+      {
+        "src": "/assets/blog/images/c10a7cf8d28562-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/c10a7cf8d28562-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/c10a7cf8d28562-1200.webp",
+        "width": 1200
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/3.webp": {
+    "width": 1226,
+    "height": 575,
+    "variants": [
+      {
+        "src": "/assets/blog/images/659095fcda4c95-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/659095fcda4c95-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/659095fcda4c95-1226.webp",
+        "width": 1226
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/28.webp": {
+    "width": 974,
+    "height": 557,
+    "variants": [
+      {
+        "src": "/assets/blog/images/5574c13ec0316e-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/5574c13ec0316e-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/5574c13ec0316e-974.webp",
+        "width": 974
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/30.webp": {
+    "width": 516,
+    "height": 224,
+    "variants": [
+      {
+        "src": "/assets/blog/images/7fb5c4e60bec4f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/7fb5c4e60bec4f-516.webp",
+        "width": 516
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/31.webp": {
+    "width": 553,
+    "height": 194,
+    "variants": [
+      {
+        "src": "/assets/blog/images/68aef537045ba9-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/68aef537045ba9-553.webp",
+        "width": 553
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/32.webp": {
+    "width": 1372,
+    "height": 210,
+    "variants": [
+      {
+        "src": "/assets/blog/images/956ea93e4a37f3-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/956ea93e4a37f3-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/956ea93e4a37f3-1372.webp",
+        "width": 1372
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/33.webp": {
+    "width": 1338,
+    "height": 148,
+    "variants": [
+      {
+        "src": "/assets/blog/images/a9a12a641e7bf4-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/a9a12a641e7bf4-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/a9a12a641e7bf4-1338.webp",
+        "width": 1338
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/35.webp": {
+    "width": 517,
+    "height": 689,
+    "variants": [
+      {
+        "src": "/assets/blog/images/90bb4089804988-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/90bb4089804988-517.webp",
+        "width": 517
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/34.webp": {
+    "width": 554,
+    "height": 551,
+    "variants": [
+      {
+        "src": "/assets/blog/images/f4817e4016c234-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/f4817e4016c234-554.webp",
+        "width": 554
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/36.webp": {
+    "width": 391,
+    "height": 259,
+    "variants": [
+      {
+        "src": "/assets/blog/images/9d598f4162e02b-391.webp",
+        "width": 391
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/37.webp": {
+    "width": 365,
+    "height": 306,
+    "variants": [
+      {
+        "src": "/assets/blog/images/dfc4c3e1836356-365.webp",
+        "width": 365
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/38.webp": {
+    "width": 582,
+    "height": 595,
+    "variants": [
+      {
+        "src": "/assets/blog/images/23fd812d74b529-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/23fd812d74b529-582.webp",
+        "width": 582
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/4.webp": {
+    "width": 749,
+    "height": 457,
+    "variants": [
+      {
+        "src": "/assets/blog/images/2cd301b051a3d0-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/2cd301b051a3d0-749.webp",
+        "width": 749
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/40.webp": {
+    "width": 440,
+    "height": 247,
+    "variants": [
+      {
+        "src": "/assets/blog/images/e798e298890204-440.webp",
+        "width": 440
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/39.webp": {
+    "width": 533,
+    "height": 314,
+    "variants": [
+      {
+        "src": "/assets/blog/images/23c399b0f54ac8-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/23c399b0f54ac8-533.webp",
+        "width": 533
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/43.webp": {
+    "width": 770,
+    "height": 526,
+    "variants": [
+      {
+        "src": "/assets/blog/images/308531c2cc7435-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/308531c2cc7435-770.webp",
+        "width": 770
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/42.webp": {
+    "width": 800,
+    "height": 677,
+    "variants": [
+      {
+        "src": "/assets/blog/images/6b9fee864ddc7f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/6b9fee864ddc7f-800.webp",
+        "width": 800
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/41.webp": {
+    "width": 791,
+    "height": 894,
+    "variants": [
+      {
+        "src": "/assets/blog/images/7246003f2d24ae-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/7246003f2d24ae-791.webp",
+        "width": 791
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/44.webp": {
+    "width": 1265,
+    "height": 223,
+    "variants": [
+      {
+        "src": "/assets/blog/images/e0c90f70e56887-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/e0c90f70e56887-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/e0c90f70e56887-1265.webp",
+        "width": 1265
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/46.webp": {
+    "width": 1250,
+    "height": 1212,
+    "variants": [
+      {
+        "src": "/assets/blog/images/277b2542282f54-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/277b2542282f54-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/277b2542282f54-1250.webp",
+        "width": 1250
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/45.webp": {
+    "width": 1440,
+    "height": 720,
+    "variants": [
+      {
+        "src": "/assets/blog/images/52d61021a73c99-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/52d61021a73c99-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/52d61021a73c99-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/49.webp": {
+    "width": 481,
+    "height": 684,
+    "variants": [
+      {
+        "src": "/assets/blog/images/757f72246620d1-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/757f72246620d1-481.webp",
+        "width": 481
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/48.webp": {
+    "width": 1919,
+    "height": 942,
+    "variants": [
+      {
+        "src": "/assets/blog/images/d6c20d20095eac-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/d6c20d20095eac-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/d6c20d20095eac-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/47.webp": {
+    "width": 2584,
+    "height": 1158,
+    "variants": [
+      {
+        "src": "/assets/blog/images/282f87ec6f90f7-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/282f87ec6f90f7-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/282f87ec6f90f7-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/5.webp": {
+    "width": 769,
+    "height": 460,
+    "variants": [
+      {
+        "src": "/assets/blog/images/1f280ffd020f96-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/1f280ffd020f96-769.webp",
+        "width": 769
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/50.webp": {
+    "width": 1166,
+    "height": 540,
+    "variants": [
+      {
+        "src": "/assets/blog/images/04597cd23a90e8-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/04597cd23a90e8-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/04597cd23a90e8-1166.webp",
+        "width": 1166
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/51.webp": {
+    "width": 4032,
+    "height": 3024,
+    "variants": [
+      {
+        "src": "/assets/blog/images/6aedb744acfd65-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/6aedb744acfd65-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/6aedb744acfd65-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/53.webp": {
+    "width": 421,
+    "height": 320,
+    "variants": [
+      {
+        "src": "/assets/blog/images/4285b71c1bb4a3-421.webp",
+        "width": 421
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/54.webp": {
+    "width": 521,
+    "height": 561,
+    "variants": [
+      {
+        "src": "/assets/blog/images/a4e7d8059cf07b-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/a4e7d8059cf07b-521.webp",
+        "width": 521
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/52.webp": {
+    "width": 554,
+    "height": 567,
+    "variants": [
+      {
+        "src": "/assets/blog/images/45bddb9ec69379-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/45bddb9ec69379-554.webp",
+        "width": 554
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/57.webp": {
+    "width": 323,
+    "height": 415,
+    "variants": [
+      {
+        "src": "/assets/blog/images/5362d9dc175e84-323.webp",
+        "width": 323
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/55.webp": {
+    "width": 475,
+    "height": 317,
+    "variants": [
+      {
+        "src": "/assets/blog/images/f4d2c93c546b00-475.webp",
+        "width": 475
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/56.webp": {
+    "width": 1189,
+    "height": 563,
+    "variants": [
+      {
+        "src": "/assets/blog/images/ea1d05cbf0d58f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/ea1d05cbf0d58f-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/ea1d05cbf0d58f-1189.webp",
+        "width": 1189
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/6.webp": {
+    "width": 787,
+    "height": 933,
+    "variants": [
+      {
+        "src": "/assets/blog/images/f9d917e4972292-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/f9d917e4972292-787.webp",
+        "width": 787
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/59.webp": {
+    "width": 1284,
+    "height": 845,
+    "variants": [
+      {
+        "src": "/assets/blog/images/c55f8adb7fc9d4-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/c55f8adb7fc9d4-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/c55f8adb7fc9d4-1284.webp",
+        "width": 1284
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/58.webp": {
+    "width": 874,
+    "height": 764,
+    "variants": [
+      {
+        "src": "/assets/blog/images/26223d72502dff-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/26223d72502dff-874.webp",
+        "width": 874
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/9.webp": {
+    "width": 847,
+    "height": 157,
+    "variants": [
+      {
+        "src": "/assets/blog/images/cca013c9c02c95-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/cca013c9c02c95-847.webp",
+        "width": 847
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/8.webp": {
+    "width": 905,
+    "height": 236,
+    "variants": [
+      {
+        "src": "/assets/blog/images/bc0651bf5c0330-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/bc0651bf5c0330-905.webp",
+        "width": 905
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/7.webp": {
+    "width": 1914,
+    "height": 1036,
+    "variants": [
+      {
+        "src": "/assets/blog/images/e6379837873830-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/e6379837873830-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/e6379837873830-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/a.webp": {
+    "width": 619,
+    "height": 74,
+    "variants": [
+      {
+        "src": "/assets/blog/images/31873b9b944d28-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/31873b9b944d28-619.webp",
+        "width": 619
+      }
+    ]
+  },
+  "/assets/blog/originals/FhCTF/b.webp": {
+    "width": 899,
+    "height": 70,
+    "variants": [
+      {
+        "src": "/assets/blog/images/0cdd7a865fc0fa-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/0cdd7a865fc0fa-899.webp",
+        "width": 899
+      }
+    ]
+  },
+  "/assets/blog/originals/Hexo/deploy.webp": {
+    "width": 845,
+    "height": 115,
+    "variants": [
+      {
+        "src": "/assets/blog/images/03954af69030cd-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/03954af69030cd-845.webp",
+        "width": 845
+      }
+    ]
+  },
+  "/assets/blog/originals/Hexo/hexo_github.webp": {
+    "width": 1896,
+    "height": 948,
+    "variants": [
+      {
+        "src": "/assets/blog/images/eed40508e862dd-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/eed40508e862dd-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/eed40508e862dd-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/Hexo/github.webp": {
+    "width": 1895,
+    "height": 837,
+    "variants": [
+      {
+        "src": "/assets/blog/images/7a00c8ebe60171-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/7a00c8ebe60171-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/7a00c8ebe60171-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/Hexo/hexo.webp": {
+    "width": 1919,
+    "height": 894,
+    "variants": [
+      {
+        "src": "/assets/blog/images/5d296127c3bbfb-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/5d296127c3bbfb-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/5d296127c3bbfb-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/Hexo/themes.webp": {
+    "width": 332,
+    "height": 87,
+    "variants": [
+      {
+        "src": "/assets/blog/images/dcd4544b2489ac-332.webp",
+        "width": 332
+      }
+    ]
+  },
+  "/assets/blog/originals/Hexo/run.webp": {
+    "width": 1248,
+    "height": 812,
+    "variants": [
+      {
+        "src": "/assets/blog/images/4daeafd8f0593d-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/4daeafd8f0593d-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/4daeafd8f0593d-1248.webp",
+        "width": 1248
+      }
+    ]
+  },
+  "/assets/blog/originals/Hexo/page.webp": {
+    "width": 1918,
+    "height": 968,
+    "variants": [
+      {
+        "src": "/assets/blog/images/73176807ff453a-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/73176807ff453a-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/73176807ff453a-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ZJ.webp": {
+    "width": 1349,
+    "height": 747,
+    "variants": [
+      {
+        "src": "/assets/blog/images/a701426058284b-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/a701426058284b-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/a701426058284b-1349.webp",
+        "width": 1349
+      }
+    ]
+  },
+  "/assets/blog/originals/SCAICT.png": {
+    "width": 3000,
+    "height": 1500,
+    "variants": [
+      {
+        "src": "/assets/blog/images/259ba0357f4fdd-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/259ba0357f4fdd-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/259ba0357f4fdd-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/Hexo/創建repo.webp": {
+    "width": 922,
+    "height": 872,
+    "variants": [
+      {
+        "src": "/assets/blog/images/a3937e372565d1-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/a3937e372565d1-922.webp",
+        "width": 922
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/FLAG.webp": {
+    "width": 1544,
+    "height": 188,
+    "variants": [
+      {
+        "src": "/assets/blog/images/28202b38567174-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/28202b38567174-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/28202b38567174-1544.webp",
+        "width": 1544
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/FLAGG.webp": {
+    "width": 1462,
+    "height": 557,
+    "variants": [
+      {
+        "src": "/assets/blog/images/ed9ff1807503ab-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/ed9ff1807503ab-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/ed9ff1807503ab-1462.webp",
+        "width": 1462
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/FLAGGG.webp": {
+    "width": 1589,
+    "height": 893,
+    "variants": [
+      {
+        "src": "/assets/blog/images/7109439c6a25c9-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/7109439c6a25c9-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/7109439c6a25c9-1589.webp",
+        "width": 1589
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/QRcode.webp": {
+    "width": 1084,
+    "height": 706,
+    "variants": [
+      {
+        "src": "/assets/blog/images/9651f2c7fcfed9-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/9651f2c7fcfed9-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/9651f2c7fcfed9-1084.webp",
+        "width": 1084
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/Map.webp": {
+    "width": 1917,
+    "height": 1023,
+    "variants": [
+      {
+        "src": "/assets/blog/images/004689e1b33c7c-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/004689e1b33c7c-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/004689e1b33c7c-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/MyGO.webp": {
+    "width": 1918,
+    "height": 1012,
+    "variants": [
+      {
+        "src": "/assets/blog/images/36eeccd2646723-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/36eeccd2646723-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/36eeccd2646723-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/ais3.webp": {
+    "width": 1254,
+    "height": 669,
+    "variants": [
+      {
+        "src": "/assets/blog/images/913d467d68faaa-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/913d467d68faaa-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/913d467d68faaa-1254.webp",
+        "width": 1254
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/Tiny-server.webp": {
+    "width": 1917,
+    "height": 1024,
+    "variants": [
+      {
+        "src": "/assets/blog/images/39ac16862d19e6-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/39ac16862d19e6-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/39ac16862d19e6-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/chal.webp": {
+    "width": 4080,
+    "height": 3060,
+    "variants": [
+      {
+        "src": "/assets/blog/images/accd6bf6f7932c-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/accd6bf6f7932c-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/accd6bf6f7932c-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/response.webp": {
+    "width": 256,
+    "height": 57,
+    "variants": [
+      {
+        "src": "/assets/blog/images/550b943ae1724e-256.webp",
+        "width": 256
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/tomorin.webp": {
+    "width": 951,
+    "height": 293,
+    "variants": [
+      {
+        "src": "/assets/blog/images/233448115e29ab-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/233448115e29ab-951.webp",
+        "width": 951
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/print.webp": {
+    "width": 984,
+    "height": 110,
+    "variants": [
+      {
+        "src": "/assets/blog/images/dd03caff2afc57-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/dd03caff2afc57-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/dd03caff2afc57-984.webp",
+        "width": 984
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/成功訪問.webp": {
+    "width": 1590,
+    "height": 233,
+    "variants": [
+      {
+        "src": "/assets/blog/images/0e54f8b598a4af-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/0e54f8b598a4af-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/0e54f8b598a4af-1590.webp",
+        "width": 1590
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/welcome.webp": {
+    "width": 613,
+    "height": 704,
+    "variants": [
+      {
+        "src": "/assets/blog/images/00d040b995838c-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/00d040b995838c-613.webp",
+        "width": 613
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/完整資訊.webp": {
+    "width": 1918,
+    "height": 994,
+    "variants": [
+      {
+        "src": "/assets/blog/images/fc0d6917709e50-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/fc0d6917709e50-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/fc0d6917709e50-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/目錄.webp": {
+    "width": 691,
+    "height": 478,
+    "variants": [
+      {
+        "src": "/assets/blog/images/1ba788ab94c718-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/1ba788ab94c718-691.webp",
+        "width": 691
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/登入畫面.webp": {
+    "width": 1918,
+    "height": 911,
+    "variants": [
+      {
+        "src": "/assets/blog/images/3bc0e6cf3fc5e6-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/3bc0e6cf3fc5e6-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/3bc0e6cf3fc5e6-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/發票.webp": {
+    "width": 583,
+    "height": 720,
+    "variants": [
+      {
+        "src": "/assets/blog/images/1ca04136799d3f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/1ca04136799d3f-583.webp",
+        "width": 583
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/缺陷.webp": {
+    "width": 544,
+    "height": 83,
+    "variants": [
+      {
+        "src": "/assets/blog/images/f30e85dbc22ee7-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/f30e85dbc22ee7-544.webp",
+        "width": 544
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3/結果.webp": {
+    "width": 795,
+    "height": 564,
+    "variants": [
+      {
+        "src": "/assets/blog/images/d8bb67dd87c677-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/d8bb67dd87c677-795.webp",
+        "width": 795
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/AIS3.webp": {
+    "width": 4000,
+    "height": 2250,
+    "variants": [
+      {
+        "src": "/assets/blog/images/c1207f3c54d61d-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/c1207f3c54d61d-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/c1207f3c54d61d-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250728_120217968.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/9070da9f277db2-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/9070da9f277db2-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/9070da9f277db2-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250728_131543885.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/8be6d845caddf0-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/8be6d845caddf0-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/8be6d845caddf0-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250728_094718990.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/316f181c4d6bfd-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/316f181c4d6bfd-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/316f181c4d6bfd-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250729_191037177.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/d43ed8be9db319-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/d43ed8be9db319-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/d43ed8be9db319-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250730_160817144.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/96ef4ad743d0c4-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/96ef4ad743d0c4-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/96ef4ad743d0c4-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250729_003749515.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/e5303d794b91bc-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/e5303d794b91bc-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/e5303d794b91bc-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250731_221742732.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/8363174661c20f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/8363174661c20f-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/8363174661c20f-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250731_105929132.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/f09fd5beeb17ee-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/f09fd5beeb17ee-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/f09fd5beeb17ee-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250730_162632797.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/2d765371eca999-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/2d765371eca999-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/2d765371eca999-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250802_100505744.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/dcbc0a332c0c04-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/dcbc0a332c0c04-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/dcbc0a332c0c04-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250802_182857390.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/031c9f47645e08-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/031c9f47645e08-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/031c9f47645e08-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/IMG_20250802_143150561.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/2cc11c9d43db07-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/2cc11c9d43db07-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/2cc11c9d43db07-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/mainweb.webp": {
+    "width": 1919,
+    "height": 869,
+    "variants": [
+      {
+        "src": "/assets/blog/images/b28025ba5092be-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/b28025ba5092be-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/b28025ba5092be-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/save.webp": {
+    "width": 2148,
+    "height": 1477,
+    "variants": [
+      {
+        "src": "/assets/blog/images/fb0a6d3a8384b8-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/fb0a6d3a8384b8-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/fb0a6d3a8384b8-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/ais3_/sky.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/138db310c1def9-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/138db310c1def9-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/138db310c1def9-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scist.webp": {
+    "width": 1080,
+    "height": 723,
+    "variants": [
+      {
+        "src": "/assets/blog/images/bcda806b16637a-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/bcda806b16637a-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/bcda806b16637a-1080.webp",
+        "width": 1080
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260204_172512480.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/7ab7529d633439-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/7ab7529d633439-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/7ab7529d633439-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260204_163629595.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/29e37eeacb2175-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/29e37eeacb2175-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/29e37eeacb2175-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260205_194104627.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/ba5e1a23d39d1d-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/ba5e1a23d39d1d-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/ba5e1a23d39d1d-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260204_182842326.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/4dcebf3b4e637d-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/4dcebf3b4e637d-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/4dcebf3b4e637d-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260205_005026857.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/c201cd8b0589b4-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/c201cd8b0589b4-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/c201cd8b0589b4-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260206_010053896.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/a890e7975a8c4f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/a890e7975a8c4f-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/a890e7975a8c4f-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260206_052541562.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/e18e8699629fc5-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/e18e8699629fc5-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/e18e8699629fc5-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260206_005114439.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/c2fab1a91504db-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/c2fab1a91504db-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/c2fab1a91504db-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260207_115922985.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/942d6f225969a9-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/942d6f225969a9-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/942d6f225969a9-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260206_162231166.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/c2f27e2f836667-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/c2f27e2f836667-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/c2f27e2f836667-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260206_193825970.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/f20565d4a693de-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/f20565d4a693de-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/f20565d4a693de-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260207_205054017.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/d1247d85048b9e-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/d1247d85048b9e-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/d1247d85048b9e-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260207_142247852.webp": {
+    "width": 2296,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/95018582fea55c-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/95018582fea55c-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/95018582fea55c-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260207_142251011.webp": {
+    "width": 2296,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/91935f21431e3f-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/91935f21431e3f-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/91935f21431e3f-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260208_150542694.webp": {
+    "width": 4080,
+    "height": 3072,
+    "variants": [
+      {
+        "src": "/assets/blog/images/f5f95fb7324267-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/f5f95fb7324267-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/f5f95fb7324267-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260208_192652223.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/591e05a6f11d4e-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/591e05a6f11d4e-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/591e05a6f11d4e-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/scistwc/IMG_20260208_195904235.webp": {
+    "width": 3072,
+    "height": 4080,
+    "variants": [
+      {
+        "src": "/assets/blog/images/0fc7aa22f6a27d-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/assets/blog/images/0fc7aa22f6a27d-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/assets/blog/images/0fc7aa22f6a27d-1600.webp",
+        "width": 1600
+      }
+    ]
+  },
+  "/assets/blog/originals/smallR.webp": {
+    "width": 256,
+    "height": 256,
+    "variants": [
+      {
+        "src": "/assets/blog/images/63544eaef694f2-256.webp",
+        "width": 256
+      }
+    ]
+  }
+}

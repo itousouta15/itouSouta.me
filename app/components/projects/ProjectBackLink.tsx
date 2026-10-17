@@ -9,9 +9,13 @@ export default function ProjectBackLink() {
   return (
     <Link
       href={projectSearchPath(searchParams.get("q") ?? "")}
-      className="project-back-link"
+      className="back-link"
+      aria-label="返回上一頁"
+      title="返回上一頁"
+      style={{ textDecoration: "none" }}
     >
-      ← 返回專案列表
+      <span className="back-btn">←</span>
+      <span className="back-label">返回上一頁</span>
     </Link>
   );
 }

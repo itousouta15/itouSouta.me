@@ -29,13 +29,14 @@ const GUESTBOOK_PATHS = new Set([
   "/api",
 ]);
 
-export default function GuestbookSection() {
+export default function GuestbookSection({ pagePath }: { pagePath?: string }) {
   const pathname = usePathname();
+  const allowed = Boolean(pagePath) || GUESTBOOK_PATHS.has(pathname);
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    if (!GUESTBOOK_PATHS.has(pathname)) return;
+    if (!allowed) return;
     const el = ref.current;
     if (!el) return;
     if (!("IntersectionObserver" in window)) {
@@ -53,10 +54,10 @@ export default function GuestbookSection() {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [pathname]);
+  }, [pathname, pagePath, allowed]);
 
   // 首頁或不是真實頁面的路徑（例如 404）都不放留言板
-  if (!GUESTBOOK_PATHS.has(pathname)) return null;
+  if (!allowed) return null;
 
   return (
     <div ref={ref} className="guestbook-section">
@@ -64,7 +65,7 @@ export default function GuestbookSection() {
       <div className="divider" />
       {/* 還沒載入前先佔住高度，避免 Guestbook 進場時把頁尾往下推 */}
       {shown ? (
-        <Guestbook path={pathname} />
+        <Guestbook key={pagePath ?? pathname} path={pagePath ?? pathname} />
       ) : (
         <div className="guestbook-placeholder" />
       )}

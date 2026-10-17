@@ -1,4 +1,4 @@
-import { getBlogPosts } from "../../../lib/blogFeed";
+import { getPublishedPosts } from "../../../lib/posts";
 import { shieldBadge, svgResponse } from "../../../lib/badge";
 
 // 部落格最新一篇徽章：https://itousouta.me/api/badge/blog.svg
@@ -8,11 +8,7 @@ export const revalidate = 3600;
 
 export async function GET() {
   let title = "no posts yet";
-  const posts = await getBlogPosts().catch(() => []);
-  const newest = posts.reduce(
-    (max, p) => (p.timestamp > (max?.timestamp ?? 0) ? p : max),
-    posts[0]
-  );
+  const newest = getPublishedPosts()[0];
   if (newest?.title) {
     title =
       newest.title.length > 44 ? `${newest.title.slice(0, 43)}…` : newest.title;

@@ -13,6 +13,7 @@ This is a highly customized portfolio site built around profile, projects, thoug
 - Profile-style home page with Discord presence, theme-aware visuals, and project navigation.
 - Visitor impressions wall on the home page: submit a short impression to a randomly arranged word cloud; hover to enlarge words and reveal counts stored in Vercel KV.
 - Thoughts feed that merges Discord-sourced posts, Threads posts, and GitHub events.
+- Native itouBLoGa articles with local Markdown, math, highlighted/copyable code, responsive images, and preserved public comment history; see [blog migration and authoring](docs/blog-migration.md).
 - Likes pages for novels, manga, anime, VTubers, and Spotify-powered music data.
 - Searchable music cards show Spotify top tracks, album art, artists, and ranking positions.
 - Project gallery with filters, modal details, and GitHub repository metadata.
@@ -95,6 +96,7 @@ Missing optional credentials are handled gracefully; affected sections fall back
 ## Docs
 
 - [Architecture](docs/architecture.md)
+- [Blog migration and authoring](docs/blog-migration.md)
 - [VTuber Live Status](docs/vtuber-live.md)
 - [Easter Eggs](docs/easter-eggs.md)
 

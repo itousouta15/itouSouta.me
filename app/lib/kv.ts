@@ -133,7 +133,7 @@ export interface GuestbookEntry {
   // 舊留言沒有這幾個欄位，JSON.parse 出來會是 undefined，渲染端當成沒有處理
   avatar?: string | null;
   link?: string | null;
-  source?: "manual" | "github";
+  source?: "manual" | "github" | "waline";
   // 只在送出時存著供回覆通知用，讀取時一律剝掉，絕不回傳到前端
   email?: string | null;
 }
@@ -147,7 +147,7 @@ export interface GuestbookReply {
   replyToNick: string;
   avatar?: string | null;
   link?: string | null;
-  source?: "manual" | "github";
+  source?: "manual" | "github" | "waline";
   email?: string | null;
 }
 

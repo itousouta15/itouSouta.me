@@ -26,7 +26,7 @@ export async function GET() {
           ? item.permalink
           : item.kind === "github"
             ? item.url
-            : SITE_URL + "/writing";
+            : SITE_URL + "/writing?view=thoughts";
       const title = item.text ? item.text.slice(0, 60) : `雜談 ${item.date}`;
       return `<item>
   <title>${escapeXml(title)}</title>
@@ -42,7 +42,7 @@ export async function GET() {
 <rss version="2.0">
 <channel>
   <title>${escapeXml(TITLE)}</title>
-  <link>${SITE_URL}/writing</link>
+  <link>${SITE_URL}/writing?view=thoughts</link>
   <description>${escapeXml(DESCRIPTION)}</description>
   <language>zh-TW</language>
   ${itemsXml}

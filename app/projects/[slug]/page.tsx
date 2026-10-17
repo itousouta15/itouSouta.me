@@ -35,8 +35,15 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
     <article className="project-detail-page">
       <Suspense
         fallback={
-          <Link href="/projects" className="project-back-link">
-            ← 返回專案列表
+          <Link
+            href="/projects"
+            className="back-link"
+            aria-label="返回上一頁"
+            title="返回上一頁"
+            style={{ textDecoration: "none" }}
+          >
+            <span className="back-btn">←</span>
+            <span className="back-label">返回上一頁</span>
           </Link>
         }
       >

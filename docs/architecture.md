@@ -20,7 +20,9 @@ For an auxiliary PowerShell session, set `$env:NEXT_DEV_DIST_DIR = ".next-dev-ch
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/`                 | Home profile, hero, navigation cards, GitHub contribution graph                                                                                             |
 | `/about`            | Bio, stats, interests, and music preview                                                                                                                    |
-| `/writing`          | Articles (blog.itousouta.me index) + unified thoughts feed from Discord/KV, Threads, and GitHub events                                                      |
+| `/writing`          | Native Markdown article index with search/tag/month timeline filters, plus the unified thoughts tab                                                         |
+| `/writing/[slug]`   | Local Chinese blog articles, math/code rendering, table of contents, original image viewer and historical comments                                          |
+| `/writing/feed.xml` | Chinese article RSS, separate from the existing thoughts feed                                                                                               |
 | (every page)        | KV-backed guestbook section at the bottom of every page (`/api/guestbook`); threaded replies, with Resend reply notifications when the author left an email |
 | `/likes`            | Hub for liked novels, manga, anime, VTubers, and music                                                                                                      |
 | `/likes/[category]` | Category-specific likes grid                                                                                                                                |

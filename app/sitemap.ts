@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { LIKE_CATEGORIES, PROJECTS } from "./data";
 import { projectPath } from "./lib/projectRoutes";
 import { getMergedThoughts } from "./lib/mergedThoughts";
-import { getBlogPosts } from "./lib/blogFeed";
+import { getPostSummaries } from "./lib/posts";
 import { SITE_URL } from "./lib/seo";
 
 /* 靜態路由刻意不給 lastModified：內容跟著 data.ts 走，只有重新部署才會變，
@@ -22,13 +22,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const likeCategoryRoutes = LIKE_CATEGORIES.map((cat) => `/likes/${cat.key}`);
 
-  const [thoughts, posts] = await Promise.all([
-    getMergedThoughts().catch(() => []),
-    getBlogPosts().catch(() => []),
-  ]);
+  const thoughts = await getMergedThoughts().catch(() => []);
+  const posts = getPostSummaries();
   const newestThought = thoughts[0]?.timestamp;
-  // 部落格列表刻意不排序（見 blogFeed.ts），所以這裡自己取最大值
-  const newestPost = posts.reduce((max, p) => Math.max(max, p.timestamp), 0);
+  const newestPost = posts.reduce(
+    (max, p) => (p.timestamp <= Date.now() ? Math.max(max, p.timestamp) : max),
+    0
+  );
   const newestWriting = Math.max(newestThought ?? 0, newestPost);
 
   return [
@@ -43,5 +43,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE_URL}/writing`,
       ...(newestWriting ? { lastModified: new Date(newestWriting) } : {}),
     },
+    ...posts.map((post) => ({
+      url: `${SITE_URL}${post.path}`,
+      ...(post.updated && Date.parse(post.updated) <= Date.now()
+        ? { lastModified: new Date(post.updated) }
+        : {}),
+    })),
   ];
 }

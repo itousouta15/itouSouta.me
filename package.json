@@ -10,6 +10,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:features": "node --test tests/site-features.test.cjs",
+    "test:blog": "node --test tests/blog.test.cjs",
+    "blog:sync-history": "node scripts/sync-blog-history.mjs",
     "lint": "next lint",
     "format": "prettier . --write",
     "format:check": "prettier . --check"
@@ -17,13 +19,26 @@
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "@vercel/kv": "^3.0.0",
+    "github-slugger": "^2.0.0",
+    "gray-matter": "^4.0.3",
+    "hast-util-to-string": "^3.0.1",
+    "katex": "^0.16.47",
     "lenis": "^1.3.25",
+    "mdast-util-to-string": "^4.0.0",
     "next": "^14.2.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "^10.1.0",
+    "rehype-katex": "^7.0.1",
+    "rehype-pretty-code": "^0.14.5",
     "remark-gfm": "^4.0.1",
-    "resend": "^6.20.0"
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "resend": "^6.20.0",
+    "sharp": "^0.35.5",
+    "shiki": "^4.5.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",

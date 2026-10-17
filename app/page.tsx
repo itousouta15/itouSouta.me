@@ -136,15 +136,13 @@ function HomeContent() {
               >
                 關於我 <span className="btn-arrow dark">→</span>
               </Link>
-              <a
+              <Link
                 className="btn-ghost"
-                href="https://blog.itousouta.me"
-                target="_blank"
-                rel="noopener nofollow noreferrer"
+                href="/writing"
                 style={{ textDecoration: "none" }}
               >
                 BLOG <span className="btn-arrow inset">→</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="hero-side">
@@ -203,7 +201,7 @@ function HomeContent() {
         <div className="bento">
           <Link
             className="bento-thoughts nav-card"
-            href="/writing"
+            href="/writing?view=thoughts"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <div>

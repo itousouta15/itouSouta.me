@@ -22,6 +22,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
+      - run: npm run test:features
+      - run: npm run test:blog
       - run: npm run format:check
       # 外部 API 缺 env 時各 lib 都會回 null/[]，所以 build 不需要任何 secret
       - run: npm run build

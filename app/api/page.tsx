@@ -30,6 +30,12 @@ const ENDPOINTS: Endpoint[] = [
   },
   {
     method: "GET",
+    path: "/writing/feed.xml",
+    desc: "原生部落格文章的 RSS 2.0 feed，與碎碎念訂閱分開。",
+    curl: "curl https://itousouta.me/writing/feed.xml",
+  },
+  {
+    method: "GET",
     path: "/sitemap.xml",
     desc: "站內所有頁面的 sitemap（含 lastModified）。",
     curl: "curl https://itousouta.me/sitemap.xml",
@@ -37,7 +43,7 @@ const ENDPOINTS: Endpoint[] = [
   {
     method: "GET",
     path: "/api/search-index",
-    desc: "Cmd+K 全站搜尋索引：部落格文章（external URL）＋最近 20 筆雜談。",
+    desc: "Cmd+K 全站搜尋索引：本站文章全文與最近 20 筆雜談。",
     curl: "curl https://itousouta.me/api/search-index",
   },
   {

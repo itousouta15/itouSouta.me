@@ -4186,6 +4186,19 @@ body.site-revealed .header {
 .project-back-link:hover {
   color: var(--blue);
 }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--dim);
+  transition: color 0.2s;
+}
+.back-link:hover {
+  color: var(--blue);
+}
+.back-label {
+  font-size: 13px;
+}
 .project-detail-heading {
   margin: 28px 0;
 }

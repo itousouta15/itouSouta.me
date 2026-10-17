@@ -12,6 +12,7 @@ interface SearchItem {
   href: string;
   external?: boolean;
   category: string;
+  keywords?: string;
   likeCategory?: string;
   likeIndex?: number;
 }
@@ -27,7 +28,7 @@ const STATIC_PAGES: SearchItem[] = [
   { id: "page-likes", title: "喜歡的東西", href: "/likes", category: "頁面" },
   {
     id: "page-writing",
-    title: "碎碎念",
+    title: "文章與碎碎念",
     href: "/writing",
     category: "頁面",
   },
@@ -160,7 +161,8 @@ export default function CommandPaletteInner({
         (item) =>
           item.title.toLowerCase().includes(q) ||
           item.sub?.toLowerCase().includes(q) ||
-          item.category.toLowerCase().includes(q)
+          item.category.toLowerCase().includes(q) ||
+          item.keywords?.toLowerCase().includes(q)
       )
       .slice(0, MAX_RESULTS);
   }, [query, allItems]);

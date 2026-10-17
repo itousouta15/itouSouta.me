@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { nextChapter } from "../../lib/navigation";
+import { chapterBackLink, nextChapter } from "../../lib/navigation";
 
 function Arrow({ right = false }: { right?: boolean }) {
   return (
@@ -28,14 +28,15 @@ export default function ChapterNavigation() {
   const pathname = usePathname();
   if (pathname === "/") return null;
   const next = nextChapter(pathname);
+  const back = chapterBackLink(pathname);
   return (
     <nav className="chapter-navigation" aria-label="章節導覽">
       <div className="chapter-links">
-        <Link className="chapter-link" href="/">
+        <Link className="chapter-link" href={back.href}>
           <Arrow />
           <span>
-            <small>返回首頁</small>
-            <strong>首頁</strong>
+            <small>{back.caption}</small>
+            <strong>{back.label}</strong>
           </span>
         </Link>
         {next && (

@@ -1,3 +1,8 @@
+import { createRequire } from "node:module";
+const articleRoutes = createRequire(import.meta.url)(
+  "./content/blog/redirects.json"
+);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -7,6 +12,21 @@ const nextConfig = {
     process.env.NODE_ENV === "development"
       ? process.env.NEXT_DEV_DIST_DIR || ".next-dev"
       : ".next",
+  async redirects() {
+    return articleRoutes.flatMap(({ slug, legacyPath }) => [
+      {
+        source: legacyPath.replace(/\/$/, ""),
+        has: [{ type: "host", value: "blog.itousouta.me" }],
+        destination: `https://itousouta.me/writing/${slug}`,
+        permanent: true,
+      },
+      {
+        source: legacyPath.replace(/\/$/, ""),
+        destination: `/writing/${slug}`,
+        permanent: true,
+      },
+    ]);
+  },
   async headers() {
     // next dev 的 webpack 用 eval sourcemap，CSP 沒放 unsafe-eval 會讓所有
     // chunk 執行失敗（頁面卡在 SiteLoader）；production 的 bundle 不用 eval，

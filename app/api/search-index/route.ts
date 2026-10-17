@@ -1,4 +1,4 @@
-import { getBlogPosts } from "../../lib/blogFeed";
+import { getPostSummaries } from "../../lib/posts";
 import { getMergedThoughts } from "../../lib/mergedThoughts";
 
 /* Cmd+K 搜尋索引裡「非靜態」的那一半：部落格碎碎念。
@@ -9,8 +9,7 @@ import { getMergedThoughts } from "../../lib/mergedThoughts";
    代價，還會把三個不穩的外部 API 綁進根 layout 的渲染。
 
    改成獨立端點後，CommandPaletteInner 掛載時才抓（面板在按 Cmd+K 之前根本不會
-   渲染），而且 getBlogPosts / getMergedThoughts 都已經被 /writing 放進
-   Next 的 Data Cache，這裡多半是 cache 讀取。 */
+   渲染）。文章直接讀本機 Markdown，雜談則沿用既有的資料快取。 */
 
 export const revalidate = 3600;
 
@@ -24,28 +23,27 @@ export interface RemoteSearchItem {
   href: string;
   external?: boolean;
   category: string;
+  keywords?: string;
 }
 
 export async function GET() {
-  const [posts, thoughts] = await Promise.all([
-    getBlogPosts().catch(() => []),
-    getMergedThoughts().catch(() => []),
-  ]);
+  const posts = getPostSummaries();
+  const thoughts = await getMergedThoughts().catch(() => []);
 
   const items: RemoteSearchItem[] = [
     ...posts.map((p) => ({
-      id: `blog-${p.id}`,
+      id: `blog-${p.slug}`,
       title: p.title,
-      sub: p.excerpt.slice(0, 60),
-      href: p.url,
-      external: true,
+      sub: p.description.slice(0, 60),
+      href: p.path,
+      keywords: [p.searchText, ...p.categories, ...p.tags].join(" "),
       category: "文章",
     })),
     ...thoughts.slice(0, MAX_THOUGHTS).map((t) => ({
       id: `thought-${t.id}`,
       title: t.text ?? "",
       sub: t.date,
-      href: "/writing",
+      href: "/writing?view=thoughts",
       category: "雜談",
     })),
   ].filter((item) => item.title.trim() !== "");

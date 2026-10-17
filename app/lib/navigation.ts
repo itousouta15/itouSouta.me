@@ -13,3 +13,13 @@ export function nextChapter(pathname: string) {
   );
   return index >= 0 ? NAV_LINKS[index + 1] : undefined;
 }
+
+export function chapterBackLink(pathname: string) {
+  const normalized = pathname.replace(/\/+$/, "") || "/";
+  const parent = NAV_LINKS.find(({ href }) =>
+    normalized.startsWith(`${href}/`)
+  );
+  return parent
+    ? { href: parent.href, label: parent.label, caption: "回到上一頁" }
+    : { href: "/", label: "首頁", caption: "返回首頁" };
+}

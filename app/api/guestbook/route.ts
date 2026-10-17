@@ -13,6 +13,10 @@ import { normalizePath } from "../../lib/path";
 import { gravatarUrl, isValidEmail } from "../../lib/gravatar";
 import { verifyGithubIdentity } from "../../lib/githubAuth";
 import { sendReplyNotification } from "../../lib/notify";
+import {
+  getLegacyComments,
+  mergeGuestbookHistory,
+} from "../../lib/legacyComments";
 
 /* 留言板：讀取與送出都走這裡（KV 自建，取代原本連部落格 waline 伺服器的方案——
    那台伺服器鎖了部落格網域，只給讀不給寫）。每頁各自獨立，用 path 分開存。
@@ -30,9 +34,15 @@ export async function GET(req: NextRequest) {
       getGuestbookReplies(path),
     ]);
     return NextResponse.json({
-      entries: entries.map((en) => ({ ...en, replies: replies[en.id] ?? [] })),
+      entries: mergeGuestbookHistory(path, entries, replies),
     });
   } catch {
+    const legacy = getLegacyComments(path);
+    if (legacy.length)
+      return NextResponse.json(
+        { entries: legacy, readOnly: true },
+        { headers: { "Cache-Control": "no-store" } }
+      );
     return NextResponse.json({ error: "kv unavailable" }, { status: 503 });
   }
 }
@@ -167,7 +177,11 @@ export async function POST(req: NextRequest) {
     const isReply = typeof body.commentId === "string" && body.commentId !== "";
 
     if (isReply) {
-      const root = await findGuestbookEntryRaw(path, body.commentId!);
+      const historical = getLegacyComments(path).find(
+        (entry) => entry.id === body.commentId
+      );
+      const root =
+        (await findGuestbookEntryRaw(path, body.commentId!)) ?? historical;
       if (!root) {
         return NextResponse.json(
           { error: "找不到要回覆的留言" },
@@ -176,7 +190,10 @@ export async function POST(req: NextRequest) {
       }
 
       const parentId = typeof body.parentId === "string" ? body.parentId : null;
-      const siblings = await getRepliesForComment(path, root.id);
+      const siblings = [
+        ...(historical?.replies ?? []),
+        ...(await getRepliesForComment(path, root.id)),
+      ];
       const parent =
         parentId === root.id
           ? root

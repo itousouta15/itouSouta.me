@@ -16,7 +16,7 @@ const NAV_LINKS = [
 const PROJECT_LINKS = [
   { label: "itouMD", href: "https://md.itousouta.me" },
   { label: "itouSlides", href: "https://slides.itousouta.me/" },
-  { label: "itouBLoGa", href: "https://blog.itousouta.me/" },
+  { label: "itouBLoGa", href: "/writing" },
   { label: "itouOJ", href: "https://oj.itousouta.me/" },
 ];
 
@@ -72,8 +72,12 @@ export default function Footer() {
                 <a
                   key={l.href}
                   href={l.href}
-                  target="_blank"
-                  rel="noopener nofollow noreferrer"
+                  target={l.href.startsWith("/") ? undefined : "_blank"}
+                  rel={
+                    l.href.startsWith("/")
+                      ? undefined
+                      : "noopener nofollow noreferrer"
+                  }
                 >
                   {l.label}
                 </a>

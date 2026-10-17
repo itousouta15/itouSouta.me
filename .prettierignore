@@ -1,4 +1,6 @@
 .next
+.next-dev
+.next-dev-*
 node_modules
 package-lock.json
 tsconfig.tsbuildinfo
@@ -6,4 +8,6 @@ tsconfig.tsbuildinfo
 .env*
 
 public
+# Imported writing and generated provenance/history retain their source formatting.
+content/blog
 *.ico

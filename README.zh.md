@@ -13,6 +13,7 @@ itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](
 - 首頁採個人檔案風格，含 Discord 即時狀態、主題感知視覺效果與專案導覽。
 - 首頁訪客留印牆：輸入印象詞，文字雲隨機排列；hover 放大並顯示次數，資料儲存在 Vercel KV。
 - 雜談動態牆整合 Discord 貼文、Threads 貼文與 GitHub 事件三種來源。
+- itouBLoGa 繁中文章已整合進主站，以 Markdown 維護，支援公式、程式碼高亮／複製、多尺寸圖片與歷史留言；詳見 [文章撰寫與遷移](docs/blog-migration.md)。
 - 小說、漫畫、動畫、VTuber 喜好清單，以及由 Spotify 驅動的音樂資料。
 - 音樂卡片顯示 Spotify 常聽歌曲、封面、歌手與排行名次，支援搜尋。
 - 專案展示牆，支援篩選、模態詳情與 GitHub 專案資訊。
@@ -95,6 +96,7 @@ npm run lint
 ## 文件
 
 - [Architecture](docs/architecture.md)（英文）
+- [文章撰寫與遷移](docs/blog-migration.md)
 - [VTuber Live Status](docs/vtuber-live.md)（英文）
 - [Easter Eggs](docs/easter-eggs.md)（英文）
 

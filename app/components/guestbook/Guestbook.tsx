@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import GithubGlyph from "../GithubGlyph";
+const LegacyCommentBody = dynamic(() => import("./LegacyCommentBody"));
 
 /* 留言板：KV 自建（/api/guestbook）。原本連部落格共用的 waline 伺服器——那台
    鎖了部落格網域（errno 1001），只能讀不能寫，加上 waline client 在 Next/React
@@ -22,7 +24,7 @@ interface Reply {
   replyToNick: string;
   avatar?: string | null;
   link?: string | null;
-  source?: "manual" | "github";
+  source?: "manual" | "github" | "waline";
 }
 
 interface Entry {
@@ -32,7 +34,7 @@ interface Entry {
   timestamp: string;
   avatar?: string | null;
   link?: string | null;
-  source?: "manual" | "github";
+  source?: "manual" | "github" | "waline";
   replies?: Reply[];
 }
 
@@ -110,6 +112,7 @@ function ItemAvatar({
 export default function Guestbook({ path }: { path: string }) {
   const router = useRouter();
   const [entries, setEntries] = useState<Entry[] | null>(null);
+  const [readOnly, setReadOnly] = useState(false);
   const [nick, setNick] = useState("");
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
@@ -135,7 +138,10 @@ export default function Guestbook({ path }: { path: string }) {
     fetch(`/api/guestbook?path=${encodeURIComponent(path)}`)
       .then((r) => (r.ok ? r.json() : { entries: null }))
       .then((j) => {
-        if (Array.isArray(j.entries)) setEntries(j.entries);
+        if (Array.isArray(j.entries)) {
+          setEntries(j.entries);
+          setReadOnly(j.readOnly === true);
+        }
       })
       .catch(() => {});
   }, [path]);
@@ -338,7 +344,7 @@ export default function Guestbook({ path }: { path: string }) {
           <button
             type="submit"
             className="guestbook-btn guestbook-btn--primary"
-            disabled={sendingReply}
+            disabled={sendingReply || readOnly}
           >
             {sendingReply ? "送出中…" : "送出回覆"}
           </button>
@@ -381,21 +387,29 @@ export default function Guestbook({ path }: { path: string }) {
               {reply.source === "github" && (
                 <GithubGlyph className="guestbook-gh-badge" />
               )}
+              {reply.source === "waline" && (
+                <span className="guestbook-history-badge">舊站</span>
+              )}
               <span className="guestbook-date">{fmtDate(reply.timestamp)}</span>
               <button
                 type="button"
                 className="guestbook-reply-btn"
+                disabled={readOnly}
                 onClick={() => openReply(commentId, reply.id, reply.nick)}
               >
                 回覆
               </button>
             </div>
-            <p className="guestbook-text">
+            <div className="guestbook-text">
               <span className="guestbook-reply-to">
                 回覆 @{reply.replyToNick}
               </span>{" "}
-              {reply.text}
-            </p>
+              {reply.source === "waline" ? (
+                <LegacyCommentBody text={reply.text} />
+              ) : (
+                reply.text
+              )}
+            </div>
             {replyTarget?.parentId === reply.id && renderReplyForm()}
             {children.length > 0 && (
               <div className="guestbook-replies">
@@ -436,6 +450,9 @@ export default function Guestbook({ path }: { path: string }) {
             {en.source === "github" && (
               <GithubGlyph className="guestbook-gh-badge" />
             )}
+            {en.source === "waline" && (
+              <span className="guestbook-history-badge">舊站</span>
+            )}
             <span className="guestbook-date">{fmtDate(en.timestamp)}</span>
             {rootReplies.length > 0 && (
               <span className="guestbook-reply-count">
@@ -445,12 +462,17 @@ export default function Guestbook({ path }: { path: string }) {
             <button
               type="button"
               className="guestbook-reply-btn"
+              disabled={readOnly}
               onClick={() => openReply(en.id, en.id, en.nick)}
             >
               回覆
             </button>
           </div>
-          <p className="guestbook-text">{en.text}</p>
+          {en.source === "waline" ? (
+            <LegacyCommentBody text={en.text} />
+          ) : (
+            <p className="guestbook-text">{en.text}</p>
+          )}
           {replyTarget?.parentId === en.id && renderReplyForm()}
           {direct.length > 0 && (
             <div className="guestbook-replies">
@@ -465,6 +487,11 @@ export default function Guestbook({ path }: { path: string }) {
   return (
     <div className="guestbook">
       <h2 className="guestbook-title">說些什麼吧！</h2>
+      {readOnly && (
+        <p className="guestbook-readonly-note" role="status">
+          目前顯示已保存的歷史留言，留言服務恢復後即可新增與回覆。
+        </p>
+      )}
 
       <form className="guestbook-panel" onSubmit={onSubmit}>
         {githubProfile ? (
@@ -562,7 +589,7 @@ export default function Guestbook({ path }: { path: string }) {
           <button
             type="submit"
             className="guestbook-btn guestbook-btn--primary"
-            disabled={sending}
+            disabled={sending || readOnly}
           >
             {sending ? "送出中…" : "送出"}
           </button>
