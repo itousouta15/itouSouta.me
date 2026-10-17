@@ -5,9 +5,8 @@ import Link from "next/link";
 import type { MusicSnapshot } from "../../lib/music";
 import { useHorizontalWheelScroll } from "../../hooks/useHorizontalWheelScroll";
 import MusicCard from "./MusicCard";
-import MusicRecordingNote from "./MusicRecordingNote";
 
-export default function MusicSection({ tracks, recording }: MusicSnapshot) {
+export default function MusicSection({ tracks }: MusicSnapshot) {
   const rowRef = useRef<HTMLDivElement>(null);
   useHorizontalWheelScroll(rowRef);
 
@@ -22,7 +21,6 @@ export default function MusicSection({ tracks, recording }: MusicSnapshot) {
           查看更多 →
         </Link>
       </div>
-      <MusicRecordingNote recording={recording} />
       <div className="music-artist-row" ref={rowRef} data-lenis-prevent-wheel>
         {tracks.map((track, index) => (
           <MusicCard

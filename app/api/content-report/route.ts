@@ -1,6 +1,6 @@
 import { LIKE_CATEGORIES, PROJECTS, type Project } from "../../data";
 
-/* 開發用的填寫進度表：哪些專案還沒寫 why / longDesc / difficulties / releaseTimeline，
+/* 開發用的填寫進度表：哪些專案還沒寫 Markdown content，
    哪些分類的 note 還是空的。跑 `npm run dev` 開 /api/content-report 就看得到。
 
    做成 route 而不是 scripts/*.mjs 的原因：data.ts 是 TypeScript，純 Node 腳本要嘛
@@ -9,14 +9,7 @@ import { LIKE_CATEGORIES, PROJECTS, type Project } from "../../data";
 
 export const dynamic = "force-dynamic";
 
-const PROJECT_FIELDS = [
-  "siteUrl",
-  "demoUrl",
-  "why",
-  "longDesc",
-  "difficulties",
-  "releaseTimeline",
-] as const;
+const PROJECT_FIELDS = ["siteUrl", "demoUrl", "content"] as const;
 
 function filled(p: Project, key: (typeof PROJECT_FIELDS)[number]): boolean {
   const v = p[key];

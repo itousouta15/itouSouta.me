@@ -51,9 +51,6 @@ export default async function AboutPage() {
             SCAICT
             中部高中電資社團聯合會議會長。平常喜歡到處跑，順便認識一堆電到爆的人們
           </p>
-          <p className="about-p">
-            除了寫程式之外，對資安也稍微有點興趣。座右銘是「情熱を失っては、何もできない」，希望自己能一直保持這份熱情，把想做的事情一件一件做出來
-          </p>
           <div className="divider" />
           <div className="stat-grid">
             <div className="stat">

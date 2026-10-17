@@ -4,18 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "../ThemeProvider";
+import { NAV_LINKS } from "../../lib/navigation";
 
 /* 桌機版導覽列的寬度已經很滿了（961px 斷點 + html 的 zoom: 1.15，實際可用寬度
    比想像中窄，.nav 靠 flex-wrap 兜著）。 */
-const NAV_LINKS = [
-  { label: "關於", href: "/about" },
-  { label: "收藏", href: "/likes" },
-  { label: "專案", href: "/projects" },
-  { label: "文章", href: "/writing" },
-  { label: "友鏈", href: "/links" },
-  { label: "經歷", href: "/experience" },
-];
-
 export default function Header() {
   const { theme, toggle } = useTheme();
   const isDark = theme === "dark";
@@ -92,7 +84,7 @@ export default function Header() {
               {NAV_LINKS.map((l) => (
                 <Link
                   key={l.href}
-                  className={`nav-link${pathname === l.href ? " active" : ""}`}
+                  className={`nav-link${pathname === l.href || pathname.startsWith(`${l.href}/`) ? " active" : ""}`}
                   href={l.href}
                   style={{ textDecoration: "none" }}
                 >
@@ -193,7 +185,7 @@ export default function Header() {
               <Link
                 key={l.href}
                 href={l.href}
-                className={`nav-overlay-link${pathname === l.href ? " active" : ""}`}
+                className={`nav-overlay-link${pathname === l.href || pathname.startsWith(`${l.href}/`) ? " active" : ""}`}
                 style={{ "--i": i } as React.CSSProperties}
               >
                 <span className="nav-overlay-index">

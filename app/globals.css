@@ -198,39 +198,11 @@ svg {
   --tx: #22262d;
   --dim: #494f59; /* was #5b626d — darkened for WCAG AA contrast on panel bg */
   --mute: #6b7280; /* was #8a909b — darkened to improve readability */
-  --blue: #364a7c;
+  --blue: #2e3d63;
   --purple: #5c7cbf;
   --btn: #2b2f36;
   --btntx: #f2f4f9;
   --shadow: rgba(60, 70, 90, 0.16);
-}
-
-/* ---- 季節 accent（SeasonTint 依日期設 data-season）----
-   只覆寫 --blue/--purple 兩個 accent 色票，深淺主題各給一版。放在 theme 區塊
-   之後，同 specificity 靠後者勝出。 */
-:root[data-season="halloween"] {
-  --blue: #ffa84c;
-  --purple: #c08cff;
-}
-:root[data-theme="light"][data-season="halloween"] {
-  --blue: #b06a00;
-  --purple: #7a3fd0;
-}
-:root[data-season="christmas"] {
-  --blue: #7ee7a0;
-  --purple: #ff8f8f;
-}
-:root[data-theme="light"][data-season="christmas"] {
-  --blue: #1f7a3d;
-  --purple: #c02f2f;
-}
-:root[data-season="newyear"] {
-  --blue: #f5c26b;
-  --purple: #d9a6f5;
-}
-:root[data-theme="light"][data-season="newyear"] {
-  --blue: #9a6b00;
-  --purple: #7a3fd0;
 }
 
 /* ---- Fonts shorthand ---- */
@@ -2350,7 +2322,7 @@ body.site-revealed .header {
    Visitor impressions — 首頁輕量文字雲
    =========================================================================== */
 .impressions-card {
-  padding: 28px 30px 22px;
+  padding: 24px 26px 20px;
   min-width: 0;
 }
 .impressions-heading {
@@ -2379,8 +2351,8 @@ body.site-revealed .header {
 }
 .impressions-cloud {
   position: relative;
-  height: 240px;
-  margin-block: 12px;
+  height: 180px;
+  margin-block: 8px;
 }
 .impressions-word {
   position: absolute;
@@ -2388,7 +2360,7 @@ body.site-revealed .header {
   font-family: "Noto Sans TC", system-ui, sans-serif;
   font-size: var(--impression-size);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.1;
   white-space: nowrap;
   cursor: default;
   transform: translate(-50%, -50%) rotate(var(--impression-tilt));
@@ -2401,12 +2373,18 @@ body.site-revealed .header {
 }
 .impressions-count {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 50%;
-  color: var(--dim);
+  padding: 2px 6px;
+  border: 1px solid var(--bd2);
+  border-radius: 4px;
+  background: var(--panel);
+  color: var(--tx);
+  box-shadow: 0 3px 10px var(--shadow);
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   font-weight: 400;
+  line-height: 1.4;
   opacity: 0;
   pointer-events: none;
   transform: translateX(-50%);
@@ -2496,7 +2474,7 @@ body.site-revealed .header {
 }
 @media (max-width: 760px) {
   .impressions-card {
-    padding: 24px 22px 18px;
+    padding: 20px 18px 16px;
   }
   .impressions-form button {
     padding-inline: 16px;
@@ -2534,15 +2512,129 @@ body.site-revealed .header {
   grid-area: projects;
 }
 .card-github {
+  --gh-0: #2f3133;
+  --gh-1: #444a6b;
+  --gh-2: #57688d;
+  --gh-3: #a3b2dd;
+  --gh-4: #d4daf5;
   padding: 28px 30px;
+  min-width: 0;
 }
-.card-github-img {
+:root[data-theme="light"] .card-github {
+  --gh-0: #d0d7de;
+  --gh-1: #a6bad9;
+  --gh-2: #679cd0;
+  --gh-3: #4183c4;
+  --gh-4: #254f77;
+}
+.github-calendar-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--dim);
+  font:
+    12px "JetBrains Mono",
+    monospace;
+  text-decoration: none;
+}
+.github-calendar-heading:hover {
+  color: var(--blue);
+}
+.github-calendar-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bd2) transparent;
+}
+.github-calendar {
   display: block;
   width: 100%;
-  aspect-ratio: 880 / 192;
-  margin-top: -16px;
-  object-fit: contain;
-  object-position: center;
+  min-width: 650px;
+  overflow: visible;
+}
+.github-level-0 {
+  --gh-color: var(--gh-0);
+}
+.github-level-1 {
+  --gh-color: var(--gh-1);
+}
+.github-level-2 {
+  --gh-color: var(--gh-2);
+}
+.github-level-3 {
+  --gh-color: var(--gh-3);
+}
+.github-level-4 {
+  --gh-color: var(--gh-4);
+}
+.github-day {
+  fill: var(--gh-color);
+  cursor: pointer;
+}
+.github-day:hover,
+.github-day:focus-visible {
+  stroke: var(--tx);
+  stroke-width: 2px;
+  outline: none;
+}
+.github-day,
+.github-snake,
+.github-snake-progress {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.github-snake {
+  fill: var(--blue);
+}
+.github-snake-track {
+  fill: var(--gh-0);
+}
+.github-snake-progress {
+  fill: var(--blue);
+  transform-origin: 0 0;
+}
+.card-github[data-running="false"] .github-day,
+.card-github[data-running="false"] .github-snake,
+.card-github[data-running="false"] .github-snake-progress {
+  animation-play-state: paused;
+}
+.github-calendar-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--dim);
+  font-size: 12px;
+}
+.github-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.github-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--gh-color);
+}
+.github-calendar-state {
+  min-height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--dim);
+  font-size: 13px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .github-day {
+    animation: none !important;
+  }
+  .github-snake-decoration {
+    display: none;
+  }
 }
 
 /* ---- Likes (overlay removed) ---- */
@@ -3830,7 +3922,7 @@ body.site-revealed .header {
 .like-card--square .like-sub {
   font-size: 12px;
 }
-/* Music: 專用歌曲卡片，封面／排行／已同步的個人播放紀錄 */
+/* Music: Spotify 曲目資訊與常聽排行 */
 .music-card .like-title {
   margin: 0;
   font-weight: 700;
@@ -3854,46 +3946,9 @@ body.site-revealed .header {
   font-size: 12px;
   letter-spacing: 0;
 }
-.music-play-count {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--bd);
-  color: var(--dim);
-  font-size: 11px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-}
-.music-play-count svg {
-  flex: none;
-  align-self: center;
-  color: var(--blue);
-}
-.music-play-count strong {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--blue);
-}
-.music-count-pending {
-  font-size: 12px;
-}
-.music-recording-note {
-  margin: 0 0 18px;
+.music-source {
   color: var(--dim);
   font-size: 12px;
-  line-height: 1.8;
-}
-.music-sort {
-  padding: 10px 12px;
-  max-width: 100%;
-  border: 1px solid var(--bd2);
-  background: var(--inset);
-  color: var(--tx);
-  font: inherit;
-  font-size: 13px;
 }
 .music-toolbar {
   flex-direction: row;
@@ -3931,10 +3986,63 @@ body.site-revealed .header {
 .music-artist-row::-webkit-scrollbar {
   display: none;
 }
+/* Chapter navigation */
+.chapter-navigation {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--bd2);
+}
+.chapter-links {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 20px;
+}
+.chapter-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 16px 0;
+  color: var(--tx);
+  text-decoration: none;
+}
+.chapter-link span {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.chapter-link small {
+  font-size: 11px;
+  color: var(--dim);
+}
+.chapter-link strong {
+  font-family: "Shippori Mincho", "Noto Serif TC", serif;
+  font-size: clamp(16px, 2vw, 21px);
+  font-weight: 500;
+}
+.chapter-link svg {
+  flex: none;
+  transition: transform 0.2s ease;
+}
+.chapter-link:hover {
+  color: var(--blue);
+}
+.chapter-link:hover svg {
+  transform: translateX(-4px);
+}
+.chapter-next {
+  margin-left: auto;
+  text-align: right;
+}
+.chapter-next:hover svg {
+  transform: translateX(4px);
+}
+
 /* Projects */
 .proj-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 18px;
 }
 .proj-card {
@@ -3945,6 +4053,9 @@ body.site-revealed .header {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
 }
 .proj-card:hover .proj-cover {
   transform: scale(1.06);
@@ -3966,23 +4077,6 @@ body.site-revealed .header {
     transform 0.4s cubic-bezier(0.33, 1, 0.68, 1),
     filter 0.25s ease;
 }
-.proj-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.proj-top-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-.proj-top-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: none;
-}
 .proj-stars {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
@@ -3990,20 +4084,6 @@ body.site-revealed .header {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-}
-.proj-icon {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
-  overflow: hidden;
-  flex: none;
-  display: grid;
-  place-items: center;
-}
-.proj-icon img {
-  width: 18px !important;
-  height: 18px !important;
 }
 .proj-kicker {
   font-family: "JetBrains Mono", monospace;
@@ -4020,11 +4100,14 @@ body.site-revealed .header {
   font-family: "Shippori Mincho", "Noto Serif TC", serif;
   font-size: 22px;
   color: var(--tx);
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 .proj-desc {
   color: var(--dim);
   font-size: 13px;
   line-height: 1.8;
+  margin: 0;
 }
 .proj-tags {
   display: flex;
@@ -4045,73 +4128,599 @@ body.site-revealed .header {
   display: inline-block;
   transition: transform 0.25s ease;
 }
-.proj-detail-media {
+.project-toolbar {
   display: flex;
-  gap: 24px;
-  /* stretch：統計卡上下緣對齊封面圖的高度 */
-  align-items: stretch;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
 }
-.proj-detail-cover {
-  display: block;
-  /* 統計卡縮窄後封面吃滿剩餘空間（不再設寬度上限），高度上限略放開讓圖更有存在感；
-     與統計卡的間距（gap: 24px）刻意不動 */
-  flex: 1 1 auto;
-  min-width: 0;
-  width: auto;
+.project-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: min(100%, 240px);
+  max-width: 520px;
+}
+.project-search-wrap .likes-search {
+  width: 100%;
   max-width: none;
-  max-height: 360px;
-  object-fit: cover;
-  border: 1px solid var(--bd);
-  border-radius: 8px;
+  padding-right: 44px;
+}
+.project-search-wrap input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+.project-search-clear {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+  width: 36px;
+  border: none;
+  background: var(--panel);
+  color: var(--dim);
+  cursor: pointer;
+}
+.project-result-count {
+  font-size: 12px;
+  color: var(--dim);
+}
+.project-card-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.project-card-heading .proj-arrow {
+  flex: none;
+}
+.proj-card > .proj-stars {
+  margin-top: auto;
+}
+.project-back-link {
+  display: inline-block;
+  color: var(--dim);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 8px 0;
+}
+.project-back-link:hover {
+  color: var(--blue);
+}
+.project-detail-heading {
+  margin: 28px 0;
+}
+.project-detail-heading .page-title {
+  overflow-wrap: anywhere;
+}
+.project-detail-heading > p {
+  color: var(--dim);
+  line-height: 1.8;
+  max-width: 70ch;
+  margin: 16px 0 0;
+}
+.project-gallery {
+  min-width: 0;
+  --gallery-enter-x: 12px;
+  --gallery-leave-x: -8px;
+}
+.project-gallery[data-direction="prev"] {
+  --gallery-enter-x: -12px;
+  --gallery-leave-x: 8px;
+}
+.project-gallery-stage {
+  position: relative;
+  isolation: isolate;
   background: var(--inset);
 }
-.proj-detail-stats {
-  flex: none;
-  width: 160px;
-  max-width: 100%;
-  min-width: 0;
-  margin-left: auto;
-  /* modal 內統計列：直排三個（STARS / LANGUAGE / LAST PUSH 上下堆疊），靠右對齊；
-     三張卡平均鋪滿對齊圖片後的高度 */
-  grid-template-columns: 1fr;
-  gap: 20px;
-  /* stretch（預設）：三張卡平均拉長鋪滿對齊圖片後的高度 */
-  align-content: stretch;
+.project-gallery-slide {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 560px;
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom;
 }
-.proj-detail-stats .stat {
-  /* 左邊多留一點：文字改靠左後貼著卡片邊緣太擠 */
-  padding: 10px 10px 10px 16px;
-  /* 卡片被 stretch 拉高後，內容上下置中 */
+.project-gallery-open {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.project-gallery-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.project-gallery-outgoing {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.project-gallery[data-image-state="loading"]
+  .project-gallery-image:not(.project-gallery-outgoing),
+.project-gallery[data-image-state="loading"]
+  .project-gallery-full-image:not(.project-gallery-outgoing) {
+  opacity: 0;
+}
+.project-gallery[data-image-state="running"]
+  .project-gallery-image:not(.project-gallery-outgoing),
+.project-gallery[data-image-state="running"]
+  .project-gallery-full-image:not(.project-gallery-outgoing) {
+  animation: gallery-image-enter 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.project-gallery[data-image-state="running"] .project-gallery-outgoing {
+  animation: gallery-image-leave 0.36s ease both;
+}
+@keyframes gallery-image-enter {
+  from {
+    opacity: 0;
+    transform: translateX(var(--gallery-enter-x)) scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+@keyframes gallery-image-leave {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(var(--gallery-leave-x)) scale(1.02);
+  }
+}
+.project-gallery-slide > .project-gallery-unavailable {
+  position: absolute;
+  inset: 0;
+}
+.project-gallery-arrow,
+.project-gallery-expand,
+.project-gallery-close {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(12, 15, 21, 0.8);
+  color: #fff;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.2s ease;
+}
+.project-gallery-expand:hover,
+.project-gallery-close:hover {
+  background: #364a7c;
+}
+.project-gallery-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(17, 21, 29, 0.62);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 0;
+  transition: transform 0.16s ease;
+}
+.project-gallery-arrow svg {
+  display: block;
+}
+@keyframes gallery-arrow-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(var(--gallery-arrow-nudge));
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .project-gallery-arrow:hover svg {
+    animation: gallery-arrow-nudge 0.38s ease-in-out;
+  }
+}
+.project-gallery-arrow:active {
+  transform: translateY(-50%) scale(0.96);
+}
+.project-gallery-arrow:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+.project-gallery-prev {
+  --gallery-arrow-nudge: -4px;
+  left: 18px;
+}
+.project-gallery-next {
+  --gallery-arrow-nudge: 4px;
+  right: 18px;
+}
+.project-gallery-expand {
+  position: absolute;
+  z-index: 3;
+  right: 12px;
+  bottom: 12px;
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+}
+.project-gallery-count {
+  position: absolute;
+  z-index: 3;
+  left: 12px;
+  bottom: 12px;
+  padding: 6px 10px;
+  color: #fff;
+  background: rgba(12, 15, 21, 0.8);
+  font:
+    11px "JetBrains Mono",
+    monospace;
+  pointer-events: none;
+}
+.project-gallery-description {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.7;
+}
+.project-gallery-thumbs {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 2px 8px;
+  margin-top: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bd2) transparent;
+  scroll-padding: 2px;
+}
+.project-gallery-thumb {
+  position: relative;
+  flex: 0 0 clamp(112px, 15vw, 176px);
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 2px solid transparent;
+  background: var(--inset);
+  cursor: pointer;
+  touch-action: manipulation;
+  opacity: 0.55;
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease;
+}
+.project-gallery-thumb:hover,
+.project-gallery-thumb.is-active {
+  opacity: 1;
+}
+.project-gallery-thumb.is-active {
+  border-color: var(--blue);
+}
+.project-gallery-thumb.is-active::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: calc(50% - 6px);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--blue);
+}
+.project-gallery-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.project-gallery-thumb span {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(12, 15, 21, 0.85);
+  color: #fff;
+  padding: 2px 5px;
+  font:
+    10px "JetBrains Mono",
+    monospace;
+}
+.project-gallery-unavailable {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  min-height: 120px;
+  color: var(--dim);
 }
-.proj-detail-stats .stat-k,
-.proj-detail-stats .stat-v {
-  text-align: left;
+.project-gallery-unavailable a {
+  color: var(--blue);
 }
-.proj-detail-stats .stat-v,
-.proj-detail-stats .stat-v.sans,
-.proj-detail-stats .stat-v.mono {
+.project-gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  /* Let inset size the top-layer dialog; viewport units would be enlarged
+     again by the desktop html zoom. */
+  width: auto;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  padding: clamp(12px, 3vw, 32px);
+  border: 0;
+  background: #111318;
+  color: #e8ebf2;
+}
+.project-gallery-lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.project-gallery-lightbox::backdrop {
+  background: rgba(0, 0, 0, 0.9);
+}
+.project-gallery-lightbox-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font:
+    12px "JetBrains Mono",
+    monospace;
+}
+.project-gallery-close {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+}
+.project-gallery-lightbox-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: pan-y pinch-zoom;
+}
+.project-gallery-full-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+}
+.project-gallery-lightbox-caption {
+  text-align: center;
+  color: #b8c0ce;
   font-size: 13px;
-  margin-top: 4px;
+  line-height: 1.7;
+  margin: 0;
 }
 @media (max-width: 600px) {
-  .proj-detail-media {
-    flex-direction: column;
-    align-items: stretch;
+  .project-gallery-arrow {
+    width: 44px;
+    height: 44px;
   }
-  .proj-detail-cover {
-    margin: 0 auto;
-    /* 桌機版靠 max-height + 圖片原生比例撐寬（見上方註解），欄位變窄堆疊後
-       沒有統計卡分走空間，寬度會直接被比例撐爆容器——手機版改回固定寬高。 */
-    width: 100%;
-    max-width: 100%;
-    height: 200px;
-    max-height: none;
+  .project-gallery-prev {
+    left: 8px;
   }
-  .proj-detail-stats {
-    width: 100%;
+  .project-gallery-next {
+    right: 8px;
+  }
+  .project-gallery-expand {
+    right: 8px;
+    bottom: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-gallery[data-image-state="running"] .project-gallery-image,
+  .project-gallery[data-image-state="running"] .project-gallery-full-image,
+  .project-gallery[data-image-state="running"]
+    .project-gallery-image:not(.project-gallery-outgoing),
+  .project-gallery[data-image-state="running"]
+    .project-gallery-full-image:not(.project-gallery-outgoing) {
+    animation: none;
+  }
+  .project-gallery[data-image-state="running"] .project-gallery-outgoing {
+    display: none;
+  }
+  .project-gallery-arrow,
+  .project-gallery-arrow svg {
+    transition: none;
+  }
+}
+.project-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: clamp(28px, 5vw, 64px);
+  margin-top: 36px;
+  align-items: start;
+}
+.project-story-section + .project-story-section {
+  margin-top: 32px;
+}
+.project-story-section h2,
+.project-detail-sidebar h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 16px;
+}
+.project-story-section .about-p {
+  margin: 0;
+  white-space: pre-line;
+}
+.project-detail-story,
+.project-markdown {
+  min-width: 0;
+}
+.project-markdown {
+  color: var(--dim);
+  font-size: 15px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+.project-markdown > :first-child {
+  margin-top: 0;
+}
+.project-markdown > :last-child {
+  margin-bottom: 0;
+}
+.project-markdown h2,
+.project-markdown h3,
+.project-markdown h4,
+.project-markdown h5,
+.project-markdown h6 {
+  color: var(--tx);
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 32px 0 16px;
+}
+.project-markdown h2 {
+  font-size: 20px;
+}
+.project-markdown h3 {
+  font-size: 18px;
+}
+.project-markdown h4,
+.project-markdown h5,
+.project-markdown h6 {
+  font-size: 16px;
+}
+.project-markdown p,
+.project-markdown ul,
+.project-markdown ol {
+  margin: 0 0 18px;
+}
+.project-markdown ul,
+.project-markdown ol {
+  padding-left: 24px;
+}
+.project-markdown li + li {
+  margin-top: 6px;
+}
+.project-markdown li > p {
+  margin-bottom: 8px;
+}
+.project-markdown li ul,
+.project-markdown li ol {
+  margin: 8px 0;
+}
+.project-markdown strong {
+  color: var(--tx);
+  font-weight: 700;
+}
+.project-markdown a {
+  color: var(--blue);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.project-markdown a:hover {
+  color: var(--purple);
+}
+.project-markdown blockquote {
+  margin: 24px 0;
+  padding: 12px 20px;
+  border-left: 3px solid var(--blue);
+  background: var(--panel);
+}
+.project-markdown blockquote > :last-child {
+  margin-bottom: 0;
+}
+.project-markdown code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.88em;
+}
+.project-markdown :not(pre) > code {
+  color: var(--tx);
+  background: var(--inset);
+  padding: 2px 6px;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.project-markdown pre {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 24px 0;
+  padding: 20px;
+  background: var(--inset);
+  border: 1px solid var(--bd);
+  color: var(--tx);
+  line-height: 1.7;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+.project-markdown img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
+}
+.project-markdown hr {
+  border: 0;
+  border-top: 1px solid var(--bd2);
+  margin: 32px 0;
+}
+.project-markdown-table {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 24px 0;
+}
+.project-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.project-markdown th,
+.project-markdown td {
+  border: 1px solid var(--bd2);
+  padding: 10px 14px;
+  text-align: left;
+}
+.project-markdown th {
+  background: var(--panel);
+  color: var(--tx);
+  font-weight: 500;
+}
+.project-markdown .contains-task-list {
+  list-style: none;
+  padding-left: 0;
+}
+.project-markdown .task-list-item input {
+  margin-right: 8px;
+  accent-color: var(--blue);
+}
+.project-detail-sidebar {
+  background: var(--panel);
+  padding: 24px;
+}
+.project-detail-sidebar .proj-detail-actions {
+  flex-direction: column;
+}
+.project-detail-sidebar a {
+  text-decoration: none;
+}
+@media (max-width: 760px) {
+  .project-detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .project-detail-sidebar .proj-detail-actions {
+    flex-direction: row;
   }
 }
 .proj-detail-actions {
@@ -5415,17 +6024,6 @@ a.guestbook-nick:hover {
   .likes-search {
     max-width: none;
   }
-  .proj-desc {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .proj-desc-more {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
-    color: var(--mute);
-  }
   .like-body {
     padding: 10px 12px;
   }
@@ -5540,18 +6138,6 @@ a.guestbook-nick:hover {
   }
   .card-github {
     padding: 20px 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .card-github::-webkit-scrollbar {
-    display: none;
-  }
-  .card-github-img {
-    width: auto;
-    height: 150px;
-    aspect-ratio: 880 / 192;
-    max-width: none;
-    margin-top: 0;
   }
   .artist-card-big {
     width: min(300px, 78vw);

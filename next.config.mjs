@@ -1,8 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // next dev 與 next build 同時執行時共用 .next，會互相覆寫 server chunks。
-  distDir: process.env.NODE_ENV === "development" ? ".next-dev" : ".next",
+  // dev / build 分開；額外的測試 dev 也必須指定自己的目錄，避免不同 port
+  // 的 webpack compiler 互相刪除或覆寫同名 chunks。
+  distDir:
+    process.env.NODE_ENV === "development"
+      ? process.env.NEXT_DEV_DIST_DIR || ".next-dev"
+      : ".next",
   async headers() {
     // next dev 的 webpack 用 eval sourcemap，CSP 沒放 unsafe-eval 會讓所有
     // chunk 執行失敗（頁面卡在 SiteLoader）；production 的 bundle 不用 eval，

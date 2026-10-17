@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import PageHead from "../../components/PageHead";
 import MusicGrid from "../../components/likes/MusicGrid";
-import MusicRecordingNote from "../../components/likes/MusicRecordingNote";
 import { getMusicSnapshot } from "../../lib/music";
 import { pageMetadata } from "../../lib/seo";
 
@@ -22,7 +21,6 @@ export default async function MusicDetailPage() {
   return (
     <section style={{ paddingBottom: 8 }}>
       <PageHead kicker="MUSIC" title="音樂" back="/likes" />
-      <MusicRecordingNote recording={music.recording} />
       <MusicGrid tracks={music.tracks} />
     </section>
   );

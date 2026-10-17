@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PROJECTS, LIKE_CATEGORIES, LINKS, EXPERIENCE } from "../../data";
+import { projectPath } from "../../lib/projectRoutes";
 
 interface SearchItem {
   id: string;
@@ -11,7 +12,6 @@ interface SearchItem {
   href: string;
   external?: boolean;
   category: string;
-  projectSlug?: string;
   likeCategory?: string;
   likeIndex?: number;
 }
@@ -45,9 +45,8 @@ const PROJECT_ITEMS: SearchItem[] = PROJECTS.map((p) => ({
   id: `project-${p.slug}`,
   title: p.title,
   sub: p.desc,
-  href: p.href,
+  href: projectPath(p),
   category: "專案",
-  projectSlug: p.slug,
 }));
 
 const LIKE_ITEMS: SearchItem[] = LIKE_CATEGORIES.flatMap((cat) =>
@@ -186,10 +185,7 @@ export default function CommandPaletteInner({
 
   const goTo = (item: SearchItem) => {
     onClose();
-    if (item.projectSlug) {
-      // 導到專案頁，由該頁讀 ?project= 觸發對應的 client-side modal
-      router.push(`/projects?project=${encodeURIComponent(item.projectSlug)}`);
-    } else if (item.likeCategory != null && item.likeIndex != null) {
+    if (item.likeCategory != null && item.likeIndex != null) {
       // 導到收藏分類頁，由該頁讀 ?like= 觸發對應的 client-side modal
       router.push(`/likes/${item.likeCategory}?like=${item.likeIndex}`);
     } else if (item.external) {

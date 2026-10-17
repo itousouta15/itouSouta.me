@@ -14,7 +14,7 @@ This is a highly customized portfolio site built around profile, projects, thoug
 - Visitor impressions wall on the home page: submit a short impression to a randomly arranged word cloud; hover to enlarge words and reveal counts stored in Vercel KV.
 - Thoughts feed that merges Discord-sourced posts, Threads posts, and GitHub events.
 - Likes pages for novels, manga, anime, VTubers, and Spotify-powered music data.
-- Dedicated music cards show recorded personal plays collected from Spotify's recent history, with search and count sorting; see [setup notes](docs/spotify-play-history.md).
+- Searchable music cards show Spotify top tracks, album art, artists, and ranking positions.
 - Project gallery with filters, modal details, and GitHub repository metadata.
 - KV-backed guestbook on every page, with threaded replies, optional "Sign in with GitHub", and Resend email notifications when someone replies to your comment.
 - Reaction counts on `/writing` posts.
@@ -91,8 +91,6 @@ Required or optional depending on which live surfaces you want enabled:
 | `RESEND_API_KEY`, `RESEND_FROM`                                                              | Reply-notification emails for the guestbook (Resend; verify the sending domain in the Resend dashboard, e.g. `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`)                    |
 
 Missing optional credentials are handled gracefully; affected sections fall back or disappear instead of breaking the site.
-
-Recorded plays require reauthorizing `user-read-recently-played`. Scheduled collection also needs the same `SPOTIFY_SYNC_SECRET` in Vercel and GitHub Actions; see the [setup guide](docs/spotify-play-history.md).
 
 ## Docs
 

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { LIKE_CATEGORIES } from "./data";
+import { LIKE_CATEGORIES, PROJECTS } from "./data";
+import { projectPath } from "./lib/projectRoutes";
 import { getMergedThoughts } from "./lib/mergedThoughts";
 import { getBlogPosts } from "./lib/blogFeed";
 import { SITE_URL } from "./lib/seo";
@@ -31,7 +32,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const newestWriting = Math.max(newestThought ?? 0, newestPost);
 
   return [
-    ...[...staticRoutes, ...likeCategoryRoutes].map((path) => ({
+    ...[
+      ...staticRoutes,
+      ...likeCategoryRoutes,
+      ...PROJECTS.map(projectPath),
+    ].map((path) => ({
       url: `${SITE_URL}${path}`,
     })),
     {

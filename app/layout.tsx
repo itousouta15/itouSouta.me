@@ -13,10 +13,10 @@ import GravityModeLoader from "./components/easter-eggs/GravityModeLoader";
 import SmoothScroll from "./components/chrome/SmoothScroll";
 import { NowPlayingProvider } from "./components/status/LanyardCards";
 import NowPlayingBar from "./components/status/NowPlayingBar";
-import SeasonTint from "./components/chrome/SeasonTint";
 import NoiseOverlay from "./components/chrome/NoiseOverlay";
 import ServiceWorkerRegistration from "./components/chrome/ServiceWorkerRegistration";
 import GuestbookSection from "./components/guestbook/GuestbookSection";
+import ChapterNavigation from "./components/chrome/ChapterNavigation";
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, SHARE_IMAGE } from "./lib/seo";
 
 export const metadata: Metadata = {
@@ -214,13 +214,13 @@ export default function RootLayout({
               <PageTransition>{children}</PageTransition>
               {/* 留言板：每一頁的內容底下都有，滾到頁底才載入 Waline */}
               <GuestbookSection />
+              <ChapterNavigation />
             </main>
             <Footer />
             <DeferredMount name="backToTop" />
             <CommandPalette />
             <GravityModeLoader />
             <SmoothScroll />
-            <SeasonTint />
             <NoiseOverlay />
             <DeferredMount name="konami" />
             <DeferredMount name="confetti" />

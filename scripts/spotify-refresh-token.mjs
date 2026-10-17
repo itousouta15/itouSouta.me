@@ -16,8 +16,7 @@
 // production，已移除。要換別的回調位址就設 SPOTIFY_REDIRECT_URI（非本機回環位址時
 // 這支 script 只會印出授權網址，收 code 得自己來）。
 //
-// user-read-currently-playing 給目前播放狀態使用；user-read-recently-played
-// 給歌曲卡片的播放紀錄累計使用。舊 token 不會自動取得新增權限，需重新授權。
+// user-top-read 給常聽排行使用；user-read-currently-playing 給目前播放狀態使用。
 
 import http from "node:http";
 
@@ -32,8 +31,7 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
 
 const REDIRECT_URI =
   process.env.SPOTIFY_REDIRECT_URI ?? "http://127.0.0.1:8888/callback";
-const SCOPE =
-  "user-top-read user-read-currently-playing user-read-recently-played";
+const SCOPE = "user-top-read user-read-currently-playing";
 
 const authUrl =
   "https://accounts.spotify.com/authorize?" +

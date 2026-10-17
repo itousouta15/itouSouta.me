@@ -2,6 +2,7 @@
 /.claude
 /.next
 /.next-dev
+/.next-dev-*/
 /out
 /build
 .DS_Store

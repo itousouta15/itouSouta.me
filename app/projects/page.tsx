@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { permanentRedirect } from "next/navigation";
 import PageHead from "../components/PageHead";
 import ProjectFilterGrid from "../components/projects/ProjectFilterGrid";
 import { PROJECTS } from "../data";
-import { getAllReleases, getAllRepoInfo } from "../lib/github";
+import { getAllRepoInfo } from "../lib/github";
 import { pageMetadata } from "../lib/seo";
+import { findProject, projectPath } from "../lib/projectRoutes";
 
 const description = "itouSouta 做過的專案們 (◍•ᴗ•◍)ゝ";
 
@@ -16,22 +18,28 @@ export const metadata: Metadata = pageMetadata({
 
 export const revalidate = 3600;
 
-export default async function ProjectsPage() {
-  // GitHub 數據在 server 端一次抓齊傳給 client，開 modal 時零延遲
-  const [repoInfoBySlug, releasesBySlug] = await Promise.all([
-    getAllRepoInfo(PROJECTS),
-    getAllReleases(PROJECTS),
-  ]);
+export default async function ProjectsPage({
+  searchParams,
+}: {
+  searchParams: { project?: string | string[]; q?: string | string[] };
+}) {
+  const legacySlug =
+    typeof searchParams.project === "string" ? searchParams.project : "";
+  const legacyProject = findProject(legacySlug);
+  if (legacyProject) {
+    const query = typeof searchParams.q === "string" ? searchParams.q : "";
+    permanentRedirect(
+      projectPath(legacyProject) +
+        (query ? `?${new URLSearchParams({ q: query })}` : "")
+    );
+  }
+  const repoInfoBySlug = await getAllRepoInfo(PROJECTS);
 
   return (
     <section style={{ paddingBottom: 8 }}>
       <PageHead kicker="PROJECTS" title="一些專案們" />
       <Suspense fallback={null}>
-        <ProjectFilterGrid
-          items={PROJECTS}
-          repoInfoBySlug={repoInfoBySlug}
-          releasesBySlug={releasesBySlug}
-        />
+        <ProjectFilterGrid items={PROJECTS} repoInfoBySlug={repoInfoBySlug} />
       </Suspense>
     </section>
   );

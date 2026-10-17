@@ -132,59 +132,6 @@ export async function getTopTracks(options?: {
   }
 }
 
-export interface RecentPlay {
-  trackId: string;
-  playedAt: string;
-}
-
-export interface RecentPlaysResult {
-  plays: RecentPlay[] | null;
-  reason?: string;
-}
-
-// Spotify 沒有個人累計次數；只使用官方回傳的 played_at 紀錄來累加。
-// 需 user-read-recently-played，舊 token 的授權不會因修改程式自動增加。
-export async function getRecentlyPlayedTracks(): Promise<RecentPlaysResult> {
-  const { token, reason } = await getAccessToken();
-  if (!token) return { plays: null, reason };
-  try {
-    const response = await fetch(
-      `${API_URL}/me/player/recently-played?limit=50`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-        cache: "no-store",
-        signal: AbortSignal.timeout(10000),
-      }
-    );
-    if (response.status === 401) invalidateToken(token);
-    if (!response.ok)
-      return { plays: null, reason: `history-http-${response.status}` };
-    const data = await response.json();
-    if (!Array.isArray(data.items))
-      return { plays: null, reason: "invalid-history" };
-    const plays: RecentPlay[] = [];
-    for (const item of data.items) {
-      if (
-        item?.track?.is_local ||
-        (item?.track?.type && item.track.type !== "track") ||
-        typeof item?.track?.id !== "string" ||
-        !/^[a-zA-Z0-9]{22}$/.test(item.track.id) ||
-        typeof item.played_at !== "string"
-      )
-        continue;
-      const timestamp = Date.parse(item.played_at);
-      if (!Number.isFinite(timestamp)) continue;
-      plays.push({
-        trackId: item.track.id,
-        playedAt: new Date(timestamp).toISOString(),
-      });
-    }
-    return { plays };
-  } catch {
-    return { plays: null, reason: "history-fetch-exception" };
-  }
-}
-
 export interface CurrentlyPlayingResult {
   track: CurrentlyPlaying | null;
   // 失敗原因（missing-credentials／token-refresh-*／not-playing／api-http-*／

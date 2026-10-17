@@ -6,7 +6,6 @@ import MusicCard from "./MusicCard";
 
 export default function MusicGrid({ tracks }: { tracks: MusicTrack[] }) {
   const [query, setQuery] = useState("");
-  const [sort, setSort] = useState<"rank" | "plays">("rank");
   const filtered = useMemo(() => {
     const text = query.trim().toLocaleLowerCase();
     const items = tracks.filter(
@@ -14,12 +13,8 @@ export default function MusicGrid({ tracks }: { tracks: MusicTrack[] }) {
         !text ||
         `${track.title} ${track.artist}`.toLocaleLowerCase().includes(text)
     );
-    return items.sort((a, b) =>
-      sort === "plays"
-        ? (b.recordedPlays ?? -1) - (a.recordedPlays ?? -1) || a.rank - b.rank
-        : a.rank - b.rank
-    );
-  }, [tracks, query, sort]);
+    return items.sort((a, b) => a.rank - b.rank);
+  }, [tracks, query]);
 
   return (
     <>
@@ -35,18 +30,7 @@ export default function MusicGrid({ tracks }: { tracks: MusicTrack[] }) {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
-        <label className="sr-only" htmlFor="music-sort">
-          排序方式
-        </label>
-        <select
-          id="music-sort"
-          className="music-sort"
-          value={sort}
-          onChange={(event) => setSort(event.target.value as "rank" | "plays")}
-        >
-          <option value="rank">Spotify 常聽排行</option>
-          <option value="plays">已記錄次數</option>
-        </select>
+        <span className="music-source">Spotify 常聽排行</span>
       </div>
       {filtered.length ? (
         <div className="likes-grid music-grid">

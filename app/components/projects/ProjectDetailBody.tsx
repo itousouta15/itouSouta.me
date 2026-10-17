@@ -1,133 +1,77 @@
 import type { Project } from "../../data";
-import type { GithubReleaseEntry, GithubRepoInfo } from "../../lib/github";
-import { projectCoverThumb } from "../../lib/imageThumb";
 import { sourceHostLabel } from "../../lib/repoHost";
+import { getProjectScreenshots } from "../../lib/projectGallery";
+import ProjectGallery from "./ProjectGallery";
+import ProjectMarkdown from "./ProjectMarkdown";
 
-export default function ProjectDetailBody({
-  project,
-  repoInfo,
-  releases,
-}: {
-  project: Project;
-  repoInfo: GithubRepoInfo | null;
-  releases: GithubReleaseEntry[];
-}) {
+export default function ProjectDetailBody({ project }: { project: Project }) {
   return (
     <>
-      <div className="proj-detail-media">
-        <img
-          className="proj-detail-cover"
-          src={projectCoverThumb(project.cover)}
-          alt={`${project.title} 預覽圖`}
-          loading="lazy"
-          decoding="async"
-        />
-
-        {repoInfo && (
-          <div className="stat-grid proj-detail-stats">
-            <div className="stat">
-              <div className="stat-k">STARS</div>
-              <div className="stat-v mono">{repoInfo.stars}</div>
-            </div>
-            {repoInfo.language && (
-              <div className="stat">
-                <div className="stat-k">LANGUAGE</div>
-                <div className="stat-v sans">{repoInfo.language}</div>
-              </div>
-            )}
-            <div className="stat">
-              <div className="stat-k">LAST PUSH</div>
-              <div className="stat-v sans">
-                {new Date(repoInfo.pushedAt).toLocaleDateString("zh-TW")}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="proj-tags" style={{ marginTop: 16 }}>
-        {project.tags.map((t) => (
-          <span className="proj-tag" key={t}>
-            {t}
-          </span>
-        ))}
-      </div>
-
-      <div className="proj-detail-actions">
-        <a
-          className="btn-primary"
-          href={project.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ textDecoration: "none" }}
-        >
-          {sourceHostLabel(project.href)}{" "}
-          <span className="btn-arrow dark">→</span>
-        </a>
-        {project.siteUrl && (
-          <a
-            className="btn-ghost"
-            href={project.siteUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            網站 <span className="btn-arrow inset">→</span>
-          </a>
-        )}
-        {project.demoUrl && (
-          <a
-            className="btn-ghost"
-            href={project.demoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            Demo <span className="btn-arrow inset">→</span>
-          </a>
-        )}
-      </div>
-
-      {project.why && (
-        <div className="proj-detail-section">
-          <div className="card-kicker">為什麼做</div>
-          <p className="about-p">{project.why}</p>
+      <ProjectGallery
+        title={project.title}
+        images={getProjectScreenshots(project)}
+      />
+      <div className="project-detail-layout">
+        <div className="project-detail-story">
+          {project.content?.trim() ? (
+            <ProjectMarkdown content={project.content} />
+          ) : (
+            <section className="project-story-section">
+              <h2>專案介紹</h2>
+              <p className="about-p">{project.desc}</p>
+            </section>
+          )}
         </div>
-      )}
-
-      {project.longDesc && (
-        <div className="proj-detail-section">
-          <div className="card-kicker">專案介紹</div>
-          <p className="about-p">{project.longDesc}</p>
-        </div>
-      )}
-
-      {project.difficulties && (
-        <div className="proj-detail-section">
-          <div className="card-kicker">遇到的困難</div>
-          <p className="about-p">{project.difficulties}</p>
-        </div>
-      )}
-
-      {releases.length > 0 && (
-        <div className="proj-detail-section">
-          <div className="card-kicker">TIMELINE</div>
-          <div className="timeline-grid">
-            {releases.map((t, i) => (
-              <div className="tl-card-wrap" key={i}>
-                <div className="tl-year-ghost" aria-hidden="true">
-                  {t.version}
-                </div>
-                <div className={`tl-card ${project.color}`}>
-                  <div className="tl-period">{t.date}</div>
-                  <div className="tl-title">{t.version}</div>
-                  {t.note && <div className="tl-desc">{t.note}</div>}
-                </div>
-              </div>
+        <aside className="project-detail-sidebar" aria-label="專案技術與連結">
+          <h2>使用技術</h2>
+          <div className="proj-tags">
+            {project.tags.map((tag) => (
+              <span className="proj-tag" key={tag}>
+                {tag}
+              </span>
             ))}
           </div>
-        </div>
-      )}
+          <div className="proj-detail-actions">
+            <a
+              className="btn-primary"
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {sourceHostLabel(project.href)}
+              <span className="btn-arrow dark" aria-hidden="true">
+                →
+              </span>
+            </a>
+            {project.siteUrl && (
+              <a
+                className="btn-ghost"
+                href={project.siteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                網站
+                <span className="btn-arrow inset" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            )}
+            {project.demoUrl && (
+              <a
+                className="btn-ghost"
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Demo
+                <span className="btn-arrow inset" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            )}
+          </div>
+        </aside>
+      </div>
     </>
   );
 }

@@ -232,18 +232,9 @@ export default function VisitorImpressionsCard() {
       className="card impressions-card"
       aria-labelledby="impressions-title"
     >
-      <div className="card-kicker">IMPRESSIONS</div>
       <div className="impressions-heading">
-        <h2 id="impressions-title">訪客留印牆</h2>
-        {status === "ready" && (
-          <span className="impressions-total">
-            {impressions.length} 種印象 · {total} 筆回應
-          </span>
-        )}
+        <h2 id="impressions-title">留下些什麼吧！</h2>
       </div>
-      <p className="impressions-description">
-        你印象中的我是怎樣的呢？來寫些什麼吧！
-      </p>
 
       <div
         ref={cloudRef}

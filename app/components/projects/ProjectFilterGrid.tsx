@@ -1,161 +1,88 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { Project } from "../../data";
-import type { GithubReleaseEntry, GithubRepoInfo } from "../../lib/github";
-import TileIcon from "../TileIcon";
-import ProjectModalShell from "./ProjectModalShell";
-import ProjectDetailBody from "./ProjectDetailBody";
+import type { GithubRepoInfo } from "../../lib/github";
+import {
+  matchesProject,
+  projectPath,
+  projectSearchPath,
+} from "../../lib/projectRoutes";
 import { projectCoverThumb } from "../../lib/imageThumb";
 
 export default function ProjectFilterGrid({
   items,
   repoInfoBySlug,
-  releasesBySlug,
 }: {
   items: Project[];
   repoInfoBySlug: Record<string, GithubRepoInfo | null>;
-  releasesBySlug: Record<string, GithubReleaseEntry[]>;
 }) {
-  const [query, setQuery] = useState("");
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [truncatedDescs, setTruncatedDescs] = useState<Set<string>>(new Set());
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const query = searchParams.get("q") ?? "";
+  const filtered = useMemo(
+    () =>
+      items
+        .filter((p) => matchesProject(p, query))
+        .sort((a, b) => {
+          const sa = repoInfoBySlug[a.slug]?.stars;
+          const sb = repoInfoBySlug[b.slug]?.stars;
+          if (sa == null && sb == null) return 0;
+          if (sa == null) return 1;
+          if (sb == null) return -1;
+          return sb - sa;
+        }),
+    [items, query, repoInfoBySlug]
+  );
 
-  const tags = useMemo(() => {
-    const set = new Set<string>();
-    items.forEach((p) => p.tags.forEach((t) => set.add(t)));
-    return Array.from(set);
-  }, [items]);
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const result = items.filter((p) => {
-      if (activeTag && !p.tags.includes(activeTag)) return false;
-      if (
-        q &&
-        !p.title.toLowerCase().includes(q) &&
-        !p.desc.toLowerCase().includes(q)
-      )
-        return false;
-      return true;
-    });
-    /* 一律照 star 數排，沒有其他排序模式可選。抓不到 repo 資料的（非 GitHub
-       連結、私有 repo、API 掛掉或被限流）一律沉底，不要當成 0 star 跟真的
-       0 star 混在一起。同分維持 data.ts 原順序。 */
-    return [...result].sort((a, b) => {
-      const sa = repoInfoBySlug[a.slug]?.stars;
-      const sb = repoInfoBySlug[b.slug]?.stars;
-      if (sa == null && sb == null) return 0;
-      if (sa == null) return 1;
-      if (sb == null) return -1;
-      return sb - sa;
-    });
-  }, [items, query, activeTag, repoInfoBySlug]);
-
-  // ?project=<slug>（例如從全站搜尋導過來）時自動打開對應 modal
-  useEffect(() => {
-    const slug = searchParams.get("project");
-    if (!slug) return;
-    const p = items.find((x) => x.slug === slug);
-    if (p) setActiveProject(p);
-  }, [searchParams, items]);
-
-  // 手機版 .proj-desc 用 line-clamp 截斷簡介，這裡量測實際渲染高度判斷有沒有
-  // 被截掉，只有真的截斷的卡片才需要顯示「底下還有」提示
-  useEffect(() => {
-    const measure = () => {
-      const next = new Set<string>();
-      document
-        .querySelectorAll<HTMLElement>("[data-proj-desc]")
-        .forEach((el) => {
-          if (el.scrollHeight > el.clientHeight + 1) {
-            next.add(el.dataset.projDesc!);
-          }
-        });
-      setTruncatedDescs(next);
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [filtered]);
-
-  const closeModal = () => {
-    setActiveProject(null);
-    if (searchParams.get("project"))
-      router.replace("/projects", { scroll: false });
+  const search = (value: string) => {
+    // Next's native History API integration updates useSearchParams without
+    // refetching the server page on every keystroke. Back restores the query.
+    window.history.replaceState(null, "", projectSearchPath(value));
   };
 
   return (
     <>
-      <div className="likes-toolbar">
-        <input
-          className="likes-search"
-          type="text"
-          inputMode="search"
-          placeholder="搜尋專案..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        {tags.length > 0 && (
-          <div className="likes-tag-row">
+      <div className="project-toolbar">
+        <div className="project-search-wrap">
+          <label htmlFor="project-search" className="sr-only">
+            搜尋專案名稱、介紹或技術
+          </label>
+          <input
+            id="project-search"
+            className="likes-search"
+            type="search"
+            placeholder="搜尋名稱、介紹或技術…"
+            value={query}
+            onChange={(e) => search(e.target.value)}
+          />
+          {query && (
             <button
               type="button"
-              className={`likes-tag-chip ${activeTag === null ? "active" : ""}`}
-              onClick={() => setActiveTag(null)}
+              className="project-search-clear"
+              onClick={() => search("")}
+              aria-label="清除搜尋"
             >
-              全部
+              ✕
             </button>
-            {tags.map((t) => (
-              <button
-                type="button"
-                key={t}
-                className={`likes-tag-chip ${activeTag === t ? "active" : ""}`}
-                onClick={() => setActiveTag((cur) => (cur === t ? null : t))}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-        )}
+          )}
+        </div>
+        <span className="project-result-count" role="status">
+          {query.trim()
+            ? `${filtered.length} / ${items.length} 個專案`
+            : `${items.length} 個專案`}
+        </span>
       </div>
-      {filtered.length > 0 ? (
+      {filtered.length ? (
         <div className="proj-grid">
           {filtered.map((p) => {
             const stars = repoInfoBySlug[p.slug]?.stars;
+            const href =
+              projectPath(p) +
+              (query ? `?${new URLSearchParams({ q: query })}` : "");
             return (
-              // href 指向 GitHub：無 JS 或 Ctrl/中鍵點擊時直接開 repo，一般點擊開 modal
-              <a
-                className="proj-card"
-                key={p.slug}
-                href={p.href}
-                style={{ textDecoration: "none", color: "inherit" }}
-                onClick={(e) => {
-                  if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-                  e.preventDefault();
-                  setActiveProject(p);
-                }}
-              >
-                <div className="proj-top">
-                  <div className="proj-top-left">
-                    <div className="proj-icon">
-                      <TileIcon kind={p.icon} size={18} />
-                    </div>
-                    <div className={`proj-kicker ${p.color}`}>{p.kicker}</div>
-                  </div>
-                  <div className="proj-top-right">
-                    {stars != null && stars > 0 && (
-                      <span className="proj-stars" title={`${stars} stars`}>
-                        <span aria-hidden="true">★</span>
-                        {stars}
-                      </span>
-                    )}
-                    <span className="proj-arrow">↗</span>
-                  </div>
-                </div>
+              <Link className="proj-card" key={p.slug} href={href}>
                 <div className="proj-cover-wrap">
                   <img
                     className="proj-cover"
@@ -165,41 +92,37 @@ export default function ProjectFilterGrid({
                     decoding="async"
                   />
                 </div>
-                <div className="proj-title">{p.title}</div>
-                <div className="proj-desc" data-proj-desc={p.slug}>
-                  {p.desc}
+                <div className="project-card-heading">
+                  <h2 className="proj-title">{p.title}</h2>
+                  <span className="proj-arrow" aria-hidden="true">
+                    ↗
+                  </span>
                 </div>
-                {truncatedDescs.has(p.slug) && (
-                  <div className="proj-desc-more">底下還有</div>
+                <p className="proj-desc">{p.desc}</p>
+                {stars != null && stars > 0 && (
+                  <span
+                    className="proj-stars"
+                    aria-label={`${stars} 顆 GitHub 星星`}
+                  >
+                    <span aria-hidden="true">★</span>
+                    {stars}
+                  </span>
                 )}
-                <div className="proj-tags">
-                  {p.tags.map((t) => (
-                    <span className="proj-tag" key={t}>
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </a>
+              </Link>
             );
           })}
         </div>
       ) : (
-        <div className="likes-empty">沒有符合條件的專案</div>
-      )}
-      {activeProject && (
-        <ProjectModalShell
-          kicker={activeProject.kicker}
-          kickerColor={activeProject.color}
-          title={activeProject.title}
-          desc={activeProject.desc}
-          onClose={closeModal}
-        >
-          <ProjectDetailBody
-            project={activeProject}
-            repoInfo={repoInfoBySlug[activeProject.slug] ?? null}
-            releases={releasesBySlug[activeProject.slug] ?? []}
-          />
-        </ProjectModalShell>
+        <div className="likes-empty">
+          <p>沒有符合「{query}」的專案</p>
+          <button
+            className="btn-ghost"
+            type="button"
+            onClick={() => search("")}
+          >
+            清除搜尋
+          </button>
+        </div>
       )}
     </>
   );
