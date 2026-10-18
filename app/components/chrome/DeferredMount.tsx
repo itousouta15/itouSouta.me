@@ -24,17 +24,22 @@ export default function DeferredMount({
 
   useEffect(() => {
     let cancelled = false;
-    const id = window.requestIdleCallback(
-      () => {
-        loaders[name]().then((mod) => {
-          if (!cancelled) setComp(() => mod.default);
-        });
-      },
-      { timeout: 4000 }
-    );
+    const load = () => {
+      loaders[name]().then((mod) => {
+        if (!cancelled) setComp(() => mod.default);
+      });
+    };
+    // iPadOS / Safari 的 WebKit 預設沒有 idle callback；延後掛載仍需能執行。
+    const hasIdleCallback =
+      typeof window.requestIdleCallback === "function" &&
+      typeof window.cancelIdleCallback === "function";
+    const id = hasIdleCallback
+      ? window.requestIdleCallback(load, { timeout: 4000 })
+      : window.setTimeout(load, 1000);
     return () => {
       cancelled = true;
-      window.cancelIdleCallback(id);
+      if (hasIdleCallback) window.cancelIdleCallback(id);
+      else window.clearTimeout(id);
     };
   }, [name]);
 
