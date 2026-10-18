@@ -6156,7 +6156,8 @@ a.guestbook-nick:hover {
     display: none;
   }
   .hero-title {
-    font-size: clamp(36px, 11vw, 44px);
+    font-size: clamp(28px, 8vw, 44px);
+    white-space: nowrap;
   }
 }
 
