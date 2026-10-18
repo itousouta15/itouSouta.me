@@ -322,7 +322,8 @@ export const PROJECTS: Project[] = [
     tags: ["Astro", "TypeScript", "itou 系列"],
     icon: "astro",
     href: "https://github.com/itousouta15/itouSlides",
-    cover: "/assets/projects/Slides.webp",
+    siteUrl: "https://slides.itousouta.me/",
+    cover: "/assets/projects/itouSlides.webp",
   },
   {
     slug: "itouoj",

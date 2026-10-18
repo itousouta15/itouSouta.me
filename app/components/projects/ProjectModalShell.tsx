@@ -7,14 +7,12 @@ const CLOSE_MS = 160; // 需與 CSS .is-closing 動畫時長一致
 
 export default function ProjectModalShell({
   kicker,
-  kickerColor,
   title,
   desc,
   onClose,
   children,
 }: {
   kicker: string;
-  kickerColor: "blue" | "purple";
   title: string;
   desc: string;
   onClose: () => void;
@@ -90,7 +88,7 @@ export default function ProjectModalShell({
       >
         <div className={`proj-modal-head${moreAbove ? " is-more-above" : ""}`}>
           <div>
-            <div className={`proj-kicker ${kickerColor}`}>{kicker}</div>
+            <div className="proj-kicker">{kicker}</div>
             <div className="proj-modal-title">{title}</div>
             <div className="proj-modal-desc">{desc}</div>
           </div>

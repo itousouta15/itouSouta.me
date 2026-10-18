@@ -20,10 +20,10 @@ import {
 } from "../../lib/impressionCloud";
 
 const MAX_VISIBLE = 60;
+const LOAD_TIMEOUT_MS = 6000;
 const COLORS = ["var(--blue)", "var(--purple)", "var(--tx)", "var(--dim)"];
 
 export default function VisitorImpressionsCard() {
-  const cardRef = useRef<HTMLElement>(null);
   const cloudRef = useRef<HTMLDivElement>(null);
   const cloudSeed = useRef(0);
   const cooldownTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -51,6 +51,16 @@ export default function VisitorImpressionsCard() {
     loadController.current = controller;
     setStatus("loading");
     setMessage(null);
+    const fail = () => {
+      setStatus("error");
+      setMessage({ kind: "error", text: "暫時無法讀取印記，請稍後再試" });
+    };
+    const timeout = window.setTimeout(() => {
+      if (controller.signal.aborted || loadController.current !== controller)
+        return;
+      controller.abort();
+      fail();
+    }, LOAD_TIMEOUT_MS);
     try {
       const response = await fetch("/api/impressions", {
         cache: "no-store",
@@ -59,34 +69,24 @@ export default function VisitorImpressionsCard() {
       const data = await response.json().catch(() => null);
       if (!response.ok || !Array.isArray(data?.impressions))
         throw new Error("暫時無法讀取印記，請稍後再試");
-      if (controller.signal.aborted) return;
+      if (controller.signal.aborted || loadController.current !== controller)
+        return;
       setImpressions(data.impressions);
       setStatus("ready");
     } catch {
-      if (controller.signal.aborted) return;
-      setStatus("error");
-      setMessage({ kind: "error", text: "暫時無法讀取印記，請稍後再試" });
+      if (controller.signal.aborted || loadController.current !== controller)
+        return;
+      fail();
+    } finally {
+      window.clearTimeout(timeout);
+      if (loadController.current === controller) loadController.current = null;
     }
   }, []);
 
   useEffect(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    const observer =
-      "IntersectionObserver" in window
-        ? new IntersectionObserver(
-            (entries) => {
-              if (!entries.some((entry) => entry.isIntersecting)) return;
-              observer?.disconnect();
-              void load();
-            },
-            { rootMargin: "240px" }
-          )
-        : null;
-    if (observer) observer.observe(el);
-    else void load();
+    // 提前載入，訪客捲到印記牆時不用才開始等 KV 回應。
+    void load();
     return () => {
-      observer?.disconnect();
       loadController.current?.abort();
       submitController.current?.abort();
       clearTimeout(cooldownTimer.current);
@@ -228,7 +228,6 @@ export default function VisitorImpressionsCard() {
 
   return (
     <section
-      ref={cardRef}
       className="card impressions-card"
       aria-labelledby="impressions-title"
     >

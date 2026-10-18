@@ -117,7 +117,7 @@ export const LINKS: LinkItem[] = [
     handle: "justin0711.com",
     href: "https://justin0711.com/",
     desc: "大電神",
-    avatar: "https://justin0711.com/static/img/profile.jpg",
+    avatar: "https://bh.justin0711.com/static/img/profile.jpg",
   },
   {
     name: "jackoha",
@@ -190,5 +190,20 @@ export const LINKS: LinkItem[] = [
     handle: "來世所及，皆為體驗",
     href: "https://github-io-sigma-ten.vercel.app/",
     avatar: "https://github-io-sigma-ten.vercel.app/assets/brand/avatar.webp",
+  },
+  {
+    name: "yuyoru",
+    handle: "theoyu314159.github.io",
+    href: "https://theoyu314159.github.io/",
+    desc: "一個喜歡寫程式的半宅男",
+    avatar: "https://i.meee.com.tw/advB1xa.png",
+  },
+  {
+    name: "燒餅不加蛋",
+    handle: "ericchen913900.github.io",
+    href: "https://ericchen913900.github.io/",
+    desc: "我是蛋餅",
+    avatar:
+      "https://drive.google.com/thumbnail?id=16tdyrtp-M2spb_E3S1qH6SvrXfrzcUH8&sz=w256",
   },
 ];

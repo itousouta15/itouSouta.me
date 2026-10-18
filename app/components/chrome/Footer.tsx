@@ -16,7 +16,6 @@ const NAV_LINKS = [
 const PROJECT_LINKS = [
   { label: "itouMD", href: "https://md.itousouta.me" },
   { label: "itouSlides", href: "https://slides.itousouta.me/" },
-  { label: "itouBLoGa", href: "/writing" },
   { label: "itouOJ", href: "https://oj.itousouta.me/" },
 ];
 
