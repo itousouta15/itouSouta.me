@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { PostHeading } from "../../lib/postTypes";
 import { activeHeadingAt, type HeadingPosition } from "../../lib/toc";
 
@@ -8,23 +9,44 @@ export default function ArticleToc({ headings }: { headings: PostHeading[] }) {
   const [active, setActive] = useState(headings[0]?.id ?? "");
   const activeRef = useRef(active);
   const navigation = useRef<HTMLElement>(null);
+  const mobileNavigation = useRef<HTMLElement>(null);
+  const mobileDetails = useRef<HTMLDetailsElement>(null);
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+  const [backToTopVisible, setBackToTopVisible] = useState(false);
+  useEffect(() => {
+    setPortalRoot(document.body);
+  }, []);
+  useEffect(() => {
+    const sync = () => {
+      // 與 BackToTopButton 使用相同的顯示門檻。
+      const visible = window.scrollY > 400;
+      setBackToTopVisible((current) =>
+        current === visible ? current : visible
+      );
+    };
+    sync();
+    window.addEventListener("scroll", sync, { passive: true });
+    return () => window.removeEventListener("scroll", sync);
+  }, []);
   const revealActive = useCallback(() => {
-    const nav = navigation.current;
-    const link = nav?.querySelector<HTMLAnchorElement>(
-      'a[aria-current="location"]'
-    );
-    if (!nav || !link || !nav.clientHeight) return;
-    const top = link.offsetTop;
-    if (
-      top < nav.scrollTop + 6 ||
-      top + link.offsetHeight > nav.scrollTop + nav.clientHeight - 6
-    ) {
-      nav.scrollTo({
-        top: Math.max(0, top - nav.clientHeight / 2 + link.offsetHeight / 2),
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "auto"
-          : "smooth",
-      });
+    for (const nav of [navigation.current, mobileNavigation.current]) {
+      const link = nav?.querySelector<HTMLAnchorElement>(
+        'a[aria-current="location"]'
+      );
+      if (!nav || !link || !nav.clientHeight) continue;
+      const top = link.offsetTop;
+      if (
+        top < nav.scrollTop + 6 ||
+        top + link.offsetHeight > nav.scrollTop + nav.clientHeight - 6
+      ) {
+        nav.scrollTo({
+          top: Math.max(0, top - nav.clientHeight / 2 + link.offsetHeight / 2),
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
+            ? "auto"
+            : "smooth",
+        });
+      }
     }
   }, []);
 
@@ -126,41 +148,87 @@ export default function ArticleToc({ headings }: { headings: PostHeading[] }) {
   }, [headings]);
 
   if (!headings.length) return null;
-  return (
-    <details className="blog-toc" open onToggle={revealActive}>
-      <summary>
-        文章目錄
-        <span className="blog-toc-position" aria-hidden="true">
-          {Math.max(
-            1,
-            headings.findIndex((heading) => heading.id === active) + 1
-          )}{" "}
-          / {headings.length}
-        </span>
-      </summary>
-      <nav ref={navigation} aria-label="文章目錄" data-lenis-prevent>
-        <ol>
-          {headings.map((heading) => (
-            <li
-              key={heading.id}
-              style={{
-                paddingLeft: `${Math.min(heading.depth - 2, 2) * 12}px`,
+  const summary = () => (
+    <summary>
+      文章目錄
+      <span className="blog-toc-position" aria-hidden="true">
+        {Math.max(
+          1,
+          headings.findIndex((heading) => heading.id === active) + 1
+        )}{" "}
+        / {headings.length}
+      </span>
+    </summary>
+  );
+  const mobileSummary = () => (
+    <summary aria-label="文章目錄" title="文章目錄">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </summary>
+  );
+  const links = (mobile: boolean) => (
+    <nav
+      ref={mobile ? mobileNavigation : navigation}
+      aria-label="文章目錄"
+      data-lenis-prevent
+    >
+      <ol>
+        {headings.map((heading) => (
+          <li
+            key={heading.id}
+            style={{
+              paddingLeft: `${Math.min(heading.depth - 2, 2) * 12}px`,
+            }}
+          >
+            <a
+              href={`#${heading.id}`}
+              aria-current={active === heading.id ? "location" : undefined}
+              onClick={() => {
+                activeRef.current = heading.id;
+                setActive(heading.id);
+                if (mobile && mobileDetails.current)
+                  mobileDetails.current.open = false;
               }}
             >
-              <a
-                href={`#${heading.id}`}
-                aria-current={active === heading.id ? "location" : undefined}
-                onClick={() => {
-                  activeRef.current = heading.id;
-                  setActive(heading.id);
-                }}
-              >
-                {heading.text}
-              </a>
-            </li>
-          ))}
-        </ol>
-      </nav>
-    </details>
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+  return (
+    <>
+      <details
+        className="blog-toc blog-toc--desktop"
+        open
+        onToggle={revealActive}
+      >
+        {summary()}
+        {links(false)}
+      </details>
+      {portalRoot &&
+        createPortal(
+          <details
+            ref={mobileDetails}
+            className={`blog-toc blog-toc--mobile${backToTopVisible ? " is-raised" : ""}`}
+            onToggle={revealActive}
+          >
+            {mobileSummary()}
+            {links(true)}
+          </details>,
+          portalRoot
+        )}
+    </>
   );
 }

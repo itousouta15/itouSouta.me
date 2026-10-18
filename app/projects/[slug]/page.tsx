@@ -19,11 +19,22 @@ export function generateMetadata({
 }): Metadata {
   const project = findProject(params.slug);
   if (!project) notFound();
-  return pageMetadata({
+  const metadata = pageMetadata({
     title: project.title,
     description: project.desc,
     path: projectPath(project),
   });
+  return {
+    ...metadata,
+    openGraph: {
+      ...metadata.openGraph,
+      images: [{ url: project.cover, alt: `${project.title} 專案封面` }],
+    },
+    twitter: {
+      ...metadata.twitter,
+      images: [project.cover],
+    },
+  };
 }
 
 export default function ProjectPage({ params }: { params: { slug: string } }) {

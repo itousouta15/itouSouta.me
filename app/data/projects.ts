@@ -65,13 +65,9 @@ export const PROJECTS: Project[] = [
     tags: ["Flutter", "Dart"],
     icon: "flutter",
     href: "https://github.com/AvianJay/yetanotherbusapp",
-    cover: "/assets/projects/YABus.webp",
+    cover: "/assets/projects/YABus_1.webp",
     siteUrl: "https://busapp.avianjay.sbs/",
     screenshots: [
-      {
-        src: "/assets/projects/YABus_1.webp",
-        alt: "隨時隨地，便利出行",
-      },
       {
         src: "/assets/projects/YABus_2.webp",
         alt: "公車動態，即時追蹤",

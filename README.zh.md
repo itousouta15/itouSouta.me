@@ -1,111 +1,78 @@
 # itouSouta.me
 
-[English](README.md) | 繁體中文
+[English](README.md) · 繁體中文
 
 ![itouSouta.me 網站截圖](public/assets/projects/itousouta15.webp)
 
-itouSouta / 郭家睿 / 伊藤蒼太 的個人網站，網址為 [itousouta.me](https://itousouta.me)。
+這是 [itousouta.me](https://itousouta.me) 的原始碼，也是 itouSouta／伊藤蒼太／郭家睿的個人網站。專案、文章、喜歡的東西，還有一些互動小細節，都放在這裡。
 
-這是一個高度客製化的個人網站，圍繞個人檔案、專案、雜談、喜好媒體、音樂、朋友連結，以及一些好玩的互動彩蛋展開。目標不是做成一套通用範本，而是一個帶著即時資料與強烈視覺個性的小型個人網路空間。
+## 網站裡有什麼
 
-## 功能特色
+- `/`：個人檔案、Discord 狀態、訪客留印牆與 GitHub 貢獻圖。
+- `/about`：關於我的更多介紹。
+- `/writing`：Markdown 文章，以及整合 Threads、GitHub、Discord 內容的碎碎念分頁。
+- `/likes`、`/likes/music`：小說、漫畫、動畫、VTuber 與可搜尋的 Spotify 常聽歌曲。
+- `/projects`：可搜尋的專案列表、各專案的故事與截圖。
+- `/links`、`/experience`：友鏈、社群與經歷時間軸。
+- `/api`：公開的訂閱來源、搜尋索引、狀態徽章與其他端點。
 
-- 首頁採個人檔案風格，含 Discord 即時狀態、主題感知視覺效果與專案導覽。
-- 首頁訪客留印牆：輸入印象詞，文字雲隨機排列；hover 放大並顯示次數，資料儲存在 Vercel KV。
-- 雜談動態牆整合 Discord 貼文、Threads 貼文與 GitHub 事件三種來源。
-- itouBLoGa 繁中文章已整合進主站，以 Markdown 維護，支援公式、程式碼高亮／複製、多尺寸圖片與歷史留言；詳見 [文章撰寫與遷移](docs/blog-migration.md)。
-- 小說、漫畫、動畫、VTuber 喜好清單，以及由 Spotify 驅動的音樂資料。
-- 音樂卡片顯示 Spotify 常聽歌曲、封面、歌手與排行名次，支援搜尋。
-- 專案展示牆，支援篩選、模態詳情與 GitHub 專案資訊。
-- 每一頁底部都有 KV 儲存的留言板，支援串接回覆、選填的「用 GitHub 登入」，以及有人回覆你的留言時透過 Resend 寄出的通知信。
-- `/writing` 文章的按讚計數。
-- 朋友連結、經歷時間軸、RSS Feed、sitemap 與 robots 路由。
-- 深色／淺色主題，動畫皆遵循 `prefers-reduced-motion`。
-- 透過 Cmd/Ctrl+K 快速導覽與搜尋。
-- 由 Service Worker 預先快取首頁的離線備援頁面。
-- 公開的 SVG 狀態徽章（最新文章標題、Discord 狀態、GitHub 星數總和），可以嵌到別的地方用。
-- 每個路由各自的 Open Graph 分享圖，於建置期間產生，將品牌橫幅與頭像合成進去。
+網站也支援深淺色主題、Cmd/Ctrl+K 站內搜尋、部分頁面的留言板，以及離線備援頁面。文章訂閱網址是 `/writing/feed.xml`，碎碎念則是 `/feed.xml`。
 
-## 技術棧
+## 網站怎麼運作
 
-| 層級     | 技術                               |
-| -------- | ---------------------------------- |
-| 框架     | Next.js 14（App Router）           |
-| 語言     | TypeScript                         |
-| 樣式     | 純 CSS（CSS custom properties）    |
-| 資料     | Vercel KV、Threads API、GitHub API |
-| 即時資料 | Lanyard API、Spotify API           |
-| 郵件     | Resend（留言板回覆通知信）         |
-| 離線支援 | Service Worker（`public/sw.js`）   |
-| 部署     | Vercel                             |
+本站使用 **Next.js 14 App Router、React、TypeScript 與純 CSS**。手動整理的內容主要放在 [`app/data/`](app/data/) 和 [`content/blog/`](content/blog/)；需要即時資料的地方，再由伺服器路由與小型前端元件補上：
 
-沒有使用 UI 函式庫、CSS-in-JS，也沒有使用元件框架。
+- **Vercel KV** 儲存由 Discord 同步的碎碎念、按讚數、訪客留印與留言。留言回覆可透過 **Resend** 寄通知信，也可以選擇用 GitHub 登入。
+- **Spotify** 提供常聽歌曲與目前播放曲目；播放器可退回 **Lanyard** 資料，Discord 上線狀態也由 Lanyard 提供。
+- **Threads 與 GitHub** 提供碎碎念動態及專案資訊；GitHub 貢獻圖則在捲動到附近時才載入。
+- [`public/sw.js`](public/sw.js) 提供基本的離線頁面，僅在正式環境註冊。
 
-## 架構
+本機建置不需要外部服務憑證；未設定時，相關功能會顯示備援內容、錯誤狀態，或不顯示資料。
 
-大部分內容位於 [app/data/](app/data/)，按內容領域拆成多個檔案（`likes.ts`、`projects.ts`、`experience.ts` 等），由 `index.ts` 統一 re-export。網站頁面本身盡量維持靜態，再依需要疊上即時資料：
+## 本機啟動
 
-- `/writing` 整合部落格索引、KV 雜談、Threads 貼文與 GitHub 動態。
-- `/likes/music` 在有憑證時讀取 Spotify 常聽歌曲。
-- 「正在播放」指示器（`/api/now-playing`、個人檔案卡、底部浮動列）直接呼叫 Spotify API，而非依賴 Discord 轉發的狀態，因此手機上即使沒開 Discord app 也能顯示；只有在沒有設定 Spotify 憑證時才會退回 Lanyard。
-- `/api/vtuber-live` 檢查 VTuber 開台狀態，結果短時間快取。
-- 留言板（`/api/guestbook`，顯示在每一頁底部）直接讀寫 Vercel KV，取代了先前透過代理連到部落格留言伺服器的做法。回覆採串接式，若被回覆者留了 email（或用 GitHub 登入並授權了 `user:email` scope），會觸發一封 Resend 通知信。
-- `/api/reactions` 提供 `/writing` 文章的按讚計數。
-- `/api/impressions` 提供首頁留印牆的共用印象與計數，沿用既有 KV 憑證；同 IP 需間隔 30 秒，同詞 24 小時內只計數一次。
-- `public/sw.js` 預先快取 `/` 與 `/offline`，做最基本的離線備援；只在正式環境註冊，因為開發模式下 Next 每次重建都會換 chunk 檔名，stale-while-revalidate 的 Service Worker 反而會讓頁面卡死。
-- `/api/badge/*` 產生 shields.io 風格的 SVG（最新文章標題、Discord 狀態、GitHub 星數總和），可以嵌到其他 README 或頁面。
-- 專案卡片在可取得時使用 GitHub API 資料，否則優雅降級。
-- 本機圖片依用途分類於 `public/assets/brand`、`public/assets/projects`、`public/assets/likes`、`public/assets/social`。
-
-更深入的筆記見 [docs/architecture.md](docs/architecture.md)（英文）。
-
-## SEO 與分享圖
-
-每頁的 metadata 都由 [app/lib/seo.ts](app/lib/seo.ts) 的 `pageMetadata({ title, description, path })` 統一產生。這是刻意集中管理的：Next.js 的 metadata 只有最外層欄位會沿著 layout → page 合併，`openGraph`、`twitter` 這類巢狀物件則是**整包覆蓋**。若每頁各自宣告，會悄悄砍掉 root layout 設好的 `og:site_name`、`og:locale`，並讓 `twitter:card` 從 `summary_large_image` 掉回 `summary`。同理，root layout 刻意不設 `alternates.canonical`——那樣會被繼承下去，任何忘記自己覆蓋的頁面都會宣告首頁是自己的正規網址。
-
-所有頁面的 Open Graph 與 X 分享圖都使用原始 768×432 的 [banner-og.png](public/assets/brand/banner-og.png)。圖片設定集中於 [app/lib/seo.ts](app/lib/seo.ts) 的 `SHARE_IMAGE`，並同時放進 root layout 與 `pageMetadata()`：因為各頁的 `openGraph`、`twitter` 物件會整包覆蓋上層設定，不能只在 layout 設定圖片。
-
-## 開發
-
-需要 Node 20 或以上版本。
+需要 **Node.js 20 以上**及 npm：
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run build
-npm run start
-npm run lint
+npm ci
+npm run dev
 ```
 
-### 環境變數
+打開 <http://localhost:3000>。不設定憑證也可以啟動、建置網站；若要使用即時功能，請依需求在不納入版本控制的 `.env.local` 設定：
 
-依你想啟用哪些即時功能，以下變數為必要或選填：
+- `KV_REST_API_URL`、`KV_REST_API_TOKEN`：Vercel KV，供碎碎念、按讚、留印牆與留言板使用。
+- `THREADS_ACCESS_TOKEN`：碎碎念中的 Threads 貼文。
+- `GITHUB_TOKEN`：專案資訊及動態的 GitHub API 授權請求。
+- `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`：常聽歌曲與目前播放曲目。
+- `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`：留言板的選用 GitHub 登入。
+- `RESEND_API_KEY`、`RESEND_FROM`：留言回覆通知信。
+- `REVALIDATE_SECRET`：驗證 `/api/revalidate` 請求。
 
-| 變數                                                                                         | 用途                                                                                                                                             |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `REVALIDATE_SECRET`                                                                          | itouBot 呼叫的重新驗證端點所使用的共用密鑰                                                                                                       |
-| `KV_REST_API_URL`、`KV_REST_API_TOKEN`、`KV_REST_API_READ_ONLY_TOKEN`、`KV_URL`、`REDIS_URL` | Vercel KV 連線設定                                                                                                                               |
-| `THREADS_ACCESS_TOKEN`                                                                       | 擷取同步的 Threads 貼文                                                                                                                          |
-| `GITHUB_TOKEN`                                                                               | 擷取 GitHub 專案資訊與動態                                                                                                                       |
-| `SPOTIFY_CLIENT_ID`、`SPOTIFY_CLIENT_SECRET`、`SPOTIFY_REFRESH_TOKEN`                        | 擷取 Spotify 常聽歌曲與目前播放曲目（見 `scripts/spotify-refresh-token.mjs`；scope 含 `user-read-currently-playing`，較舊的 token 需要重新授權） |
-| `GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`GUESTBOOK_GH_SECRET`                | 留言板的「用 GitHub 登入」（OAuth App callback：`/api/auth/github/callback`；`GUESTBOOK_GH_SECRET` 用來簽署短效身分 token）                      |
-| `RESEND_API_KEY`、`RESEND_FROM`                                                              | 留言板回覆通知信（Resend；需在 Resend 後台驗證寄件網域，例如 `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`）                              |
+要取得 Spotify refresh token，先設定 client ID 與 secret，並在 Spotify App 登記 `http://127.0.0.1:8888/callback`，再執行 `node --env-file=.env.local scripts/spotify-refresh-token.mjs`。腳本會要求 `user-top-read` 與 `user-read-currently-playing` 權限。
 
-缺少選填憑證時網站會優雅降級，對應區塊會退回備援資料或直接不顯示，而不會整個壞掉。
+### 檢查指令
 
-## 文件
+```bash
+npm run typecheck
+npm run lint
+npm run test:features
+npm run test:blog
+npm run format:check
+npm run build
+```
 
-- [Architecture](docs/architecture.md)（英文）
-- [文章撰寫與遷移](docs/blog-migration.md)
-- [VTuber Live Status](docs/vtuber-live.md)（英文）
-- [Easter Eggs](docs/easter-eggs.md)（英文）
+`npm run start` 可以啟動正式建置。CI 使用 Node 20 執行上述檢查。
 
-## 部署
+## 專案目錄
 
-網站部署於 Vercel；推送至 `main` 分支會觸發正式環境部署。
+- [`app/`](app/)：頁面、API、元件、資料與共用函式。
+- [`content/blog/`](content/blog/)：Markdown 文章及相關內容。
+- [`public/assets/`](public/assets/)：品牌圖片、封面與其他網站素材。
+- [`docs/`](docs/)：實作細節與文章撰寫說明。
 
-GitHub 貢獻圖 SVG 由 [.github/workflows/snake.yml](.github/workflows/snake.yml) 每日重新產生並寫入 `public/assets/social/`。
+想看更多細節，可參考[架構說明](docs/architecture.md)、[文章撰寫與遷移](docs/blog-migration.md)、[VTuber 開台狀態](docs/vtuber-live.md)及[彩蛋](docs/easter-eggs.md)。
 
-## 授權條款
+## 授權
 
-本專案採用 Apache License 2.0 授權，詳見 [LICENSE](LICENSE)。
+採用 Apache-2.0，詳見 [LICENSE](LICENSE)。
+隨站提供的 LINE Seed TW 字型採用 [SIL OFL 1.1](public/assets/fonts/LINE-Seed-TW-OFL.txt) 授權。

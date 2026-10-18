@@ -1,111 +1,78 @@
 # itouSouta.me
 
-English | [繁體中文](README.zh.md)
+English · [繁體中文](README.zh.md)
 
-![itouSouta.me screenshot](public/assets/projects/itousouta15.webp)
+![Screenshot of itouSouta.me](public/assets/projects/itousouta15.webp)
 
-Personal website of itouSouta, live at [itousouta.me](https://itousouta.me).
+The source for [itousouta.me](https://itousouta.me), the personal website of itouSouta / 伊藤蒼太 / 郭家睿. It brings together projects, writing, favorite things, and small interactive details in one place.
 
-This is a highly customized portfolio site built around profile, projects, thoughts, favorite media, music, friend links, and a few playful interactions. The goal is not to be a generic template, but a small personal web space with live data and a strong visual identity.
+## Explore the site
 
-## Features
+- `/` — Profile, Discord presence, visitor impressions, and a GitHub contribution calendar.
+- `/about` — A little more about me.
+- `/writing` — Markdown articles and a separate thoughts tab combining Threads, GitHub, and Discord-sourced posts.
+- `/likes` and `/likes/music` — Favorite novels, manga, anime, VTubers, and searchable Spotify top tracks.
+- `/projects` — Searchable projects with individual story and screenshot pages.
+- `/links` and `/experience` — Friends, communities, and a timeline.
+- `/api` — Public feeds, search index, status badges, and other endpoints.
 
-- Profile-style home page with Discord presence, theme-aware visuals, and project navigation.
-- Visitor impressions wall on the home page: submit a short impression to a randomly arranged word cloud; hover to enlarge words and reveal counts stored in Vercel KV.
-- Thoughts feed that merges Discord-sourced posts, Threads posts, and GitHub events.
-- Native itouBLoGa articles with local Markdown, math, highlighted/copyable code, responsive images, and preserved public comment history; see [blog migration and authoring](docs/blog-migration.md).
-- Likes pages for novels, manga, anime, VTubers, and Spotify-powered music data.
-- Searchable music cards show Spotify top tracks, album art, artists, and ranking positions.
-- Project gallery with filters, modal details, and GitHub repository metadata.
-- KV-backed guestbook on every page, with threaded replies, optional "Sign in with GitHub", and Resend email notifications when someone replies to your comment.
-- Reaction counts on `/writing` posts.
-- Friend links, experience timeline, RSS feed, sitemap, and robots routes.
-- Dark/light theme support with reduced-motion-aware animations.
-- Search and quick navigation through Cmd/Ctrl+K.
-- Offline fallback page backed by a service worker that precaches the home page.
-- Public SVG status badges (latest blog post, Discord presence, total GitHub stars) for embedding elsewhere.
-- Per-route Open Graph images rendered at build time, with the brand banner and avatar composited in.
+The site also has a light/dark theme, Cmd/Ctrl+K search, a guestbook on supported pages, and an offline fallback. Articles have their own RSS feed at `/writing/feed.xml`; thoughts are available at `/feed.xml`.
 
-## Tech Stack
+## How it works
 
-| Layer      | Technology                                      |
-| ---------- | ----------------------------------------------- |
-| Framework  | Next.js 14 App Router                           |
-| Language   | TypeScript                                      |
-| Styling    | Plain CSS with custom properties                |
-| Data       | Vercel KV, Threads API, GitHub API, Spotify API |
-| Real-time  | Lanyard API                                     |
-| Email      | Resend (guestbook reply notifications)          |
-| Offline    | Service worker (`public/sw.js`)                 |
-| Deployment | Vercel                                          |
+This is a **Next.js 14 App Router** project using **React, TypeScript, and plain CSS**. Most authored content lives in [`app/data/`](app/data/) and [`content/blog/`](content/blog/). Server routes and small client components add live data where needed:
 
-No UI library, no CSS-in-JS, and no component framework.
+- **Vercel KV** stores Discord-sourced thoughts, reactions, visitor impressions, and guestbook entries. Guestbook replies can trigger **Resend** email notifications; GitHub sign-in is optional.
+- **Spotify** supplies top tracks and the currently playing song. The player can fall back to **Lanyard**, which also supplies Discord presence.
+- **Threads and GitHub** supply activity for the thoughts feed and project cards. GitHub contributions are loaded separately when the calendar nears the viewport.
+- The service worker in [`public/sw.js`](public/sw.js) provides a basic offline page and is registered only in production.
 
-## Architecture
+External services are optional for a local build; their dependent features show a fallback, an error state, or no data when credentials are unavailable.
 
-Most content lives in [app/data/](app/data/), split by domain (`likes.ts`, `projects.ts`, `experience.ts`, …) with `index.ts` re-exporting everything. The app keeps the public pages mostly static, then layers live data where it matters:
+## Run locally
 
-- `/writing` combines the blog index and KV entries, Threads posts, and GitHub activity.
-- `/likes/music` reads Spotify top tracks when credentials are available.
-- The "now playing" indicator (`/api/now-playing`, profile card, floating bar) calls the Spotify API directly instead of relying on Discord's relayed presence, so it works on mobile even when the Discord app isn't open; it falls back to Lanyard only when Spotify credentials aren't configured.
-- `/api/vtuber-live` checks VTuber live status and caches results for short intervals.
-- The guestbook (`/api/guestbook`, rendered at the bottom of every page) reads and writes Vercel KV directly, replacing an earlier setup that proxied a blog-only comment server. Replies are threaded and, when the person being replied to left an email (or signed in with GitHub and granted the `user:email` scope), trigger a Resend notification.
-- `/api/reactions` powers per-post like counts on `/writing`.
-- `/api/impressions` serves the shared home-page wall using the existing KV credentials, enforcing a 30-second cooldown and one contribution per word per IP every 24 hours.
-- `public/sw.js` precaches `/` and `/offline` for a minimal offline fallback; it only registers in production, since Next dev's changing chunk hashes make a stale-while-revalidate service worker actively harmful during development.
-- `/api/badge/*` renders shields.io-style SVGs (latest blog post title, Discord presence, total GitHub stars) for embedding in other READMEs or pages.
-- Project cards use GitHub API data when available and gracefully fall back otherwise.
-- Local images are grouped under `public/assets/brand`, `public/assets/projects`, `public/assets/likes`, and `public/assets/social`.
-
-Deeper notes live in [docs/architecture.md](docs/architecture.md).
-
-## SEO and Share Images
-
-Page metadata is produced by `pageMetadata({ title, description, path })` in [app/lib/seo.ts](app/lib/seo.ts). This is centralized on purpose: in Next.js only top-level metadata fields merge from layout to page — nested objects like `openGraph` and `twitter` are **replaced wholesale**. Declaring them per page silently drops the root layout's `og:site_name`, `og:locale`, and downgrades `twitter:card` from `summary_large_image` to `summary`. For the same reason the root layout deliberately sets no `alternates.canonical`: it would be inherited, and any page that forgot to override it would declare the home page as its canonical URL.
-
-Every page uses the original 768×432 [banner-og.png](public/assets/brand/banner-og.png) for Open Graph and X previews. `SHARE_IMAGE` in [app/lib/seo.ts](app/lib/seo.ts) is included in both the root layout and `pageMetadata()` because page-level `openGraph` and `twitter` objects replace their parent values instead of merging with them.
-
-## Development
-
-Node 20 or later is required.
+Use **Node.js 20+** and npm:
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run build
-npm run start
-npm run lint
+npm ci
+npm run dev
 ```
 
-### Environment Variables
+Open <http://localhost:3000>. No credentials are needed to start the site or build it. To enable live features locally, add the relevant variables to an untracked `.env.local`:
 
-Required or optional depending on which live surfaces you want enabled:
+- `KV_REST_API_URL`, `KV_REST_API_TOKEN` — Vercel KV: thoughts, reactions, impressions, guestbook.
+- `THREADS_ACCESS_TOKEN` — Threads posts in the thoughts feed.
+- `GITHUB_TOKEN` — Authenticated GitHub API requests for projects and activity.
+- `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN` — Top tracks and now playing.
+- `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `GUESTBOOK_GH_SECRET` — Optional guestbook GitHub sign-in.
+- `RESEND_API_KEY`, `RESEND_FROM` — Guestbook reply notifications.
+- `REVALIDATE_SECRET` — Authenticated `/api/revalidate` requests.
 
-| Variable                                                                                     | Purpose                                                                                                                                                                               |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `REVALIDATE_SECRET`                                                                          | Shared secret for the revalidation endpoint used by itouBot                                                                                                                           |
-| `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`, `KV_URL`, `REDIS_URL` | Vercel KV connection                                                                                                                                                                  |
-| `THREADS_ACCESS_TOKEN`                                                                       | Fetching synced Threads posts                                                                                                                                                         |
-| `GITHUB_TOKEN`                                                                               | Fetching GitHub repository metadata and activity                                                                                                                                      |
-| `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`                        | Fetching Spotify top tracks and the currently-playing track (see `scripts/spotify-refresh-token.mjs`; scope includes `user-read-currently-playing`, older tokens need re-authorizing) |
-| `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `GUESTBOOK_GH_SECRET`                | "Sign in with GitHub" on the guestbook (OAuth App callback: `/api/auth/github/callback`; the secret signs the short-lived identity token)                                             |
-| `RESEND_API_KEY`, `RESEND_FROM`                                                              | Reply-notification emails for the guestbook (Resend; verify the sending domain in the Resend dashboard, e.g. `RESEND_FROM="itousouta.me <no-reply@itousouta.me>"`)                    |
+For a Spotify refresh token, configure the client ID and secret, register `http://127.0.0.1:8888/callback` in your Spotify app, then run `node --env-file=.env.local scripts/spotify-refresh-token.mjs`. The script requests `user-top-read` and `user-read-currently-playing`.
 
-Missing optional credentials are handled gracefully; affected sections fall back or disappear instead of breaking the site.
+### Checks
 
-## Docs
+```bash
+npm run typecheck
+npm run lint
+npm run test:features
+npm run test:blog
+npm run format:check
+npm run build
+```
 
-- [Architecture](docs/architecture.md)
-- [Blog migration and authoring](docs/blog-migration.md)
-- [VTuber Live Status](docs/vtuber-live.md)
-- [Easter Eggs](docs/easter-eggs.md)
+`npm run start` serves the production build. CI runs these checks with Node 20.
 
-## Deployment
+## Project map
 
-The site is deployed on Vercel. Pushes to `main` trigger production deployment.
+- [`app/`](app/) — Pages, API routes, components, data, and shared helpers.
+- [`content/blog/`](content/blog/) — Local Markdown articles and related content.
+- [`public/assets/`](public/assets/) — Brand art, covers, and other site images.
+- [`docs/`](docs/) — Implementation and authoring notes.
 
-The GitHub contribution SVGs are generated daily by [.github/workflows/snake.yml](.github/workflows/snake.yml) and written to `public/assets/social/`.
+For more detail, see [architecture](docs/architecture.md), [blog authoring and migration](docs/blog-migration.md), [VTuber live status](docs/vtuber-live.md), and [easter eggs](docs/easter-eggs.md).
 
 ## License
 
-This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+Apache-2.0. See [LICENSE](LICENSE).
+The bundled LINE Seed TW font is licensed under [SIL OFL 1.1](public/assets/fonts/LINE-Seed-TW-OFL.txt).

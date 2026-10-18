@@ -35,6 +35,22 @@ html.lenis body {
   src: url("/assets/fonts/ChenYuLuoYan-subset.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "LINE Seed TW";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/LINESeedTW_OTF_Rg.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "LINE Seed TW";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/assets/fonts/LINESeedTW_OTF_Bd.woff2") format("woff2");
+}
+
 *,
 *::before,
 *::after {
@@ -172,7 +188,7 @@ svg {
 .root {
   min-height: 100vh;
   color: var(--tx);
-  font-family: "Noto Sans TC", system-ui, sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", system-ui, sans-serif;
   background:
     radial-gradient(
       1100px 560px at 72% -12%,
@@ -508,7 +524,7 @@ body.site-revealed .header {
   border: none;
   cursor: pointer;
   color: var(--dim);
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   font-size: 15.5px;
   font-weight: 500;
   padding: 11px 18px;
@@ -947,7 +963,7 @@ body.site-revealed .header {
   border-left: 2px solid transparent;
   color: var(--tx);
   cursor: pointer;
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   transition:
     background 0.15s ease,
     border-color 0.15s ease;
@@ -2056,7 +2072,7 @@ body.site-revealed .header {
   gap: 10px;
   border-radius: 999px;
   padding: 10px 10px 10px 22px;
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -2357,7 +2373,7 @@ body.site-revealed .header {
 .impressions-word {
   position: absolute;
   display: block;
-  font-family: "Noto Sans TC", system-ui, sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", system-ui, sans-serif;
   font-size: var(--impression-size);
   font-weight: 700;
   line-height: 1.1;
@@ -3139,7 +3155,7 @@ body.site-revealed .header {
   -webkit-backdrop-filter: blur(14px);
   color: inherit;
   text-decoration: none;
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
 }
 .now-playing-track {
   display: flex;
@@ -3369,7 +3385,7 @@ body.site-revealed .header {
   margin-top: 5px;
 }
 .stat-v.sans {
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   font-size: 14px;
   margin-top: 7px;
 }
@@ -3633,7 +3649,7 @@ body.site-revealed .header {
   border-radius: 10px;
   padding: 12px 16px;
   min-height: 44px;
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   font-size: 14px;
   color: var(--tx);
   width: 100%;
@@ -5063,7 +5079,7 @@ body.site-revealed .header {
   outline: none;
   background: none;
   padding: 10px 12px 10px 0;
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   font-size: 13px;
   color: var(--tx);
 }
@@ -5074,7 +5090,7 @@ body.site-revealed .header {
   resize: vertical;
   min-height: 110px;
   padding: 14px 16px;
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   font-size: 14px;
   line-height: 1.7;
   color: var(--tx);
@@ -5104,7 +5120,7 @@ body.site-revealed .header {
   background: none;
   border: 1px solid var(--bd2);
   color: var(--dim);
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   font-size: 13px;
   padding: 7px 16px;
   cursor: pointer;
@@ -5320,7 +5336,7 @@ a.guestbook-nick:hover {
   background: none;
   border: none;
   padding: 2px 4px;
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "LINE Seed TW", "Noto Sans TC", sans-serif;
   font-size: 12px;
   color: var(--mute);
   cursor: pointer;
@@ -6151,6 +6167,12 @@ a.guestbook-nick:hover {
   }
   .card-github {
     padding: 20px 16px;
+  }
+  .github-calendar-scroll {
+    scrollbar-width: none;
+  }
+  .github-calendar-scroll::-webkit-scrollbar {
+    display: none;
   }
   .artist-card-big {
     width: min(300px, 78vw);
