@@ -32,17 +32,19 @@ export default function ProjectDetailBody({ project }: { project: Project }) {
             ))}
           </div>
           <div className="proj-detail-actions">
-            <a
-              className="btn-primary"
-              href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {sourceHostLabel(project.href)}
-              <span className="btn-arrow dark" aria-hidden="true">
-                →
-              </span>
-            </a>
+            {project.href && (
+              <a
+                className="btn-primary"
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {sourceHostLabel(project.href)}
+                <span className="btn-arrow dark" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            )}
             {project.siteUrl && (
               <a
                 className="btn-ghost"
@@ -65,6 +67,22 @@ export default function ProjectDetailBody({ project }: { project: Project }) {
               >
                 Demo
                 <span className="btn-arrow inset" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            )}
+            {project.figmaUrl && (
+              <a
+                className={project.href ? "btn-ghost" : "btn-primary"}
+                href={project.figmaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Figma 設計稿
+                <span
+                  className={`btn-arrow ${project.href ? "inset" : "dark"}`}
+                  aria-hidden="true"
+                >
                   →
                 </span>
               </a>

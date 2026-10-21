@@ -17,8 +17,11 @@ export function projectPath(project: Pick<Project, "slug">): string {
   return `/projects/${encodeURIComponent(project.slug)}`;
 }
 
-export function projectSearchPath(query: string): string {
-  return query ? `/projects?${new URLSearchParams({ q: query })}` : "/projects";
+export function projectSearchPath(query: string, view?: "design"): string {
+  const params = new URLSearchParams();
+  if (query) params.set("q", query);
+  if (view) params.set("view", view);
+  return `/projects${params.size ? `?${params}` : ""}`;
 }
 
 export function matchesProject(project: Project, query: string): boolean {

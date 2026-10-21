@@ -4056,6 +4056,35 @@ body.site-revealed .header {
 }
 
 /* Projects */
+.project-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 28px;
+  border-bottom: 1px solid var(--bd2);
+  padding-bottom: 14px;
+}
+.project-tabs > button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 18px;
+  border: 0;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+}
+.project-tabs > button[aria-selected="true"] {
+  background: var(--panel);
+  color: var(--blue);
+}
+.project-tabs > button span {
+  font:
+    11px "JetBrains Mono",
+    monospace;
+}
 .proj-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));

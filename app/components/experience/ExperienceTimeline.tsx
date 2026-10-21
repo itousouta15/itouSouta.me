@@ -26,7 +26,6 @@ export default function ExperienceTimeline({ groups }: Props) {
               {String(groupIndex + 1).padStart(2, "0")}
             </span>
             <h2 id={`experience-group-${groupIndex}`}>{category || "經歷"}</h2>
-            <span className="timeline-group-count">{items.length} 項</span>
           </div>
           <ol className="exp-timeline">
             {items.map((item, index) => {

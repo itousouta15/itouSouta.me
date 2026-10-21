@@ -21,16 +21,22 @@ export const revalidate = 3600;
 export default async function ProjectsPage({
   searchParams,
 }: {
-  searchParams: { project?: string | string[]; q?: string | string[] };
+  searchParams: {
+    project?: string | string[];
+    q?: string | string[];
+    view?: string | string[];
+  };
 }) {
   const legacySlug =
     typeof searchParams.project === "string" ? searchParams.project : "";
   const legacyProject = findProject(legacySlug);
   if (legacyProject) {
     const query = typeof searchParams.q === "string" ? searchParams.q : "";
+    const params = new URLSearchParams();
+    if (query) params.set("q", query);
+    if (searchParams.view === "design") params.set("view", "design");
     permanentRedirect(
-      projectPath(legacyProject) +
-        (query ? `?${new URLSearchParams({ q: query })}` : "")
+      projectPath(legacyProject) + (params.size ? `?${params}` : "")
     );
   }
   const repoInfoBySlug = await getAllRepoInfo(PROJECTS);

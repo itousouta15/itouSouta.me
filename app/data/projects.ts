@@ -6,17 +6,19 @@ export interface ProjectScreenshot {
 
 export interface Project {
   slug: string;
+  category: "development" | "design";
   kicker: string;
   color: "blue" | "purple";
   title: string;
   desc: string;
   tags: string[];
   icon: string;
-  href: string;
+  href?: string;
   cover: string;
   /** Additional gallery images, shown after the cover. */
   screenshots?: ProjectScreenshot[];
   siteUrl?: string;
+  figmaUrl?: string;
   /** Full project story in Markdown. Use headings to organize sections. */
   content?: string;
   demoUrl?: string;
@@ -25,6 +27,7 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     slug: "yetanotherbusapp",
+    category: "development",
     kicker: "APP",
     color: "blue",
     title: "YetAnotherBusApp",
@@ -88,6 +91,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "scaict-uwu",
+    category: "development",
     kicker: "BOT",
     color: "blue",
     title: "SCAICT-uwu",
@@ -117,6 +121,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "dlhit-website",
+    category: "development",
     kicker: "WEB",
     color: "blue",
     title: "DLHIT-Website",
@@ -147,6 +152,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "scaict-github-io",
+    category: "development",
     kicker: "WEB",
     color: "blue",
     title: "SCAICT.github.io",
@@ -172,6 +178,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "west-link-tree",
+    category: "development",
     kicker: "WEB",
     color: "blue",
     title: "興大二村 | 宿舍服務快速入口",
@@ -201,6 +208,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "itousouta.me",
+    category: "development",
     kicker: "PORTFOLIO",
     color: "blue",
     title: "itousouta.me",
@@ -234,6 +242,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "thjcc-website",
+    category: "design",
     kicker: "WEB",
     color: "blue",
     title: "THJCC 官方網站",
@@ -265,9 +274,28 @@ export const PROJECTS: Project[] = [
     href: "https://github.com/official-scint/thjcc.org",
     cover: "/assets/projects/THJCC.webp",
     siteUrl: "https://thjcc.org",
+    figmaUrl:
+      "https://www.figma.com/design/ZJd84NrEnUC8BhiN993LxM/THJCC?m=auto&t=cObEf2MICEqGHaFC-6",
+  },
+  {
+    slug: "sitcon-2027-cfp",
+    category: "design",
+    kicker: "DESIGN",
+    color: "purple",
+    title: "SITCON 2027 CFP",
+    desc: "SITCON 2027 CFP ",
+    content: `## 專案介紹
+
+SITCON 2027 CFP 網站的設計稿。可以透過右側的 Figma 連結查看。`,
+    tags: ["Figma"],
+    icon: "figma",
+    cover: "/assets/projects/sitcon-2027-cfp.webp",
+    figmaUrl:
+      "https://www.figma.com/design/7lEKLdxdjNuLHJ3VILkuD4/SITCON-2027-CFP-%E7%B6%B2%E7%AB%99?m=auto&t=cObEf2MICEqGHaFC-6",
   },
   {
     slug: "itoubloga",
+    category: "development",
     kicker: "BLOG",
     color: "blue",
     title: "itouBLoGa",
@@ -297,6 +325,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "itouslides",
+    category: "development",
     kicker: "TOOL",
     color: "blue",
     title: "itouSlides",
@@ -327,6 +356,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "itouoj",
+    category: "development",
     kicker: "TOOL",
     color: "blue",
     title: "itouOJ",
@@ -386,6 +416,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "itousandbox",
+    category: "development",
     kicker: "TOOL",
     color: "blue",
     title: "itouSandBox",
@@ -420,6 +451,7 @@ HTTP 服務沿用 Piston 執行介面的主要欄位，方便 OJ 接入。C／C+
   },
   {
     slug: "meow-plus-plus",
+    category: "development",
     kicker: "LANGUAGE",
     color: "blue",
     title: "喵++（Meow-plus-plus）",
@@ -460,6 +492,7 @@ HTTP 服務沿用 Piston 執行介面的主要欄位，方便 OJ 接入。C／C+
   },
   {
     slug: "itoukv",
+    category: "development",
     kicker: "DATABASE",
     color: "blue",
     title: "itouKV",
@@ -495,6 +528,7 @@ HTTP 服務沿用 Piston 執行介面的主要欄位，方便 OJ 接入。C／C+
   },
   {
     slug: "itoumd",
+    category: "development",
     kicker: "APP",
     color: "blue",
     title: "itouMD",
@@ -558,6 +592,7 @@ Android 提供正式簽章 APK 與 App 內更新；iOS／iPadOS 目前提供需�
   },
   {
     slug: "itouqr",
+    category: "development",
     kicker: "TOOL",
     color: "blue",
     title: "itouQR",
@@ -591,6 +626,7 @@ QR 編碼採用 qrcode-generator，圖形繪製與幾何計算則自行實作。
   },
   {
     slug: "verify.scaict.org",
+    category: "development",
     kicker: "WEB",
     color: "blue",
     title: "SCAICT 證書查驗系統",
@@ -622,6 +658,7 @@ QR 編碼採用 qrcode-generator，圖形繪製與幾何計算則自行實作。
   },
   {
     slug: "115-summer-camp",
+    category: "development",
     kicker: "WEB",
     color: "blue",
     title: "115-summer-camp",
@@ -654,6 +691,7 @@ QR 編碼採用 qrcode-generator，圖形繪製與幾何計算則自行實作。
   },
   {
     slug: "wintercamp2026",
+    category: "development",
     kicker: "WEB",
     color: "blue",
     title: "WinterCamp2026",
@@ -685,6 +723,7 @@ QR 編碼採用 qrcode-generator，圖形繪製與幾何計算則自行實作。
   },
   {
     slug: "itoucards",
+    category: "development",
     kicker: "SHOWCASE",
     color: "blue",
     title: "itouCards",
@@ -714,6 +753,7 @@ CSS 負責 3D 變形和視覺樣式，JavaScript 管理載入、動畫狀態與�
   },
   {
     slug: "tesiis",
+    category: "development",
     kicker: "TOOL",
     color: "blue",
     title: "TESIIS 臺灣避難收容處所地圖",

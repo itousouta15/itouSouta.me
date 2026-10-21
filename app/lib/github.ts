@@ -53,11 +53,11 @@ export async function getRepoInfo(
  * request count.
  */
 export async function getAllRepoInfo(
-  projects: { slug: string; href: string }[]
+  projects: { slug: string; href?: string }[]
 ): Promise<Record<string, GithubRepoInfo | null>> {
   const entries = await Promise.all(
     projects.map(async (p) => {
-      const ref = parseGithubRepo(p.href);
+      const ref = p.href ? parseGithubRepo(p.href) : null;
       const info = ref
         ? await getRepoInfo(ref.owner, ref.repo).catch(() => null)
         : null;

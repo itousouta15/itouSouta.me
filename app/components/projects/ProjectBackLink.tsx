@@ -8,7 +8,10 @@ export default function ProjectBackLink() {
   const searchParams = useSearchParams();
   return (
     <Link
-      href={projectSearchPath(searchParams.get("q") ?? "")}
+      href={projectSearchPath(
+        searchParams.get("q") ?? "",
+        searchParams.get("view") === "design" ? "design" : undefined
+      )}
       className="back-link"
       aria-label="返回上一頁"
       title="返回上一頁"

@@ -119,6 +119,13 @@ test("project routes are unique, resolve legacy links, and retain Unicode search
     ),
     query
   );
+  const designSearch = new URL(
+    projectSearchPath(query, "design"),
+    "https://example.com"
+  );
+  assert.equal(designSearch.searchParams.get("q"), query);
+  assert.equal(designSearch.searchParams.get("view"), "design");
+  assert.equal(projectSearchPath("", "design"), "/projects?view=design");
 });
 
 test("project searches match multiple terms across technologies and story content", () => {
