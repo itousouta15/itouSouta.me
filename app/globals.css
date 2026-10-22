@@ -5679,24 +5679,7 @@ a.guestbook-nick:hover {
     grid-row: auto;
   }
   .exp-entry-media {
-    grid-column: 1;
-    grid-row: auto;
-    min-height: 150px;
-    margin: 12px 0 -24px;
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent,
-      #000 18%,
-      #000 85%,
-      transparent
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent,
-      #000 18%,
-      #000 85%,
-      transparent
-    );
+    display: none;
   }
   .exp-period {
     font-size: 13px;

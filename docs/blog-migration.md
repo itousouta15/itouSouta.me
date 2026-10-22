@@ -118,6 +118,15 @@ proxy rules are external to this repository. At deployment, configure exact
 https://itousouta.me/writing/<slug>
 ```
 
+The old Chinese article URLs currently still return `200` with duplicate content
+and no canonical pointing at the new pages. Redirect them on the **old host**;
+the redirects in `next.config.mjs` only apply when requests reach this Next.js
+site. Until that cutover, Google can choose the old URLs instead of `/writing/*`.
+After deploying, verify both the old URL's redirect and the new URL's `200` and
+canonical, then submit `https://itousouta.me/sitemap.xml` in Google Search
+Console and inspect the new article URLs there. A sitemap and `index, follow`
+allow discovery but do not guarantee indexing.
+
 Keep `/en/...`, `/ja/...`, old static assets, and the old multilingual Atom feed
 on the old hosting during this first phase. Do not redirect the entire old host
 to the main site. No production DNS/proxy changes are performed by the importer.

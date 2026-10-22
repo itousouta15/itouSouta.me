@@ -7,7 +7,7 @@ import { SITE_URL } from "./lib/seo";
 
 /* 靜態路由刻意不給 lastModified：內容跟著 data.ts 走，只有重新部署才會變，
    填 new Date() 等於每次抓 sitemap 都宣稱「剛剛改過」——沒訊號還不如省略。
-   只有真的有時間戳可查的路由（/writing，來源是部落格 feed 與雜談）才給。 */
+   只有真的有時間戳可查的路由（/writing 與文章）才給。 */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     "",
@@ -24,9 +24,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const thoughts = await getMergedThoughts().catch(() => []);
   const posts = getPostSummaries();
+  const now = Date.now();
   const newestThought = thoughts[0]?.timestamp;
   const newestPost = posts.reduce(
-    (max, p) => (p.timestamp <= Date.now() ? Math.max(max, p.timestamp) : max),
+    (max, p) => (p.timestamp <= now ? Math.max(max, p.timestamp) : max),
     0
   );
   const newestWriting = Math.max(newestThought ?? 0, newestPost);
@@ -43,11 +44,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE_URL}/writing`,
       ...(newestWriting ? { lastModified: new Date(newestWriting) } : {}),
     },
-    ...posts.map((post) => ({
-      url: `${SITE_URL}${post.path}`,
-      ...(post.updated && Date.parse(post.updated) <= Date.now()
-        ? { lastModified: new Date(post.updated) }
-        : {}),
-    })),
+    ...posts.map((post) => {
+      const updated = Date.parse(post.updated ?? "");
+      const lastModified = updated <= now ? updated : post.timestamp;
+      return {
+        url: `${SITE_URL}${post.path}`,
+        ...(lastModified <= now && { lastModified: new Date(lastModified) }),
+      };
+    }),
   ];
 }
