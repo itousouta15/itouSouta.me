@@ -1,10 +1,11 @@
 import { Resend } from "resend";
+import { site } from "../template/config";
 
 /* 回覆通知信（Resend）。只有留言者填了 email 才會走到這裡；沒有設定
    RESEND_API_KEY 時靜默跳過——留言板本身不應該因為寄信服務壞掉而不能用。
 
    注意：Vercel 環境變數是原樣讀取（不會像 dotenv 那樣剝引號），有人在
-   dashboard 貼成 `"itousouta.me <no-reply@itousouta.me>"` 就會整包含引號
+    dashboard 若把寄件者地址一起貼入多餘引號，Resend 會拒收；
    送給 Resend 吃 422——所以這裡一律 trim + 剝掉前後引號自保。
 
    信件視覺沿用網站的深色主題（globals.css 的 theme tokens）：
@@ -44,7 +45,7 @@ interface ReplyNotification {
   anchorId: string;
 }
 
-const SITE_URL = "https://itousouta.me";
+const SITE_URL = site.url;
 
 /* 與 globals.css theme tokens 同步的顏色（深色主題） */
 const C = {
@@ -87,8 +88,8 @@ function buildReplyEmail({
     "</td></tr>",
     // 站徽 banner（768px 原圖；email 顯示 560px，有餘裕不會糊）
     '<tr><td><img src="',
-    `${SITE_URL}/assets/brand/banner.webp`,
-    '" alt="itousouta.me" width="560" style="display:block;width:100%;height:auto;border:0"></td></tr>',
+    `${SITE_URL}${site.banner}`,
+    `" alt="${escapeHtml(site.title)}" width="560" style="display:block;width:100%;height:auto;border:0"></td></tr>`,
     // 主體
     '<tr><td style="padding:28px 28px 20px">',
     '<h1 style="margin:0 0 14px;font-family:',
@@ -152,7 +153,7 @@ function buildReplyEmail({
     C.bd,
     '"><table role="presentation" cellpadding="0" cellspacing="0"><tr>',
     '<td><img src="',
-    `${SITE_URL}/assets/brand/avatar.webp`,
+    `${SITE_URL}${site.avatar}`,
     '" alt="" width="28" height="28" style="display:block;width:28px;height:28px;border-radius:50%"></td>',
     '<td style="padding-left:10px;vertical-align:middle">',
     '<a href="',
@@ -161,7 +162,7 @@ function buildReplyEmail({
     SANS,
     ";font-size:12px;color:",
     C.dim,
-    ';text-decoration:none">itousouta.me</a>',
+    `;text-decoration:none">${escapeHtml(site.title)}</a>`,
     '<p style="margin:2px 0 0;font-family:',
     MONO,
     ";font-size:11px;color:",
@@ -171,7 +172,7 @@ function buildReplyEmail({
     "</table></td></tr></table>",
   ].join("");
 
-  return { subject: "你的留言在 itousouta.me 有新的回覆", html };
+  return { subject: `你的留言在 ${site.title} 有新的回覆`, html };
 }
 
 /** 寄出「你的留言有新的回覆」通知。寄信失敗只記 log 不回傳錯誤——

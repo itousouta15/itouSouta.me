@@ -1,38 +1,13 @@
 import Link from "next/link";
 import FooterMarquee from "./FooterMarquee";
 import VisitorCounter from "./VisitorCounter";
+import { features, site } from "../../template/config";
+import { NAV_LINKS as SECTION_LINKS } from "../../lib/navigation";
 
 const NAV_LINKS = [
   { label: "首頁", href: "/" },
-  { label: "關於", href: "/about" },
-  { label: "收藏", href: "/likes" },
-  { label: "專案", href: "/projects" },
-  { label: "文章", href: "/writing" },
-  { label: "端點", href: "/api" },
-  { label: "友鏈", href: "/links" },
-  { label: "經歷", href: "/experience" },
-];
-
-const PROJECT_LINKS = [
-  { label: "itouMD", href: "https://md.itousouta.me" },
-  { label: "itouSlides", href: "https://slides.itousouta.me/" },
-  { label: "itouOJ", href: "https://oj.itousouta.me/" },
-];
-
-const SOCIAL_LINKS = [
-  {
-    icon: "instagram",
-    label: "Instagram",
-    href: "https://www.instagram.com/itou.souta15",
-  },
-  { icon: "github", label: "GitHub", href: "https://github.com/itousouta15" },
-  {
-    icon: "linkedin",
-    label: "LinkedIn",
-    href: "https://linkedin.itousouta.me",
-  },
-  { icon: "x", label: "X", href: "https://x.com/itou_souta15" },
-  { icon: "telegram", label: "Telegram", href: "https://t.me/itousouta15" },
+  ...SECTION_LINKS,
+  ...(features.publicApi ? [{ label: "端點", href: "/api" }] : []),
 ];
 
 export default function Footer() {
@@ -41,16 +16,14 @@ export default function Footer() {
       <FooterMarquee />
 
       <div className="footer-inner">
-        <div className="footer-grid">
+        <div
+          className={`footer-grid${site.featuredLinks.length + site.socials.length === 0 ? " footer-grid--two" : site.featuredLinks.length + site.socials.length === 1 ? " footer-grid--three" : ""}`}
+        >
           <div className="footer-brand">
             <Link href="/" className="footer-logo">
-              itouSouta.me
+              {site.title}
             </Link>
-            <p className="footer-tagline">
-              情熱を失っては、
-              <br />
-              何もできない。
-            </p>
+            <p className="footer-tagline">{site.quote}</p>
           </div>
 
           <nav className="footer-col" aria-label="站內導覽">
@@ -64,43 +37,47 @@ export default function Footer() {
             </div>
           </nav>
 
-          <nav className="footer-col" aria-label="My Projects">
-            <div className="footer-section-label">My Projects</div>
-            <div className="footer-link-list">
-              {PROJECT_LINKS.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  target={l.href.startsWith("/") ? undefined : "_blank"}
-                  rel={
-                    l.href.startsWith("/")
-                      ? undefined
-                      : "noopener nofollow noreferrer"
-                  }
-                >
-                  {l.label}
-                </a>
-              ))}
-            </div>
-          </nav>
+          {site.featuredLinks.length > 0 && (
+            <nav className="footer-col" aria-label="My Projects">
+              <div className="footer-section-label">My Projects</div>
+              <div className="footer-link-list">
+                {site.featuredLinks.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target={l.href.startsWith("/") ? undefined : "_blank"}
+                    rel={
+                      l.href.startsWith("/")
+                        ? undefined
+                        : "noopener nofollow noreferrer"
+                    }
+                  >
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            </nav>
+          )}
 
-          <div className="footer-col">
-            <div className="footer-section-label">Social Media</div>
-            <div className="footer-socials" aria-label="Social links">
-              {SOCIAL_LINKS.map((s) => (
-                <a
-                  key={s.href}
-                  className={`footer-si si-${s.icon}`}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener nofollow noreferrer"
-                  aria-label={s.label}
-                >
-                  <span className="footer-si-icon" />
-                </a>
-              ))}
+          {site.socials.length > 0 && (
+            <div className="footer-col">
+              <div className="footer-section-label">Social Media</div>
+              <div className="footer-socials" aria-label="Social links">
+                {site.socials.map((s) => (
+                  <a
+                    key={s.href}
+                    className={`footer-si si-${s.icon}`}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener nofollow noreferrer"
+                    aria-label={s.label}
+                  >
+                    <span className="footer-si-icon" />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="footer-divider" />
@@ -108,11 +85,11 @@ export default function Footer() {
         <div className="footer-bottom">
           <div className="footer-copyright">
             <span className="icon-copyright" />
-            2026
+            {site.copyrightYear}
             <span className="footer-heart">♥</span>
-            <span>itouSouta</span>
+            <span>{site.author.name}</span>
           </div>
-          <VisitorCounter />
+          {features.visitorCounter && <VisitorCounter />}
         </div>
       </div>
     </footer>

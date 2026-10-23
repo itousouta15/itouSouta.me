@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import { notFound, permanentRedirect } from "next/navigation";
 import { blogImage, getAllPosts, getPostBySlug } from "../../lib/posts";
 import { pageMetadata, SITE_URL } from "../../lib/seo";
+import { site } from "../../template/config";
+import { available } from "../../template/availability";
 import BlogMarkdown from "../../components/writing/BlogMarkdown";
 import WritingBackLink from "../../components/writing/WritingBackLink";
 import GuestbookSection from "../../components/guestbook/GuestbookSection";
@@ -72,7 +74,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
     url: SITE_URL + post.path,
     mainEntityOfPage: SITE_URL + post.path,
     inLanguage: "zh-Hant",
-    author: { "@type": "Person", name: "itouSouta / 伊藤蒼太", url: SITE_URL },
+    author: { "@type": "Person", name: site.author.name, url: SITE_URL },
     ...(post.timestamp <= Date.now() ? { datePublished: post.dateISO } : {}),
     ...(post.updated ? { dateModified: post.updated } : {}),
     image: post.cover ? SITE_URL + post.cover : undefined,
@@ -198,7 +200,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
           </nav>
         </div>
       </div>
-      <GuestbookSection pagePath={post.path} />
+      {available.guestbook && <GuestbookSection pagePath={post.path} />}
     </article>
   );
 }

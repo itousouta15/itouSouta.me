@@ -13,19 +13,11 @@ const nextConfig = {
       ? process.env.NEXT_DEV_DIST_DIR || ".next-dev"
       : ".next",
   async redirects() {
-    return articleRoutes.flatMap(({ slug, legacyPath }) => [
-      {
-        source: legacyPath.replace(/\/$/, ""),
-        has: [{ type: "host", value: "blog.itousouta.me" }],
-        destination: `https://itousouta.me/writing/${slug}`,
-        permanent: true,
-      },
-      {
-        source: legacyPath.replace(/\/$/, ""),
-        destination: `/writing/${slug}`,
-        permanent: true,
-      },
-    ]);
+    return articleRoutes.map(({ slug, legacyPath }) => ({
+      source: legacyPath.replace(/\/$/, ""),
+      destination: `/writing/${slug}`,
+      permanent: true,
+    }));
   },
   async headers() {
     // next dev 的 webpack 用 eval sourcemap，CSP 沒放 unsafe-eval 會讓所有

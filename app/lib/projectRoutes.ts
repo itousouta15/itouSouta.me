@@ -1,10 +1,7 @@
 import { PROJECTS, type Project } from "../data/projects";
 
-const LEGACY_SLUGS: Record<string, string> = {
-  "https://west.nchusdsc.org/": "west-link-tree",
-  "thjcc website": "thjcc-website",
-  "itouoj 收件程式": "itouoj-submitter",
-};
+/** Optional aliases for URLs imported from an older site. */
+const LEGACY_SLUGS: Record<string, string> = {};
 
 export function findProject(slug: string): Project | undefined {
   const normalized = slug.toLowerCase();

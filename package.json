@@ -1,9 +1,9 @@
 {
-  "name": "itousouta-tw",
+  "name": "personal-site-template",
   "version": "1.0.0",
   "private": true,
   "license": "Apache-2.0",
-  "description": "itousouta.me — personal site (Next.js App Router)",
+  "description": "Configurable personal-site template (Next.js App Router)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,7 +11,6 @@
     "typecheck": "tsc --noEmit",
     "test:features": "node --test tests/site-features.test.cjs",
     "test:blog": "node --test tests/blog.test.cjs",
-    "blog:sync-history": "node scripts/sync-blog-history.mjs",
     "lint": "next lint",
     "format": "prettier . --write",
     "format:check": "prettier . --check"

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { unavailable } from "../../../template/availability";
 import crypto from "crypto";
 import { normalizePath } from "../../../lib/path";
 
@@ -6,6 +7,8 @@ import { normalizePath } from "../../../lib/path";
    給 callback 核對（CSRF），回跳路徑也存一份 cookie，callback 才知道要送回哪一頁。 */
 
 export async function GET(req: NextRequest) {
+  const disabled = unavailable("guestbook");
+  if (disabled) return disabled;
   const clientId = process.env.GITHUB_OAUTH_CLIENT_ID;
   const returnPath = normalizePath(req.nextUrl.searchParams.get("path")) ?? "/";
 

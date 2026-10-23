@@ -7,8 +7,10 @@ import { PROJECTS } from "../data";
 import { getAllRepoInfo } from "../lib/github";
 import { pageMetadata } from "../lib/seo";
 import { findProject, projectPath } from "../lib/projectRoutes";
+import { site } from "../template/config";
+import { available } from "../template/availability";
 
-const description = "itouSouta 做過的專案們 (◍•ᴗ•◍)ゝ";
+const description = `${site.author.name} 的作品與專案。`;
 
 export const metadata: Metadata = pageMetadata({
   title: "一些專案們",
@@ -39,7 +41,7 @@ export default async function ProjectsPage({
       projectPath(legacyProject) + (params.size ? `?${params}` : "")
     );
   }
-  const repoInfoBySlug = await getAllRepoInfo(PROJECTS);
+  const repoInfoBySlug = available.github ? await getAllRepoInfo(PROJECTS) : {};
 
   return (
     <section style={{ paddingBottom: 8 }}>

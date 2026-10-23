@@ -1,24 +1,20 @@
 import type { Metadata } from "next";
+import { site } from "../template/config";
 
-export const SITE_URL = "https://itousouta.me";
-export const SITE_TITLE = "itouSouta.me";
+export const SITE_URL = site.url;
+export const SITE_TITLE = site.title;
 export const SHARE_IMAGE = {
-  url: "/assets/brand/banner-og.png",
+  url: site.shareImage,
   width: 768,
   height: 432,
-  alt: "伊藤蒼太的網站背景插畫",
+  alt: `${site.title} 分享圖片`,
 };
 
-/* 描述是給 Google 抓 snippet 用的，不是給我自顧自賣萌用的。太短或整串只有顏文字
-   的話，Google 會直接無視 meta description、改成自己從 DOM 撈文字拼一段——首頁
-   之前就是這樣被拼出「itouSouta伊藤蒼太郭家睿itouSouta...= ᗜ ω ᗜ.=」那串亂碼。
-   所以每一頁的描述都要「前面放實話、顏文字擺句尾」：搜尋結果大概只會顯示前
-   70～80 個中文字，關鍵字塞在前面才吃得到，尾巴被截掉也不心疼。 */
-export const SITE_DESCRIPTION =
-  "itouSouta / 伊藤蒼太 / 郭家睿的個人網站。SCAICT 中部高中電資社團聯合會議第五屆會長，喜歡 VOCALOID、畫插畫和寫程式。這裡放著我的專案、經歷、文章與喜歡的東西 ε(*´･∀･｀)зﾞ";
+/* The description is shared by the homepage metadata and social previews. */
+export const SITE_DESCRIPTION = site.description;
 
 interface PageMetaInput {
-  /** 分頁標題，會套 layout 的 `%s | itouSouta.me` 模板 */
+  /** Page title, combined with the configured site title in the layout. */
   title: string;
   description: string;
   /** 站內路徑，`/about` 這種。同時當 canonical 與 og:url */
@@ -46,7 +42,7 @@ export function pageMetadata({
     alternates: { canonical: path },
     openGraph: {
       type: "website",
-      locale: "zh_TW",
+      locale: site.openGraphLocale,
       siteName: SITE_TITLE,
       url: path,
       title: shareTitle,

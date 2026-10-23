@@ -1,5 +1,6 @@
 import { getPublishedPosts } from "../../lib/posts";
-import { SITE_URL } from "../../lib/seo";
+import { SITE_URL, SITE_TITLE } from "../../lib/seo";
+import { site } from "../../template/config";
 
 export const revalidate = 3600;
 const escapeXml = (value: string) =>
@@ -19,7 +20,7 @@ export function GET() {
     )
     .join("\n");
   return new Response(
-    `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>itouBLoGa · itouSouta.me</title><link>${SITE_URL}/writing</link><description>itouSouta 的技術文章與生活紀錄</description><language>zh-TW</language><atom:link href="${SITE_URL}/writing/feed.xml" rel="self" type="application/rss+xml"/>${posts[0] ? `<lastBuildDate>${new Date(posts[0].timestamp).toUTCString()}</lastBuildDate>` : ""}${items}</channel></rss>`,
+    `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>${escapeXml(SITE_TITLE)} 文章</title><link>${SITE_URL}/writing</link><description>${escapeXml(site.author.name)} 的文章與生活紀錄</description><language>zh-TW</language><atom:link href="${SITE_URL}/writing/feed.xml" rel="self" type="application/rss+xml"/>${posts[0] ? `<lastBuildDate>${new Date(posts[0].timestamp).toUTCString()}</lastBuildDate>` : ""}${items}</channel></rss>`,
     { headers: { "Content-Type": "application/rss+xml; charset=utf-8" } }
   );
 }

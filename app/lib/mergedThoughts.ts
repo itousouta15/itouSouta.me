@@ -2,6 +2,7 @@ import { GITHUB_USERNAME } from "../siteConfig";
 import { fetchThreadsPosts } from "./threads";
 import { getThoughts } from "./kv";
 import { getUserEvents } from "./github";
+import { available } from "../template/availability";
 
 export type MergedThoughtItem =
   | {
@@ -39,12 +40,18 @@ function formatDate(ts: number) {
 
 export async function getMergedThoughts(): Promise<MergedThoughtItem[]> {
   const [threadsPosts, kvThoughts, githubEvents] = await Promise.all([
-    fetchThreadsPosts().catch((error) => {
-      console.error("Failed to fetch Threads posts:", error);
-      return [];
-    }),
-    getThoughts().catch(() => []),
-    getUserEvents(GITHUB_USERNAME).catch(() => []),
+    (available.threads ? fetchThreadsPosts() : Promise.resolve([])).catch(
+      (error) => {
+        console.error("Failed to fetch Threads posts:", error);
+        return [];
+      }
+    ),
+    available.liveThoughts
+      ? getThoughts().catch(() => [])
+      : Promise.resolve([]),
+    available.github
+      ? getUserEvents(GITHUB_USERNAME).catch(() => [])
+      : Promise.resolve([]),
   ]);
 
   const items: MergedThoughtItem[] = [];

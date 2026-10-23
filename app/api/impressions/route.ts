@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { unavailable } from "../../template/availability";
 import {
   getVisitorImpressions,
   leaveVisitorImpression,
@@ -14,6 +15,8 @@ import {
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const disabled = unavailable("impressions");
+  if (disabled) return disabled;
   try {
     return NextResponse.json(
       { impressions: await getVisitorImpressions() },
@@ -28,6 +31,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const disabled = unavailable("impressions");
+  if (disabled) return disabled;
   const body: unknown = await req.json().catch(() => null);
   const tag = normalizeImpression(
     body && typeof body === "object" && "tag" in body ? body.tag : null

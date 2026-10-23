@@ -11,7 +11,6 @@ import {
   ProfileStatus,
   ProfileStatusDot,
 } from "./components/status/LanyardCards";
-import AvatarEasterEgg from "./components/easter-eggs/AvatarEasterEgg";
 import HeroFace from "./components/home/HeroFace";
 import HomeQuoteFont from "./components/home/HomeQuoteFont";
 import BadgeShape from "./components/home/BadgeShape";
@@ -19,14 +18,12 @@ import NameRotator from "./components/home/NameRotator";
 import DecorativeImage from "./components/DecorativeImage";
 import ViewportAnimations from "./components/home/ViewportAnimations";
 import VisitorImpressionsCard from "./components/home/VisitorImpressionsCard";
+import { site } from "./template/config";
+import { available } from "./template/availability";
 
-/* 首頁之前沒有自己的 metadata，整頁靠繼承 layout 的 default title「itouSouta.me」
-   ——只有一個網域名、完全沒描述這頁是什麼，Google 判定它沒用，就自己拿 <h1> 的
-   文字改寫標題（SERP 上長出「itouSouta / 伊藤蒼太/ 郭家睿itouSouta伊藤蒼太-
-   郭家睿」那串）。標題直接把大家真的會搜的三個名字寫進去，absolute 是因為模板
-   會再黏一次站名，變成「…| itouSouta.me」太囉唆，站名 Google 本來就會另外顯示。 */
+/* The homepage title is absolute so the layout does not append the brand again. */
 export const metadata: Metadata = pageMetadata({
-  title: "itouSouta 的個人網站 ε(*´･∀･｀)зﾞ",
+  title: `${site.author.name} 的個人網站`,
   description: SITE_DESCRIPTION,
   path: "/",
   absolute: true,
@@ -55,8 +52,7 @@ function HomeContent() {
         <div className="profile-card">
           <div className="profile-banner">
             <img
-              src="/assets/brand/banner-400.webp"
-              srcSet="/assets/brand/banner.webp 768w, /assets/brand/banner-400.webp 400w"
+              src={site.banner}
               sizes="400px"
               width={400}
               height={150}
@@ -68,13 +64,12 @@ function HomeContent() {
           <div className="profile-body">
             <div className="avatar-row">
               <div className="avatar-wrap">
-                <AvatarEasterEgg
+                <img
                   className="avatar"
-                  src="/assets/brand/avatar.webp"
-                  alt="郭家睿 / 伊藤蒼太"
-                  href="https://dc.itousouta.me"
+                  src={site.avatar}
+                  alt={site.author.name}
                 />
-                <ProfileStatusDot />
+                {available.discord && <ProfileStatusDot />}
               </div>
               <div className="badges">
                 <BadgeShape kind="circle" color="var(--blue)" />
@@ -84,15 +79,15 @@ function HomeContent() {
               </div>
             </div>
             <div className="name-row">
-              <span className="name">郭家睿</span>
+              <span className="name">{site.author.name}</span>
               <span className="sr-only"> · </span>
-              <span className="alias">伊藤蒼太</span>
+              <span className="alias">{site.author.aliases[0]}</span>
             </div>
-            <div className="handle">itou.souta15 · 人間になりたい</div>
-            <ProfileStatus />
+            <div className="handle">{site.author.handle}</div>
+            {available.discord && <ProfileStatus />}
             <div className="divider" />
             <div className="label">關於我</div>
-            <div className="field">好想睡覺 Zzzz</div>
+            <div className="field">{site.author.introduction}</div>
             <div className="label mt16">身分組</div>
             <div className="roles">
               <div className="role-row">
@@ -113,7 +108,7 @@ function HomeContent() {
               </div>
             </div>
             <div className="label mt16">成為成員時間</div>
-            <div className="field">2009/01/15</div>
+            <div className="field">{site.author.joined}</div>
           </div>
         </div>
       </aside>
@@ -123,11 +118,11 @@ function HomeContent() {
         {/* Hero card */}
         <ViewportAnimations className="card hero">
           <div className="hero-main">
-            <div className="hero-greet">ciallo (∠·ω )⌒★</div>
+            <div className="hero-greet">{site.greeting}</div>
             <h1 className="hero-title">
               I&apos;m <NameRotator />
             </h1>
-            <div className="hero-sub">一個喜歡 VOCALOID 和畫插畫的怪人</div>
+            <div className="hero-sub">{site.author.introduction}</div>
             <div className="hero-actions">
               <Link
                 className="btn-primary"
@@ -153,11 +148,7 @@ function HomeContent() {
         {/* Quote + tiles strip */}
         <ViewportAnimations className="card quote-card">
           <div className="quote-main">
-            <div className="quote-text">
-              情熱を失っては、
-              <br />
-              何もできない。
-            </div>
+            <div className="quote-text">{site.quote}</div>
           </div>
           <div className="tiles-strip">
             {Object.entries(tileRows).map(([row, icons]) => (
@@ -195,7 +186,7 @@ function HomeContent() {
         </ViewportAnimations>
 
         {/* Visitor impressions */}
-        <VisitorImpressionsCard />
+        {available.impressions && <VisitorImpressionsCard />}
 
         {/* Bento: nav cards */}
         <div className="bento">
@@ -221,7 +212,7 @@ function HomeContent() {
           >
             <DecorativeImage
               className="card-likes-img"
-              src="/assets/likes/art-miku.webp"
+              src={site.banner}
               loading="eager"
               fetchPriority="high"
             />
@@ -281,7 +272,7 @@ function HomeContent() {
         </div>
 
         {/* GitHub contribution graph */}
-        <GithubContributionCard />
+        {available.github && <GithubContributionCard />}
       </div>
     </section>
   );

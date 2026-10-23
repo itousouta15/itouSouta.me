@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { LIKE_CATEGORIES } from "../../data";
+import { features } from "../../template/config";
 
 // 兩種來源：
 // 1. VSPO 官方排程站（vspo-schedule.com）— 它自己維護全體 VSPO 成員的開台狀態，
@@ -152,7 +153,10 @@ function channelIdFromHref(href: string): string | undefined {
 }
 
 export async function GET() {
+  if (!features.vtuberLive)
+    return Response.json({ error: "Not found" }, { status: 404 });
   const vtubers = LIKE_CATEGORIES.find((c) => c.key === "vtuber")?.items ?? [];
+  if (vtubers.length === 0) return NextResponse.json({});
 
   const scheduleMap = await fetchScheduleLiveMap();
 

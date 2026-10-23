@@ -2,11 +2,14 @@ import {
   CONTRIBUTION_USER,
   readContributionDays,
 } from "../../lib/contributions";
+import { unavailable } from "../../template/availability";
 
 // Cache successful upstream fetches, but never cache an error response.
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const disabled = unavailable("github");
+  if (disabled) return disabled;
   try {
     const response = await fetch(
       `https://github-contributions-api.jogruber.de/v4/${CONTRIBUTION_USER}?y=last`,

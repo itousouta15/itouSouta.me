@@ -3,8 +3,9 @@ import PageHead from "../components/PageHead";
 import { LINKS } from "../data";
 import { avatarThumb } from "../lib/imageThumb";
 import { pageMetadata } from "../lib/seo";
+import { site } from "../template/config";
 
-const description = "itouSouta 的偷摸他基 ∠( ᐛ 」∠)_";
+const description = `${site.author.name} 推薦的朋友與網站。`;
 
 export const metadata: Metadata = pageMetadata({
   title: "友鏈",
@@ -15,7 +16,7 @@ export const metadata: Metadata = pageMetadata({
 export default function LinksPage() {
   return (
     <section style={{ paddingBottom: 8 }}>
-      <PageHead kicker="LINKS" title="偷摸他基" />
+      <PageHead kicker="LINKS" title="友鏈" />
       <div className="links-grid">
         {LINKS.map((l, i) => (
           <a

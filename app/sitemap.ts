@@ -4,6 +4,7 @@ import { projectPath } from "./lib/projectRoutes";
 import { getMergedThoughts } from "./lib/mergedThoughts";
 import { getPostSummaries } from "./lib/posts";
 import { SITE_URL } from "./lib/seo";
+import { available } from "./template/availability";
 
 /* 靜態路由刻意不給 lastModified：內容跟著 data.ts 走，只有重新部署才會變，
    填 new Date() 等於每次抓 sitemap 都宣稱「剛剛改過」——沒訊號還不如省略。
@@ -12,12 +13,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     "",
     "/about",
-    "/api",
     "/experience",
     "/likes",
-    "/likes/music",
     "/links",
     "/projects",
+    ...(available.publicApi ? ["/api"] : []),
+    ...(available.spotify ? ["/likes/music"] : []),
   ];
 
   const likeCategoryRoutes = LIKE_CATEGORIES.map((cat) => `/likes/${cat.key}`);

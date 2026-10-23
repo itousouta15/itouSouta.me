@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { features } from "../template/config";
 
 export interface LiveInfo {
   live: boolean;
@@ -15,7 +16,7 @@ export function useVtuberLiveStatus(enabled: boolean) {
   const [liveMap, setLiveMap] = useState<Record<string, LiveInfo>>({});
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled || !features.vtuberLive) return;
     let cancelled = false;
 
     const load = async () => {

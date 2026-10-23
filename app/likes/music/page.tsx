@@ -3,9 +3,11 @@ import PageHead from "../../components/PageHead";
 import MusicGrid from "../../components/likes/MusicGrid";
 import { getMusicSnapshot } from "../../lib/music";
 import { pageMetadata } from "../../lib/seo";
+import { notFound } from "next/navigation";
+import { available } from "../../template/availability";
+import { site } from "../../template/config";
 
-const description =
-  "itouSouta 最常聽的音樂：從 Spotify 撈出來的長期愛聽清單，VOCALOID 和日本樂團佔了一大半 (⁎⁍̴̛ᴗ⁍̴̛⁎)";
+const description = `${site.author.name} 在 Spotify 最常聽的音樂。`;
 
 export const revalidate = 3600;
 
@@ -16,6 +18,7 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function MusicDetailPage() {
+  if (!available.spotify) notFound();
   const music = await getMusicSnapshot({ limit: 50, timeRange: "long_term" });
 
   return (

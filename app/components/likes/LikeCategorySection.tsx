@@ -8,6 +8,7 @@ import { useVtuberLiveStatus } from "../../hooks/useVtuberLiveStatus";
 import { sortLikesByRating } from "../../lib/sortLikes";
 import LikeCard from "./LikeCard";
 import LikeModalShell from "./LikeModalShell";
+import { features } from "../../template/config";
 
 // 首屏最多只能看到約 6 張卡片，先留 3 張預備捲動；其餘封面與字型等靠近時再載入。
 const INITIAL_COUNT = 9;
@@ -32,7 +33,9 @@ export default function LikeCategorySection({
 
   // circle 版（目前只有 vtuber）才需要開台偵測；hub 頁一進來就先熱這個 API 的快取，
   // 這裡直接複用同一份 60s 快取，不會額外多打
-  const liveMap = useVtuberLiveStatus(cat.layout === "circle");
+  const liveMap = useVtuberLiveStatus(
+    features.vtuberLive && cat.layout === "circle"
+  );
   // liveMap 是非同步拿到的，一開始會先照 rating 排序顯示，資料回來後才補上開台優先——
   // 依賴 liveMap 是必要的，不然開台狀態變動不會觸發重新排序
   const sortedItems = useMemo(

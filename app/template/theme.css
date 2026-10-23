@@ -1,0 +1,57 @@
+/* Template colors. Change these tokens without editing the component styles. */
+:root {
+  --bg: #18191c;
+  --panel: #232426;
+  --panel2: #232426;
+  --panel2-a: rgba(36, 37, 41, 0.82);
+  --frost: #23242b73;
+  --inset: #1b1d20;
+  --bd: rgba(255, 255, 255, 0.07);
+  --bd2: rgba(255, 255, 255, 0.14);
+  --dc-act-back: #131618;
+  --tx: #e8ebf2;
+  --dim: #9aa1ad;
+  --mute: #6a7280;
+  --blue: #b8c4f8;
+  --purple: #a1ade0;
+  --btn: #94a6cc;
+  --btntx: #24272c;
+  --shadow: rgba(0, 0, 0, 0.45);
+  background: var(--bg);
+}
+
+:root[data-theme="light"] {
+  --bg: #dadadd;
+  --panel: #f0f0f5;
+  --panel2: #f0f0f5;
+  --panel2-a: rgba(227, 228, 233, 0.82);
+  --frost: rgba(224, 225, 235, 0.45);
+  --inset: #e1e3ec;
+  --bd: rgba(6, 6, 7, 0.08);
+  --bd2: rgba(20, 24, 40, 0.16);
+  --dc-act-back: rgba(13, 13, 15, 0.14);
+  --tx: #22262d;
+  --dim: #494f59;
+  --mute: #6b7280;
+  --blue: #2e3d63;
+  --purple: #5c7cbf;
+  --btn: #2b2f36;
+  --btntx: #f2f4f9;
+  --shadow: rgba(60, 70, 90, 0.16);
+}
+
+.root {
+  min-height: 100vh;
+  color: var(--tx);
+  font-family: "LINE Seed TW", "Noto Sans TC", system-ui, sans-serif;
+  background:
+    radial-gradient(
+      1100px 560px at 72% -12%,
+      rgba(141, 181, 200, 0.11),
+      transparent 60%
+    ),
+    var(--bg);
+  transition:
+    background 0.35s ease,
+    color 0.35s ease;
+}

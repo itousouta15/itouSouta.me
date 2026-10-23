@@ -9,11 +9,12 @@ import { getPostSummaries } from "../lib/posts";
 import { getMergedThoughts } from "../lib/mergedThoughts";
 import { getReactionCounts } from "../lib/kv";
 import { pageMetadata } from "../lib/seo";
+import { available } from "../template/availability";
+import { features, site } from "../template/config";
 
 export const metadata: Metadata = pageMetadata({
   title: "文章與碎碎念",
-  description:
-    "itouSouta 的技術文章、CTF 題解與生活紀錄，還有來自 Threads、GitHub 與 Discord 的日常碎碎念。",
+  description: `${site.author.name} 的文章與生活紀錄。`,
   path: "/writing",
 });
 export const revalidate = 3600;
@@ -21,11 +22,15 @@ export const revalidate = 3600;
 async function Thoughts() {
   const [items, counts] = await Promise.all([
     getMergedThoughts().catch(() => []),
-    getReactionCounts().catch(() => null),
+    available.reactions ? getReactionCounts().catch(() => null) : null,
   ]);
   return (
     <>
-      <p className="writing-thoughts-description">Threads · GitHub · Discord</p>
+      <p className="writing-thoughts-description">
+        {features.liveThoughts || features.threads || features.github
+          ? "近期動態"
+          : "記錄生活中的片刻"}
+      </p>
       <ThoughtsList items={items} reactionCounts={counts} fallback={THOUGHTS} />
     </>
   );

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 432" role="img" aria-label="示例封面">
+  <defs><linearGradient id="a" x2="1" y2="1"><stop stop-color="#8c9de8"/><stop offset="1" stop-color="#d2a8d8"/></linearGradient></defs>
+  <rect width="768" height="432" fill="url(#a)"/>
+  <circle cx="580" cy="95" r="94" fill="#fff" opacity=".22"/>
+  <circle cx="150" cy="410" r="190" fill="#fff" opacity=".14"/>
+</svg>

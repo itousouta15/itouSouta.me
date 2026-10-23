@@ -13,6 +13,7 @@ import { normalizePath } from "../../lib/path";
 import { gravatarUrl, isValidEmail } from "../../lib/gravatar";
 import { verifyGithubIdentity } from "../../lib/githubAuth";
 import { sendReplyNotification } from "../../lib/notify";
+import { unavailable } from "../../template/availability";
 import {
   getLegacyComments,
   mergeGuestbookHistory,
@@ -26,6 +27,8 @@ import {
 export const revalidate = 60;
 
 export async function GET(req: NextRequest) {
+  const disabled = unavailable("guestbook");
+  if (disabled) return disabled;
   const path = normalizePath(req.nextUrl.searchParams.get("path"));
   if (!path) return NextResponse.json({ error: "bad path" }, { status: 400 });
   try {
@@ -128,6 +131,8 @@ function collectRecipients(
 }
 
 export async function POST(req: NextRequest) {
+  const disabled = unavailable("guestbook");
+  if (disabled) return disabled;
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 

@@ -101,7 +101,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
         ([locale, url]) =>
           ["en", "ja"].includes(locale) &&
           typeof url === "string" &&
-          /^https:\/\/blog\.itousouta\.me\/(en|ja)\//.test(url)
+          /^https:\/\/[^/]+\//.test(url)
       )
     ),
     legacyPath:

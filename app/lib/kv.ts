@@ -12,7 +12,7 @@ export interface KVThought {
   timestamp: string;
 }
 
-// 寫入端在獨立的 itouBot 專案（/碎碎念 指令），資料格式需與 KVThought 保持一致
+// 如果有外部程式寫入動態資料，資料格式需與 KVThought 保持一致。
 const KEY = "thoughts";
 
 export async function getThoughts(): Promise<KVThought[]> {

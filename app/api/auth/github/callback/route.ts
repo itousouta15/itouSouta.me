@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { unavailable } from "../../../../template/availability";
+import { site } from "../../../../template/config";
 import { signGithubIdentity } from "../../../../lib/githubAuth";
 import { normalizePath } from "../../../../lib/path";
 
 export async function GET(req: NextRequest) {
+  const disabled = unavailable("guestbook");
+  if (disabled) return disabled;
   const returnPath =
     normalizePath(req.cookies.get("gh_oauth_return")?.value ?? null) ?? "/";
   const expectedState = req.cookies.get("gh_oauth_state")?.value;
@@ -53,7 +57,7 @@ export async function GET(req: NextRequest) {
     const userRes = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${tokenJson.access_token}`,
-        "User-Agent": "itouSouta.me-guestbook",
+        "User-Agent": `${site.shortName.replace(/\s/g, "-")}-guestbook`,
         Accept: "application/vnd.github+json",
       },
     });
@@ -71,7 +75,7 @@ export async function GET(req: NextRequest) {
     const emailsRes = await fetch("https://api.github.com/user/emails", {
       headers: {
         Authorization: `Bearer ${tokenJson.access_token}`,
-        "User-Agent": "itouSouta.me-guestbook",
+        "User-Agent": `${site.shortName.replace(/\s/g, "-")}-guestbook`,
         Accept: "application/vnd.github+json",
       },
     });

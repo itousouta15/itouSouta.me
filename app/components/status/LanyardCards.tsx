@@ -10,6 +10,7 @@ import {
 import { DISCORD_USER_ID } from "../../siteConfig";
 import { discordArtThumb } from "../../lib/imageThumb";
 import CrossfadeImage from "./CrossfadeImage";
+import { features, site } from "../../template/config";
 import SpotifyProgress from "./SpotifyProgress";
 
 /* ---------------------------------------------------------------------------
@@ -50,7 +51,7 @@ function useLanyard(): State {
   );
 
   useEffect(() => {
-    if (!DISCORD_USER_ID) return;
+    if (!features.discord || !DISCORD_USER_ID) return;
     let alive = true;
 
     const load = async () => {
@@ -129,10 +130,13 @@ type NowPlayingState =
   | { kind: "idle" }
   | { kind: "playing"; track: NowPlayingTrack };
 
-function useNowPlayingPoll(): NowPlayingState {
-  const [state, setState] = useState<NowPlayingState>({ kind: "loading" });
+function useNowPlayingPoll(enabled: boolean): NowPlayingState {
+  const [state, setState] = useState<NowPlayingState>(
+    enabled ? { kind: "loading" } : { kind: "idle" }
+  );
 
   useEffect(() => {
+    if (!enabled) return;
     let alive = true;
 
     const load = async () => {
@@ -175,15 +179,21 @@ function useNowPlayingPoll(): NowPlayingState {
       clearInterval(id);
       document.removeEventListener("visibilitychange", onVisible);
     };
-  }, []);
+  }, [enabled]);
 
   return state;
 }
 
 const NowPlayingContext = createContext<NowPlayingState | null>(null);
 
-export function NowPlayingProvider({ children }: { children: ReactNode }) {
-  const state = useNowPlayingPoll();
+export function NowPlayingProvider({
+  children,
+  enabled = false,
+}: {
+  children: ReactNode;
+  enabled?: boolean;
+}) {
+  const state = useNowPlayingPoll(enabled);
   return (
     <NowPlayingContext.Provider value={state}>
       {children}
@@ -375,7 +385,7 @@ export function ProfileStatus() {
       ) : (
         <div className="dc-act dc-act-idle">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="dc-act-art" src="/assets/brand/cat.webp" alt="" />
+          <img className="dc-act-art" src={site.avatar} alt="" />
           <div className="dc-act-meta">
             <div className="dc-act-title">這個人不知道跑哪去了。</div>
             <div className="dc-act-sub">大概是在睡覺吧Zzzz</div>

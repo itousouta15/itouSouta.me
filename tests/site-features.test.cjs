@@ -92,25 +92,15 @@ test("snake visits all contributions without collisions and joins seamlessly acr
   }
 });
 
-test("project routes are unique, resolve legacy links, and retain Unicode searches", () => {
+test("project routes are unique, case insensitive, and retain Unicode searches", () => {
   assert.equal(new Set(PROJECTS.map((p) => p.slug)).size, PROJECTS.length);
   for (const project of PROJECTS) {
     assert.match(project.slug, /^[a-z0-9.-]+$/);
     assert.equal(findProject(project.slug), project);
     assert.equal(projectPath(project), `/projects/${project.slug}`);
   }
-  for (const [legacy, canonical] of [
-    ["THJCC Website", "thjcc-website"],
-    ["https://west.nchusdsc.org/", "west-link-tree"],
-    ["itouOJ 收件程式", "itouoj-submitter"],
-    ["itouSandBox", "itousandbox"],
-  ]) {
-    // Removed projects should resolve to undefined rather than a phantom page.
-    assert.equal(
-      findProject(legacy),
-      PROJECTS.find((p) => p.slug === canonical)
-    );
-  }
+  assert.equal(findProject("MY-FIRST-PROJECT"), PROJECTS[0]);
+  assert.equal(findProject("old-project"), undefined);
   assert.equal(findProject("not-a-project"), undefined);
   const query = "喵++ C++ & WebAssembly";
   assert.equal(
@@ -129,30 +119,29 @@ test("project routes are unique, resolve legacy links, and retain Unicode search
 });
 
 test("project searches match multiple terms across technologies and story content", () => {
-  const project = findProject("meow-plus-plus");
-  assert.ok(matchesProject(project, "C++ webassembly"));
-  assert.ok(matchesProject(project, "  單步   閉包  "));
+  const project = findProject("my-first-project");
+  assert.ok(matchesProject(project, "typescript react"));
+  assert.ok(matchesProject(project, "  技術   挑戰  "));
   assert.ok(matchesProject(project, ""));
   assert.ok(!matchesProject(project, "Flutter WebAssembly"));
 });
 
-test("project stories use one Markdown field and keep both introduction and difficulties searchable", () => {
+test("project stories use one Markdown field and keep all sections searchable", () => {
   for (const project of PROJECTS) {
     assert.ok(project.content?.trim(), `missing content: ${project.slug}`);
     for (const field of ["why", "longDesc", "difficulties"])
       assert.ok(!(field in project));
   }
-  const project = findProject("itoumd");
+  const project = findProject("my-first-project");
   assert.match(project.content, /## 專案介紹/);
-  assert.match(project.content, /## 遇到的困難/);
-  assert.ok(matchesProject(project, "HackMD 長文件"));
-  assert.ok(project.screenshots.length >= 1);
+  assert.match(project.content, /## 技術與挑戰/);
+  assert.ok(matchesProject(project, "Markdown"));
 });
 
 test("chapter links inherit only valid parent routes and stop at the final chapter", () => {
   assert.equal(nextChapter("/about").href, "/likes");
   assert.equal(nextChapter("/likes/music").href, "/projects");
-  assert.equal(nextChapter("/projects/itoumd").href, "/writing");
+  assert.equal(nextChapter("/projects/my-first-project").href, "/writing");
   for (const pathname of [
     "/",
     "/experience",
@@ -182,12 +171,8 @@ test("project galleries preserve cover-only projects and normalize additional sc
     { src: "/detail.webp", alt: "Detail", caption: "Feature screen" },
   ]);
   assert.deepEqual(
-    getProjectScreenshots(findProject("itouoj")).map(({ src }) => src),
-    [
-      "/assets/projects/itouOJ.webp",
-      "/assets/projects/OJ.webp",
-      "/assets/projects/itouOJ_2.webp",
-    ]
+    getProjectScreenshots(PROJECTS[0]).map(({ src }) => src),
+    ["/assets/template/banner.svg"]
   );
 });
 

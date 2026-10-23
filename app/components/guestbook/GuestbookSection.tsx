@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
+import { LIKE_CATEGORIES } from "../../data/likes";
+import { PROJECTS } from "../../data/projects";
+import { features } from "../../template/config";
 
 /* Waline 的 bundle 約 77KB，全站每頁都掛會直接把每頁的 JS 翻倍。
    用 IntersectionObserver 等滾到頁底附近才真的載入（rootMargin 400px 提早預熱），
@@ -13,20 +16,15 @@ const Guestbook = dynamic(() => import("./Guestbook"), { ssr: false });
    但不該冒出留言區。新頁面要加留言板記得補進來。 */
 const GUESTBOOK_PATHS = new Set([
   "/about",
-  "/blog",
   "/writing",
-  "/thoughts",
   "/projects",
   "/likes",
-  "/likes/music",
-  "/likes/novel",
-  "/likes/manga",
-  "/likes/anime",
-  "/likes/vtuber",
+  ...(features.spotify ? ["/likes/music"] : []),
+  ...LIKE_CATEGORIES.map(({ key }) => `/likes/${key}`),
+  ...PROJECTS.map(({ slug }) => `/projects/${slug}`),
   "/links",
   "/experience",
-  "/offline",
-  "/api",
+  ...(features.publicApi ? ["/api"] : []),
 ]);
 
 export default function GuestbookSection({ pagePath }: { pagePath?: string }) {

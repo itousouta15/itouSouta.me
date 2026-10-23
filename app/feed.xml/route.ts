@@ -1,8 +1,9 @@
 import { getMergedThoughts } from "../lib/mergedThoughts";
+import { SITE_URL, SITE_TITLE } from "../lib/seo";
+import { site } from "../template/config";
 
-const SITE_URL = "https://itousouta.me";
-const TITLE = "itousouta.me 雜談";
-const DESCRIPTION = "itouSouta 的雜談與生活紀錄，隨手記下的想法與日常。";
+const TITLE = `${SITE_TITLE} 動態`;
+const DESCRIPTION = `${site.author.name} 的生活紀錄與近期動態。`;
 
 export const revalidate = 3600;
 

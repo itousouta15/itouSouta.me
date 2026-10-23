@@ -1,5 +1,5 @@
-/* itousouta.me service worker — 更新快取策略時記得 bump CACHE 版本 */
-const CACHE = "itousouta-v2";
+/* Offline cache; bump the version after changing the offline strategy. */
+const CACHE = "personal-site-template-v1";
 const PRECACHE = ["/", "/offline"];
 
 self.addEventListener("install", (event) => {

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PROJECTS, LIKE_CATEGORIES, LINKS, EXPERIENCE } from "../../data";
 import { projectPath } from "../../lib/projectRoutes";
+import { features } from "../../template/config";
 
 interface SearchItem {
   id: string;
@@ -32,7 +33,9 @@ const STATIC_PAGES: SearchItem[] = [
     href: "/writing",
     category: "頁面",
   },
-  { id: "page-api", title: "端點", href: "/api", category: "頁面" },
+  ...(features.publicApi
+    ? [{ id: "page-api", title: "端點", href: "/api", category: "頁面" }]
+    : []),
   { id: "page-links", title: "友鏈", href: "/links", category: "頁面" },
   {
     id: "page-experience",

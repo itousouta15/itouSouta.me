@@ -3,9 +3,9 @@ import PageHead from "../components/PageHead";
 import ExperienceTimeline from "../components/experience/ExperienceTimeline";
 import { EXPERIENCE, ExperienceItem } from "../data";
 import { pageMetadata } from "../lib/seo";
+import { site } from "../template/config";
 
-const description =
-  "itouSouta（伊藤蒼太 / 郭家睿）的學習與活動經歷：臺中市立大里高中資訊校隊、SCAICT 中部高中電資社團聯合會議、各種營隊與競賽的年表。";
+const description = `${site.author.name} 的學習、工作與活動經歷。`;
 
 export const metadata: Metadata = pageMetadata({
   title: "經歷",
@@ -28,7 +28,7 @@ export default function ExperiencePage() {
 
   return (
     <section style={{ paddingBottom: 8 }}>
-      <PageHead kicker="JOURNEY" title="沒有路!!!" desc="持續追求自身所愛" />
+      <PageHead kicker="JOURNEY" title="經歷" desc="走過的路，都是故事。" />
       <ExperienceTimeline groups={groups} />
     </section>
   );

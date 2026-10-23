@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+import "./template/theme.css";
 import "katex/dist/katex.min.css";
 import "./components/writing/writing.css";
 import ThemeProvider from "./components/ThemeProvider";
@@ -20,6 +21,8 @@ import ServiceWorkerRegistration from "./components/chrome/ServiceWorkerRegistra
 import GuestbookSection from "./components/guestbook/GuestbookSection";
 import ChapterNavigation from "./components/chrome/ChapterNavigation";
 import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, SHARE_IMAGE } from "./lib/seo";
+import { features, site } from "./template/config";
+import { available } from "./template/availability";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -28,18 +31,9 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_TITLE}`,
   },
   description: SITE_DESCRIPTION,
-  keywords: [
-    "itouSouta",
-    "itousouta15",
-    "郭家睿",
-    "伊藤蒼太",
-    "VOCALOID",
-    "SCAICT",
-    "大里高中",
-    "個人網站",
-  ],
-  authors: [{ name: "郭家睿 / 伊藤蒼太", url: SITE_URL }],
-  creator: "郭家睿 / 伊藤蒼太",
+  keywords: [site.author.name, ...site.author.aliases, "個人網站"],
+  authors: [{ name: site.author.name, url: SITE_URL }],
+  creator: site.author.name,
   /* 這裡刻意不寫 alternates.canonical。metadata 最外層欄位會往下繼承，root 若
      釘一個 canonical: "/"，任何忘記自己設的新頁面都會宣告「我的正規網址是首頁」
      ——Google 看到就把那頁從索引裡丟掉。canonical 一律由各頁自己用
@@ -47,7 +41,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    locale: "zh_TW",
+    locale: site.openGraphLocale,
     url: SITE_URL,
     siteName: SITE_TITLE,
     title: SITE_TITLE,
@@ -68,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-Hant" suppressHydrationWarning>
+    <html lang={site.locale} suppressHydrationWarning>
       <head>
         {/* Apply the saved theme before first paint to avoid a dark→light flash. */}
         <script
@@ -107,13 +101,13 @@ export default function RootLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
-          title={`${SITE_TITLE} 雜談`}
+          title={`${SITE_TITLE} 動態`}
           href="/feed.xml"
         />
         <link
           rel="alternate"
           type="application/rss+xml"
-          title="itouBLoGa 文章"
+          title={`${SITE_TITLE} 文章`}
           href="/writing/feed.xml"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -160,10 +154,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body>
-        {/* 「郭家睿 / 伊藤蒼太 / itouSouta 是同一個人」這件事，Google 只能靠
-            sameAs 把散在各站的身分串起來——原本只掛了一個部落格，等於沒串。
-            拆成 @graph 兩個實體並用 @id 互指，是為了讓 WebSite 明確指向作者，
-            Google 判斷網站名稱時也優先看 WebSite.name（SERP 上顯示的站名）。 */}
+        {/* Describe the site and its author using one configurable identity. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -175,44 +166,27 @@ export default function RootLayout({
                   "@id": `${SITE_URL}/#website`,
                   url: SITE_URL,
                   name: SITE_TITLE,
-                  alternateName: ["itouSouta", "伊藤蒼太", "郭家睿"],
-                  inLanguage: "zh-Hant",
+                  alternateName: site.author.aliases,
+                  inLanguage: site.locale,
                   description: SITE_DESCRIPTION,
                   publisher: { "@id": `${SITE_URL}/#person` },
                 },
                 {
                   "@type": "Person",
                   "@id": `${SITE_URL}/#person`,
-                  name: "郭家睿",
-                  alternateName: ["伊藤蒼太", "itouSouta", "itouSouta15"],
+                  name: site.author.name,
+                  alternateName: site.author.aliases,
                   url: SITE_URL,
-                  image: `${SITE_URL}/assets/brand/avatar.webp`,
+                  image: `${SITE_URL}${site.avatar}`,
                   description: SITE_DESCRIPTION,
-                  knowsAbout: [
-                    "軟體開發",
-                    "資訊安全",
-                    "VOCALOID",
-                    "插畫",
-                    "競技程式設計",
-                  ],
-                  affiliation: {
-                    "@type": "Organization",
-                    name: "臺中市立大里高中",
-                  },
-                  sameAs: [
-                    "https://github.com/itousouta15",
-                    "https://x.com/itou_souta15",
-                    "https://www.instagram.com/itou.souta15",
-                    "https://t.me/itousouta15",
-                    "https://blog.itousouta.me",
-                  ],
+                  sameAs: site.socials.map(({ href }) => href),
                 },
               ],
             }),
           }}
         />
         <ThemeProvider>
-          <NowPlayingProvider>
+          <NowPlayingProvider enabled={available.spotify || available.discord}>
             <a className="skip-link" href="#main">
               跳到主要內容
             </a>
@@ -221,7 +195,7 @@ export default function RootLayout({
             <main className="main" id="main" tabIndex={-1}>
               <PageTransition>{children}</PageTransition>
               {/* 留言板：每一頁的內容底下都有，滾到頁底才載入 Waline */}
-              <GuestbookSection />
+              {available.guestbook && <GuestbookSection />}
               <ChapterNavigation />
             </main>
             <Footer />
@@ -232,14 +206,16 @@ export default function RootLayout({
             <NoiseOverlay />
             <DeferredMount name="konami" />
             <DeferredMount name="confetti" />
-            <NowPlayingBar />
+            {(available.spotify || available.discord) && <NowPlayingBar />}
             <ServiceWorkerRegistration />
           </NowPlayingProvider>
         </ThemeProvider>
-        <Script
-          src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"
-          strategy="lazyOnload"
-        />
+        {features.visitorCounter && (
+          <Script
+            src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"
+            strategy="lazyOnload"
+          />
+        )}
         <Analytics />
       </body>
     </html>

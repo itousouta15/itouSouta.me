@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "../ThemeProvider";
 import { NAV_LINKS } from "../../lib/navigation";
+import { site } from "../../template/config";
 
 /* 桌機版導覽列的寬度已經很滿了（961px 斷點 + html 的 zoom: 1.15，實際可用寬度
    比想像中窄，.nav 靠 flex-wrap 兜著）。 */
@@ -77,7 +78,7 @@ export default function Header() {
       <header className="header">
         <div className="header-inner">
           <Link className="logo" href="/" style={{ textDecoration: "none" }}>
-            itouSouta.me
+            {site.title}
           </Link>
           <div className="header-right">
             <nav className="nav">

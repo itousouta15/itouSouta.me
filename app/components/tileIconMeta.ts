@@ -134,16 +134,4 @@ export const TILE_ICON_META: Record<string, IconMeta> = {
     bg: "#0c2236",
     bgLight: "#d8e8f5",
   },
-  scaict: {
-    label: "SCAICT",
-    src: "/assets/icons/SCAICT.svg",
-    bg: "#0f1b2e",
-    bgLight: "#dce8f8",
-  },
-  dlhit: {
-    label: "DLHIT",
-    src: "/assets/icons/DLHIT.svg",
-    bg: "#0f1b2e",
-    bgLight: "#dce8f8",
-  },
 };

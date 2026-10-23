@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getReactionCounts, incrReaction, rateLimit } from "../../lib/kv";
+import { unavailable } from "../../template/availability";
 
 /* 雜談按讚：GET 聚合計數（/writing 頁 server 端自己讀 KV 也行，這個是給外部/
    client 用的）、POST 按讚。KV 沒有環境（本機 dev）時 503。 */
@@ -7,6 +8,8 @@ import { getReactionCounts, incrReaction, rateLimit } from "../../lib/kv";
 export const revalidate = 60;
 
 export async function GET(req: NextRequest) {
+  const disabled = unavailable("reactions");
+  if (disabled) return disabled;
   try {
     const ids = (req.nextUrl.searchParams.get("ids") ?? "")
       .split(",")
@@ -21,6 +24,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const disabled = unavailable("reactions");
+  if (disabled) return disabled;
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 

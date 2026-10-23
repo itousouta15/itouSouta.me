@@ -2,14 +2,6 @@
 
 The site has a few small interactions that are intentionally playful but isolated from the core navigation.
 
-## Avatar Click
-
-Component: `app/components/easter-eggs/AvatarEasterEgg.tsx`
-
-Clicking the profile avatar five times in a short window spins it and opens the Discord invite in a new tab.
-
-The click streak resets after a short timeout, so normal profile-card interaction does not accidentally trigger it.
-
 ## Hero Face
 
 Component: `app/components/home/HeroFace.tsx`

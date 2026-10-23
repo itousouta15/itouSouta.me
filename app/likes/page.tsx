@@ -6,8 +6,10 @@ import VtuberLiveWarmup from "../components/likes/VtuberLiveWarmup";
 import { LIKE_CATEGORIES } from "../data";
 import { getMusicSnapshot } from "../lib/music";
 import { pageMetadata } from "../lib/seo";
+import { features, site } from "../template/config";
+import { available } from "../template/availability";
 
-const description = "itouSouta 喜歡的東西們 (╯✧∇✧)╯";
+const description = `${site.author.name} 喜歡的作品與音樂。`;
 
 export const revalidate = 3600;
 
@@ -18,11 +20,13 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function LikesPage() {
-  const music = await getMusicSnapshot({ limit: 12, timeRange: "long_term" });
+  const music = available.spotify
+    ? await getMusicSnapshot({ limit: 12, timeRange: "long_term" })
+    : { tracks: [] };
 
   return (
     <section style={{ paddingBottom: 8 }}>
-      <VtuberLiveWarmup />
+      {features.vtuberLive && <VtuberLiveWarmup />}
       <PageHead kicker="LIKES" title="喜歡的東西" />
       {LIKE_CATEGORIES.map((cat, i) => (
         <LikeCategorySection cat={cat} key={cat.key} priorityImages={i === 0} />

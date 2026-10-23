@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { DISCORD_USER_ID } from "../../siteConfig";
 import { getCurrentlyPlayingDebug } from "../../lib/spotify";
+import { available } from "../../template/availability";
 
 // 現在正在聽的 Spotify 曲目。優先直接打 Spotify Web API（不經 Discord），因為
 // Lanyard 的 Spotify 活動是靠 Discord 用戶端轉發的，手機上沒開 Discord app 就抓
@@ -33,6 +34,7 @@ interface LanyardResult {
 }
 
 async function fromLanyard(): Promise<LanyardResult> {
+  if (!available.discord) return { track: null, reason: "discord-disabled" };
   try {
     const res = await fetch(
       `https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`,
@@ -67,9 +69,13 @@ async function fromLanyard(): Promise<LanyardResult> {
 }
 
 export async function GET(request: Request) {
+  if (!available.spotify && !available.discord)
+    return Response.json({ error: "Not found" }, { status: 404 });
   const debug = new URL(request.url).searchParams.get("debug") === "1";
 
-  const spotify = await getCurrentlyPlayingDebug();
+  const spotify = available.spotify
+    ? await getCurrentlyPlayingDebug()
+    : { track: null, reason: "spotify-disabled" };
   if (spotify.track) {
     return NextResponse.json({
       song: spotify.track.song,

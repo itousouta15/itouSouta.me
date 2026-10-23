@@ -5,5 +5,5 @@ export interface Thought {
 }
 
 export const THOUGHTS: Thought[] = [
-  { date: "2026-07-01", text: "好想睡覺 Zzzz", tag: "日常" },
+  { date: "2026-01-01", text: "在這裡記下生活中的小事。", tag: "日常" },
 ];

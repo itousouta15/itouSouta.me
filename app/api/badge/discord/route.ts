@@ -1,7 +1,8 @@
 import { DISCORD_USER_ID } from "../../../siteConfig";
 import { shieldBadge, svgResponse } from "../../../lib/badge";
+import { unavailable } from "../../../template/availability";
 
-// Discord 狀態徽章：https://itousouta.me/api/badge/discord.svg
+// Discord status badge for the configured user.
 // 掛在 README 會顯示目前上線/閒置/勿擾/離線。狀態常變，快取壓短。
 
 export const revalidate = 60;
@@ -21,6 +22,8 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 export async function GET() {
+  const disabled = unavailable("discord");
+  if (disabled) return disabled;
   let status = "offline";
   try {
     const res = await fetch(

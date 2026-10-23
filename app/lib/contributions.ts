@@ -1,4 +1,6 @@
-export const CONTRIBUTION_USER = "itousouta15";
+import { site } from "../template/config";
+
+export const CONTRIBUTION_USER = site.githubUsername;
 
 export interface ContributionDay {
   date: string;
