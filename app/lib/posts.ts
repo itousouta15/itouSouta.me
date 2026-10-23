@@ -106,7 +106,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
     ),
     legacyPath:
       typeof data.legacyPath === "string" ? data.legacyPath : undefined,
-    plainCode: data.plainCode === true,
+    deferredHighlight: data.deferredHighlight === true,
     content,
   };
 }
@@ -132,7 +132,7 @@ export function getPostSummaries(): PostSummary[] {
       content: _content,
       headings: _headings,
       originalCover,
-      plainCode: _plainCode,
+      deferredHighlight: _deferredHighlight,
       ...summary
     }) => ({ ...summary, cover: blogImagePreview(originalCover, 480) })
   );

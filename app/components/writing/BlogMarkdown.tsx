@@ -26,10 +26,10 @@ const externalImage = (src: string, width?: number) =>
 
 export default async function BlogMarkdown({
   content,
-  plainCode = false,
+  deferredHighlight = false,
 }: {
   content: string;
-  plainCode?: boolean;
+  deferredHighlight?: boolean;
 }) {
   const originalCode: string[] = [];
   const captureSource = () => (tree: HastRoot) => {
@@ -47,7 +47,7 @@ export default async function BlogMarkdown({
   const rehypePlugins: PluggableList = [
     [rehypeKatex, { strict: false, throwOnError: false }],
   ];
-  if (!plainCode) {
+  if (!deferredHighlight) {
     rehypePlugins.push(
       captureSource,
       [
@@ -62,7 +62,9 @@ export default async function BlogMarkdown({
     );
   }
   return (
-    <div className={`blog-prose${plainCode ? " blog-prose--plain-code" : ""}`}>
+    <div
+      className={`blog-prose${deferredHighlight ? " blog-prose--deferred-highlight" : ""}`}
+    >
       <MarkdownAsync
         remarkPlugins={[remarkGfm, remarkMath, remarkArticleHeadings]}
         rehypePlugins={rehypePlugins}
@@ -127,7 +129,7 @@ export default async function BlogMarkdown({
           pre: ({ children, node, ...props }) => (
             <CodeBlock
               code={
-                plainCode
+                deferredHighlight
                   ? undefined
                   : typeof node?.data?.blogRawCode === "string"
                     ? node.data.blogRawCode
@@ -135,6 +137,7 @@ export default async function BlogMarkdown({
                       ? toString(node)
                       : ""
               }
+              deferredHighlight={deferredHighlight}
             >
               <pre {...props} tabIndex={0}>
                 {children}

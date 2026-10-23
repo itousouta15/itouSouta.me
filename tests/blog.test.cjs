@@ -33,6 +33,7 @@ const {
 } = require("../app/lib/legacyComments.ts");
 const { chapterBackLink } = require("../app/lib/navigation.ts");
 const { activeHeadingAt } = require("../app/lib/toc.ts");
+const { tokenizeCpp } = require("../app/components/writing/cppHighlight.ts");
 const migration = require("../content/blog/migration.json");
 const redirects = require("../content/blog/redirects.json");
 const images = require("../content/blog/images.json");
@@ -228,7 +229,7 @@ test("TOC current section follows measured heading boundaries and large scroll j
 test("itouOJ is one searchable article without indexing every code block", () => {
   const post = getPostBySlug("itouOJ");
   assert.ok(post);
-  assert.equal(post.plainCode, true);
+  assert.equal(post.deferredHighlight, true);
   const ids = post.headings.map((heading) => heading.text.slice(0, 5));
   const expected = Array.from({ length: 85 }, (_, index) => {
     return `a${String(index + 1).padStart(3, "0")}.`;
@@ -238,6 +239,33 @@ test("itouOJ is one searchable article without indexing every code block", () =>
   assert.ok(summary.searchText.includes("a085"));
   assert.ok(!summary.searchText.includes("#include"));
   assert.equal(summary.prefetch, false);
+});
+
+test("deferred C++ highlighting colors tokens without changing copied source", () => {
+  const source = [
+    "#include <iostream>",
+    "int main() {",
+    "  // comment",
+    '  cout << "https://example.com";',
+    "  return 42;",
+    "}",
+    "",
+  ].join("\n");
+  const tokens = tokenizeCpp(source);
+  assert.equal(tokens.map((token) => token.text).join(""), source);
+  for (const [text, kind] of [
+    ["#include <iostream>", "directive"],
+    ["int", "type"],
+    ["main", "function"],
+    ["// comment", "comment"],
+    ['"https://example.com"', "string"],
+    ["return", "keyword"],
+    ["42", "number"],
+  ]) {
+    assert.ok(
+      tokens.some((token) => token.text.trim() === text && token.kind === kind)
+    );
+  }
 });
 
 test("redirect manifest targets only the migrated Chinese article paths", async () => {

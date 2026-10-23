@@ -31,5 +31,5 @@ export interface BlogPost extends PostSummary {
   content: string;
   headings: PostHeading[];
   originalCover: string;
-  plainCode: boolean;
+  deferredHighlight: boolean;
 }

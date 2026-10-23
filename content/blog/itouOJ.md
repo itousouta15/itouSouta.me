@@ -9,7 +9,7 @@ tags:
   - 題解
 cover: /assets/projects/itouOJ.webp
 description: itouOJ a001 到 a085 的解題思路、複雜度與程式
-plainCode: true
+deferredHighlight: true
 searchCode: false
 prefetch: false
 ---

@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
+import type { LenisRef } from "lenis/react";
 
 // 手機與 reduced-motion 不會掛載 Lenis，也不需要下載其實作。
 const ReactLenis = dynamic(
@@ -13,6 +15,19 @@ const ReactLenis = dynamic(
    偏好減少動態效果時也停用，並監聽斷點／系統設定變更。 */
 export default function SmoothScroll() {
   const [enabled, setEnabled] = useState(false);
+  const pathname = usePathname();
+  const previousPathname = useRef(pathname);
+  const lenisRef = useRef<LenisRef>(null);
+
+  useLayoutEffect(() => {
+    if (previousPathname.current === pathname) return;
+    previousPathname.current = pathname;
+    if (window.location.hash) return;
+
+    // Stop any remaining wheel animation so it cannot pull the new page away
+    // from the top after PageTransition resets the native scroll position.
+    lenisRef.current?.lenis?.scrollTo(0, { immediate: true, force: true });
+  }, [pathname]);
 
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 761px)");
@@ -29,5 +44,11 @@ export default function SmoothScroll() {
   }, []);
 
   if (!enabled) return null;
-  return <ReactLenis root options={{ wheelMultiplier: 0.8, lerp: 0.1 }} />;
+  return (
+    <ReactLenis
+      ref={lenisRef}
+      root
+      options={{ wheelMultiplier: 0.8, lerp: 0.1 }}
+    />
+  );
 }
