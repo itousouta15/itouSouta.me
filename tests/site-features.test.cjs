@@ -181,7 +181,14 @@ test("project galleries preserve cover-only projects and normalize additional sc
     { src: "/cover.webp", alt: "Gallery 預覽圖" },
     { src: "/detail.webp", alt: "Detail", caption: "Feature screen" },
   ]);
-  assert.equal(getProjectScreenshots(findProject("itouoj")).length, 2);
+  assert.deepEqual(
+    getProjectScreenshots(findProject("itouoj")).map(({ src }) => src),
+    [
+      "/assets/projects/itouOJ.webp",
+      "/assets/projects/OJ.webp",
+      "/assets/projects/itouOJ_2.webp",
+    ]
+  );
 });
 
 test("music snapshots preserve Spotify's ranking and handle unavailable data without play-history fields", async () => {
