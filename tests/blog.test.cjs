@@ -225,6 +225,21 @@ test("TOC current section follows measured heading boundaries and large scroll j
   );
 });
 
+test("itouOJ is one searchable article without indexing every code block", () => {
+  const post = getPostBySlug("itouOJ");
+  assert.ok(post);
+  assert.equal(post.plainCode, true);
+  const ids = post.headings.map((heading) => heading.text.slice(0, 5));
+  const expected = Array.from({ length: 85 }, (_, index) => {
+    return `a${String(index + 1).padStart(3, "0")}.`;
+  });
+  assert.deepEqual(ids, expected);
+  const summary = getPostSummaries().find((item) => item.slug === "itouOJ");
+  assert.ok(summary.searchText.includes("a085"));
+  assert.ok(!summary.searchText.includes("#include"));
+  assert.equal(summary.prefetch, false);
+});
+
 test("redirect manifest targets only the migrated Chinese article paths", async () => {
   const config = (await import("../next.config.mjs")).default;
   const routes = await config.redirects();

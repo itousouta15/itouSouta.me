@@ -9,9 +9,6 @@ tags:
 cover: /assets/blog/originals/Hexo/hexo_github.webp
 pinned: false
 legacyPath: /2025/08/27/Hexo/
-translations:
-  en: 'https://blog.itousouta.me/en/2025/08/27/Hexo/'
-  ja: 'https://blog.itousouta.me/ja/2025/08/27/Hexo/'
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/hexo/hexo.md
 ---

@@ -9,9 +9,6 @@ tags:
 cover: /assets/blog/originals/ais3/ais3.webp
 pinned: false
 legacyPath: /2025/07/11/AIS3PE/
-translations:
-  en: 'https://blog.itousouta.me/en/2025/07/11/AIS3PE/'
-  ja: 'https://blog.itousouta.me/ja/2025/07/11/AIS3PE/'
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/ais3/ais3preexam.md
 ---

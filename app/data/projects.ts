@@ -6,7 +6,7 @@ export interface ProjectScreenshot {
 
 export interface Project {
   slug: string;
-  category: "development" | "design";
+  category: "development" | "design" | ("development" | "design")[];
   kicker: string;
   color: "blue" | "purple";
   title: string;
@@ -242,7 +242,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "thjcc-website",
-    category: "design",
+    category: ["development", "design"],
     kicker: "WEB",
     color: "blue",
     title: "THJCC 官方網站",
@@ -410,6 +410,11 @@ SITCON 2027 CFP 網站的設計稿。可以透過右側的 Figma 連結查看。
         src: "/assets/projects/OJ.webp",
         alt: "itouOJ 收件程式的題目選擇與程式碼提交畫面",
         caption: "收件程式：選擇題目、撰寫程式並提交評測。",
+      },
+      {
+        src: "/assets/projects/itouOJ_2.webp",
+        alt: "itouOJ 網頁版的題目內容畫面",
+        caption: "網頁版：瀏覽題目、查看測資與提交紀錄。",
       },
     ],
     siteUrl: "https://oj.itousouta.me",

@@ -9,9 +9,6 @@ tags:
 cover: /assets/blog/originals/ais3_/AIS3.webp
 pinned: false
 legacyPath: /2025/08/29/AIS3/
-translations:
-  en: 'https://blog.itousouta.me/en/2025/08/29/AIS3/'
-  ja: 'https://blog.itousouta.me/ja/2025/08/29/AIS3/'
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/ais3/ais3.md
 ---

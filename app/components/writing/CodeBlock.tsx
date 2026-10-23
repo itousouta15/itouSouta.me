@@ -6,21 +6,24 @@ export default function CodeBlock({
   code,
   children,
 }: {
-  code: string;
+  code?: string;
   children: ReactNode;
 }) {
   const [status, setStatus] = useState("");
+  const block = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
   return (
-    <div className="blog-code-block">
+    <div className="blog-code-block" ref={block}>
       <button
         type="button"
         className="blog-code-copy"
         aria-label="複製程式碼"
         onClick={async () => {
           try {
-            await navigator.clipboard.writeText(code.replace(/\n$/, ""));
+            const element = block.current?.querySelector("pre code");
+            const source = code ?? element?.textContent ?? "";
+            await navigator.clipboard.writeText(source.replace(/\n$/, ""));
             setStatus("已複製");
           } catch {
             setStatus("複製失敗，請選取程式碼");

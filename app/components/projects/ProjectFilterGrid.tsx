@@ -89,12 +89,16 @@ export default function ProjectFilterGrid({
         }),
     [items, query, repoInfoBySlug]
   );
-  const development = filtered.filter((p) => p.category === "development");
-  const designProjects = filtered.filter((p) => p.category === "design");
-  const developmentCount = items.filter(
-    (p) => p.category === "development"
+  const inCategory = (p: Project, category: "development" | "design") =>
+    Array.isArray(p.category)
+      ? p.category.includes(category)
+      : p.category === category;
+  const development = filtered.filter((p) => inCategory(p, "development"));
+  const designProjects = filtered.filter((p) => inCategory(p, "design"));
+  const developmentCount = items.filter((p) =>
+    inCategory(p, "development")
   ).length;
-  const designCount = items.length - developmentCount;
+  const designCount = items.filter((p) => inCategory(p, "design")).length;
 
   const search = (value: string) => {
     // Next's native History API integration updates useSearchParams without

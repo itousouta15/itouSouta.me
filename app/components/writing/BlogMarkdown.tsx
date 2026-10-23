@@ -6,6 +6,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { toString } from "hast-util-to-string";
 import { visit } from "unist-util-visit";
 import type { Root as HastRoot } from "hast";
+import type { PluggableList } from "unified";
 import { remarkArticleHeadings } from "../../lib/blogMarkdown";
 import { blogImage, blogImagePreview } from "../../lib/posts";
 import CodeBlock from "./CodeBlock";
@@ -23,7 +24,13 @@ const externalImage = (src: string, width?: number) =>
     ? `https://wsrv.nl/?${new URLSearchParams({ url: src, output: "webp", ...(width ? { w: String(width) } : {}) })}`
     : src;
 
-export default async function BlogMarkdown({ content }: { content: string }) {
+export default async function BlogMarkdown({
+  content,
+  plainCode = false,
+}: {
+  content: string;
+  plainCode?: boolean;
+}) {
   const originalCode: string[] = [];
   const captureSource = () => (tree: HastRoot) => {
     visit(tree, "element", (node) => {
@@ -37,23 +44,28 @@ export default async function BlogMarkdown({ content }: { content: string }) {
         node.data = { ...node.data, blogRawCode: originalCode[index++] };
     });
   };
+  const rehypePlugins: PluggableList = [
+    [rehypeKatex, { strict: false, throwOnError: false }],
+  ];
+  if (!plainCode) {
+    rehypePlugins.push(
+      captureSource,
+      [
+        rehypePrettyCode,
+        {
+          theme: { dark: "github-dark", light: "github-light" },
+          keepBackground: false,
+          defaultLang: { block: "text", inline: "text" },
+        },
+      ],
+      restoreSource
+    );
+  }
   return (
-    <div className="blog-prose">
+    <div className={`blog-prose${plainCode ? " blog-prose--plain-code" : ""}`}>
       <MarkdownAsync
         remarkPlugins={[remarkGfm, remarkMath, remarkArticleHeadings]}
-        rehypePlugins={[
-          [rehypeKatex, { strict: false, throwOnError: false }],
-          captureSource,
-          [
-            rehypePrettyCode,
-            {
-              theme: { dark: "github-dark", light: "github-light" },
-              keepBackground: false,
-              defaultLang: { block: "text", inline: "text" },
-            },
-          ],
-          restoreSource,
-        ]}
+        rehypePlugins={rehypePlugins}
         skipHtml
         components={{
           a: ({ href, title, children, node }) => {
@@ -115,11 +127,13 @@ export default async function BlogMarkdown({ content }: { content: string }) {
           pre: ({ children, node, ...props }) => (
             <CodeBlock
               code={
-                typeof node?.data?.blogRawCode === "string"
-                  ? node.data.blogRawCode
-                  : node
-                    ? toString(node)
-                    : ""
+                plainCode
+                  ? undefined
+                  : typeof node?.data?.blogRawCode === "string"
+                    ? node.data.blogRawCode
+                    : node
+                      ? toString(node)
+                      : ""
               }
             >
               <pre {...props} tabIndex={0}>

@@ -176,7 +176,7 @@ export default function PostPage({ params }: { params: { slug: string } }) {
           <ArticleToc headings={post.headings} />
         </aside>
         <div className="blog-article-content">
-          <BlogMarkdown content={post.content} />
+          <BlogMarkdown content={post.content} plainCode={post.plainCode} />
           <nav className="blog-adjacent" aria-label="上一篇與下一篇">
             {previous ? (
               <Link href={previous.path}>

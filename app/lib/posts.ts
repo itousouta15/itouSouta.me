@@ -92,7 +92,9 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
     pinned: data.pinned === true,
     wordCount: inspected.wordCount,
     readingMinutes: inspected.readingMinutes,
-    searchText: inspected.searchText,
+    searchText:
+      data.searchCode === false ? inspected.plainText : inspected.searchText,
+    prefetch: data.prefetch === false ? false : undefined,
     headings: inspected.headings,
     translations: Object.fromEntries(
       Object.entries(data.translations ?? {}).filter(
@@ -104,6 +106,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
     ),
     legacyPath:
       typeof data.legacyPath === "string" ? data.legacyPath : undefined,
+    plainCode: data.plainCode === true,
     content,
   };
 }
@@ -129,6 +132,7 @@ export function getPostSummaries(): PostSummary[] {
       content: _content,
       headings: _headings,
       originalCover,
+      plainCode: _plainCode,
       ...summary
     }) => ({ ...summary, cover: blogImagePreview(originalCover, 480) })
   );

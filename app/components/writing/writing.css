@@ -572,6 +572,9 @@
   display: grid;
   min-width: max-content;
 }
+.blog-prose--plain-code pre > code {
+  display: block;
+}
 .blog-prose [data-line] {
   padding: 0 2px;
 }

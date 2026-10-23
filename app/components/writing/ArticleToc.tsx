@@ -2,10 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLenis } from "lenis/react";
 import type { PostHeading } from "../../lib/postTypes";
 import { activeHeadingAt, type HeadingPosition } from "../../lib/toc";
 
 export default function ArticleToc({ headings }: { headings: PostHeading[] }) {
+  const lenis = useLenis();
   const [active, setActive] = useState(headings[0]?.id ?? "");
   const activeRef = useRef(active);
   const navigation = useRef<HTMLElement>(null);
@@ -193,11 +195,39 @@ export default function ArticleToc({ headings }: { headings: PostHeading[] }) {
             <a
               href={`#${heading.id}`}
               aria-current={active === heading.id ? "location" : undefined}
-              onClick={() => {
+              onClick={(event) => {
+                if (
+                  event.defaultPrevented ||
+                  event.button !== 0 ||
+                  event.metaKey ||
+                  event.ctrlKey ||
+                  event.shiftKey ||
+                  event.altKey
+                )
+                  return;
+                const target = document.getElementById(heading.id);
+                if (!target) return;
+                event.preventDefault();
+                const hash = `#${encodeURIComponent(heading.id)}`;
+                if (window.location.hash !== hash)
+                  window.history.pushState(null, "", hash);
+                target.tabIndex = -1;
+                target.focus({ preventScroll: true });
                 activeRef.current = heading.id;
                 setActive(heading.id);
                 if (mobile && mobileDetails.current)
                   mobileDetails.current.open = false;
+                const reduceMotion = window.matchMedia(
+                  "(prefers-reduced-motion: reduce)"
+                ).matches;
+                if (lenis && !reduceMotion) {
+                  lenis.scrollTo(target);
+                } else {
+                  target.scrollIntoView({
+                    behavior: reduceMotion ? "instant" : "smooth",
+                    block: "start",
+                  });
+                }
               }}
             >
               {heading.text}

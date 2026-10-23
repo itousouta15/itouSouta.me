@@ -22,6 +22,7 @@ export interface PostSummary {
   wordCount: number;
   readingMinutes: number;
   searchText: string;
+  prefetch?: boolean;
   translations: Partial<Record<"en" | "ja", string>>;
   legacyPath?: string;
 }
@@ -30,4 +31,5 @@ export interface BlogPost extends PostSummary {
   content: string;
   headings: PostHeading[];
   originalCover: string;
+  plainCode: boolean;
 }

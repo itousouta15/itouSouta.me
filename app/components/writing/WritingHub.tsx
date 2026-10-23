@@ -208,6 +208,7 @@ export default function WritingHub({
                     key={post.slug}
                     className={`writing-post-card${post.cover ? "" : " writing-post-card--plain"}`}
                     href={post.path + (params.size ? `?${params}` : "")}
+                    prefetch={post.prefetch}
                   >
                     {post.cover && (
                       <div className="writing-post-cover-frame">
@@ -225,6 +226,7 @@ export default function WritingHub({
                       <div className="writing-post-meta">
                         <time dateTime={post.dateISO}>{post.date}</time>
                         {post.pinned && <span>置頂</span>}
+                        <span>{post.wordCount.toLocaleString("zh-TW")} 字</span>
                         <span>{post.readingMinutes} 分鐘</span>
                       </div>
                       <h2>

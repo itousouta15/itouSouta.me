@@ -50,7 +50,12 @@ export default function WritingPage() {
                 key={post.slug}
               >
                 <div className="writing-post-card-body">
-                  <time>{post.date}</time>
+                  <div className="writing-post-meta">
+                    <time dateTime={post.dateISO}>{post.date}</time>
+                    {post.pinned && <span>置頂</span>}
+                    <span>{post.wordCount.toLocaleString("zh-TW")} 字</span>
+                    <span>{post.readingMinutes} 分鐘</span>
+                  </div>
                   <h2>{post.title}</h2>
                   <p>{post.description}</p>
                 </div>
