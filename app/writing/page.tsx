@@ -47,6 +47,7 @@ export default function WritingPage() {
               <Link
                 className="writing-post-card writing-post-card--plain"
                 href={post.path}
+                prefetch={post.prefetch}
                 key={post.slug}
               >
                 <div className="writing-post-card-body">
