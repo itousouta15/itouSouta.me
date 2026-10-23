@@ -24,9 +24,15 @@ export default function SmoothScroll() {
     previousPathname.current = pathname;
     if (window.location.hash) return;
 
-    // Stop any remaining wheel animation so it cannot pull the new page away
-    // from the top after PageTransition resets the native scroll position.
-    lenisRef.current?.lenis?.scrollTo(0, { immediate: true, force: true });
+    // Run after PageTransition's scroll reset. Lenis can still have an active
+    // wheel animation (even when its target is already 0), so reset its state
+    // against the new native position instead of starting another scrollTo.
+    const frame = window.requestAnimationFrame(() => {
+      const lenis = lenisRef.current?.lenis;
+      lenis?.stop();
+      lenis?.start();
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [pathname]);
 
   useEffect(() => {

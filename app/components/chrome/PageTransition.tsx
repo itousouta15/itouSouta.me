@@ -22,8 +22,10 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     // Keep deliberate links to a section (including a direct load with #hash).
     if (window.location.hash) return;
 
-    // SmoothScroll cancels desktop Lenis animations on the same route change.
-    window.scrollTo(0, 0);
+    // Next.js can adjust scroll/focus after layout effects. Reset once it has
+    // finished the route commit, before the next frame is painted.
+    const frame = window.requestAnimationFrame(() => window.scrollTo(0, 0));
+    return () => window.cancelAnimationFrame(frame);
   }, [pathname]);
 
   return (
