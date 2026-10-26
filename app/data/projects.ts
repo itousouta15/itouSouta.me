@@ -275,7 +275,7 @@ export const PROJECTS: Project[] = [
     cover: "/assets/projects/THJCC.webp",
     siteUrl: "https://thjcc.org",
     figmaUrl:
-      "https://www.figma.com/design/ZJd84NrEnUC8BhiN993LxM/THJCC?m=auto&t=cObEf2MICEqGHaFC-6",
+      "https://www.figma.com/design/ZJd84NrEnUC8BhiN993LxM/THJCC?node-id=0-1&t=zWLyHw8vTfFeG6SJ-1",
   },
   {
     slug: "sitcon-2027-cfp",
@@ -291,7 +291,7 @@ SITCON 2027 CFP 網站的設計稿。可以透過右側的 Figma 連結查看。
     icon: "figma",
     cover: "/assets/projects/sitcon-2027-cfp.webp",
     figmaUrl:
-      "https://www.figma.com/design/7lEKLdxdjNuLHJ3VILkuD4/SITCON-2027-CFP-%E7%B6%B2%E7%AB%99?m=auto&t=cObEf2MICEqGHaFC-6",
+      "https://www.figma.com/design/QJqFwmJCiOPYwdj9eEpEbU/SITCON-2027-CFP-網站?node-id=0-1&t=chp9fjXJBGFg5amq-1",
   },
   {
     slug: "itoubloga",
