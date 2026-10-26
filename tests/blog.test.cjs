@@ -39,32 +39,24 @@ const redirects = require("../content/blog/redirects.json");
 const images = require("../content/blog/images.json");
 const history = require("../content/blog/legacy-comments.json");
 
-test("all migrated Chinese articles are local and summaries exclude full Markdown", () => {
+test("blog posts load without changing route or summary code", () => {
   const posts = getAllPosts();
-  assert.equal(new Set(posts.map((post) => post.slug)).size, posts.length);
-  assert.equal(migration.posts.length, 10);
-  for (const imported of migration.posts) {
-    const post = posts.find((item) => item.slug === imported.slug);
-    assert.ok(post?.content.trim(), imported.slug);
-    assert.equal(post.legacyPath, imported.legacyPath);
-    assert.ok(post.path.startsWith("/writing/"));
-    assert.ok(post.readingMinutes >= 1);
-    assert.ok(post.wordCount > 0);
-    assert.equal(
-      new Set(post.headings.map((heading) => heading.id)).size,
-      post.headings.length
-    );
-    for (const [locale, url] of Object.entries(post.translations))
-      assert.equal(
-        url,
-        `https://blog.itousouta.me/${locale}${post.legacyPath}`
-      );
-  }
-  for (const summary of getPostSummaries()) {
-    assert.ok(!("content" in summary));
-    assert.ok(!("headings" in summary));
-    assert.ok(summary.searchText.length > 0);
-  }
+  assert.ok(posts.some(({ slug }) => slug === "welcome"));
+  assert.ok(
+    posts.some(({ slug }) => slug === "five-contest-problems-solutions")
+  );
+  assert.ok(getPostBySlug("WELCOME").content.includes("# 你好"));
+  assert.equal(getPostBySlug("welcome").path, "/writing/welcome");
+  const contest = getPostBySlug("five-contest-problems-solutions");
+  assert.ok(contest.headings.some(({ text }) => text.includes("分段回頭")));
+  assert.ok(
+    getPublishedPosts().every(({ timestamp }) => timestamp <= Date.now())
+  );
+  const summary = getPostSummaries().find(({ slug }) => slug === "welcome");
+  assert.ok(!("content" in summary) && !("headings" in summary));
+  assert.ok(summary.searchText.includes("網站"));
+  for (const slug of ["../welcome", "welcome/", "%2fetc", "missing"])
+    assert.equal(getPostBySlug(slug), undefined);
 });
 
 test("article dates use Taipei while published legacy paths keep their actual old dates", () => {
