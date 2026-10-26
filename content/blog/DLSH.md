@@ -6,23 +6,62 @@ categories:
   - 程式競賽
 tags:
   - 題解
-  - 模擬
-  - 樹狀陣列
-  - 動態規劃
-  - 單調佇列
+  - 競賽
+cover: /assets/blog/dlsh.webp
+pinned: false
+legacyPath: /2026/10/26/DLSH
 ---
+## 1. 手遊廣告
 
-| 題目 | 核心方法 | 時間複雜度 |
-| --- | --- | --- |
-| 1. 積水與排水口 | 矩形逐格模擬 | $O(MRC+K)$ |
-| 2. 手遊廣告 | 依序判斷並累加 | $O(M)$ |
-| 3. 三消遊戲 | 找連線、掉落、補糖的反覆模擬 | $O((Q+L)RC)$ |
-| 4. 排列順序 | 樹狀陣列與排列數 | $O(M+N\log M)$ |
-| 5. 分段回頭 | 動態規劃與單調佇列 | $O(N)$ |
+### 題意與格式
 
-第三題的 $L$ 是整場遊戲的消除輪數。
+角色初始戰力為 $A$，依序遇到 $M$ 隻戰力為 $T_i$ 的怪物。只有**目前戰力嚴格大於**怪物戰力，才能擊敗牠，並增加 $T_i$ 戰力；否則立刻停止。求最後戰力。
 
-## 1. 積水與排水口
+輸入第一行為 $M,A$，第二行依遭遇順序列出 $M$ 個 $T_i$；輸出一個整數。$1\le M\le300$、$1\le A\le10000$、$1\le T_i\le6000$。
+
+```text
+輸入
+4 6
+2 7 20 1
+
+輸出
+15
+```
+
+先打贏戰力 2 和 7 的怪物，戰力變成 15；碰到戰力 20 的怪物就停止，最後那隻不再挑戰。
+
+### 解法
+
+按順序讀入怪物。若已停止，只讀掉剩餘輸入；否則檢查 `power > monster`，成功才加上怪物戰力。這個不變量保證處理完前 $i$ 隻怪物時，`power` 恰好是角色當下的戰力。
+
+時間 $O(M)$，額外空間 $O(1)$。
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int M, power;
+    cin >> M >> power;
+    bool stopped = false;
+    for (int i = 0; i < M; ++i) {
+        int monster;
+        cin >> monster;
+        if (!stopped) {
+            if (power > monster)
+                power += monster;
+            else
+                stopped = true;
+        }
+    }
+    cout << power << '\n';
+}
+```
+
+## 2. 積水與排水口
 
 ### 題意與格式
 
@@ -107,58 +146,6 @@ int main() {
         }
     }
     cout << maximum << ' ' << minimum << ' ' << remaining << '\n';
-}
-```
-
-## 2. TOI 2022/10 新手組：手遊廣告
-
-[原題 PDF](https://tpmso.k12ea.gov.tw/toi/wp-content/uploads/question/202210/Advertisement.pdf)
-
-### 題意與格式
-
-角色初始戰力為 $A$，依序遇到 $M$ 隻戰力為 $T_i$ 的怪物。只有**目前戰力嚴格大於**怪物戰力，才能擊敗牠，並增加 $T_i$ 戰力；否則立刻停止。求最後戰力。
-
-輸入第一行為 $M,A$，第二行依遭遇順序列出 $M$ 個 $T_i$；輸出一個整數。$1\le M\le300$、$1\le A\le10000$、$1\le T_i\le6000$。
-
-```text
-輸入
-4 6
-2 7 20 1
-
-輸出
-15
-```
-
-先打贏戰力 2 和 7 的怪物，戰力變成 15；碰到戰力 20 的怪物就停止，最後那隻不再挑戰。
-
-### 解法
-
-按順序讀入怪物。若已停止，只讀掉剩餘輸入；否則檢查 `power > monster`，成功才加上怪物戰力。這個不變量保證處理完前 $i$ 隻怪物時，`power` 恰好是角色當下的戰力。
-
-時間 $O(M)$，額外空間 $O(1)$。
-
-```cpp
-#include <iostream>
-using namespace std;
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int M, power;
-    cin >> M >> power;
-    bool stopped = false;
-    for (int i = 0; i < M; ++i) {
-        int monster;
-        cin >> monster;
-        if (!stopped) {
-            if (power > monster)
-                power += monster;
-            else
-                stopped = true;
-        }
-    }
-    cout << power << '\n';
 }
 ```
 
