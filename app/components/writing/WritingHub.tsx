@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, type ReactNode } from "react";
+import { useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
+import { useLenis } from "lenis/react";
 import type { PostSummary } from "../../lib/postTypes";
 import BlogPreviewImage from "./BlogPreviewImage";
 
@@ -18,6 +19,51 @@ export default function WritingHub({
   const query = params.get("q") ?? "";
   const tag = params.get("tag") ?? "";
   const month = params.get("month") ?? "";
+  const previousMonth = useRef(month);
+  const postsRef = useRef<HTMLDivElement>(null);
+  const lenis = useLenis();
+
+  useLayoutEffect(() => {
+    if (previousMonth.current === month) return;
+    previousMonth.current = month;
+
+    // Animate back to the top after the filtered list has rendered. Respect
+    // reduced-motion and use the same smooth scroller as the rest of the site.
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const releaseHeight = () =>
+      postsRef.current?.style.removeProperty("min-height");
+    if (lenis && !reducedMotion) {
+      // Discard Lenis's position from before the filtered list changed.
+      lenis.stop();
+      lenis.start();
+      lenis.scrollTo(0, { lock: true, onComplete: releaseHeight });
+    } else {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: reducedMotion ? "instant" : "smooth",
+      });
+      if (reducedMotion) releaseHeight();
+    }
+
+    // Native smooth scrolling has no Lenis completion callback. Keep the old
+    // height until we reach the top so the browser cannot clamp mid-animation.
+    if (lenis && !reducedMotion) return;
+    let frame = 0;
+    const deadline = performance.now() + 2000;
+    const check = () => {
+      if (window.scrollY <= 1 || performance.now() >= deadline) {
+        releaseHeight();
+      } else {
+        frame = window.requestAnimationFrame(check);
+      }
+    };
+    if (!reducedMotion) frame = window.requestAnimationFrame(check);
+    return () => window.cancelAnimationFrame(frame);
+  }, [month, lenis]);
+
   const tags = [...new Set(posts.flatMap((post) => post.tags))];
   const months = [
     ...new Set(
@@ -50,6 +96,16 @@ export default function WritingHub({
     );
   }, [posts, query, tag, month]);
   const change = (key: string, value: string) => {
+    if (
+      key === "month" &&
+      window.scrollY > 0 &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      // Preserve the scrollable height while a short month replaces the full
+      // list; otherwise the browser snaps to the new bottom before we animate.
+      const container = postsRef.current;
+      if (container) container.style.minHeight = `${container.offsetHeight}px`;
+    }
     const next = new URLSearchParams(params);
     next.delete("category");
     if (value) next.set(key, value);
@@ -197,7 +253,7 @@ export default function WritingHub({
               </button>
             )}
           </aside>
-          <div className="writing-posts">
+          <div className="writing-posts" ref={postsRef}>
             <p className="writing-result" role="status">
               {filtered.length} 篇文章{active ? `／共 ${posts.length} 篇` : ""}
             </p>

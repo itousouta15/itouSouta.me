@@ -24,14 +24,18 @@ export default function SmoothScroll() {
     previousPathname.current = pathname;
     if (window.location.hash) return;
 
-    // Run after PageTransition's scroll reset. Lenis can still have an active
-    // wheel animation (even when its target is already 0), so reset its state
-    // against the new native position instead of starting another scrollTo.
-    const frame = window.requestAnimationFrame(() => {
+    // Reset the native scroll and Lenis together: an in-flight Lenis animation
+    // otherwise writes the previous page's position back on its next frame.
+    const reset = () => {
       const lenis = lenisRef.current?.lenis;
       lenis?.stop();
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       lenis?.start();
-    });
+    };
+    reset();
+    // Next.js may still adjust focus/scroll during the route commit. Repeat
+    // after that commit so the new page starts at the top on desktop and mobile.
+    const frame = window.requestAnimationFrame(reset);
     return () => window.cancelAnimationFrame(frame);
   }, [pathname]);
 
@@ -54,7 +58,7 @@ export default function SmoothScroll() {
     <ReactLenis
       ref={lenisRef}
       root
-      options={{ wheelMultiplier: 0.8, lerp: 0.1 }}
+      options={{ wheelMultiplier: 0.8, lerp: 0.1, stopInertiaOnNavigate: true }}
     />
   );
 }
