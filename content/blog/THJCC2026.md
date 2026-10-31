@@ -15,13 +15,13 @@ deferredHighlight: true
 
 ### Welcome to THJCC CTF
 按F12 HTML裡面有flag
-![image](https://hackmd.io/_uploads/Sy13fUtdZx.png)
+![image](/assets/blog/originals/THJCC2026/Sy13fUtdZx.png)
 
 flag:`THJCC{We1c0m3-tO-tHjcC-c7F_2O26}`
 
 ### Feedback Form !
 表單填完最後有flag
-![image](https://hackmd.io/_uploads/Hk9WQUFu-l.png)
+![image](/assets/blog/originals/THJCC2026/Hk9WQUFu-l.png)
 
 flag:`THJCC{Thanks_\O/_L0vU}`
 
@@ -29,13 +29,13 @@ flag:`THJCC{Thanks_\O/_L0vU}`
 
 ### Super baby reverse
 ida打開，就有flag
-![image](https://hackmd.io/_uploads/H1ffELFOWx.png)
+![image](/assets/blog/originals/THJCC2026/H1ffELFOWx.png)
 
 flag:`THJCC{BaBY_r3v3rs3_f0r_beggin3r}`
 
 ### Fllllllag_ch3cker_again?
 ida打開看到加密邏輯
-![image](https://hackmd.io/_uploads/ryfisUYdZl.png)
+![image](/assets/blog/originals/THJCC2026/ryfisUYdZl.png)
 還原回去就拿到flag了
 
 Exploit:
@@ -67,11 +67,11 @@ flag:`THJCC{A_Simpl3_R3v3r3_using_CPP_d0ing_X0R}`
 ### THJCC-anti-virus
 
 ida打開找不到東西，用file看被加殼了
-![image](https://hackmd.io/_uploads/rJIiXvFO-l.png)
+![image](/assets/blog/originals/THJCC2026/rJIiXvFO-l.png)
 用upx解殼，ida打開
-![image](https://hackmd.io/_uploads/rkNLHDFdWx.png)
+![image](/assets/blog/originals/THJCC2026/rkNLHDFdWx.png)
 會先檢查前7個byte是不是等於`THJCCAV`，之後讀取一byte當作長度，長度要大於9，後面是一個XOR，所以我們的payload要`^ (i-84)`，之後檢查最後三byte是不是`\x13\x37\xaa`跟黑名單，可以用`tac`跟萬用字元繞過。
-![image](https://hackmd.io/_uploads/H1Lv2wtuZx.png)
+![image](/assets/blog/originals/THJCC2026/H1Lv2wtuZx.png)
 
 Exploit:
 ```python
@@ -135,7 +135,7 @@ flag:`THJCC{An_3a3y_Ant1_Viru5_H0p3_y0u_enj0y_it}`
 .rodata:0000000000003010 byte_3010       db 3Fh, 7Ah, 1Dh, 0E2h, 55h, 0B8h, 0Ch, 91h, 4Eh, 0D3h
 ```
 
-![image](https://hackmd.io/_uploads/r1NGP_tube.png)
+![image](/assets/blog/originals/THJCC2026/r1NGP_tube.png)
 ```c
 char __fastcall sub_21C9(int a1, char a2)
 {
@@ -216,7 +216,7 @@ flag:`THJCC{t4c_t4c_d1d_y0u_r3v3rs3_c4t??????????????????}`
 
 ### PocketVM
 ida打開，程式開頭會先驗證`if ( strlen(s) != 25 || s[23] != 107 )`
-![image](https://hackmd.io/_uploads/HyixiYFuWl.png)
+![image](/assets/blog/originals/THJCC2026/HyixiYFuWl.png)
 下面程式malloc一塊記憶體，把VM code抓進來，然後是很醜的switch case，所以我們要逆向VM code。叫AI寫一個還原腳本出來，得到一堆組合語言。
 
 他主要做這幾件事：拿 R3 作一個累加的狀態暫存器，起始值為 0x31415926，之後讓目前的字元和一個常數做 XOR，把 R0 加進去(R3 + R0)，再加上一個偏移量 (+ add_b)，把結果循環左移 (ROL rol_c)，新出來的 R3 和常數 xor_d 做 XOR，檢查低 8-bit 確認是否吻合 cmp_1，將 R3 向右移 8 位元，新的值再和 xor_e 做 XOR 後，確認低 8-bit 是否吻合 cmp_2。
@@ -295,7 +295,7 @@ flag:`THJCC{71ny_vm_5h311_p4ck}`
 
 ### 幽々子の食べ物
 先打開ida，發現裡面有反偵錯的設計，但可以透過把VMP_SKIP_AD設成1(ASCII49)，來跳過檢查
-![image](https://hackmd.io/_uploads/rJ0cYctOZg.png)
+![image](/assets/blog/originals/THJCC2026/rJ0cYctOZg.png)
 下面是一大坨解密VM的邏輯。但在最下面，程式會將解密後的腳本透過 `memfd_create("vm_blob", 1)` 放入記憶體，再寫入 261160 bytes，並以 `fexecve` 執行。所以我們就不用管那一坨code，直接LD_PRELOAD Hooking把他偷出來：
 
 ```c
@@ -396,7 +396,7 @@ flag:`THJCC{fumo_w4n7_to_EA7_b19_ECC_$0_I_pH33D_4_L07MOV}`
 
 ### IMAGE?
 拿到一張圖片，用binwalk解壓縮出來有一張圖片有flag
-![F3](https://hackmd.io/_uploads/Hyc4Kpt_bl.png)
+![F3](/assets/blog/originals/THJCC2026/Hyc4Kpt_bl.png)
 flag:`THJCC{fRierEN-SO_cUTe:)}`
 
 ### Provisioning in Progress
@@ -409,7 +409,7 @@ flag:`thjcc{only_announced_prefixes_are_real}`
 
 ### Metro
 一開始也是一張照片，拿去問AI他說在A10，照片看起來在三樓
-![image](https://hackmd.io/_uploads/HysyjpK_Zl.png)
+![image](/assets/blog/originals/THJCC2026/HysyjpK_Zl.png)
 flag:`THJCC{A10-3F}`
 
 ### YRSK
@@ -548,14 +548,14 @@ flag:`THJCC{7h15_15_7h3_m3554g3....._1_u53_4rch_b7w}`
 
 ### TV
 剛開始打開是一個音檔，分析頻譜
-![image](https://hackmd.io/_uploads/S15lyc9dZx.png)
+![image](/assets/blog/originals/THJCC2026/S15lyc9dZx.png)
 可以發現頻譜的訊號很集中，再加上題目叫TV，所以用SSTV解碼，但失敗，透過強制指定成M1模式成功解碼
-![image](https://hackmd.io/_uploads/ryR6J9qdZx.png)
+![image](/assets/blog/originals/THJCC2026/ryR6J9qdZx.png)
 flag:`THJCC{sSTv-is_aMaZINg}`
 
 ### ExBaby Shark Master
 拿到一個`.pcapng`檔，用wireshark打開，搜尋`THJ`，得到flag
-![image](https://hackmd.io/_uploads/rkecW9qdbl.png)
+![image](/assets/blog/originals/THJCC2026/rkecW9qdbl.png)
 flag:`THJCC{1t'S-3Asy*-r1gh7?????}`
 
 ### CoLoR iS cOdE
@@ -565,9 +565,9 @@ flag:`THJCC{1t'S-3Asy*-r1gh7?????}`
 d3b0bb05 2e88b90e ed7f7e33
 ```
 還原得到一張彩色圖片，是一種`piet`語言，拿去`nPiet`執行得到後半段flag
-![image](https://hackmd.io/_uploads/SJUYr95d-x.png)
+![image](/assets/blog/originals/THJCC2026/SJUYr95d-x.png)
 用strings看到一些奇怪的東西，用exiftool，拿到一堆ook，拿去ook decoder後拿到前半段flag
-![image](https://hackmd.io/_uploads/ryJDjqcuZl.png)
+![image](/assets/blog/originals/THJCC2026/ryJDjqcuZl.png)
 不得不說這題真的在通靈，但很好玩
 flag:`THJCC{c0lorfU1_col0rfu!_c0!0rful_img_m4d3_by_p1e7:>}`
 
@@ -585,7 +585,7 @@ flag:`THJCC{LUcKy_sEVen_7777777}`
 
 ### Ear👂
 source code顯示瀏覽器有自動跳轉，但沒有停止執行，直接curl就可以拿到flag
-![image](https://hackmd.io/_uploads/r1feHjqOWx.png)
+![image](/assets/blog/originals/THJCC2026/r1feHjqOWx.png)
 flag:`THJCC{U_kNoW-HOw-t0_uSe-EaR}`
 
 ### My First React
@@ -612,15 +612,15 @@ flag:`THJCC{CSR_c4n_b3_d4ng3rrr0us!}`
 
 ### A long time ago...
 source code的`loginController.php`裡是強型別比較
-![image](https://hackmd.io/_uploads/S1IDMh9_Wx.png)
+![image](/assets/blog/originals/THJCC2026/S1IDMh9_Wx.png)
 但在`indexController`裡是弱型別
-![image](https://hackmd.io/_uploads/BJoaGn5uWx.png)
+![image](/assets/blog/originals/THJCC2026/BJoaGn5uWx.png)
 php8以前當字串跟整數做比較，php會把字串轉成整數，且開頭沒有任何數字，所以會變成0，只要輸入0就能拿到flag
 flag:`THJCC{Meow_M3ow_Me0w}`
 
 ### Secret File Viewer
 F12發現伺服器用`download.php`讀檔
-![image](https://hackmd.io/_uploads/Bks3425Obg.png)
+![image](/assets/blog/originals/THJCC2026/Bks3425Obg.png)
 Exploit:
 ```sh
 curl "http://chal.thjcc.org:30000/download.php?file=/flag.txt"
@@ -629,7 +629,7 @@ flag:`THJCC{h0w_dID_y0u_br34k_q'5_pr073c710n???}`
 
 ### No Way Out
 伺服器允許寫入檔案，且設有簡單黑名單，但會在每個檔案內容開頭加上`<?php exit(); ?>`，導致檔案還沒執行就直接結束
-![image](https://hackmd.io/_uploads/SyMXOAcO-x.png)
+![image](/assets/blog/originals/THJCC2026/SyMXOAcO-x.png)
 我們可以用php filter的`convert.iconv.UCS-2LE.UCS-2BE`，他會將檔案每兩個位元互換，我們只要對payload預先處理就可以成功繞過
 
 Exploit:
@@ -673,9 +673,9 @@ flag:`THJCC{h4ppy_n3w_y34r_4nd_c0ngr47_u_byp4SS_th7_EXIT_n1ah4wg1n9198w4tqr8926g
 
 ### who is whois
 從source code可以看出他需要什麼才能拿到flag
-![image](https://hackmd.io/_uploads/ByrFA0qubg.png)
+![image](/assets/blog/originals/THJCC2026/ByrFA0qubg.png)
 `totp_secret`的加密方式
-![image](https://hackmd.io/_uploads/HkmAA0cO-g.png)
+![image](/assets/blog/originals/THJCC2026/HkmAA0cO-g.png)
 Exploit:
 ```python
 import pyotp
@@ -718,18 +718,18 @@ flag:`THJCC{yeyoumeng_Wh0i5_SsRf}`
 
 ### 0422
 cookie有一個`role`，改成admin就有flag
-![image](https://hackmd.io/_uploads/SySrWks_-e.png)
+![image](/assets/blog/originals/THJCC2026/SySrWks_-e.png)
 flag:`THJCC{c00k135_4r3_n07_53cur3_1f_n07_51gn3d_4nd_p13453_d0_7h3_53cur3_c0d1ng_r3v13w_101111}`
 
 ### msgboard
 api的`upload_image`因為名稱多打一個s，導致黑名單實作失效
-![image](https://hackmd.io/_uploads/rJu9t2s_Zx.png)
-![image](https://hackmd.io/_uploads/B1_1cniuWl.png)
+![image](/assets/blog/originals/THJCC2026/rJu9t2s_Zx.png)
+![image](/assets/blog/originals/THJCC2026/B1_1cniuWl.png)
 且只檢查是不是`image/`開頭，改`Content-type`就可以繞過+file name沒處裡過，所以我們可以複寫任意檔案
-![image](https://hackmd.io/_uploads/ryco53iuWl.png)
+![image](/assets/blog/originals/THJCC2026/ryco53iuWl.png)
 在`little_conponment.py`裡的`check_for_spam`會在每次有留言產生，去檢查是不是垃圾留言，joblib會load一個`spam_classsifler.joblib`，我們可以利用，這樣利用鍊就完成了
 用`upload_img`覆寫`/python-docker/spam_classifier.joblib`，讀取`env`，丟到`/static/upload/flag.txt`，最後發文在讀取flag.txt就可以拿到flag
-![image](https://hackmd.io/_uploads/B1nu3niuWe.png)
+![image](/assets/blog/originals/THJCC2026/B1nu3niuWe.png)
 
 Exploit:
 ```python
@@ -764,12 +764,12 @@ Exploit:
 A;
 ```
 把副檔名改成`.phtml`即可拿到flag
-![image](https://hackmd.io/_uploads/BkjHfghubl.png)
+![image](/assets/blog/originals/THJCC2026/BkjHfghubl.png)
 flag:`THJCC{w311_d0n3_y0u_byp4553d_7h3_b14ck1157_:D}`
 
 ### noaiiiiiiiiiiiiiii
 `docker file`可以看到node.js版本是一個2017的版本，查cve查到`CVE-2017-14849`，目錄穿越漏洞，flag的檔名也在裡面，就可以直接利用拿到flag
-![image](https://hackmd.io/_uploads/SkDxvlhu-e.png)
+![image](/assets/blog/originals/THJCC2026/SkDxvlhu-e.png)
 
 Exploit:
 ```python
@@ -810,14 +810,14 @@ flag:`THJCC{r34ct_ssr_rc3_1s_d4ng3r0us}`
 
 ### ASCII Driver
 checksec
-![image](https://hackmd.io/_uploads/H1sDyznd-l.png)
+![image](/assets/blog/originals/THJCC2026/H1sDyznd-l.png)
 
 原始碼有整數溢位
-![image](https://hackmd.io/_uploads/SJmhB-nO-x.png)
+![image](/assets/blog/originals/THJCC2026/SJmhB-nO-x.png)
 有一個`staff_panel`
-![image](https://hackmd.io/_uploads/HyT6S-3OZg.png)
+![image](/assets/blog/originals/THJCC2026/HyT6S-3OZg.png)
 `energy`只有144bytes，但現在可以讀取255bytes，可以buffer overflow
-![image](https://hackmd.io/_uploads/SyFf8b2uWg.png)
+![image](/assets/blog/originals/THJCC2026/SyFf8b2uWg.png)
 用腳本算出offset後就可以用以下exploit拿到flag
 
 Exploit:
@@ -902,7 +902,7 @@ flag:`THJCC{Stoc4st1c_W3ight_D3sc3nt_M4st3r_xedrftginjk54896ghjbijkml52563201}`
 
 ### NEURAL_OVERRIDE
 題目要求有三個，分別是分類、信心度、L_2距離要小於0.05，透過PGD攻擊，我們就可以得到一個能通過所有條件的圖片
-![image](https://hackmd.io/_uploads/ByZVdw2OWe.png)
+![image](/assets/blog/originals/THJCC2026/ByZVdw2OWe.png)
 
 Exploit:
 ```python
@@ -1127,7 +1127,7 @@ flag:`THJCC{N07hinGbEat5aJ2h0liDaye}`
 
 ### Proof 100
 這題主要有兩個階段，第一階段要連續100次，每次提供兩個不同的key與伺服器隨機的`seed`拼接後要有一樣的RSA簽章，因為他們在進RSA運算前會先做一次md5，我們可以利用md5碰撞，因為md5只要前面發生碰撞，後面無論加上什麼，產生的hash都會一樣。
-![image](https://hackmd.io/_uploads/Sk6WIt3OZl.png)
+![image](/assets/blog/originals/THJCC2026/Sk6WIt3OZl.png)
 第二階段是要給他`phi`，也就是 $(p-1) \times (q-1)$，我們不知道 $N$、$p$ 和 $q$，但他在前面的100輪輸入有給我們他的簽章$$s_i = m_i^d \pmod N$$已知公鑰$e=0x10001$，加密回去就會變成 $m_i$，$s_i^e \equiv m_i \pmod N$，所以他一定是$N$的某個倍數，我們知道送過去的 $m_i$ 是多少，我們也有拿到 $s_i$，所以我們可以計算出好幾個 $(s_i^e - m_i)$，這些數字都有一個共同的因數：$N$，因此，只要把隨便三個這樣的結果拿去取最大公因數，就可以拿到 $N$ 了。
 拿到 $N$ 之後，最後一步就是分解出 $p$ 和 $q$，題目雖然是用 RSA，但它選的質數 $p, q$ 只有 $64$-bit，相乘出來的模數 $N$ 只有 $128$-bit，用普通的因數分解演算法很快就可以把他解掉，得到 $p$ 和 $q$ 後，就可以算出 $(p-1)(q-1)$ 給他就可以拿到flag。
 flag:`THJCC{yay_u_r_a_perfect_signer_owob_hehe}`
@@ -1147,8 +1147,8 @@ flag:`THJCC{c1@ss1c41_cry9t0gr@9hy_1s_s1m9le_r1gh7?}`
 
 ### 0 login
 `generate_parameter_p`強制讓 $p$ 滿足 $4p-1 = D \cdot s^2$，可以利用Cheng's 4p-1 Factorization Method，在已知 $N$ 的情況下把 $p$、$q$ 算出來
-![image](https://hackmd.io/_uploads/rkuTaF2u-l.png)
+![image](/assets/blog/originals/THJCC2026/rkuTaF2u-l.png)
 手動去server抓了兩個不同時間的jwt，只要算出 $S_1^e - M_1$ 與 $S_2^e - M_2$，並對這兩個結果取最大公因數，就可以剔除常數 $k$ 我們就有 $N$了。
 之後我們先算出 $D=7331$ 對應的 Hilbert Class Polynomial，接著在以 $N$ 為模數的環 $Z/NZ$ 上，找出一條符合條件的橢圓曲線參數 $A, B$，利用 Montgomery Ladder 演算法，在這條曲線上進行高效的純 $X$ 座標乘法，因為這個漏洞的特性，當我們乘上 $N$ 次時，點在針對質數 $p$ 的那部分會崩潰，最後只要拿崩潰時的分母去對 $N$ 取最大公因數，就可以求出質數 $p$，之後算出私鑰，把user改成`whale`，在自己簽jwt，拿去網站上就可以拿到flag
-![image](https://hackmd.io/_uploads/Sk-2Jq3dWl.png)
+![image](/assets/blog/originals/THJCC2026/Sk-2Jq3dWl.png)
 flag:`THJCC{i_wanted_to_put_this_into_eof_ctf_final_live_ctf_as_a_sudden_death_challenge...}`
