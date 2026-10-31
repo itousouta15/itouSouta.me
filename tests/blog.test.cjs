@@ -39,13 +39,12 @@ const redirects = require("../content/blog/redirects.json");
 const images = require("../content/blog/images.json");
 const history = require("../content/blog/legacy-comments.json");
 
-test("migrated posts load with their original paths and summaries", () => {
+test("migrated posts load with canonical paths and summaries", () => {
   const posts = getAllPosts();
   assert.equal(new Set(posts.map(({ slug }) => slug)).size, posts.length);
   for (const imported of migration.posts) {
     const post = posts.find(({ slug }) => slug === imported.slug);
     assert.ok(post?.content.trim(), imported.slug);
-    assert.equal(post.legacyPath, imported.legacyPath);
     assert.equal(post.path, `/writing/${imported.slug}`);
     assert.ok(post.readingMinutes >= 1);
     assert.ok(post.wordCount > 0);
@@ -86,9 +85,12 @@ test("article dates use Taipei while published legacy paths keep their actual ol
   assert.equal(first.timestamp, Date.parse("2025-04-04T18:29:32+08:00"));
   const fh = getPostBySlug("FhCTF");
   assert.equal(fh.date, "2026/01/01");
-  assert.equal(fh.legacyPath, "/2025/12/31/FhCTF/");
   assert.equal(
-    getPostBySlug("APCS202510").legacyPath,
+    redirects.find(({ slug }) => slug === "FhCTF").legacyPath,
+    "/2025/12/31/FhCTF/"
+  );
+  assert.equal(
+    redirects.find(({ slug }) => slug === "APCS202510").legacyPath,
     "/2026/06/03/APCS202510/"
   );
   assert.ok(getPostBySlug("0ping67676767").timestamp > Date.now());
