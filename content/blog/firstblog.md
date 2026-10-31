@@ -8,6 +8,7 @@ tags:
   - Hexo
 cover: /assets/blog/originals/mainweb.webp
 pinned: false
+legacyPath: /2025/04/04/firstblog/
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/firstblog/firstblog.md
 ---

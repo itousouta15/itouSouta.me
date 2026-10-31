@@ -39,23 +39,33 @@ const redirects = require("../content/blog/redirects.json");
 const images = require("../content/blog/images.json");
 const history = require("../content/blog/legacy-comments.json");
 
-test("blog posts load without changing route or summary code", () => {
+test("migrated posts load with their original paths and summaries", () => {
   const posts = getAllPosts();
-  assert.ok(posts.some(({ slug }) => slug === "welcome"));
+  assert.equal(new Set(posts.map(({ slug }) => slug)).size, posts.length);
+  for (const imported of migration.posts) {
+    const post = posts.find(({ slug }) => slug === imported.slug);
+    assert.ok(post?.content.trim(), imported.slug);
+    assert.equal(post.legacyPath, imported.legacyPath);
+    assert.equal(post.path, `/writing/${imported.slug}`);
+    assert.ok(post.readingMinutes >= 1);
+    assert.ok(post.wordCount > 0);
+    assert.equal(
+      new Set(post.headings.map(({ id }) => id)).size,
+      post.headings.length
+    );
+  }
+  assert.equal(getPostBySlug("FIRSTBLOG").slug, "firstblog");
+  assert.ok(getPostBySlug("firstblog").content.includes("# C++到前端"));
   assert.ok(
-    posts.some(({ slug }) => slug === "five-contest-problems-solutions")
+    getPostBySlug("AIS3PE").headings.some(({ text }) => text === "前言")
   );
-  assert.ok(getPostBySlug("WELCOME").content.includes("# 你好"));
-  assert.equal(getPostBySlug("welcome").path, "/writing/welcome");
-  const contest = getPostBySlug("five-contest-problems-solutions");
-  assert.ok(contest.headings.some(({ text }) => text.includes("分段回頭")));
   assert.ok(
     getPublishedPosts().every(({ timestamp }) => timestamp <= Date.now())
   );
-  const summary = getPostSummaries().find(({ slug }) => slug === "welcome");
+  const summary = getPostSummaries().find(({ slug }) => slug === "firstblog");
   assert.ok(!("content" in summary) && !("headings" in summary));
   assert.ok(summary.searchText.includes("網站"));
-  for (const slug of ["../welcome", "welcome/", "%2fetc", "missing"])
+  for (const slug of ["../firstblog", "firstblog/", "%2fetc", "missing"])
     assert.equal(getPostBySlug(slug), undefined);
 });
 

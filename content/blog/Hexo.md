@@ -8,6 +8,7 @@ tags:
   - Hexo
 cover: /assets/blog/originals/Hexo/hexo_github.webp
 pinned: false
+legacyPath: /2025/08/27/Hexo/
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/hexo/hexo.md
 ---

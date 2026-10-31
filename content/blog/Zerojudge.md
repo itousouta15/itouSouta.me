@@ -8,6 +8,7 @@ tags:
   - Zerojudge
 cover: /assets/blog/originals/ZJ.webp
 pinned: false
+legacyPath: /2025/07/11/Zerojudge/
 translations: {}
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/zerojudge/zerojudge.md

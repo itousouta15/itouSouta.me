@@ -8,6 +8,7 @@ tags:
   - 資安
 cover: /assets/blog/originals/FhCTF.png
 pinned: false
+legacyPath: /2025/12/31/FhCTF/
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/FhCTF/FhCTF.md
 ---
