@@ -9,10 +9,6 @@ tags:
   - 中電會
 cover: /assets/blog/originals/SCAICT.png
 pinned: false
-legacyPath: /2026/02/24/SCAICT/
-translations:
-  en: 'https://blog.itousouta.me/en/2026/02/24/SCAICT/'
-  ja: 'https://blog.itousouta.me/ja/2026/02/24/SCAICT/'
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/SCAICT/SCAICT.md
 ---

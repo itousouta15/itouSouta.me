@@ -59,6 +59,17 @@ test("blog posts load without changing route or summary code", () => {
     assert.equal(getPostBySlug(slug), undefined);
 });
 
+test("unlisted writeup is reachable directly without appearing in public discovery", () => {
+  const post = getPostBySlug("THJCC2026");
+  assert.equal(post.path, "/writing/THJCC2026");
+  assert.equal(post.unlisted, true);
+  assert.ok(post.content.includes("## Crypto"));
+  assert.ok(getAllPosts(true).some(({ slug }) => slug === post.slug));
+  assert.ok(!getAllPosts().some(({ slug }) => slug === post.slug));
+  assert.ok(!getPostSummaries().some(({ slug }) => slug === post.slug));
+  assert.ok(!getPublishedPosts().some(({ slug }) => slug === post.slug));
+});
+
 test("article dates use Taipei while published legacy paths keep their actual old dates", () => {
   const first = getPostBySlug("firstblog");
   assert.equal(first.date, "2025/04/04");

@@ -19,6 +19,7 @@ export interface PostSummary {
   coverWidth?: number;
   coverHeight?: number;
   pinned: boolean;
+  unlisted: boolean;
   wordCount: number;
   readingMinutes: number;
   searchText: string;

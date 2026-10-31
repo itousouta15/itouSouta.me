@@ -12,9 +12,6 @@ tags:
 cover: /assets/blog/originals/scist.webp
 pinned: false
 legacyPath: /2026/05/04/SCISTCamp/
-translations:
-  en: 'https://blog.itousouta.me/en/2026/05/04/SCISTCamp/'
-  ja: 'https://blog.itousouta.me/ja/2026/05/04/SCISTCamp/'
 source: >-
   https://github.com/itousouta15/itouBLoGa/blob/dd2c67562bae5bca0bc619d2f92329ed934555ea/source/_posts/wc2026/wc2026.md
 ---

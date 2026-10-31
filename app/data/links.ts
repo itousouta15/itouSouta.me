@@ -206,4 +206,12 @@ export const LINKS: LinkItem[] = [
     avatar:
       "https://drive.google.com/thumbnail?id=16tdyrtp-M2spb_E3S1qH6SvrXfrzcUH8&sz=w256",
   },
+  {
+    name: "Samhacker",
+    handle: "ericchen913900.github.io",
+    href: "https://ericchen913900.github.io/",
+    desc: "我是蛋餅",
+    avatar:
+      "https://drive.google.com/thumbnail?id=16tdyrtp-M2spb_E3S1qH6SvrXfrzcUH8&sz=w256",
+  },
 ];

@@ -11,7 +11,7 @@ import BlogPreviewImage from "../../components/writing/BlogPreviewImage";
 import ArticleToc from "../../components/writing/ArticleToc";
 
 export function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+  return getAllPosts(true).map((post) => ({ slug: post.slug }));
 }
 export function generateMetadata({
   params,
@@ -27,18 +27,21 @@ export function generateMetadata({
   });
   return {
     ...metadata,
+    ...(post.unlisted ? { robots: { index: false, follow: false } } : {}),
     alternates: {
       canonical: post.path,
-      languages: {
-        "zh-TW": post.path,
-        ...Object.fromEntries(
-          Object.entries(post.translations).map(([locale, url]) => [
-            locale,
-            url,
-          ])
-        ),
-      },
-      types: { "application/rss+xml": "/writing/feed.xml" },
+      ...(!post.unlisted && {
+        languages: {
+          "zh-TW": post.path,
+          ...Object.fromEntries(
+            Object.entries(post.translations).map(([locale, url]) => [
+              locale,
+              url,
+            ])
+          ),
+        },
+        types: { "application/rss+xml": "/writing/feed.xml" },
+      }),
     },
     openGraph: {
       ...metadata.openGraph,
@@ -62,8 +65,8 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   const cover = blogImage(post.originalCover);
   const posts = getAllPosts();
   const index = posts.findIndex((item) => item.slug === post.slug);
-  const previous = posts[index - 1];
-  const next = posts[index + 1];
+  const previous = index >= 0 ? posts[index - 1] : undefined;
+  const next = index >= 0 ? posts[index + 1] : undefined;
   const article = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -80,12 +83,14 @@ export default function PostPage({ params }: { params: { slug: string } }) {
   };
   return (
     <article className="blog-article" lang="zh-Hant">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(article).replace(/</g, "\\u003c"),
-        }}
-      />
+      {!post.unlisted && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(article).replace(/</g, "\\u003c"),
+          }}
+        />
+      )}
       <Suspense
         fallback={
           <Link

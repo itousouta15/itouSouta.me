@@ -90,6 +90,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
     coverHeight: blogImage(originalCover)?.height,
     originalCover,
     pinned: data.pinned === true,
+    unlisted: data.unlisted === true,
     wordCount: inspected.wordCount,
     readingMinutes: inspected.readingMinutes,
     searchText:
@@ -111,12 +112,12 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
   };
 }
 
-export function getAllPosts(): BlogPost[] {
+export function getAllPosts(includeUnlisted = false): BlogPost[] {
   return readdirSync(directory)
     .filter((file) => file.endsWith(".md"))
     .flatMap((file) => {
       const post = getPostBySlug(file.slice(0, -3));
-      return post ? [post] : [];
+      return post && (includeUnlisted || !post.unlisted) ? [post] : [];
     })
     .sort(
       (a, b) =>

@@ -9,7 +9,6 @@ tags:
   - 競賽
 cover: /assets/blog/dlsh.webp
 pinned: false
-legacyPath: /2026/10/26/DLSH
 ---
 ## 1. 手遊廣告
 
