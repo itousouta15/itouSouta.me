@@ -4,6 +4,12 @@
 
 This is the reusable template for [itousouta.me](https://itousouta.me), built with Next.js 14. It includes a homepage, about page, timeline, projects, likes, Markdown articles, links, and dark/light themes. The `template` branch has replaceable sample content; the original site's content lives on `main`.
 
+## Sites built with this template
+
+- [itouSouta.me](https://itousouta.me)
+- [github-io-sigma-ten.vercel.app](https://github-io-sigma-ten.vercel.app/)
+- [portfolio-chalisa.vercel.app](https://portfolio-chalisa.vercel.app/)
+
 ## Get started
 
 Requires **Node.js 20+** and npm. Clone the `template` branch (or use your own copy of it):

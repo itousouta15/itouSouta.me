@@ -4,6 +4,12 @@
 
 這是 [itousouta.me](https://itousouta.me) 的網站模板，使用 Next.js 14 製作。包含首頁、關於、經歷、作品、收藏、Markdown 文章、友鏈和深淺色主題。`template` 分支放的是可替換的示例資料；原站內容則保留在 `main` 分支。
 
+## 使用這份模板的網站
+
+- [itouSouta.me](https://itousouta.me)
+- [github-io-sigma-ten.vercel.app](https://github-io-sigma-ten.vercel.app/)
+- [portfolio-chalisa.vercel.app](https://portfolio-chalisa.vercel.app/)
+
 ## 快速開始
 
 需要 **Node.js 20 以上**和 npm。先複製 `template` 分支（或使用你從這個分支建立的副本）：
