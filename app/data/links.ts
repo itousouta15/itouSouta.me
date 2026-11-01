@@ -208,10 +208,10 @@ export const LINKS: LinkItem[] = [
   },
   {
     name: "Samhacker",
-    handle: "ericchen913900.github.io",
-    href: "https://ericchen913900.github.io/",
-    desc: "我是蛋餅",
+    handle: "samhacker.xyz",
+    href: "https://samhacker.xyz",
+    desc: "某不具名高中廢柴，在此群佬除我",
     avatar:
-      "https://drive.google.com/thumbnail?id=16tdyrtp-M2spb_E3S1qH6SvrXfrzcUH8&sz=w256",
+      "https://gravatar.com/avatar/f7598bd8d4aba38d7219341f81a162fc842376b3b556b1995cbb97271d9e2915",
   },
 ];
