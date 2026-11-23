@@ -153,6 +153,12 @@ export const EXPERIENCE: ExperienceItem[] = [
     category: "比賽",
   },
   {
+    period: "2026",
+    title: "2026 臺北秋季程式設計節：城市通微服務大黑客松",
+    org: "佳作",
+    category: "比賽",
+  },
+  {
     period: "2025",
     title: "大里高中資訊校隊",
     org: "隊長、教學",
@@ -302,6 +308,12 @@ export const EXPERIENCE: ExperienceItem[] = [
     period: "2026",
     title: "AIS3 Club幹部訓練 中部場",
     org: "社群講者",
+    category: "社群",
+  },
+  {
+    period: "2026",
+    title: "國立臺中科技大學 課外多元課程 Init:CTF — 從 Linux 到 Web 的資安初探",
+    org: "助教",
     category: "社群",
   },
 ];
